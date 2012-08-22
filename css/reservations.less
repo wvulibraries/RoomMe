@@ -1,0 +1,166 @@
+@resTableCellWidth: 200px;
+@hourLabelCellWidth: 50px;
+
+#closeModalCalendar {
+	position: relative;
+	top: 10px;
+	right: -100px;
+
+	img {
+		width: 26px;
+		height: 26px;
+	}
+
+}
+
+.reservationsLibrary {
+
+	img {
+		width: 220px;
+		float: right;
+	}
+
+	ul {
+		display: inline-block;
+	}
+
+}
+
+table select {
+	width: 100px;
+}
+
+#reservationsRoomTable {
+
+	width: 100%;
+
+	tr {
+		height: 10px;
+	}
+
+
+	.minor {
+		display: none;
+	}
+
+	.quarter {
+		height: 10px;
+
+		// border: none;
+		// border-top-style: dotted;
+		// border-top-width: 1px;
+	}
+
+	.half {
+		height: 10px;
+
+		border: none;
+		border-top-style: dashed;
+		border-top-width: 1px;
+	}
+
+	.hour {
+		height: 10px;
+
+			// border: none;
+			// border-bottom-style: solid;
+			// border-bottom-width: 1px;
+
+			border-top-style: solid;
+			border-top-width: 1px;
+			border-top-color: black;
+		}
+
+		th {
+			width: 10px;
+			background-color: lightblue;
+		}
+
+		td {
+			width: 300px;
+			background-color: lightgreen;
+
+
+
+		}
+		.reserved {
+			background-color: #FF685B;
+		}
+	}
+
+/* Modal Stuff */
+#calendarModal {
+	display: none;
+	// width: 80%;
+	// height: 80%;
+	// overflow: scroll;
+}
+
+.calendarCol {
+	border-left-style: solid;
+	border-left-width: 1px;
+}
+
+#simplemodal-overlay   {
+	background-color:#000;
+}
+#simplemodal-container {
+	background-color:#FFFFFF; 
+	border:8px solid #444; 
+	padding:12px;
+		width: 80%;
+	height: 80%;
+}
+
+#subject_facetModal {
+	display:none;
+}
+#type_facetModal {
+	display:none;
+}
+#location_facetModal {
+	display:none;
+}
+#software_facetModal {
+	display:none;
+}
+
+.modalList {
+	float: left;
+}
+
+.simplemodal-close {
+	cursor: pointer;
+	width: 10em;
+	float: right;
+}
+
+
+
+#reservationsRoomTableHeader {
+	#firstCalHeader {
+		max-width: @hourLabelCellWidth - 15px;
+	}
+	th {
+		min-width: @resTableCellWidth;
+	}
+}
+
+#reservationsRoomTable {
+	td {
+		min-width: @resTableCellWidth;
+	}
+	th {
+		width: @hourLabelCellWidth;
+	}
+}
+
+/* End Modal Stuff */
+
+table.sortable {
+	tr.headerRow {
+		th {
+			cursor: pointer;
+		}
+	}
+}
