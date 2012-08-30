@@ -412,8 +412,6 @@ function createReservation($buildingID,$roomID) {
 		// if the RSS feed is unavailable, assume the library will be open (should this be configurable?)
 		if (!isempty($libraryHoursURL)) {
 
-			// print $libraryHoursURL.$sUnix ."<br />";
-
 			$hoursInfo = file_get_contents($libraryHoursURL.$sUnix);
 			$hoursInfo = explode("|",$hoursInfo);
 
@@ -618,10 +616,12 @@ function conflictReservationCheck($roomID,$sUnix,$eUnix) {
 
 	$engine = EngineAPI::singleton();
 
-	$sql       = sprintf("SELECT * FROM `reservations` WHERE ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) AND roomID='%s'",
+	$sql       = sprintf("SELECT * FROM `reservations` WHERE ( ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s') ) AND roomID='%s'",
 		$engine->openDB->escape($sUnix),
 		$engine->openDB->escape($sUnix),
 		$engine->openDB->escape($eUnix),
+		$engine->openDB->escape($eUnix),
+		$engine->openDB->escape($sUnix),
 		$engine->openDB->escape($eUnix),
 		$engine->openDB->escape($roomID)
 		);
