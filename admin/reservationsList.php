@@ -4,6 +4,10 @@ recurseInsert("includes/functions.php","php");
 $errorMsg = "";
 $error    = FALSE;
 
+$currentMonth = date("n");
+$currentDay   = date("j");
+$currentYear  = date("Y");
+
 $buildingID = NULL;
 $roomID     = NULL;
 
@@ -23,9 +27,15 @@ if (isset($engine->cleanPost['MYSQL'])) {
 	}
 }
 
-
-$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.endTime>'%s' ORDER BY building.name, rooms.name, reservations.username, reservations.startTime ",
-	time());
+$time = NULL;
+if (isset($engine->cleanPost['MYSQL']['submitListDate'])) {
+	$time     = mktime(0,0,0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
+	$time_end = mktime(23,59,0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
+}
+ 
+$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s ORDER BY building.name, rooms.name, reservations.username, reservations.startTime ",
+	(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>'".$time."' AND reservations.endTime<'".$time_end."'"
+	);
 $sqlResult = $engine->openDB->query($sql);
 
 if (!$sqlResult['result']) {
@@ -93,6 +103,58 @@ $engine->eTemplate("include","header");
 <h1>Reservation Listing</h1>
 </header>
 
+<form action="{phpself query="true"}" method="post">
+	{csrf insert="post"}
+	<table>
+		<tr>
+			<td>
+				<label for="start_month">Month:</label>
+				<select name="start_month" id="start_month" >
+					<?php
+
+					for($I=1;$I<=12;$I++) {
+						printf('<option value="%s" %s>%s</option>',
+							($I < 10)?"0".$I:$I,
+							($I == $currentMonth)?"selected":"",
+							$I);
+					}
+					?>
+				</select>
+			</td>
+			<td>
+				<label for="start_day">Day:</label>
+				<select name="start_day" id="start_day" >
+					<?php
+
+					for($I=1;$I<=31;$I++) {
+						printf('<option value="%s" %s>%s</option>',
+							($I < 10)?"0".$I:$I,
+							($I == $currentDay)?"selected":"",
+							$I);
+					}
+					?>
+				</select>
+			</td>
+			<td>
+				<label for="start_year">Year:</label>
+				<select name="start_year" id="start_year" >
+					<?php
+
+					for($I=$currentYear;$I<=$currentYear+10;$I++) {
+						printf('<option value="%s">%s</option>',
+							$I,
+							$I);
+					}
+					?>
+				</select>
+			</td>
+			<td style="vertical-align:bottom">
+				<input type="submit" name="submitListDate" value="Change Date" />
+			</td>
+		</tr>
+	</table>
+	
+</form>
 
 <?php print $table->display($reservations); ?>
 
