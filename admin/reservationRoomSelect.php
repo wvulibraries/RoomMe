@@ -65,10 +65,6 @@ function buildRoomList($building) {
 
 	$engine = EngineAPI::singleton();
 
-	print "<pre>";
-	var_dump($building);
-	print "</pre>";
-
 	$sql       = sprintf("SELECT roomListDisplay, roomSortOrder FROM building WHERE ID='%s'",
 		$engine->openDB->escape($building)
 		);
