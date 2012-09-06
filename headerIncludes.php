@@ -37,7 +37,7 @@ function handler_calModal() {
 		success: function(responseData) {
 			$('#calendarModal').html(responseData);
 			$('#calendarModal').modal({overlayClose:true});
-			$('#reservationsRoomTable').tableScroll({height:360});
+			// $('#reservationsRoomTable').tableScroll({height:360});
 		},
 		error: function(jqXHR,error,exception) {
 			$('#calendarModal').html("An Error has occurred: "+error);
