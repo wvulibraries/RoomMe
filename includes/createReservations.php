@@ -77,8 +77,8 @@ function createReservation($buildingID,$roomID) {
 	if ((int)$shour >= 18 && (int)$ehour < (int)$shour) {
 		// assume the end hour is the next morning/day
 
-		// add 24 hours of seconds to the start time
-		$nextDay = $sunix + 86400;
+		// add 24 hours of seconds to the start time to get the next day
+		$nextDay = $sUnix + 86400;
 
 		// grab the new month, day, year
 		$emonth = date("n",$nextDay);
@@ -92,7 +92,6 @@ function createReservation($buildingID,$roomID) {
 		// otherwise just use what we were given
 		$eUnix = mktime($ehour,$emin,0,$month,$day,$year);
 	}
-
 
 	// make sure the end time is after the start time
 	if ($eUnix <= $sUnix) {
