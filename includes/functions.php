@@ -311,6 +311,8 @@ function drawRoomCalendar($roomID,$date) {
 					break;
 			}
 
+if ($K%15 == 0) {
+
 			$rowTime = mktime($I,$K,"0",$month,$day,$year);
 
 			$output .= sprintf('<tr class="%s">',
@@ -392,6 +394,7 @@ function drawRoomCalendar($roomID,$date) {
 			}
 
 			$output .= '</tr>';
+		}
 		}
 
 	}
