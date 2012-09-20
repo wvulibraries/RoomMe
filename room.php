@@ -58,6 +58,8 @@ if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 $engine->eTemplate("include","header");
 ?>
 
+	{local var="prettyPrint"}
+
 <header>
 <h1>{local var="displayName"} in {local var="buildingName"}</h1>
 </header>
@@ -133,7 +135,7 @@ $engine->eTemplate("include","header");
 		<h1>Reserve Room</h1>
 	</header>
 
-	{local var="prettyPrint"}
+<!-- 	{local var="prettyPrint"} -->
 
 <?php if($roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
