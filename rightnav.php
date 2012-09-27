@@ -21,3 +21,23 @@
 		<?php } ?>
 	</li>
 </ul>
+
+<ul>
+	<li class="rightNavListHeader">Building Calendars <br /> (all rooms)</li>
+
+	<?php
+	// Not happy about this
+	$sql = sprintf("SELECT * FROM building ORDER BY name");
+	$sqlResult                = $engine->openDB->query($sql);
+
+	while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+
+	?>
+
+	<li>
+		<a href="#" class="calendarModal_link" data-type="building" data-id="<?php print $row['ID'] ?>"><?php print $row['name'];?></a>
+	</li>
+
+	<?php } ?>
+
+</ul>
