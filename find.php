@@ -85,15 +85,22 @@ if (isset($engine->cleanPost['MYSQL']['lookupSubmit'])) {
 		$sqlResult = $engine->openDB->query($sql);
 		$building  = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
 
-		$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE (reservations.startTime<='%s' AND reservations.endTime>'%s') AND (reservations.startTime<'%s' AND reservations.endTime>='%s')) ORDER BY rooms.%s",
+
+		$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE (((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s')) AND rooms.building='%s') ORDER BY rooms.%s",
+		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT * FROM `reservations` WHERE ( ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s') ) AND roomID='%s') ORDER BY rooms.%s",
 			$engine->cleanPost['MYSQL']['library'],
 			$engine->openDB->escape($sUnix),
 			$engine->openDB->escape($sUnix),
 			$engine->openDB->escape($eUnix),
 			$engine->openDB->escape($eUnix),
+			$engine->openDB->escape($sUnix),
+			$engine->openDB->escape($eUnix),
+			$engine->cleanPost['MYSQL']['library'],
 			$building['roomSortOrder']
 			);
 		$sqlResult = $engine->openDB->query($sql);
+
+
 
 		if (!$sqlResult['result']) {
 			errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
