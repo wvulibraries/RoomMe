@@ -34,9 +34,13 @@ if (isset($engine->cleanPost['MYSQL']['submitListDate'])) {
 }
  
 $sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s ORDER BY building.name, rooms.name, reservations.username, reservations.startTime ",
-	(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>'".$time."' AND reservations.endTime<'".$time_end."'"
+	(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>'".$time."' AND reservations.startTime<'".$time_end."'"
 	);
 $sqlResult = $engine->openDB->query($sql);
+
+print "<pre>";
+var_dump($sql);
+print "</pre>";
 
 if (!$sqlResult['result']) {
 	$error     = TRUE;
