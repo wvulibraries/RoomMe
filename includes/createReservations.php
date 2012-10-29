@@ -562,11 +562,23 @@ function createReservation($buildingID,$roomID) {
 		$roomName     = getRoomInfo($engine->cleanPost['MYSQL']['room']);
 		$buildingName = getBuildingName($roomName['building']);
 
+		$sam = "am";
+		if ($shour > 12) {
+			$shour = $shour - 12;
+			$sam = "pm";
+		}
+
+		$eam = "am";
+		if ($ehour > 12) {
+			$ehour = $ehour - 12;
+			$eam = "pm";
+		}
+
 		$subject  = "Room Reservation Created: ".$month."/".$day."/".$year;
 
 		$emailMsg  = "Your room reservation has been successfully created: \n";
 		$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
-		$emailMsg .= "Time: ".$shour.":".$smin." - ".$ehour.":".$emin."\n";
+		$emailMsg .= "Time: ".$shour.":".$smin." ".$sam." - ".$ehour.":".$emin." ".$eam."\n";
 		$emailMsg .= "Building: ".$buildingName."\n";
 		$emailMsg .= "Room: ".$roomName['displayName']."\n";
 

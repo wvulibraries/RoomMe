@@ -260,7 +260,7 @@ $engine->eTemplate("include","header");
 		</tr>
 	</table>
 	
-	<label name="notificationEmail">Email Address (optional, for email confirmation):</label>
+	<label name="notificationEmail">Email Address (<strong><em>optional, for email confirmation</em></strong>):</label>
 	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" />
 	<br /><br />
 	
