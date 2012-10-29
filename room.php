@@ -260,6 +260,9 @@ $engine->eTemplate("include","header");
 		</tr>
 	</table>
 	
+	<label name="notificationEmail">Email Address (optional, for email confirmation):</label>
+	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" />
+	<br /><br />
 	
 	<input type="submit" name="createSubmit" value="Reserve this Room" />
 </form>

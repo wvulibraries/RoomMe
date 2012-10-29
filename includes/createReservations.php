@@ -556,6 +556,30 @@ function createReservation($buildingID,$roomID) {
 	// Print off slip link
 	// // TODO
 
+	// If there was an email address submitted, send an email to that address
+	if (isset($engine->cleanPost['HTML']['notificationEmail']) && validate::emailAddr($engine->cleanPost['HTML']['notificationEmail'])) {
+		
+		$roomName     = getRoomInfo($engine->cleanPost['MYSQL']['room']);
+		$buildingName = getBuildingName($roomName['building']);
+
+		$subject  = "Room Reservation Created: ".$month."/".$day."/".$year;
+
+		$emailMsg  = "Your room reservation has been successfully created: \n";
+		$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
+		$emailMsg .= "Time: ".$shour.":".$smin." - ".$ehour.":".$emin."\n";
+		$emailMsg .= "Building: ".$buildingName."\n";
+		$emailMsg .= "Room: ".$roomName['displayName']."\n";
+
+		$mail = new mailSender();
+		$mail->addRecipient($engine->cleanPost['HTML']['notificationEmail']);
+		$mail->addSender("libsys@mail.wvu.edu", "WVU Libraries");
+		$mail->addSubject($subject);
+		$mail->addBody($emailMsg);
+
+		$sendResult = $mail->sendEmail();
+
+	}
+
 	return(TRUE);
 
 }
