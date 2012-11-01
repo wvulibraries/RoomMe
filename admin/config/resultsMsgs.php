@@ -16,8 +16,11 @@ function defineFields() {
 	$fields['sameDayReservation']    	= getResultMessage('sameDayReservation');
 	$fields['systemsPolicyError']       = getResultMessage('systemsPolicyError');
 	$fields['maxFineExceeded']          = getResultMessage('maxFineExceeded');
+	$fields['multipleRoomBookings']     = getResultMessage('multipleRoomBookings');
 	$fields['patronReservationInfo']    = getResultMessage('patronReservationInfo');
+	$fields['policyLabel']              = getResultMessage('policyLabel');
 	$fields['libraryClose']             = getResultMessage('libraryClose');
+	$fields['reservationInPast']        = getResultMessage('reservationInPast');
 	$fields['reservationLengthTooLong'] = getResultMessage('reservationLengthTooLong');
 	$fields['userOverSystemHours']      = getResultMessage('userOverSystemHours');
 	$fields['userOverLibraryHours']     = getResultMessage('userOverLibraryHours');
@@ -27,8 +30,7 @@ function defineFields() {
 	$fields['userOverPolicyBookings']   = getResultMessage('userOverPolicyBookings');
 	$fields['errorInserting']           = getResultMessage('errorInserting');
 	$fields['tooFarInFuture']           = getResultMessage('tooFarInFuture');
-	$fields['policyLabel']              = getResultMessage('policyLabel');
-
+	
 	return($fields);
 }
 

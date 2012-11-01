@@ -101,7 +101,7 @@ function createReservation($buildingID,$roomID) {
 
 	// is this a reservation being requested in the past?
 	if ($sUnix < (time() - 3600)) {
-		errorHandle::errorMsg("Cannot create reservations in the past");
+		errorHandle::errorMsg(getResultMessage("reservationInPast"));
 		return(FALSE);
 	}
 
@@ -388,7 +388,7 @@ function createReservation($buildingID,$roomID) {
 		$allowMultipleBookings = getConfig('allowMultipleBookings');
 		if ($allowMultipleBookings == "0") {
 			if (multipleBooksings($username,$sUnix,$eUnix)) {
-				errorHandle::errorMsg("Cannot book multiple rooms at the same time.");
+				errorHandle::errorMsg(getResultMessage("multipleRoomBookings"));
 				return(FALSE);
 			}
 		}
