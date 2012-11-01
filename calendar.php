@@ -162,6 +162,11 @@ localvars::add("calendarName",($calType == "building")?$buildingName:$roomName)
 
 </section>
 
+<footer>
+	<h1>{local var="calendarName"} Calendar</h1>
+	<h2>{local var="month"} / {local var="day"} / {local var="year"}</h2>
+</footer>
+
 <script type="text/javascript">
 $('#closeModalCalendar').live('click',handler_closeModal);
 
