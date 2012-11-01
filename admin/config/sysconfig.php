@@ -5,6 +5,7 @@ recurseInsert("includes/functions.php","php");
 function defineFields() {
 	$fields                                 = array();
 	$fields['24hour']                       = getConfig('24hour');
+	$fields['adjustedDeleteTime']           = getConfig('adjustedDeleteTime');
 	$fields['allowMultipleBookings']        = getConfig('allowMultipleBookings');
 	$fields['calendarDisplayName']          = getConfig('calendarDisplayName');
 	$fields['defaultReservationIncrements'] = getConfig('defaultReservationIncrements');

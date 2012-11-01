@@ -22,7 +22,10 @@ if (isset($engine->cleanGet['MYSQL']['id'])) {
 
 		if (lc($row['username']) == lc(sessionGet("username"))) {
 
-			if ($row['startTime'] > time()) {
+			$timeAdjustment      = 60 * (getConfig('adjustedDeleteTime'));
+			$currentAdjustedTime = time() + $timeAdjustment;
+
+			if ($row['startTime'] > $currentAdjustedTime) {
 
 				$sql       = sprintf("DELETE FROM reservations WHERE ID='%s'",
 					$engine->cleanGet['MYSQL']['id']);
