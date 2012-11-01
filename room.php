@@ -55,6 +55,8 @@ if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 	localvars::add("prettyPrint",errorHandle::prettyPrint());
 }
 
+localvars::add("policyLabel",getResultMessage("policyLabel"));
+
 $engine->eTemplate("include","header");
 ?>
 
@@ -101,7 +103,7 @@ $engine->eTemplate("include","header");
 
 		<?php if (!isempty($room['policyURL'])) { ?>
 		<tr>
-			<td><strong>Policy Information:</strong></td>
+			<td><strong>{local var="policyLabel"} Information:</strong></td>
 			<td><a href="{local var="policyURL"}">{local var="policyURL"}</a></td>
 		</tr>
 		<?php } ?>

@@ -1,9 +1,12 @@
 <?php
 require_once("engineHeader.php");
+recurseInsert("includes/functions.php","php");
 
 $sql = sprintf("SELECT * FROM building ORDER BY name");
 $sqlResult                = $engine->openDB->query($sql);
 
+
+localvars::add("policyLabel",getResultMessage("policyLabel"));
 
 $engine->eTemplate("include","header");
 ?>
@@ -28,7 +31,7 @@ while ($row                      = mysql_fetch_array($sqlResult['result'],  MYSQ
 
 		<?php if (isset($row['policyURL']) && !isempty($row['policyURL'])) { ?>
 		<li>
-			<a href="<?php print $row['policyURL'] ?>">View Library Policies</a>
+			<a href="<?php print $row['policyURL'] ?>">View Library {local var="policyLabel"}</a>
 		</li>
 		<?php } ?>
 
