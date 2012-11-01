@@ -25,6 +25,7 @@
 		<ul>
 			<li><a href="{local var="roomResBaseDir"}/admin/config/resultsMsgs.php">Result Messages</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/config/snippets.php">Snippets</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/config/stats.php">Stats</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/config/sysconfig.php">System Configuration</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/config/via.php">Via Management</a></li>
 			<!-- <li><a href="{local var="roomResBaseDir"}/admin/config/emails.php">Email Responses</a></li> -->
