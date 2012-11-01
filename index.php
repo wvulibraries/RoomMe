@@ -16,7 +16,7 @@ $engine->eTemplate("include","header");
 </header>
 
 <?php
-while ($row                      = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 ?>
 
 <section class="reservationsLibrary">
@@ -25,6 +25,7 @@ while ($row                      = mysql_fetch_array($sqlResult['result'],  MYSQ
 	</header>
 
 	<ul>
+		<?php if (isempty($row['externalURL'])) { ?>
 		<li>
 			<a href="building.php?building=<?php print $row['ID'] ?>">View &amp; Reserve Rooms</a>
 		</li>
@@ -50,6 +51,13 @@ while ($row                      = mysql_fetch_array($sqlResult['result'],  MYSQ
 		<li>
 			<a href="#" class="calendarModal_link" data-type="building" data-id="<?php print $row['ID'] ?>">View Reservation Calendar &ndash; All Rooms</a>
 		</li>
+		<?php } else { ?>
+
+		<li>
+			<a href="<?php print $row['externalURL'] ?>">View &amp; Reserve Rooms</a>
+		</li>
+
+		<?php } ?>
 	</ul>
 
 	<?php if (isset($row['imageURL']) && !isempty($row['imageURL'])) { ?>

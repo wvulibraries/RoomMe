@@ -39,6 +39,7 @@ $options = array();
 $options['field']    = "roomListDisplay";
 $options['label']    = "Room List Display";
 $options['dupes']    = TRUE;
+$options['value']    = "{name} -- {number}";
 $listObj->addField($options);
 unset($options);
 
@@ -93,6 +94,15 @@ unset($options);
 $options = array();
 $options['field']    = "url";
 $options['label']    = "Building URL";
+$options['blank']    = TRUE;
+$options['dupes']    = TRUE;
+$options['validate'] = "url";
+$listObj->addField($options);
+unset($options);
+
+$options = array();
+$options['field']    = "externalURL";
+$options['label']    = "External URL";
 $options['blank']    = TRUE;
 $options['dupes']    = TRUE;
 $options['validate'] = "url";
