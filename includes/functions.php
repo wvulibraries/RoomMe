@@ -400,6 +400,23 @@ if ($K%15 == 0) {
 	}
 
 	$output .= "</tbody>";
+	$output .= "<tfoot>";
+	$output .= '<tr id="reservationsRoomTableHeader">';
+	$output .= '<th id="firstCalHeader">&nbsp;</th>';
+	foreach ($rooms as $I=>$room) {
+
+		$displayName = str_replace("{name}", $room['name'], $calendarDisplayName);
+		$displayName = str_replace("{number}", $room['number'], $displayName);
+
+		$output .= sprintf('<th><a href="room.php?room=%s&reservationSTime=%s&reservationETime=%s">%s</a></th>',
+			htmlSanitize($room['ID']),
+			htmlSanitize($reservationSTime),
+			htmlSanitize($reservationETime),
+			htmlSanitize($displayName)
+			);
+	}
+	$output .= '</tr>';
+	$output .= "</tfoot>";
 	$output .= '</table>';
 
 	return($output);
