@@ -400,7 +400,9 @@ function createReservation($buildingID,$roomID) {
 			$usersFineAmount = file_get_contents($libraryfineLookupURL.$userInformation['idNumber']);
 
 			if ($usersFineAmount >= $currentFineAmount) {
-				errorHandle::errorMsg(getResultMessage("maxFineExceeded"));
+				$resultFineMessage = getResultMessage("maxFineExceeded");
+				$resultFineMessage = preg_replace("/{amount}/", $currentFineAmount, $resultFineMessage);
+				errorHandle::errorMsg(getResultMessage($resultFineMessage));
 				return(FALSE);
 			}
 		}
