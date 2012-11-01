@@ -546,8 +546,12 @@ function createReservation($buildingID,$roomID) {
 		return(FALSE);
 	}
 
+	$roomName     = getRoomInfo($engine->cleanPost['MYSQL']['room']);
+
 	if ($reservationUpdate === FALSE) {
-		errorHandle::successMsg(getResultMessage("reservationCreated"));
+		$resultMessage = getResultMessage("reservationCreated");
+		$resultMessage = preg_replace("/{roomName}/", $roomName['displayName'], $resultMessage);
+		errorHandle::successMsg($resultMessage);
 	}
 	else {
 		errorHandle::successMsg(getResultMessage("reservationUpdated"));
@@ -559,7 +563,7 @@ function createReservation($buildingID,$roomID) {
 	// If there was an email address submitted, send an email to that address
 	if (isset($engine->cleanPost['HTML']['notificationEmail']) && validate::emailAddr($engine->cleanPost['HTML']['notificationEmail'])) {
 		
-		$roomName     = getRoomInfo($engine->cleanPost['MYSQL']['room']);
+		
 		$buildingName = getBuildingName($roomName['building']);
 
 		$sam = "am";
