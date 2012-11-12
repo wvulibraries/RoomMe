@@ -94,7 +94,7 @@ if ($error === FALSE && isset($engine->cleanPost['MYSQL']) && isset($engine->cle
 				if (!isnull($previousRoomName)) {
 					$displayOutput .= sprintf('<h1>%s</h1><h2>%s</h2><h3>%s</h3>%s',
 						$row['buildingName'],
-						$roomDisplayName,
+						$previousRoomName,
 						$engine->cleanPost['MYSQL']['start_month']."/".$engine->cleanPost['MYSQL']['start_day']."/".$engine->cleanPost['MYSQL']['start_year'],
 						$table->display($reservations)
 						);
