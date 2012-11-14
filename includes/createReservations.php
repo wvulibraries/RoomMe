@@ -413,7 +413,18 @@ function createReservation($buildingID,$roomID) {
 		// if the RSS feed is unavailable, assume the library will be open (should this be configurable?)
 		if (!isempty($libraryHoursURL)) {
 
-			$hoursInfo = file_get_contents($libraryHoursURL.$sUnix);
+			$opts = array(
+				'http'=>array(
+					'method'=> "GET",
+					'header'=>  "Accept-language: en\r\n" .
+								"Accept: text/plain\r\n" .
+								"User-Agent: EngineAPI -- Room Reservation Software\r\n"
+					)
+				);
+
+			$context = stream_context_create($opts);
+
+			$hoursInfo = file_get_contents($libraryHoursURL.$sUnix, false, $context);
 			$hoursInfo = explode("|",$hoursInfo);
 
 			// // debugging
