@@ -33,6 +33,16 @@ if ($error === FALSE) {
 	}
 }
 
+$type   = "reservation";
+$action = "reservationCreate.php";
+if (isset($engine->cleanGet['HTML']['type']) && $engine->cleanGet['HTML']['type'] == "series") {
+	$type = "series";
+	$action = "seriesCreate.php";
+}
+
+localvars::add("type",$type);
+localvars::add("action",$action);
+
 $engine->eTemplate("include","header");
 ?>
 
@@ -40,10 +50,10 @@ $engine->eTemplate("include","header");
 <h1>Reservation Creation -- Select Room</h1>
 </header>
 
-<a href="reservationLibrarySelect.php">&lt;&lt; Select a different Building</a>
+<a href="reservationLibrarySelect.php?type={local var="type"}">&lt;&lt; Select a different Building</a>
 <br />
 
-<form action="reservationCreate.php" method="post">
+<form action="{local var="action"}" method="post">
 	{csrf insert="post"}
 
 	<input type="hidden" name="library" value="{local var="libraryID"}" />

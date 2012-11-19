@@ -1,6 +1,6 @@
 <?php
 
-function createReservation($buildingID,$roomID) {
+function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 	if (!function_exists("getBuildingName")) {
 		recurseInsert("includes/functions.php","php");
@@ -21,7 +21,7 @@ function createReservation($buildingID,$roomID) {
 	$comments          = "";
 	$reservationUpdate = FALSE;
 	// If the fields are set AND we are coming from the staff interface, we can modify $via and $override
-	if (isset($engine->cleanPost['MYSQL']['via']) && preg_match('/\/admin\/reservationCreate\.php/',$_SERVER['PHP_SELF'])) {
+	if (isset($engine->cleanPost['MYSQL']['via']) && (preg_match('/\/admin\/reservationCreate\.php/',$_SERVER['PHP_SELF']) || preg_match('/\/admin\/seriesCreate\.php/',$_SERVER['PHP_SELF']))) {
 		$via      = $engine->cleanPost['MYSQL']['via'];
 		$override = $engine->cleanPost['MYSQL']['override'];
 
@@ -433,6 +433,20 @@ function createReservation($buildingID,$roomID) {
 			// var_dump($hoursInfo);
 			// print "</pre>";
 
+
+			// print "<pre>";
+			// var_dump($hoursInfo[0]);
+			// print "</pre>";
+			// print "<pre>";
+			// var_dump($sUnix);
+			// print "</pre>";
+			// print "<pre>";
+			// var_dump($eUnix);
+			// print "</pre>";
+			// print "<pre>";
+			// var_dump($hoursInfo[1]);
+			// print "</pre>";
+
 			if (isset($hoursInfo[1]) && !isempty($hoursInfo[1]) && isset($hoursInfo[0]) && !isempty($hoursInfo[0])) {
 				if ($sUnix >= $hoursInfo[0] && $sUnix < $hoursInfo[1] && $eUnix > $hoursInfo[0] && $eUnix <= $hoursInfo[1]) {
 
@@ -523,7 +537,7 @@ function createReservation($buildingID,$roomID) {
 	}
 
 	if ($reservationUpdate === FALSE) {
-		$sql       = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+		$sql       = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
 			$engine->openDB->escape(time()),
 			$engine->openDB->escape(sessionGet("username")),
 			$engine->openDB->escape($via),
@@ -535,7 +549,8 @@ function createReservation($buildingID,$roomID) {
 			$engine->openDB->escape(lc($username)),
 			$engine->openDB->escape($userInformation['initials']),
 			$groupname,
-			$comments
+			$comments,
+			(isnull($seriesID))?"":$seriesID
 			);
 	}
 	else {

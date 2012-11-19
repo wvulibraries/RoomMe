@@ -13,6 +13,12 @@ while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 
 localvars::add("librarySelectOptions",$options);
 
+$type = "reservation";
+if (isset($engine->cleanGet['HTML']['type']) && $engine->cleanGet['HTML']['type'] == "series") {
+	$type = "series";
+}
+localvars::add("type",$type);
+
 $engine->eTemplate("include","header");
 ?>
 
@@ -20,7 +26,7 @@ $engine->eTemplate("include","header");
 <h1>Reservation Creation -- Select Library</h1>
 </header>
 
-<form action="reservationRoomSelect.php" method="post">
+<form action="reservationRoomSelect.php?type={local var="type"}" method="post">
 	{csrf insert="post"}
 
 	<label for="library">Library:</label>

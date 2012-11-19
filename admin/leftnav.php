@@ -5,6 +5,8 @@
 			<!-- <li><a href="">View Calendar</a></li> -->
 			<li><a href="{local var="roomResBaseDir"}/admin/reservationLibrarySelect.php">Create Reservation</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/reservationsList.php">List all Reservations</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/reservationLibrarySelect.php?type=series">Create Series</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/seriesList.php">List all Series</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/printReservations.php">Print Reservations</a></li>
 		</ul>
 	</li>
