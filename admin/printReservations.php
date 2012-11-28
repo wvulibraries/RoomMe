@@ -51,7 +51,7 @@ if ($error === FALSE && isset($engine->cleanPost['MYSQL']) && isset($engine->cle
 
 
 	$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s AND building.ID='%s' ORDER BY building.name, rooms.name, rooms.number, reservations.startTime ",
-		(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>'".$time."' AND reservations.startTime<'".$time_end."'",
+		(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>='".$time."' AND reservations.startTime<'".$time_end."'",
 		$engine->cleanPost['MYSQL']['library']
 		);
 	$sqlResult = $engine->openDB->query($sql);
@@ -121,11 +121,19 @@ if ($error === FALSE && isset($engine->cleanPost['MYSQL']) && isset($engine->cle
 			$temp['endTime']   = date($timeFormat,$row['endTime']);
 			$temp['hoursOnReservationTable'] = ($row['endTime'] - $row['startTime'])/60/60;
 
-			$reservations[] = $temp;
+			$reservations[]   = $temp;
 
 			$previousRoomName = $roomDisplayName;
+			$previousRow      = $row;
 
 		}
+
+		$displayOutput .= sprintf('<h1>%s</h1><h2>%s</h2><h3>%s</h3>%s',
+			$previousRow['buildingName'],
+			$previousRoomName,
+			$engine->cleanPost['MYSQL']['start_month']."/".$engine->cleanPost['MYSQL']['start_day']."/".$engine->cleanPost['MYSQL']['start_year'],
+			$table->display($reservations)
+			);
 
 	}
 
