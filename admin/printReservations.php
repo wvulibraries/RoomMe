@@ -84,6 +84,7 @@ if ($error === FALSE && isset($engine->cleanPost['MYSQL']) && isset($engine->cle
 
 		$previousRoomName = NULL;
 		$previousRow      = NULL;
+
 		while($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 
 			$roomDisplayName = str_replace("{name}", $row['roomName'], $row['roomListDisplay']);
@@ -128,12 +129,20 @@ if ($error === FALSE && isset($engine->cleanPost['MYSQL']) && isset($engine->cle
 
 		}
 
-		$displayOutput .= sprintf('<h1>%s</h1><h2>%s</h2><h3>%s</h3>%s',
-			$previousRow['buildingName'],
-			$previousRoomName,
-			$engine->cleanPost['MYSQL']['start_month']."/".$engine->cleanPost['MYSQL']['start_day']."/".$engine->cleanPost['MYSQL']['start_year'],
-			$table->display($reservations)
+		if ($sqlResult['numrows'] > 0) {  
+			$displayOutput .= sprintf('<h1>%s</h1><h2>%s</h2><h3>%s</h3>%s',
+				$previousRow['buildingName'],
+				$previousRoomName,
+				$engine->cleanPost['MYSQL']['start_month']."/".$engine->cleanPost['MYSQL']['start_day']."/".$engine->cleanPost['MYSQL']['start_year'],
+			"foo"//$table->display($reservations)
 			);
+		}
+		else if ($sqlResult['numrows'] == 0) {
+			$displayOutput = "No reservations found.";
+		}
+		else {
+			$displayOutput = "Error gathering reservations.";
+		}
 
 	}
 
