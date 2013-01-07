@@ -55,6 +55,10 @@ function getRoomInfo($ID) {
 		return(FALSE);
 	}
 
+	if ($sqlResult['numrows'] < 1) {
+		return(FALSE);
+	}
+
 	$row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
 	$row['equipment'] = array();
 
