@@ -14,19 +14,43 @@ else {
 }
 
 $room         = getRoomInfo($roomID);
-$roomPolicy   = getRoomPolicy($roomID);
-$buildingName = getBuildingName($room['building']);
-localvars::add("roomName",    $room['name']);
-localvars::add("roomNumber",  $room['number']);
-localvars::add("policyURL",   $room['policyURL']);
-localvars::add("username",    sessionGet("username"));
-localvars::add("buildingID",  $room['building']);
-localvars::add("roomID",      $room['ID']);
-localvars::add("buildingName",$buildingName);
-localvars::add("prettyPrint", errorHandle::prettyPrint());
-localvars::add("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
-localvars::add("mapURL",      $room['mapURL']);
-localvars::add("displayName", $room['displayName']);
+
+if ($room !== FALSE && isset($room['building'])) {
+
+	$roomPolicy   = getRoomPolicy($roomID);
+	$buildingName = getBuildingName($room['building']);
+
+	localvars::add("roomName",    $room['name']);
+	localvars::add("roomNumber",  $room['number']);
+	localvars::add("policyURL",   $room['policyURL']);
+	localvars::add("username",    sessionGet("username"));
+	localvars::add("buildingID",  $room['building']);
+	localvars::add("roomID",      $room['ID']);
+	localvars::add("buildingName",$buildingName);
+	localvars::add("prettyPrint", errorHandle::prettyPrint());
+	localvars::add("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
+	localvars::add("mapURL",      $room['mapURL']);
+	localvars::add("displayName", $room['displayName']);
+
+}
+else {
+
+	$roomPolicy   = NULL;
+	$buildingName = NULL;
+
+	localvars::add("roomName",    "Error");
+	localvars::add("roomNumber",  "Error");
+	localvars::add("policyURL",   "Error");
+	localvars::add("username",    sessionGet("username"));
+	localvars::add("buildingID",  "Error");
+	localvars::add("roomID",      "Error");
+	localvars::add("buildingName","Error");
+	localvars::add("prettyPrint", errorHandle::prettyPrint());
+	localvars::add("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
+	localvars::add("mapURL",      "Error");
+	localvars::add("displayName", "Error");
+
+}
 
 $currentMonth = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?date("n"):date("n",$engine->cleanGet['MYSQL']['reservationSTime']);
 $currentDay   = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?date("j"):date("j",$engine->cleanGet['MYSQL']['reservationSTime']);
@@ -94,14 +118,14 @@ $engine->eTemplate("include","header");
 			<td>{local var="buildingName"}</td>
 		</tr>
 
-		<?php if (!isempty($room['mapURL'])) { ?>
+		<?php if (isset($room['mapURL']) && !isempty($room['mapURL'])) { ?>
 		<tr>
 			<td><strong>Map:</strong></td>
 			<td><a href="{local var="mapURL"}" class="mapModal_link">View Map</a></td>
 		</tr>
 		<?php } ?>
 
-		<?php if (!isempty($room['policyURL'])) { ?>
+		<?php if (isset($room['policyURL']) && !isempty($room['policyURL'])) { ?>
 		<tr>
 			<td><strong>{local var="policyLabel"} Information:</strong></td>
 			<td><a href="{local var="policyURL"}">{local var="policyURL"}</a></td>
@@ -139,7 +163,7 @@ $engine->eTemplate("include","header");
 
 <!-- 	{local var="prettyPrint"} -->
 
-<?php if($roomPolicy['publicScheduling']=="1") { // public scheduling?>
+<?php if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
 	<?php if(isempty(sessionGet("username"))) { ?>
 
