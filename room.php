@@ -128,7 +128,7 @@ $engine->eTemplate("include","header");
 		<?php if (isset($room['policyURL']) && !isempty($room['policyURL'])) { ?>
 		<tr>
 			<td><strong>{local var="policyLabel"} Information:</strong></td>
-			<td><a href="{local var="policyURL"}">{local var="policyURL"}</a></td>
+			<td><a href="{local var="policyURL"}">View Policies</a></td>
 		</tr>
 		<?php } ?>
 
@@ -295,7 +295,7 @@ $engine->eTemplate("include","header");
 <?php } ?>
 <?php } else { // public scheduling?>
 
-	</p>To schedule this room you must contact the library.</p>
+	<p>To schedule this room you must contact the library.</p>
 
 <?php } ?>
 </section>
