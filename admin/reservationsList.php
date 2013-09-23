@@ -86,7 +86,8 @@ if ($error === FALSE) {
 		$temp['startTime'] = date($timeFormat,$row['startTime']);
 		$temp['endTime']   = date($timeFormat,$row['endTime']);
 		if ($hoursOnTable == "1") {
-			$temp['hoursOnReservationTable'] = ($row['endTime'] - $row['startTime'])/60/60;
+			$reserveTime = ($row['endTime'] - $row['startTime'])/60/60;
+			$temp['hoursOnReservationTable'] = ($reserveTime > 23.6)?"24":$reserveTime;
 		}
 		$temp['edit']      = sprintf('<a href="reservationCreate.php?id=%s">Edit</a>',
 			$engine->openDB->escape($row['ID'])
