@@ -101,6 +101,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 	// is this a reservation being requested in the past?
 	if ($sUnix < (time() - 3600)) {
+	if (isnull($seriesID) && $sUnix < (time() - 3600)) {
 		errorHandle::errorMsg(getResultMessage("reservationInPast"));
 		return(FALSE);
 	}
