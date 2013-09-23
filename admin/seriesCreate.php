@@ -7,21 +7,18 @@ $errorMsg = "";
 $error    = FALSE;
 
 // we are editing a reservation
-$reservationID   = "";
-$reservationInfo = NULL;
-$username        = "";
-$groupname       = "";
-$comments        = "";
-$action          = "Add";
+$reservationID    = "";
+$reservationInfo  = NULL;
+$username         = "";
+$groupname        = "";
+$comments         = "";
+$action           = "Add";
+$weekdaysAssigned = array();
 
 // This is so broken :-/ 
 if (isset($engine->cleanPost['MYSQL']['library'])) {
-	$engine->cleanGet['MYSQL']['library'] = $engine->cleanPost['MYSQL']['library'];
-	$engine->cleanGet['HTML']['library']  = $engine->cleanPost['HTML']['library'];
-	$engine->cleanGet['RAW']['library']   = $engine->cleanPost['RAW']['library'];
-	$engine->cleanGet['MYSQL']['room']    = $engine->cleanPost['MYSQL']['room'];
-	$engine->cleanGet['HTML']['room']     = $engine->cleanPost['HTML']['room'];
-	$engine->cleanGet['RAW']['room']      = $engine->cleanPost['RAW']['room'];
+	http::setGet("library",$engine->cleanPost['RAW']['library']);
+	http::setGet("room",$engine->cleanPost['RAW']['room']);
 }
 
 // We have an edit instead of a new page
@@ -59,7 +56,6 @@ if (isset($engine->cleanGet['MYSQL']['id']) && validate::integer($engine->cleanG
 
 		$action = "Update";
 
-		$weekdaysAssigned = array();
 		if (!isempty($reservationInfo['weekdays'])) {
 			$weekdaysAssigned = unserialize($reservationInfo['weekdays']);
 		}
@@ -191,7 +187,7 @@ if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 	// var_dump($frequency);
 	// print "</pre>";
 
-	// if "Every Day" is the freuency, error when weekdays are selected
+	// if "Every Day" is the frequency, error when weekdays are selected
 	if ($frequency === "0" && in_array(TRUE,$weekdays)) {
 		$errorMsg .= errorHandle::errorMsg("Cannot select Everyday as a frequency and select specific days of the week");
 		$error     = TRUE;
@@ -249,6 +245,9 @@ if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 							$endTimeTemp        = strtotime($interval,$endTime);
 						}
 						else { // equal	
+							$startDayTemp       = $startDay;
+							$startTimeTemp      = $startTime;
+							$endTimeTemp        = $endTime;
 						}
 						$temp = getSchedule($startTimeTemp,$endTimeTemp,$startDayTemp,$seriesEndDate,"+1 week");
 						$schedule = array_merge($schedule,$temp);
