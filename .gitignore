@@ -1,3 +1,4 @@
 /serverConfiguration/serverLogs/
 /.vagrant/
 sessionLogin.php
+/sqlFiles/roomReservations.sql
