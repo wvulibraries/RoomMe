@@ -3,6 +3,8 @@ require_once("engineHeader.php");
 recurseInsert("includes/functions.php","php");
 recurseInsert("includes/createReservations.php","php");
 
+$snippet = new Snippet("pageContent","content");
+
 $error      = FALSE;
 $roomID = "";
 if (!isset($engine->cleanGet['MYSQL']['room'])) {
@@ -295,8 +297,9 @@ $engine->eTemplate("include","header");
 <?php } ?>
 <?php } else { // public scheduling?>
 
-	<p>This room is a <strong>classroom</strong> that can only be reserved by <strong>faculty</strong>. It is not available for student study groups. To reserve this classroom for teaching, please contact the specific Library to reserve: Downtown Room 104 (304-293-0354), Downtown Room 136 (304-293-0335) or Evansdale (304-293-4695)</p>
 
+	{snippet id="8" field="content"}
+	
 <?php } ?>
 </section>
 
