@@ -165,9 +165,10 @@ $engine->eTemplate("include","header");
 				<select name="end_year" id="end_year" >
 					<?php
 
-					for($I=$currentYear;$I<=$currentYear+10;$I++) {
-						printf('<option value="%s">%s</option>',
+					for($I=$currentYear-10;$I<=$currentYear+10;$I++) {
+						printf('<option value="%s" %s>%s</option>',
 							$I,
+							($I == $currentYear)?"selected":"",
 							$I);
 					}
 					?>
