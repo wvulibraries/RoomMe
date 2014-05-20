@@ -1,6 +1,6 @@
 <?php
 
-require_once("/home/library/public_html/includes/engineHeader.php");
+require_once "/home/library/public_html/includes/engineHeader.php";
 
 recurseInsert("acl.php","php"); 
 
