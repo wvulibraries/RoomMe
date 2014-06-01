@@ -56,11 +56,11 @@ while($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 $listObj->addField($options);
 
 $errorMsg = NULL;
-if(isset($engine->cleanPost['MYSQL']['equipement_submit'])) {
+if(isset($_POST['MYSQL']['equipement_submit'])) {
 	$errorMsg = $listObj->insert();
 	$errorMsg = errorHandle::prettyPrint();
 }
-else if (isset($engine->cleanPost['MYSQL']['equipement_update'])) {
+else if (isset($_POST['MYSQL']['equipement_update'])) {
 	$errorMsg = $listObj->update();
 	$errorMsg = errorHandle::prettyPrint();
 }

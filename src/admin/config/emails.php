@@ -6,11 +6,11 @@ $errorMsg    = NULL;
 
 recurseInsert("includes/emailFields.php");
 
-if(isset($engine->cleanPost['MYSQL']['emailMessages_submit'])) {
+if(isset($_POST['MYSQL']['emailMessages_submit'])) {
 	$errorMsg = $listObj->insert();
 	$errorMsg = errorHandle::prettyPrint();
 }
-else if (isset($engine->cleanPost['MYSQL']['emailMessages_update'])) {
+else if (isset($_POST['MYSQL']['emailMessages_update'])) {
 	$errorMsg = $listObj->update();
 	$errorMsg = errorHandle::prettyPrint();
 }

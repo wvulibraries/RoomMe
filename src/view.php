@@ -57,12 +57,12 @@ $table->class    = "styledTable";
 
 $reservations    = array();
 
-if (isset($engine->cleanPost['MYSQL'])) {
-	if (isset($engine->cleanPost['MYSQL']['building'])) {
-		$buildingID = $engine->cleanPost['MYSQL']['building'];
+if (isset($_POST['MYSQL'])) {
+	if (isset($_POST['MYSQL']['building'])) {
+		$buildingID = $_POST['MYSQL']['building'];
 	}
-	if (isset($engine->cleanPost['MYSQL']['room'])) {
-		$roomID = $engine->cleanPost['MYSQL']['room'];
+	if (isset($_POST['MYSQL']['room'])) {
+		$roomID = $_POST['MYSQL']['room'];
 	}
 }
 

@@ -5,7 +5,7 @@ $snippet->snippetPublicURL = localvars::get("roomResBaseDir").$snippet->snippetP
 
 require("../includes/snippetsFunctions.php");
 
-if (isset($engine->cleanPost['MYSQL']['pageContent_submit'])) {
+if (isset($_POST['MYSQL']['pageContent_submit'])) {
 	$listObj->insert();
 
 	if (!isset($engine->errorStack['error'])) {
@@ -34,8 +34,8 @@ else {
 	}
 
 	// Redeclare with HTML sanitizing
-	if (isset($engine->cleanPost['HTML']['snippetID'])) {
-		localvars::add("snippetID",$engine->cleanPost['HTML']['snippetID']);
+	if (isset($_POST['HTML']['snippetID'])) {
+		localvars::add("snippetID",$_POST['HTML']['snippetID']);
 	}
 	else if (isset($engine->cleanGet['HTML']['snippetID'])) {
 		localvars::add("snippetID",$engine->cleanGet['HTML']['snippetID']);

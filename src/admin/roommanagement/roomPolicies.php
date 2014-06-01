@@ -113,11 +113,11 @@ $listObj->addField($options);
 unset($options);
 
 $errorMsg = NULL;
-if(isset($engine->cleanPost['MYSQL']['policies_submit'])) {
+if(isset($_POST['MYSQL']['policies_submit'])) {
 	$errorMsg = $listObj->insert();
 	$errorMsg = errorHandle::prettyPrint();
 }
-else if (isset($engine->cleanPost['MYSQL']['policies_update'])) {
+else if (isset($_POST['MYSQL']['policies_update'])) {
 	$errorMsg = $listObj->update();
 	$errorMsg = errorHandle::prettyPrint();
 }

@@ -12,7 +12,7 @@ else {
 }
 
 // Form Submission
-if (is_empty($engine->errorStack) && isset($engine->cleanPost['MYSQL']['addEQtoTemplate_submit'])) {
+if (is_empty($engine->errorStack) && isset($_POST['MYSQL']['addEQtoTemplate_submit'])) {
 
 	$engine->openDB->transBegin();
 
@@ -25,8 +25,8 @@ if (is_empty($engine->errorStack) && isset($engine->cleanPost['MYSQL']['addEQtoT
 		errorHandle::errorMsg("Error removing Equipment");
 	}
 
-	if (isset($engine->cleanPost['MYSQL']['selectedEQ'])) {
-		foreach ($engine->cleanPost['MYSQL']['selectedEQ'] as $selectedGroupID) {
+	if (isset($_POST['MYSQL']['selectedEQ'])) {
+		foreach ($_POST['MYSQL']['selectedEQ'] as $selectedGroupID) {
 			$sql = sprintf("INSERT INTO `roomTypeEquipment` (roomTemplateID,equipmentID) VALUES ('%s','%s')",
 				$roomTemplateID,
 				$engine->openDB->escape($selectedGroupID)

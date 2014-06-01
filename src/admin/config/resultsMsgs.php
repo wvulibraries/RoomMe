@@ -36,22 +36,22 @@ function defineFields() {
 
 $fields = defineFields();
 
-if(isset($engine->cleanPost['MYSQL']['sysconfig_submit'])) {
+if(isset($_POST['MYSQL']['sysconfig_submit'])) {
 
 	$error = FALSE;
 
 	foreach ($fields as $name=>$value) {
 
-		if (isempty($engine->cleanPost['MYSQL'][$name])) {
+		if (isempty($_POST['MYSQL'][$name])) {
 			errorHandle::errorMsg($name." left blank.");
 			$error = TRUE;
 		}
 
 		if ($error === FALSE) {
-			$fields[$name] = $engine->cleanPost['MYSQL'][$name];
+			$fields[$name] = $_POST['MYSQL'][$name];
 
 			$sql       = sprintf("UPDATE `resultMessages` SET `value`='%s' WHERE `name`='%s'",
-				$engine->cleanPost['MYSQL'][$name],
+				$_POST['MYSQL'][$name],
 				$engine->openDB->escape($name)
 				);
 			$sqlResult = $engine->openDB->query($sql);

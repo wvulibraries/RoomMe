@@ -21,24 +21,24 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$comments          = "";
 	$reservationUpdate = FALSE;
 	// If the fields are set AND we are coming from the staff interface, we can modify $via and $override
-	if (isset($engine->cleanPost['MYSQL']['via']) && (preg_match('/\/admin\/reservationCreate\.php/',$_SERVER['PHP_SELF']) || preg_match('/\/admin\/seriesCreate\.php/',$_SERVER['PHP_SELF']))) {
-		$via      = $engine->cleanPost['MYSQL']['via'];
-		$override = $engine->cleanPost['MYSQL']['override'];
+	if (isset($_POST['MYSQL']['via']) && (preg_match('/\/admin\/reservationCreate\.php/',$_SERVER['PHP_SELF']) || preg_match('/\/admin\/seriesCreate\.php/',$_SERVER['PHP_SELF']))) {
+		$via      = $_POST['MYSQL']['via'];
+		$override = $_POST['MYSQL']['override'];
 
-		if (isset($engine->cleanPost['MYSQL']['groupname']) && !isempty($engine->cleanPost['MYSQL']['groupname'])) {
-			$groupname = $engine->cleanPost['MYSQL']['groupname'];
+		if (isset($_POST['MYSQL']['groupname']) && !isempty($_POST['MYSQL']['groupname'])) {
+			$groupname = $_POST['MYSQL']['groupname'];
 		}
-		if (isset($engine->cleanPost['MYSQL']['comments']) && !isempty($engine->cleanPost['MYSQL']['comments'])) {
-			$comments = $engine->cleanPost['MYSQL']['comments'];
+		if (isset($_POST['MYSQL']['comments']) && !isempty($_POST['MYSQL']['comments'])) {
+			$comments = $_POST['MYSQL']['comments'];
 		}
 
-		if (isset($engine->cleanPost['MYSQL']['reservationID']) && !isempty($engine->cleanPost['MYSQL']['reservationID'])) {
-			$reservationUpdate = $engine->cleanPost['MYSQL']['reservationID'];
+		if (isset($_POST['MYSQL']['reservationID']) && !isempty($_POST['MYSQL']['reservationID'])) {
+			$reservationUpdate = $_POST['MYSQL']['reservationID'];
 		}
 	}
 
 	// Username -- this will be hidden on the public form, entry on the staff interface
-	$username = $engine->cleanPost['MYSQL']['username'];
+	$username = $_POST['MYSQL']['username'];
 
 	// verify that the username is real and get the initials of the user
 	recurseInsert("includes/getUserInfo.php","php"); // This file should be modified an have a function "getUserInfo"
@@ -55,15 +55,15 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	// -- First make sure it is the same day. 
 	// -- If the end hour is less than the start hour, and the start hour is greater than 18 assume they
 	// --- Mean the next morning, otherwise error
-	$month = $engine->cleanPost['MYSQL']['start_month'];
-	$day   = $engine->cleanPost['MYSQL']['start_day'];
-	$year  = $engine->cleanPost['MYSQL']['start_year'];
+	$month = $_POST['MYSQL']['start_month'];
+	$day   = $_POST['MYSQL']['start_day'];
+	$year  = $_POST['MYSQL']['start_year'];
 
-	$shour = $engine->cleanPost['MYSQL']['start_hour'];
-	$smin  = $engine->cleanPost['MYSQL']['start_minute'];
+	$shour = $_POST['MYSQL']['start_hour'];
+	$smin  = $_POST['MYSQL']['start_minute'];
 
-	$ehour = $engine->cleanPost['MYSQL']['end_hour'];
-	$emin  = $engine->cleanPost['MYSQL']['end_minute'];
+	$ehour = $_POST['MYSQL']['end_hour'];
+	$emin  = $_POST['MYSQL']['end_minute'];
 
 	// check to see if the provided date is valid
 	$validDate = checkdate($month,$day,$year);
@@ -126,7 +126,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	// Get System, library, and Policy information
 
 	$sql = sprintf("SELECT policies.*, building.hoursRSS as hoursRSS, building.fineLookupURL as fineLookupURL, building.fineAmount as building_fineAmount, building.maxHoursAllowed as building_maxHoursAllowed, building.period as building_period, building.bookingsAllowedInPeriod as building_bookingsAllowedInPeriod FROM rooms LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID LEFT JOIN `policies` ON roomTemplates.policy = policies.ID LEFT JOIN building ON rooms.building = building.ID WHERE rooms.ID='%s' LIMIT 1",
-		$engine->cleanPost['MYSQL']['room']);
+		$_POST['MYSQL']['room']);
 
 	$engine->openDB->sanitize = FALSE;
 	$sqlResult                = $engine->openDB->query($sql);
@@ -576,7 +576,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		return(FALSE);
 	}
 
-	$roomName     = getRoomInfo($engine->cleanPost['MYSQL']['room']);
+	$roomName     = getRoomInfo($_POST['MYSQL']['room']);
 
 	if ($reservationUpdate === FALSE) {
 		$resultMessage = getResultMessage("reservationCreated");
@@ -591,7 +591,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	// // TODO
 
 	// If there was an email address submitted, send an email to that address
-	if (isset($engine->cleanPost['HTML']['notificationEmail']) && validate::emailAddr($engine->cleanPost['HTML']['notificationEmail'])) {
+	if (isset($_POST['HTML']['notificationEmail']) && validate::emailAddr($_POST['HTML']['notificationEmail'])) {
 		
 		
 		$buildingName = getBuildingName($roomName['building']);
@@ -617,7 +617,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		$emailMsg .= "Room: ".$roomName['displayName']."\n";
 
 		$mail = new mailSender();
-		$mail->addRecipient($engine->cleanPost['HTML']['notificationEmail']);
+		$mail->addRecipient($_POST['HTML']['notificationEmail']);
 		$mail->addSender("libsys@mail.wvu.edu", "WVU Libraries");
 		$mail->addSubject($subject);
 		$mail->addBody($emailMsg);

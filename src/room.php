@@ -71,10 +71,10 @@ if ($sqlResult['result']) {
 	$displayHour = ($row['value'] == 1)?24:12;
 }
 
-if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
+if (isset($_POST['MYSQL']['createSubmit'])) {
 
-	$buildingID = $engine->cleanPost['MYSQL']['library'];
-	$roomID     = $engine->cleanPost['MYSQL']['room'];
+	$buildingID = $_POST['MYSQL']['library'];
+	$roomID     = $_POST['MYSQL']['room'];
 
 	createReservation($buildingID,$roomID);
 

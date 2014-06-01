@@ -26,19 +26,19 @@ localvars::add("librarySelectOptions",$options);
 
 $displayHour = (getConfig("24hour") == "1")?"24":"12";
 
-if (isset($engine->cleanPost['MYSQL']['lookupSubmit'])) {
+if (isset($_POST['MYSQL']['lookupSubmit'])) {
 
 	$error = FALSE;
 
-	$month = $engine->cleanPost['MYSQL']['start_month'];
-	$day   = $engine->cleanPost['MYSQL']['start_day'];
-	$year  = $engine->cleanPost['MYSQL']['start_year'];
+	$month = $_POST['MYSQL']['start_month'];
+	$day   = $_POST['MYSQL']['start_day'];
+	$year  = $_POST['MYSQL']['start_year'];
 
-	$shour = $engine->cleanPost['MYSQL']['start_hour'];
-	$smin  = $engine->cleanPost['MYSQL']['start_minute'];
+	$shour = $_POST['MYSQL']['start_hour'];
+	$smin  = $_POST['MYSQL']['start_minute'];
 
-	$ehour = $engine->cleanPost['MYSQL']['end_hour'];
-	$emin  = $engine->cleanPost['MYSQL']['end_minute'];
+	$ehour = $_POST['MYSQL']['end_hour'];
+	$emin  = $_POST['MYSQL']['end_minute'];
 
 	// check to see if the provided date is valid
 	$validDate = checkdate($month,$day,$year);
@@ -80,7 +80,7 @@ if (isset($engine->cleanPost['MYSQL']['lookupSubmit'])) {
 	if ($error === FALSE) {
 
 		$sql       = sprintf("SELECT * FROM building WHERE ID='%s'",
-			$engine->cleanPost['MYSQL']['library']
+			$_POST['MYSQL']['library']
 			);
 		$sqlResult = $engine->openDB->query($sql);
 		$building  = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
@@ -88,14 +88,14 @@ if (isset($engine->cleanPost['MYSQL']['lookupSubmit'])) {
 
 		$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE (((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s')) AND rooms.building='%s') ORDER BY rooms.%s",
 		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT * FROM `reservations` WHERE ( ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s') ) AND roomID='%s') ORDER BY rooms.%s",
-			$engine->cleanPost['MYSQL']['library'],
+			$_POST['MYSQL']['library'],
 			$engine->openDB->escape($sUnix),
 			$engine->openDB->escape($sUnix),
 			$engine->openDB->escape($eUnix),
 			$engine->openDB->escape($eUnix),
 			$engine->openDB->escape($sUnix),
 			$engine->openDB->escape($eUnix),
-			$engine->cleanPost['MYSQL']['library'],
+			$_POST['MYSQL']['library'],
 			$building['roomSortOrder']
 			);
 		$sqlResult = $engine->openDB->query($sql);

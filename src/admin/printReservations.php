@@ -13,12 +13,12 @@ $roomID     = NULL;
 
 $reservations    = array();
 
-if (isset($engine->cleanPost['MYSQL'])) {
-	if (isset($engine->cleanPost['MYSQL']['building'])) {
-		$buildingID = $engine->cleanPost['MYSQL']['building'];
+if (isset($_POST['MYSQL'])) {
+	if (isset($_POST['MYSQL']['building'])) {
+		$buildingID = $_POST['MYSQL']['building'];
 	}
-	if (isset($engine->cleanPost['MYSQL']['room'])) {
-		$roomID = $engine->cleanPost['MYSQL']['room'];
+	if (isset($_POST['MYSQL']['room'])) {
+		$roomID = $_POST['MYSQL']['room'];
 	}
 }
 
@@ -43,16 +43,16 @@ localvars::add("librarySelectOptions",$options);
 
 
 $displayOutput = "";
-if ($error === FALSE && isset($engine->cleanPost['MYSQL']) && isset($engine->cleanPost['MYSQL']['library'])) {
+if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library'])) {
 
 	$time = NULL;
-	$time     = mktime(0,0,0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
-	$time_end = mktime(23,59,0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
+	$time     = mktime(0,0,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
+	$time_end = mktime(23,59,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
 
 
 	$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s AND building.ID='%s' ORDER BY building.name, rooms.name, rooms.number, reservations.startTime ",
 		(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>='".$time."' AND reservations.startTime<'".$time_end."'",
-		$engine->cleanPost['MYSQL']['library']
+		$_POST['MYSQL']['library']
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
@@ -96,7 +96,7 @@ if ($error === FALSE && isset($engine->cleanPost['MYSQL']) && isset($engine->cle
 					$displayOutput .= sprintf('<h1>%s</h1><h2>%s</h2><h3>%s</h3>%s',
 						$row['buildingName'],
 						$previousRoomName,
-						$engine->cleanPost['MYSQL']['start_month']."/".$engine->cleanPost['MYSQL']['start_day']."/".$engine->cleanPost['MYSQL']['start_year'],
+						$_POST['MYSQL']['start_month']."/".$_POST['MYSQL']['start_day']."/".$_POST['MYSQL']['start_year'],
 						$table->display($reservations)
 						);
 					$reservations  = array();
@@ -133,7 +133,7 @@ if ($error === FALSE && isset($engine->cleanPost['MYSQL']) && isset($engine->cle
 			$displayOutput .= sprintf('<h1>%s</h1><h2>%s</h2><h3>%s</h3>%s',
 				$previousRow['buildingName'],
 				$previousRoomName,
-				$engine->cleanPost['MYSQL']['start_month']."/".$engine->cleanPost['MYSQL']['start_day']."/".$engine->cleanPost['MYSQL']['start_year'],
+				$_POST['MYSQL']['start_month']."/".$_POST['MYSQL']['start_day']."/".$_POST['MYSQL']['start_year'],
 			"foo"//$table->display($reservations)
 			);
 		}

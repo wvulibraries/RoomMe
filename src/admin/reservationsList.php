@@ -18,19 +18,19 @@ $table->class    = "styledTable";
 
 $reservations    = array();
 
-if (isset($engine->cleanPost['MYSQL'])) {
-	if (isset($engine->cleanPost['MYSQL']['building'])) {
-		$buildingID = $engine->cleanPost['MYSQL']['building'];
+if (isset($_POST['MYSQL'])) {
+	if (isset($_POST['MYSQL']['building'])) {
+		$buildingID = $_POST['MYSQL']['building'];
 	}
-	if (isset($engine->cleanPost['MYSQL']['room'])) {
-		$roomID = $engine->cleanPost['MYSQL']['room'];
+	if (isset($_POST['MYSQL']['room'])) {
+		$roomID = $_POST['MYSQL']['room'];
 	}
 }
 
 $time = NULL;
-if (isset($engine->cleanPost['MYSQL']['submitListDate'])) {
-	$time     = mktime(0,0,0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
-	$time_end = mktime(23,59,0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
+if (isset($_POST['MYSQL']['submitListDate'])) {
+	$time     = mktime(0,0,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
+	$time_end = mktime(23,59,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
 }
  
 $sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s ORDER BY building.name, rooms.name, reservations.username, reservations.startTime ",

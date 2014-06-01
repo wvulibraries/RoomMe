@@ -16,9 +16,9 @@ $action           = "Add";
 $weekdaysAssigned = array();
 
 // This is so broken :-/ 
-if (isset($engine->cleanPost['MYSQL']['library'])) {
-	http::setGet("library",$engine->cleanPost['RAW']['library']);
-	http::setGet("room",$engine->cleanPost['RAW']['room']);
+if (isset($_POST['MYSQL']['library'])) {
+	http::setGet("library",$_POST['RAW']['library']);
+	http::setGet("room",$_POST['RAW']['room']);
 }
 
 // We have an edit instead of a new page
@@ -41,12 +41,12 @@ if (isset($engine->cleanGet['MYSQL']['id']) && validate::integer($engine->cleanG
 		$username        = $reservationInfo['username'];
 		$groupname       = $reservationInfo['groupname'];
 		$comments        = $reservationInfo['comments'];
-		$engine->cleanPost['MYSQL']['library'] = $reservationInfo['buildingID'];
-		$engine->cleanPost['HTML']['library']  = $reservationInfo['buildingID'];
-		$engine->cleanPost['RAW']['library']   = $reservationInfo['buildingID'];
-		$engine->cleanPost['MYSQL']['room']    = $reservationInfo['roomID'];
-		$engine->cleanPost['HTML']['room']     = $reservationInfo['roomID'];
-		$engine->cleanPost['RAW']['room']      = $reservationInfo['roomID'];
+		$_POST['MYSQL']['library'] = $reservationInfo['buildingID'];
+		$_POST['HTML']['library']  = $reservationInfo['buildingID'];
+		$_POST['RAW']['library']   = $reservationInfo['buildingID'];
+		$_POST['MYSQL']['room']    = $reservationInfo['roomID'];
+		$_POST['HTML']['room']     = $reservationInfo['roomID'];
+		$_POST['RAW']['room']      = $reservationInfo['roomID'];
 		$engine->cleanGet['MYSQL']['library'] = $reservationInfo['buildingID'];
 		$engine->cleanGet['HTML']['library']  = $reservationInfo['buildingID'];
 		$engine->cleanGet['RAW']['library']   = $reservationInfo['buildingID'];
@@ -136,31 +136,31 @@ if ($sqlResult['result']) {
 }
 
 
-if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
+if (isset($_POST['MYSQL']['createSubmit'])) {
 
 	$schedule = array();
 
 	$weekdays = array(FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE);
-	if (isset($engine->cleanPost['MYSQL']['weekday'])) {
-		foreach ($engine->cleanPost['MYSQL']['weekday'] as $I=>$V) {
+	if (isset($_POST['MYSQL']['weekday'])) {
+		foreach ($_POST['MYSQL']['weekday'] as $I=>$V) {
 			$weekdays[$V] = TRUE;
 		}
 	}
 
-	$allDay    = (isset($engine->cleanPost['MYSQL']['allDay']) && $engine->cleanPost['MYSQL']['allDay'] == "1")?TRUE:FALSE; 
-	$frequency = $engine->cleanPost['MYSQL']['frequency'];
+	$allDay    = (isset($_POST['MYSQL']['allDay']) && $_POST['MYSQL']['allDay'] == "1")?TRUE:FALSE; 
+	$frequency = $_POST['MYSQL']['frequency'];
 
 	if ($allDay === TRUE) {
-		$engine->cleanPost['MYSQL']['start_hour']   = "0";
-		$engine->cleanPost['MYSQL']['start_minute'] = "0";
-		$engine->cleanPost['MYSQL']['end_hour']     = "23";
-		$engine->cleanPost['MYSQL']['end_minute']   = "59";
+		$_POST['MYSQL']['start_hour']   = "0";
+		$_POST['MYSQL']['start_minute'] = "0";
+		$_POST['MYSQL']['end_hour']     = "23";
+		$_POST['MYSQL']['end_minute']   = "59";
 	}
 
-	$startTime     = mktime($engine->cleanPost['MYSQL']['start_hour'],$engine->cleanPost['MYSQL']['start_minute'],0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
-	$endTime       = mktime($engine->cleanPost['MYSQL']['end_hour'],$engine->cleanPost['MYSQL']['end_minute'],0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
-	$startDay      = mktime(0,0,0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
-	$seriesEndDate = mktime(0,0,0,$engine->cleanPost['MYSQL']['seriesEndDate_month'],$engine->cleanPost['MYSQL']['seriesEndDate_day'],$engine->cleanPost['MYSQL']['seriesEndDate_year']);
+	$startTime     = mktime($_POST['MYSQL']['start_hour'],$_POST['MYSQL']['start_minute'],0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
+	$endTime       = mktime($_POST['MYSQL']['end_hour'],$_POST['MYSQL']['end_minute'],0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
+	$startDay      = mktime(0,0,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
+	$seriesEndDate = mktime(0,0,0,$_POST['MYSQL']['seriesEndDate_month'],$_POST['MYSQL']['seriesEndDate_day'],$_POST['MYSQL']['seriesEndDate_year']);
 
 
 	// print "startTime: <pre>";
@@ -286,10 +286,10 @@ if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 					$interval = "fifth";
 					break;
 			}
-			$intervalStart = $interval." ".lc($weekdayOccurence[1])." +".$engine->cleanPost['MYSQL']['start_hour']."hours +".$engine->cleanPost['MYSQL']['start_minute']."minutes" ;
-			$intervalEnd   = $interval." ".lc($weekdayOccurence[1])." +".$engine->cleanPost['MYSQL']['end_hour']."hours +".$engine->cleanPost['MYSQL']['end_minute']."minutes" ;
+			$intervalStart = $interval." ".lc($weekdayOccurence[1])." +".$_POST['MYSQL']['start_hour']."hours +".$_POST['MYSQL']['start_minute']."minutes" ;
+			$intervalEnd   = $interval." ".lc($weekdayOccurence[1])." +".$_POST['MYSQL']['end_hour']."hours +".$_POST['MYSQL']['end_minute']."minutes" ;
 
-			$startDay = mktime(0,0,0,$engine->cleanPost['MYSQL']['start_month'],1,$engine->cleanPost['MYSQL']['start_year']);
+			$startDay = mktime(0,0,0,$_POST['MYSQL']['start_month'],1,$_POST['MYSQL']['start_year']);
 
 			// $startDay       = strtotime($interval,$startDay);
 			// print "<p>TEST: ".(date("F j, Y, g:i a",$startDay))."</p>";
@@ -332,7 +332,7 @@ if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 		$seriesID        = NULL;
 
 		recurseInsert("includes/getUserInfo.php","php"); 
-		$userInformation = getUserInfo($engine->cleanPost['MYSQL']['username']);    
+		$userInformation = getUserInfo($_POST['MYSQL']['username']);    
 
 		if ($userInformation !== FALSE) {
 
@@ -342,19 +342,19 @@ if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 
 				$engine->openDB->escape(time()),
 				$engine->openDB->escape(sessionGet("username")),
-				$engine->cleanPost['MYSQL']['via'],
+				$_POST['MYSQL']['via'],
 				$engine->openDB->escape($roomID),
 				$engine->openDB->escape($startTime),
 				$engine->openDB->escape($endTime),
 				$engine->openDB->escape(time()),
 				$engine->openDB->escape(sessionGet("username")),
-				$engine->cleanPost['MYSQL']['username'],
+				$_POST['MYSQL']['username'],
 				$userInformation['initials'],
-				$engine->cleanPost['MYSQL']['groupname'],
-				$engine->cleanPost['MYSQL']['comments'],
-				(isset($engine->cleanPost['MYSQL']['allDay']))?"1":"0",
-				$engine->cleanPost['MYSQL']['frequency'],
-				(isset($engine->cleanPost['MYSQL']['weekday']))?serialize($engine->cleanPost['MYSQL']['weekday']):"",
+				$_POST['MYSQL']['groupname'],
+				$_POST['MYSQL']['comments'],
+				(isset($_POST['MYSQL']['allDay']))?"1":"0",
+				$_POST['MYSQL']['frequency'],
+				(isset($_POST['MYSQL']['weekday']))?serialize($_POST['MYSQL']['weekday']):"",
 				$engine->openDB->escape($seriesEndDate)
 				);
 			$sqlResult = $engine->openDB->query($sql);
@@ -377,15 +377,15 @@ if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 				// print "<p>--</p>";	
 
 				// set all the needed posted variables
-				$engine->cleanPost['MYSQL']['start_month']  = date("m",$V['startTime']);
-				$engine->cleanPost['MYSQL']['start_day']    = date("d",$V['startTime']);
-				$engine->cleanPost['MYSQL']['start_year']   = date("Y",$V['startTime']);
+				$_POST['MYSQL']['start_month']  = date("m",$V['startTime']);
+				$_POST['MYSQL']['start_day']    = date("d",$V['startTime']);
+				$_POST['MYSQL']['start_year']   = date("Y",$V['startTime']);
 
-				$engine->cleanPost['MYSQL']['start_hour']   = date("H",$V['startTime']);
-				$engine->cleanPost['MYSQL']['start_minute'] = date("i",$V['startTime']);
+				$_POST['MYSQL']['start_hour']   = date("H",$V['startTime']);
+				$_POST['MYSQL']['start_minute'] = date("i",$V['startTime']);
 
-				$engine->cleanPost['MYSQL']['end_hour']     = date("H",$V['endTime']);
-				$engine->cleanPost['MYSQL']['end_minute']   = date("i",$V['endTime']);
+				$_POST['MYSQL']['end_hour']     = date("H",$V['endTime']);
+				$_POST['MYSQL']['end_minute']   = date("i",$V['endTime']);
 
 				// submit the reservation
 				$reservationReturn = createReservation($buildingID,$roomID,$seriesID);
@@ -447,12 +447,12 @@ if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 // end_minute
 
 } // submit create
-else if (isset($engine->cleanPost['MYSQL']['deleteSubmit'])) {
+else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 
 	$transResult = $engine->openDB->transBegin("reservations");
 
 	$sql       = sprintf("DELETE FROM `reservations` WHERE seriesID='%s' AND startTime>'%s'",
-		$engine->cleanPost['MYSQL']['reservationID'],
+		$_POST['MYSQL']['reservationID'],
 		time()
 		);
 	$sqlResult = $engine->openDB->query($sql);
@@ -467,7 +467,7 @@ else if (isset($engine->cleanPost['MYSQL']['deleteSubmit'])) {
 	else {
 
 		$sql       = sprintf("DELETE FROM `seriesReservations` WHERE ID='%s'",
-			$engine->cleanPost['MYSQL']['reservationID']
+			$_POST['MYSQL']['reservationID']
 			);
 		$sqlResult = $engine->openDB->query($sql);
 

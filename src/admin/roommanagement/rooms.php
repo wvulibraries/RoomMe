@@ -76,11 +76,11 @@ $listObj->addField($options);
 
 
 $errorMsg = NULL;
-if(isset($engine->cleanPost['MYSQL']['rooms_submit'])) {
+if(isset($_POST['MYSQL']['rooms_submit'])) {
 	$errorMsg = $listObj->insert();
 	$errorMsg = errorHandle::prettyPrint();
 }
-else if (isset($engine->cleanPost['MYSQL']['rooms_update'])) {
+else if (isset($_POST['MYSQL']['rooms_update'])) {
 	$errorMsg = $listObj->update();
 	$errorMsg = errorHandle::prettyPrint();
 }

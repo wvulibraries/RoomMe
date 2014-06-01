@@ -4,15 +4,15 @@ recurseInsert("includes/functions.php","php");
 
 $error = FALSE; 
 
-if (!isset($engine->cleanPost['MYSQL']['library']) && validate::integer($engine->cleanPost['MYSQL']['library']) === FALSE) {
+if (!isset($_POST['MYSQL']['library']) && validate::integer($_POST['MYSQL']['library']) === FALSE) {
 	$error = TRUE;
 }
 
-localvars::add("libraryID",$engine->cleanPost['MYSQL']['library']);
+localvars::add("libraryID",$_POST['MYSQL']['library']);
 
 // Get the building name
 if ($error === FALSE) {
-	$return = getBuildingName($engine->cleanPost['MYSQL']['library']);
+	$return = getBuildingName($_POST['MYSQL']['library']);
 	if ($return === FALSE) {
 		$error = TRUE;
 	}
@@ -24,7 +24,7 @@ if ($error === FALSE) {
 // build the select list
 if ($error === FALSE) {
 
-	$return = buildRoomList($engine->cleanPost['MYSQL']['library']);
+	$return = buildRoomList($_POST['MYSQL']['library']);
 	if ($return === FALSE) {
 		$error = TRUE;
 	}

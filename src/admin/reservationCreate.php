@@ -30,23 +30,23 @@ if (isset($engine->cleanGet['MYSQL']['id']) && validate::integer($engine->cleanG
 		$username        = $reservationInfo['username'];
 		$groupname       = $reservationInfo['groupname'];
 		$comments        = $reservationInfo['comments'];
-		$engine->cleanPost['MYSQL']['library'] = $reservationInfo['buildingID'];
-		$engine->cleanPost['HTML']['library']  = $reservationInfo['buildingID'];
-		$engine->cleanPost['RAW']['library']   = $reservationInfo['buildingID'];
-		$engine->cleanPost['MYSQL']['room']    = $reservationInfo['roomID'];
-		$engine->cleanPost['HTML']['room']     = $reservationInfo['roomID'];
-		$engine->cleanPost['RAW']['room']      = $reservationInfo['roomID'];
+		$_POST['MYSQL']['library'] = $reservationInfo['buildingID'];
+		$_POST['HTML']['library']  = $reservationInfo['buildingID'];
+		$_POST['RAW']['library']   = $reservationInfo['buildingID'];
+		$_POST['MYSQL']['room']    = $reservationInfo['roomID'];
+		$_POST['HTML']['room']     = $reservationInfo['roomID'];
+		$_POST['RAW']['room']      = $reservationInfo['roomID'];
 
 		$action = "Update";
 	}
 
 }
 
-if (!isset($engine->cleanPost['MYSQL']['library']) && validate::integer($engine->cleanPost['MYSQL']['library']) === FALSE) {
+if (!isset($_POST['MYSQL']['library']) && validate::integer($_POST['MYSQL']['library']) === FALSE) {
 	$errorMsg .= errorHandle::errorMsg("Missing or invalid building");
 	$error = TRUE;
 }
-if (!isset($engine->cleanPost['MYSQL']['room']) && validate::integer($engine->cleanPost['MYSQL']['room']) === FALSE) {
+if (!isset($_POST['MYSQL']['room']) && validate::integer($_POST['MYSQL']['room']) === FALSE) {
 	$errorMsg .= errorHandle::errorMsg("Missing or invalid room");
 	$error = TRUE;
 }
@@ -55,8 +55,8 @@ if (!isset($engine->cleanPost['MYSQL']['room']) && validate::integer($engine->cl
 
 if ($error === FALSE) {
 
-	$buildingID = $engine->cleanPost['MYSQL']['library'];
-	$roomID     = $engine->cleanPost['MYSQL']['room'];
+	$buildingID = $_POST['MYSQL']['library'];
+	$roomID     = $_POST['MYSQL']['room'];
 
 	localvars::add("buildingID",$buildingID);
 	localvars::add("roomID",$roomID);
@@ -88,12 +88,12 @@ if ($error === FALSE) {
 
 }
 
-if (isset($engine->cleanPost['MYSQL']['roomSubmit'])) {
+if (isset($_POST['MYSQL']['roomSubmit'])) {
 
 	// This comes from the room select page
 
 }
-else if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
+else if (isset($_POST['MYSQL']['createSubmit'])) {
 
 	createReservation($buildingID,$roomID);
 
@@ -118,10 +118,10 @@ else if (isset($engine->cleanPost['MYSQL']['createSubmit'])) {
 	
 
 }
-else if (isset($engine->cleanPost['MYSQL']['deleteSubmit'])) {
+else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 
 	$sql       = sprintf("DELETE FROM `reservations` WHERE ID='%s'",
-		$engine->cleanPost['MYSQL']['reservationID']
+		$_POST['MYSQL']['reservationID']
 		);
 	$sqlResult = $engine->openDB->query($sql);
 

@@ -10,10 +10,10 @@ $currentYear  = date("Y");
 
 $output = "";
 
-if (isset($engine->cleanPost['HTML']['genStats'])) {
+if (isset($_POST['HTML']['genStats'])) {
 
-	$stime     = mktime(0,0,0,$engine->cleanPost['MYSQL']['start_month'],$engine->cleanPost['MYSQL']['start_day'],$engine->cleanPost['MYSQL']['start_year']);
-	$etime     = mktime(0,0,0,$engine->cleanPost['MYSQL']['end_month'],$engine->cleanPost['MYSQL']['end_day'],$engine->cleanPost['MYSQL']['end_year']);
+	$stime     = mktime(0,0,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
+	$etime     = mktime(0,0,0,$_POST['MYSQL']['end_month'],$_POST['MYSQL']['end_day'],$_POST['MYSQL']['end_year']);
 
 	$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber, via.name as via FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building LEFT JOIN `via` on via.ID=reservations.createdVia WHERE reservations.endTime<='%s' AND reservations.startTime>='%s' ORDER BY building.name, rooms.name, rooms.number, via.name",
 		$engine->openDB->escape($etime),

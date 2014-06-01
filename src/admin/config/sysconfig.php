@@ -24,28 +24,28 @@ function defineFields() {
 
 $fields = defineFields();
 
-if(isset($engine->cleanPost['MYSQL']['sysconfig_submit'])) {
+if(isset($_POST['MYSQL']['sysconfig_submit'])) {
 
 	$error = FALSE;
 
 	foreach ($fields as $name=>$value) {
 
-		if (isempty($engine->cleanPost['MYSQL'][$name])) {
+		if (isempty($_POST['MYSQL'][$name])) {
 			errorHandle::errorMsg($name." left blank.");
 			$error = TRUE;
 		}
 
-		if ($name == "displayNameAs" && ($engine->cleanPost['MYSQL'][$name] != "username" &&  $engine->cleanPost['MYSQL'][$name] != "initials")) {
+		if ($name == "displayNameAs" && ($_POST['MYSQL'][$name] != "username" &&  $_POST['MYSQL'][$name] != "initials")) {
 			errorHandle::errorMsg($name." must be 'username' or 'initials'");
 			$error = TRUE;
 		}
 
 
 		if ($error === FALSE) {
-			$fields[$name] = $engine->cleanPost['MYSQL'][$name];
+			$fields[$name] = $_POST['MYSQL'][$name];
 
 			$sql       = sprintf("UPDATE `siteConfig` SET `value`='%s' WHERE `name`='%s'",
-				$engine->cleanPost['MYSQL'][$name],
+				$_POST['MYSQL'][$name],
 				$engine->openDB->escape($name)
 				);
 			$sqlResult = $engine->openDB->query($sql);

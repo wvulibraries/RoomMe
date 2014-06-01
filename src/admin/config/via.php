@@ -10,11 +10,11 @@ $listObj->addField($options);
 unset($options);
 
 $errorMsg = NULL;
-if(isset($engine->cleanPost['MYSQL']['via_submit'])) {
+if(isset($_POST['MYSQL']['via_submit'])) {
 	$errorMsg = $listObj->insert();
 	$errorMsg = errorHandle::prettyPrint();
 }
-else if (isset($engine->cleanPost['MYSQL']['via_update'])) {
+else if (isset($_POST['MYSQL']['via_update'])) {
 	$errorMsg = $listObj->update();
 	$errorMsg = errorHandle::prettyPrint();
 }

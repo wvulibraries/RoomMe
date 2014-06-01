@@ -155,11 +155,11 @@ $listObj->addField($options);
 unset($options);
 
 $errorMsg = NULL;
-if(isset($engine->cleanPost['MYSQL']['building_submit'])) {
+if(isset($_POST['MYSQL']['building_submit'])) {
 	$errorMsg = $listObj->insert();
 	$errorMsg = errorHandle::prettyPrint();
 }
-else if (isset($engine->cleanPost['MYSQL']['building_update'])) {
+else if (isset($_POST['MYSQL']['building_update'])) {
 	$errorMsg = $listObj->update();
 	$errorMsg = errorHandle::prettyPrint();
 }
