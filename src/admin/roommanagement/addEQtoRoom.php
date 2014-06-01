@@ -3,12 +3,12 @@ require_once("../engineHeader.php");
 
 $error          = FALSE;
 $roomTemplateID = "";
-if (!isset($engine->cleanGet['MYSQL']['roomTemplate'])) {
+if (!isset($_GET['MYSQL']['roomTemplate'])) {
 	$error = TRUE;
 	errorHandle::errorMsg("Invalid or missing roomTemplate ID");
 }
 else {
-	$roomTemplateID = $engine->cleanGet['MYSQL']['roomTemplate'];
+	$roomTemplateID = $_GET['MYSQL']['roomTemplate'];
 }
 
 // Form Submission

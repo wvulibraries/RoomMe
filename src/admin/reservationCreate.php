@@ -13,8 +13,8 @@ $username        = "";
 $groupname       = "";
 $comments        = "";
 $action          = "Add";
-if (isset($engine->cleanGet['MYSQL']['id']) && validate::integer($engine->cleanGet['MYSQL']['id']) === TRUE) {
-	$reservationID = $engine->cleanGet['MYSQL']['id'];
+if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === TRUE) {
+	$reservationID = $_GET['MYSQL']['id'];
 	localvars::add("reservationID",$reservationID);
 	$sql       = sprintf("SELECT reservations.*, building.ID as buildingID FROM `reservations` LEFT JOIN `rooms` ON rooms.ID=reservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.ID='%s'",
 		$reservationID
@@ -97,7 +97,7 @@ else if (isset($_POST['MYSQL']['createSubmit'])) {
 
 	createReservation($buildingID,$roomID);
 
-	if (isset($engine->cleanGet['MYSQL']['id']) && validate::integer($engine->cleanGet['MYSQL']['id']) === TRUE) {
+	if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === TRUE) {
 		$sql       = sprintf("SELECT reservations.*, building.ID as buildingID FROM `reservations` LEFT JOIN `rooms` ON rooms.ID=reservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.ID='%s'",
 			$reservationID
 			);

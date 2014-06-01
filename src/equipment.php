@@ -7,9 +7,9 @@ $error    = FALSE;
 $buildingID = NULL;
 $roomID     = NULL;
 
-if (isset($engine->cleanGet['MYSQL']['id'])) {
+if (isset($_GET['MYSQL']['id'])) {
 	$sql       = sprintf("SELECT equipement.*, equipementTypes.name as typeName FROM equipement LEFT JOIN equipementTypes ON equipement.type=equipementTypes.ID WHERE equipement.ID='%s'",
-		$engine->cleanGet['MYSQL']['id']
+		$_GET['MYSQL']['id']
 		);
 	$sqlResult = $engine->openDB->query($sql);
 

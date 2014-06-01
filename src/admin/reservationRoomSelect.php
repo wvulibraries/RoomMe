@@ -35,7 +35,7 @@ if ($error === FALSE) {
 
 $type   = "reservation";
 $action = "reservationCreate.php";
-if (isset($engine->cleanGet['HTML']['type']) && $engine->cleanGet['HTML']['type'] == "series") {
+if (isset($_GET['HTML']['type']) && $_GET['HTML']['type'] == "series") {
 	$type = "series";
 	$action = "seriesCreate.php";
 }

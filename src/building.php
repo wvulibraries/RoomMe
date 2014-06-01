@@ -4,12 +4,12 @@ recurseInsert("includes/functions.php","php");
 
 $error      = FALSE;
 $buildingID = "";
-if (!isset($engine->cleanGet['MYSQL']['building'])) {
+if (!isset($_GET['MYSQL']['building'])) {
 	$error = TRUE;
 	errorHandle::errorMsg("Invalid or missing building ID");
 }
 else {
-	$buildingID = $engine->cleanGet['MYSQL']['building'];
+	$buildingID = $_GET['MYSQL']['building'];
 }
 
 $buildingName = getBuildingName($buildingID);

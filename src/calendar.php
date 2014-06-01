@@ -7,21 +7,21 @@ $roomID = "";
 $month  = "";
 $day    = "";
 $year   = "";
-if (!isset($engine->cleanGet['MYSQL']['building']) && !isset($engine->cleanGet['MYSQL']['room'])) {
+if (!isset($_GET['MYSQL']['building']) && !isset($_GET['MYSQL']['room'])) {
 	$error = TRUE;
 	$buildingID = "";
 	errorHandle::errorMsg("Invalid or missing ID");
 }
 else {
-	if (isset($engine->cleanGet['MYSQL']['building'])) {
-		$buildingID = $engine->cleanGet['MYSQL']['building'];
+	if (isset($_GET['MYSQL']['building'])) {
+		$buildingID = $_GET['MYSQL']['building'];
 		$calType = "building";
 		$buildingName = getBuildingName($buildingID);
 		localvars::add("id",$buildingID);
 		localvars::add("buildingName",$buildingName);
 	}
-	else if (isset($engine->cleanGet['MYSQL']['room'])) {
-		$roomID = $engine->cleanGet['MYSQL']['room'];
+	else if (isset($_GET['MYSQL']['room'])) {
+		$roomID = $_GET['MYSQL']['room'];
 		$calType = "room";
 		$roomName     = getRoomName($roomID);
 		localvars::add("id",$roomID);
@@ -31,20 +31,20 @@ else {
 	localvars::add("calType",$calType);
 	// set the date that we will be displaying
 	// grab it from the query string, if that is set, otherwise the current date
-	if (isset($engine->cleanGet['MYSQL']['month'])) {
-		$month = $engine->cleanGet['MYSQL']['month'];
+	if (isset($_GET['MYSQL']['month'])) {
+		$month = $_GET['MYSQL']['month'];
 	}
 	else {
 		$month = date("n");
 	}
-	if (isset($engine->cleanGet['MYSQL']['day'])) {
-		$day = $engine->cleanGet['MYSQL']['day'];
+	if (isset($_GET['MYSQL']['day'])) {
+		$day = $_GET['MYSQL']['day'];
 	}
 	else {
 		$day = date("d");
 	}
-	if (isset($engine->cleanGet['MYSQL']['year'])) {
-		$year = $engine->cleanGet['MYSQL']['year'];
+	if (isset($_GET['MYSQL']['year'])) {
+		$year = $_GET['MYSQL']['year'];
 	}
 	else {
 		$year = date("Y");
@@ -54,9 +54,9 @@ else {
 	localvars::add("day",$day);
 	localvars::add("year",$year);
 
-	$currentMonth = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?date("n"):date("n",$engine->cleanGet['MYSQL']['reservationSTime']);
-	$currentDay   = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?date("j"):date("j",$engine->cleanGet['MYSQL']['reservationSTime']);
-	$currentYear  = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?date("Y"):date("Y",$engine->cleanGet['MYSQL']['reservationSTime']);
+	$currentMonth = (!isset($_GET['MYSQL']['reservationSTime']))?date("n"):date("n",$_GET['MYSQL']['reservationSTime']);
+	$currentDay   = (!isset($_GET['MYSQL']['reservationSTime']))?date("j"):date("j",$_GET['MYSQL']['reservationSTime']);
+	$currentYear  = (!isset($_GET['MYSQL']['reservationSTime']))?date("Y"):date("Y",$_GET['MYSQL']['reservationSTime']);
 
 	// setup the variables for the buttons
 

@@ -252,13 +252,13 @@ function drawRoomCalendar($roomID,$date) {
 
 	$calendarDisplayName = getConfig('calendarDisplayName');
 
-	$currentMonth = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?date("n"):date("n",$engine->cleanGet['MYSQL']['reservationSTime']);
-	$currentDay   = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?date("j"):date("j",$engine->cleanGet['MYSQL']['reservationSTime']);
-	$currentYear  = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?date("Y"):date("Y",$engine->cleanGet['MYSQL']['reservationSTime']);
-	$currentHour  = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?date("G"):date("G",$engine->cleanGet['MYSQL']['reservationSTime']);
-	$currentMin   = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?"00":date("i",$engine->cleanGet['MYSQL']['reservationSTime']);
-	$nextHour     = (!isset($engine->cleanGet['MYSQL']['reservationETime']))?(date("G")+1):date("G",$engine->cleanGet['MYSQL']['reservationETime']);
-	$nextMin      = (!isset($engine->cleanGet['MYSQL']['reservationSTime']))?"00":date("i",$engine->cleanGet['MYSQL']['reservationSTime']);
+	$currentMonth = (!isset($_GET['MYSQL']['reservationSTime']))?date("n"):date("n",$_GET['MYSQL']['reservationSTime']);
+	$currentDay   = (!isset($_GET['MYSQL']['reservationSTime']))?date("j"):date("j",$_GET['MYSQL']['reservationSTime']);
+	$currentYear  = (!isset($_GET['MYSQL']['reservationSTime']))?date("Y"):date("Y",$_GET['MYSQL']['reservationSTime']);
+	$currentHour  = (!isset($_GET['MYSQL']['reservationSTime']))?date("G"):date("G",$_GET['MYSQL']['reservationSTime']);
+	$currentMin   = (!isset($_GET['MYSQL']['reservationSTime']))?"00":date("i",$_GET['MYSQL']['reservationSTime']);
+	$nextHour     = (!isset($_GET['MYSQL']['reservationETime']))?(date("G")+1):date("G",$_GET['MYSQL']['reservationETime']);
+	$nextMin      = (!isset($_GET['MYSQL']['reservationSTime']))?"00":date("i",$_GET['MYSQL']['reservationSTime']);
 
 	$reservationSTime = mktime($currentHour,$currentMin,0,$month,$day,$year);
 	$reservationETime = mktime($nextHour,$nextMin,0,$month,$day,$year);

@@ -10,17 +10,17 @@ if (isset($_POST['MYSQL']['pageContent_submit'])) {
 
 	if (!isset($engine->errorStack['error'])) {
 		unset($listObj);
-		$engine->cleanGet['MYSQL']['snippetID'] = localvars::get("listObjInsertID");
+		$_GET['MYSQL']['snippetID'] = localvars::get("listObjInsertID");
 	}
 }
-else if (isset($engine->cleanGet['MYSQL']['deleteID'])) {
-	$snippet->delete($engine->cleanGet['MYSQL']['deleteID'],"ID");
+else if (isset($_GET['MYSQL']['deleteID'])) {
+	$snippet->delete($_GET['MYSQL']['deleteID'],"ID");
 }
 else {
-	if (isset($engine->cleanGet['MYSQL']['snippetID'])) {
+	if (isset($_GET['MYSQL']['snippetID'])) {
         $sql = sprintf("SELECT * FROM `%s` WHERE ID='%s' LIMIT 1",
         	"pageContent",
-        	$engine->cleanGet['MYSQL']['snippetID']
+        	$_GET['MYSQL']['snippetID']
         	);
         $sqlResult = $engine->openDB->query($sql);
 
@@ -37,8 +37,8 @@ else {
 	if (isset($_POST['HTML']['snippetID'])) {
 		localvars::add("snippetID",$_POST['HTML']['snippetID']);
 	}
-	else if (isset($engine->cleanGet['HTML']['snippetID'])) {
-		localvars::add("snippetID",$engine->cleanGet['HTML']['snippetID']);
+	else if (isset($_GET['HTML']['snippetID'])) {
+		localvars::add("snippetID",$_GET['HTML']['snippetID']);
 	}
 	else {
 		localvars::add("snippetID","");

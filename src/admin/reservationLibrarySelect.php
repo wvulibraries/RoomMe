@@ -14,7 +14,7 @@ while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 localvars::add("librarySelectOptions",$options);
 
 $type = "reservation";
-if (isset($engine->cleanGet['HTML']['type']) && $engine->cleanGet['HTML']['type'] == "series") {
+if (isset($_GET['HTML']['type']) && $_GET['HTML']['type'] == "series") {
 	$type = "series";
 }
 localvars::add("type",$type);

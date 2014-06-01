@@ -3,7 +3,7 @@ require_once("engineHeader.php");
 
 $snippet = new Snippet("pageContent","content");
 
-$engine->localVars("snippetID",$engine->cleanGet['HTML']['id']);
+$engine->localVars("snippetID",$_GET['HTML']['id']);
 
 $engine->eTemplate("include","header");
 ?>

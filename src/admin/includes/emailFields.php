@@ -8,12 +8,12 @@ if (isset($listObj)) {
 
 $listObj = new listManagement("emailMessages");
 
-if (isset($engine->cleanGet['MYSQL']['ID']) && $updateTable === FALSE) {
+if (isset($_GET['MYSQL']['ID']) && $updateTable === FALSE) {
 	$listObj->updateInsert   = TRUE;
 	$listObj->updateInsertID = "ID";
 
 	$sql = sprintf("SELECT * FROM emailMessages WHERE ID='%s'",
-		$engine->cleanGet['MYSQL']['ID']);
+		$_GET['MYSQL']['ID']);
 
 	$engine->openDB->sanitize = FALSE;
 	$sqlResult                = $engine->openDB->query($sql);
@@ -22,7 +22,7 @@ if (isset($engine->cleanGet['MYSQL']['ID']) && $updateTable === FALSE) {
 	$options = array();
 	$options['field'] = "ID";
 	$options['label'] = "ID";
-	$options['value'] = $engine->cleanGet['MYSQL']['ID'];
+	$options['value'] = $_GET['MYSQL']['ID'];
 	$options['readonly'] = TRUE;
 	$options['type'] = "hidden";
 	$listObj->addField($options);

@@ -22,9 +22,9 @@ if (isset($_POST['MYSQL']['library'])) {
 }
 
 // We have an edit instead of a new page
-if (isset($engine->cleanGet['MYSQL']['id']) && validate::integer($engine->cleanGet['MYSQL']['id']) === TRUE) {
+if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === TRUE) {
 
-	$reservationID = $engine->cleanGet['MYSQL']['id'];
+	$reservationID = $_GET['MYSQL']['id'];
 	localvars::add("reservationID",$reservationID);
 	$sql       = sprintf("SELECT seriesReservations.*, building.ID as buildingID FROM `seriesReservations` LEFT JOIN `rooms` ON rooms.ID=seriesReservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE seriesReservations.ID='%s'",
 		$reservationID
@@ -47,12 +47,12 @@ if (isset($engine->cleanGet['MYSQL']['id']) && validate::integer($engine->cleanG
 		$_POST['MYSQL']['room']    = $reservationInfo['roomID'];
 		$_POST['HTML']['room']     = $reservationInfo['roomID'];
 		$_POST['RAW']['room']      = $reservationInfo['roomID'];
-		$engine->cleanGet['MYSQL']['library'] = $reservationInfo['buildingID'];
-		$engine->cleanGet['HTML']['library']  = $reservationInfo['buildingID'];
-		$engine->cleanGet['RAW']['library']   = $reservationInfo['buildingID'];
-		$engine->cleanGet['MYSQL']['room']    = $reservationInfo['roomID'];
-		$engine->cleanGet['HTML']['room']     = $reservationInfo['roomID'];
-		$engine->cleanGet['RAW']['room']      = $reservationInfo['roomID'];
+		$_GET['MYSQL']['library'] = $reservationInfo['buildingID'];
+		$_GET['HTML']['library']  = $reservationInfo['buildingID'];
+		$_GET['RAW']['library']   = $reservationInfo['buildingID'];
+		$_GET['MYSQL']['room']    = $reservationInfo['roomID'];
+		$_GET['HTML']['room']     = $reservationInfo['roomID'];
+		$_GET['RAW']['room']      = $reservationInfo['roomID'];
 
 		$action = "Update";
 
@@ -65,11 +65,11 @@ if (isset($engine->cleanGet['MYSQL']['id']) && validate::integer($engine->cleanG
 }
 
 
-if (!isset($engine->cleanGet['MYSQL']['library']) || validate::integer($engine->cleanGet['MYSQL']['library']) === FALSE) {
+if (!isset($_GET['MYSQL']['library']) || validate::integer($_GET['MYSQL']['library']) === FALSE) {
 	$errorMsg .= errorHandle::errorMsg("Missing or invalid building");
 	$error = TRUE;
 }
-if (!isset($engine->cleanGet['MYSQL']['room']) || validate::integer($engine->cleanGet['MYSQL']['room']) === FALSE) {
+if (!isset($_GET['MYSQL']['room']) || validate::integer($_GET['MYSQL']['room']) === FALSE) {
 	$errorMsg .= errorHandle::errorMsg("Missing or invalid room");
 	$error = TRUE;
 }
@@ -78,8 +78,8 @@ if (!isset($engine->cleanGet['MYSQL']['room']) || validate::integer($engine->cle
 
 if ($error === FALSE) {
 
-	$buildingID = $engine->cleanGet['MYSQL']['library'];
-	$roomID     = $engine->cleanGet['MYSQL']['room'];
+	$buildingID = $_GET['MYSQL']['library'];
+	$roomID     = $_GET['MYSQL']['room'];
 
 	localvars::add("buildingID",$buildingID);
 	localvars::add("roomID",$roomID);

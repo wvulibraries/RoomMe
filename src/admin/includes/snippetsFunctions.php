@@ -1,6 +1,6 @@
 <?php
-if (isset($engine->cleanGet['MYSQL']['snippetID'])) {
-	$snippetID = $engine->cleanGet['MYSQL']['snippetID'];
+if (isset($_GET['MYSQL']['snippetID'])) {
+	$snippetID = $_GET['MYSQL']['snippetID'];
 
 	$sql = sprintf("SELECT * FROM `%s` WHERE ID='%s' LIMIT 1",
 		"pageContent",

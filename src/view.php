@@ -7,10 +7,10 @@ $error    = FALSE;
 $buildingID = NULL;
 $roomID     = NULL;
 
-if (isset($engine->cleanGet['MYSQL']['id'])) {
+if (isset($_GET['MYSQL']['id'])) {
 
 	$sql       = sprintf("SELECT username, startTime FROM reservations WHERE ID='%s'",
-		$engine->cleanGet['MYSQL']['id']);
+		$_GET['MYSQL']['id']);
 	$sqlResult = $engine->openDB->query($sql);
 
 	if (!$sqlResult['result']) {
@@ -28,7 +28,7 @@ if (isset($engine->cleanGet['MYSQL']['id'])) {
 			if ($row['startTime'] > $currentAdjustedTime) {
 
 				$sql       = sprintf("DELETE FROM reservations WHERE ID='%s'",
-					$engine->cleanGet['MYSQL']['id']);
+					$_GET['MYSQL']['id']);
 				$sqlResult = $engine->openDB->query($sql);
 
 				if (!$sqlResult['result']) {
@@ -67,7 +67,7 @@ if (isset($_POST['MYSQL'])) {
 }
 
 
-if (isset($engine->cleanGet['MYSQL']['type']) && $engine->cleanGet['MYSQL']['type']=="past") {
+if (isset($_GET['MYSQL']['type']) && $_GET['MYSQL']['type']=="past") {
 	$daysBack = getConfig('daysToDisplayOnCancelledPage');
 	$daysBack = strtotime("-".$daysBack." day");
 	$sql = sprintf("SELECT reservations.*, building.name as buildingName, rooms.number as roomNumber, rooms.name as roomName, building.roomListDisplay FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.endTime<'%s' AND reservations.endTime>'%s' AND reservations.username='%s' ORDER BY building.name, rooms.name, reservations.startTime",
@@ -127,7 +127,7 @@ if ($error === FALSE) {
 		if ($hoursOnTable == "1") {
 			$temp['hoursOnReservationTable'] = ($row['endTime'] - $row['startTime'])/60/60;
 		}
-		if (isset($engine->cleanGet['MYSQL']['type']) && $engine->cleanGet['MYSQL']['type']=="past") {
+		if (isset($_GET['MYSQL']['type']) && $_GET['MYSQL']['type']=="past") {
 			$temp['edit'] = "";
 		}
 		else {
@@ -152,7 +152,7 @@ $engine->eTemplate("include","header");
 
 {local var="prettyPrint"}
 
-<?php if (isset($engine->cleanGet['MYSQL']['type']) && $engine->cleanGet['MYSQL']['type']=="past") { ?>
+<?php if (isset($_GET['MYSQL']['type']) && $_GET['MYSQL']['type']=="past") { ?>
 <a href="view.php">Current Reservations</a>
 <?php } else {?>
 <a href="view.php?type=past">Past Reservations</a>
