@@ -8,7 +8,7 @@ if (!isset($_POST['MYSQL']['library']) && validate::integer($_POST['MYSQL']['lib
 	$error = TRUE;
 }
 
-localvars::add("libraryID",$_POST['MYSQL']['library']);
+$localvars->set("libraryID",$_POST['MYSQL']['library']);
 
 // Get the building name
 if ($error === FALSE) {
@@ -17,7 +17,7 @@ if ($error === FALSE) {
 		$error = TRUE;
 	}
 	else {
-		localvars::add("buildingName",$return);
+		$localvars->set("buildingName",$return);
 	}
 }
 
@@ -29,7 +29,7 @@ if ($error === FALSE) {
 		$error = TRUE;
 	}
 	else {
-		localvars::add("roomSelectOptions",$return);
+		$localvars->set("roomSelectOptions",$return);
 	}
 }
 
@@ -40,8 +40,8 @@ if (isset($_GET['HTML']['type']) && $_GET['HTML']['type'] == "series") {
 	$action = "seriesCreate.php";
 }
 
-localvars::add("type",$type);
-localvars::add("action",$action);
+$localvars->set("type",$type);
+$localvars->set("action",$action);
 
 $engine->eTemplate("include","header");
 ?>

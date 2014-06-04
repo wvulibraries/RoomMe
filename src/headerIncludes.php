@@ -1,6 +1,6 @@
 <?php
 
-	localvars::add("roomReservationHome","/services/rooms");
+	$localvars->set("roomReservationHome","/services/rooms");
 
 ?>
 

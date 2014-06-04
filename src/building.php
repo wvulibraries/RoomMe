@@ -13,12 +13,12 @@ else {
 }
 
 $buildingName = getBuildingName($buildingID);
-localvars::add("libraryName",$buildingName);
+$localvars->set("libraryName",$buildingName);
 
 
 $buildingRooms = getRoomsForBuilding($buildingID);
 
-localvars::add("errors",errorHandle::prettyPrint());
+$localvars->set("errors",errorHandle::prettyPrint());
 
 $engine->eTemplate("include","header");
 ?>

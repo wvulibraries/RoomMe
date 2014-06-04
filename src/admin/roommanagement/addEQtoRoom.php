@@ -70,7 +70,7 @@ if (!isset($engine->errorStack['error'])) {
 				htmlSanitize($row['name'])
 				);
 		}
-		localvars::add("selectedOptions",$selectedOptions);
+		$localvars->set("selectedOptions",$selectedOptions);
 	}
 	else {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -90,7 +90,7 @@ if (!isset($engine->errorStack['error'])) {
 				htmlSanitize($row['name'])
 				);
 		}
-		localvars::add("allOptions",$allOptions);
+		$localvars->set("allOptions",$allOptions);
 	}
 	else {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -98,7 +98,7 @@ if (!isset($engine->errorStack['error'])) {
 
 }
 
-localvars::add("prettyPrint",errorHandle::prettyPrint());
+$localvars->set("prettyPrint",errorHandle::prettyPrint());
 
 $engine->eTemplate("include","header");
 ?>

@@ -29,19 +29,19 @@ else {
         }
         else {
         	$content = mysql_fetch_array($sqlResult['result'], MYSQL_ASSOC);
-        	localvars::add("content",$content['content']);
+        	$localvars->set("content",$content['content']);
         }
 	}
 
 	// Redeclare with HTML sanitizing
 	if (isset($_POST['HTML']['snippetID'])) {
-		localvars::add("snippetID",$_POST['HTML']['snippetID']);
+		$localvars->set("snippetID",$_POST['HTML']['snippetID']);
 	}
 	else if (isset($_GET['HTML']['snippetID'])) {
-		localvars::add("snippetID",$_GET['HTML']['snippetID']);
+		$localvars->set("snippetID",$_GET['HTML']['snippetID']);
 	}
 	else {
-		localvars::add("snippetID","");
+		$localvars->set("snippetID","");
 	}
 
 }
@@ -59,7 +59,7 @@ if (!is_empty($engine->errorStack)) {
 	');
 }
 
-localvars::add("snippetList",$snippet->insertSnippetList("we_snippetList","ul",TRUE,TRUE));
+$localvars->set("snippetList",$snippet->insertSnippetList("we_snippetList","ul",TRUE,TRUE));
 
 $engine->eTemplate("include","header");
 ?>

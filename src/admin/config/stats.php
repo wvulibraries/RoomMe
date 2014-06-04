@@ -74,7 +74,7 @@ if (isset($_POST['HTML']['genStats'])) {
 
 }
 
-localvars::add("statsOutput",$output);
+$localvars->set("statsOutput",$output);
 
 $engine->eTemplate("include","header");
 ?>

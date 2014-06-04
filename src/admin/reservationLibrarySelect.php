@@ -11,13 +11,13 @@ while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 		htmlSanitize($row['name']));
 }
 
-localvars::add("librarySelectOptions",$options);
+$localvars->set("librarySelectOptions",$options);
 
 $type = "reservation";
 if (isset($_GET['HTML']['type']) && $_GET['HTML']['type'] == "series") {
 	$type = "series";
 }
-localvars::add("type",$type);
+$localvars->set("type",$type);
 
 $engine->eTemplate("include","header");
 ?>

@@ -72,7 +72,7 @@ if(isset($_POST['MYSQL']['sysconfig_submit'])) {
 	$fields = defineFields();
 }
 
-localvars::add("prettyPrint",errorHandle::prettyPrint());
+$localvars->set("prettyPrint",errorHandle::prettyPrint());
 
 $engine->eTemplate("include","header");
 ?>

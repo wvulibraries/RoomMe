@@ -19,10 +19,10 @@ if (isset($_GET['MYSQL']['id'])) {
 	}
 	else {
 		$row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
-		localvars::add("name",$row['name']);
-		localvars::add("type",$row['typeName']);
-		localvars::add("description",$row['description']);
-		localvars::add("url",$row['url']);
+		$localvars->set("name",$row['name']);
+		$localvars->set("type",$row['typeName']);
+		$localvars->set("description",$row['description']);
+		$localvars->set("url",$row['url']);
 	}
 
 	
@@ -31,7 +31,7 @@ else {
 	errorHandle::errorMsg("Equipment ID missing or invalid.");
 }
 
-localvars::add("prettyPrint",errorHandle::prettyPrint());
+$localvars->set("prettyPrint",errorHandle::prettyPrint());
 
 $engine->eTemplate("include","header");
 ?>

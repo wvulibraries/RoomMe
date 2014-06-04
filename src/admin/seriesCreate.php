@@ -25,7 +25,7 @@ if (isset($_POST['MYSQL']['library'])) {
 if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === TRUE) {
 
 	$reservationID = $_GET['MYSQL']['id'];
-	localvars::add("reservationID",$reservationID);
+	$localvars->set("reservationID",$reservationID);
 	$sql       = sprintf("SELECT seriesReservations.*, building.ID as buildingID FROM `seriesReservations` LEFT JOIN `rooms` ON rooms.ID=seriesReservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE seriesReservations.ID='%s'",
 		$reservationID
 		);
@@ -81,14 +81,14 @@ if ($error === FALSE) {
 	$buildingID = $_GET['MYSQL']['library'];
 	$roomID     = $_GET['MYSQL']['room'];
 
-	localvars::add("buildingID",$buildingID);
-	localvars::add("roomID",$roomID);
+	$localvars->set("buildingID",$buildingID);
+	$localvars->set("roomID",$roomID);
 
 	$buildingName = getBuildingName($buildingID);
 	$roomName     = getRoomName($roomID);
 
-	localvars::add("buildingName",$buildingName);
-	localvars::add("roomName",$roomName);
+	$localvars->set("buildingName",$buildingName);
+	$localvars->set("roomName",$roomName);
 
 	$sql       = sprintf("SELECT * FROM `via` ORDER BY `name`");
 	$sqlResult = $engine->openDB->query($sql);
@@ -106,7 +106,7 @@ if ($error === FALSE) {
 				htmlSanitize($row['name'])
 				);
 		}
-		localvars::add("viaOptions",$viaOptions);
+		$localvars->set("viaOptions",$viaOptions);
 	}
 
 }
@@ -121,10 +121,10 @@ $seriesEndMonth = (isnull($reservationInfo))?date("n"):date("n",$reservationInfo
 $seriesEndDay   = (isnull($reservationInfo))?date("j"):date("j",$reservationInfo['seriesEndDate']);
 $seriesEndYear  = (isnull($reservationInfo))?date("Y"):date("Y",$reservationInfo['seriesEndDate']);
 
-localvars::add("username",$username);
-localvars::add("groupname",$groupname);
-localvars::add("comments",$comments);
-localvars::add("action",$action);
+$localvars->set("username",$username);
+$localvars->set("groupname",$groupname);
+$localvars->set("comments",$comments);
+$localvars->set("action",$action);
 
 $sql        = sprintf("SELECT value FROM siteConfig WHERE name='24hour'");
 $sqlResult  = $engine->openDB->query($sql);

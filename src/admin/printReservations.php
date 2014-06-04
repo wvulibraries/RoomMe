@@ -38,7 +38,7 @@ while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 		htmlSanitize($row['name']));
 }
 
-localvars::add("librarySelectOptions",$options);
+$localvars->set("librarySelectOptions",$options);
 }
 
 
@@ -148,7 +148,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 
 }
 
-localvars::add("displayOutput",$displayOutput);
+$localvars->set("displayOutput",$displayOutput);
 
 ?>
 

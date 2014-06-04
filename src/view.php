@@ -141,7 +141,7 @@ if ($error === FALSE) {
 	}
 }
 
-localvars::add("prettyPrint",errorHandle::prettyPrint());
+$localvars->set("prettyPrint",errorHandle::prettyPrint());
 
 $engine->eTemplate("include","header");
 ?>

@@ -22,7 +22,7 @@ while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 		htmlSanitize($row['name']));
 }
 
-localvars::add("librarySelectOptions",$options);
+$localvars->set("librarySelectOptions",$options);
 
 $displayHour = (getConfig("24hour") == "1")?"24":"12";
 
@@ -132,7 +132,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 			}
 		}
 
-		localvars::add("results",$results);
+		$localvars->set("results",$results);
 	}
 
 }

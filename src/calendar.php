@@ -17,18 +17,18 @@ else {
 		$buildingID = $_GET['MYSQL']['building'];
 		$calType = "building";
 		$buildingName = getBuildingName($buildingID);
-		localvars::add("id",$buildingID);
-		localvars::add("buildingName",$buildingName);
+		$localvars->set("id",$buildingID);
+		$localvars->set("buildingName",$buildingName);
 	}
 	else if (isset($_GET['MYSQL']['room'])) {
 		$roomID = $_GET['MYSQL']['room'];
 		$calType = "room";
 		$roomName     = getRoomName($roomID);
-		localvars::add("id",$roomID);
-		localvars::add("roomName",$roomName);
+		$localvars->set("id",$roomID);
+		$localvars->set("roomName",$roomName);
 	}
 
-	localvars::add("calType",$calType);
+	$localvars->set("calType",$calType);
 	// set the date that we will be displaying
 	// grab it from the query string, if that is set, otherwise the current date
 	if (isset($_GET['MYSQL']['month'])) {
@@ -50,9 +50,9 @@ else {
 		$year = date("Y");
 	}
 
-	localvars::add("month",$month);
-	localvars::add("day",$day);
-	localvars::add("year",$year);
+	$localvars->set("month",$month);
+	$localvars->set("day",$day);
+	$localvars->set("year",$year);
 
 	$currentMonth = (!isset($_GET['MYSQL']['reservationSTime']))?date("n"):date("n",$_GET['MYSQL']['reservationSTime']);
 	$currentDay   = (!isset($_GET['MYSQL']['reservationSTime']))?date("j"):date("j",$_GET['MYSQL']['reservationSTime']);
@@ -61,19 +61,19 @@ else {
 	// setup the variables for the buttons
 
 	// get the previous Day
-	localvars::add("prevMonth",date("n",strtotime("-1 day",mktime(0,0,0,$month,$day,$year))));
-	localvars::add("prevDay",date("d",strtotime("-1 day",mktime(0,0,0,$month,$day,$year))));
-	localvars::add("prevYear",date("Y",strtotime("-1 day",mktime(0,0,0,$month,$day,$year))));
+	$localvars->set("prevMonth",date("n",strtotime("-1 day",mktime(0,0,0,$month,$day,$year))));
+	$localvars->set("prevDay",date("d",strtotime("-1 day",mktime(0,0,0,$month,$day,$year))));
+	$localvars->set("prevYear",date("Y",strtotime("-1 day",mktime(0,0,0,$month,$day,$year))));
 
 	// get the current (today) day
-	localvars::add("todayMonth",date("n"));
-	localvars::add("todayDay",date("d"));
-	localvars::add("todayYear",date("Y"));
+	$localvars->set("todayMonth",date("n"));
+	$localvars->set("todayDay",date("d"));
+	$localvars->set("todayYear",date("Y"));
 
 	// get the next Day
-	localvars::add("nextMonth",date("n",strtotime("+1 day",mktime(0,0,0,$month,$day,$year))));
-	localvars::add("nextDay",date("d",strtotime("+1 day",mktime(0,0,0,$month,$day,$year))));
-	localvars::add("nextYear",date("Y",strtotime("+1 day",mktime(0,0,0,$month,$day,$year))));
+	$localvars->set("nextMonth",date("n",strtotime("+1 day",mktime(0,0,0,$month,$day,$year))));
+	$localvars->set("nextDay",date("d",strtotime("+1 day",mktime(0,0,0,$month,$day,$year))));
+	$localvars->set("nextYear",date("Y",strtotime("+1 day",mktime(0,0,0,$month,$day,$year))));
 
 	// Get the Room IDs that we will be displaying
 	if ($calType == "building") {
@@ -100,7 +100,7 @@ else {
 
 
 
-localvars::add("calendarName",($calType == "building")?$buildingName:$roomName)
+$localvars->set("calendarName",($calType == "building")?$buildingName:$roomName)
 
 // $engine->eTemplate("include","header");
 ?>

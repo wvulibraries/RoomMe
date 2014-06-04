@@ -6,7 +6,7 @@ $sql = sprintf("SELECT * FROM building ORDER BY name");
 $sqlResult                = $engine->openDB->query($sql);
 
 
-localvars::add("policyLabel",getResultMessage("policyLabel"));
+$localvars->set("policyLabel",getResultMessage("policyLabel"));
 
 $engine->eTemplate("include","header");
 ?>

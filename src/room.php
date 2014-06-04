@@ -22,17 +22,17 @@ if ($room !== FALSE && isset($room['building'])) {
 	$roomPolicy   = getRoomPolicy($roomID);
 	$buildingName = getBuildingName($room['building']);
 
-	localvars::add("roomName",    $room['name']);
-	localvars::add("roomNumber",  $room['number']);
-	localvars::add("policyURL",   $room['policyURL']);
-	localvars::add("username",    sessionGet("username"));
-	localvars::add("buildingID",  $room['building']);
-	localvars::add("roomID",      $room['ID']);
-	localvars::add("buildingName",$buildingName);
-	localvars::add("prettyPrint", errorHandle::prettyPrint());
-	localvars::add("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
-	localvars::add("mapURL",      $room['mapURL']);
-	localvars::add("displayName", $room['displayName']);
+	$localvars->set("roomName",    $room['name']);
+	$localvars->set("roomNumber",  $room['number']);
+	$localvars->set("policyURL",   $room['policyURL']);
+	$localvars->set("username",    sessionGet("username"));
+	$localvars->set("buildingID",  $room['building']);
+	$localvars->set("roomID",      $room['ID']);
+	$localvars->set("buildingName",$buildingName);
+	$localvars->set("prettyPrint", errorHandle::prettyPrint());
+	$localvars->set("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
+	$localvars->set("mapURL",      $room['mapURL']);
+	$localvars->set("displayName", $room['displayName']);
 
 }
 else {
@@ -40,17 +40,17 @@ else {
 	$roomPolicy   = NULL;
 	$buildingName = NULL;
 
-	localvars::add("roomName",    "Error");
-	localvars::add("roomNumber",  "Error");
-	localvars::add("policyURL",   "Error");
-	localvars::add("username",    sessionGet("username"));
-	localvars::add("buildingID",  "Error");
-	localvars::add("roomID",      "Error");
-	localvars::add("buildingName","Error");
-	localvars::add("prettyPrint", errorHandle::prettyPrint());
-	localvars::add("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
-	localvars::add("mapURL",      "Error");
-	localvars::add("displayName", "Error");
+	$localvars->set("roomName",    "Error");
+	$localvars->set("roomNumber",  "Error");
+	$localvars->set("policyURL",   "Error");
+	$localvars->set("username",    sessionGet("username"));
+	$localvars->set("buildingID",  "Error");
+	$localvars->set("roomID",      "Error");
+	$localvars->set("buildingName","Error");
+	$localvars->set("prettyPrint", errorHandle::prettyPrint());
+	$localvars->set("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
+	$localvars->set("mapURL",      "Error");
+	$localvars->set("displayName", "Error");
 
 }
 
@@ -78,10 +78,10 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 	createReservation($buildingID,$roomID);
 
-	localvars::add("prettyPrint",errorHandle::prettyPrint());
+	$localvars->set("prettyPrint",errorHandle::prettyPrint());
 }
 
-localvars::add("policyLabel",getResultMessage("policyLabel"));
+$localvars->set("policyLabel",getResultMessage("policyLabel"));
 
 $engine->eTemplate("include","header");
 ?>

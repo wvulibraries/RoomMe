@@ -4,6 +4,10 @@ require_once '/home/www.libraries.wvu.edu/phpincludes/engine/engineAPI/4.0/engin
 $engine = EngineAPI::singleton();
 errorHandle::errorReporting(errorHandle::E_ALL);
 
+// Set localVars and engineVars variables
+$localvars  = localvars::getInstance();
+$enginevars = enginevars::getInstance();
+
 // require_once "/home/library/public_html/includes/engineHeader.php";
 
 recurseInsert("acl.php","php"); 
@@ -19,6 +23,6 @@ $db = db::create('mysql', $options, 'appDB');
 recurseInsert("includes/engineHeader.php","php");
 templates::load("library2012.3col");
 
-localvars::add("roomResBaseDir","/services/rooms");
+$localvars->set("roomResBaseDir","/services/rooms");
 
 ?>
