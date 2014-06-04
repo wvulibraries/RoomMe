@@ -11,6 +11,7 @@ $enginevars = enginevars::getInstance();
 // require_once "/home/library/public_html/includes/engineHeader.php";
 
 recurseInsert("acl.php","php"); 
+recurseInsert("vars.php","php");
 
 $options = array(
 	'username' => 'username',
@@ -18,7 +19,7 @@ $options = array(
 	'dbName'   => 'roomReservations',
 );
 require_once '/home/www.libraries.wvu.edu/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php';
-$db = db::create('mysql', $options, 'appDB');
+$db = db::create('mysql', $options, $localvars->get('dbConnectionName'));
 
 recurseInsert("includes/engineHeader.php","php");
 templates::load("library2012.3col");
