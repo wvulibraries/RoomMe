@@ -1,8 +1,3 @@
-<?php
-
-	$localvars->set("roomReservationHome","/services/rooms");
-
-?>
 
 <link rel="stylesheet" type="text/css" href="{local var="roomResBaseDir"}/css/reservations.less" />
 <script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/doubleMultiSelect.js"></script>

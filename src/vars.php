@@ -1,7 +1,8 @@
 <?php
 
-$localVars  = localvars::getInstance();
+$localvars = localvars::getInstance();
 
-$localVars->set('dbConnectionName', 'appDB');
+$localvars->set('dbConnectionName', 'appDB');
+$localvars->set("roomReservationHome","/services/rooms");
 
 ?>
