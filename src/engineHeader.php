@@ -8,7 +8,13 @@ errorHandle::errorReporting(errorHandle::E_ALL);
 
 recurseInsert("acl.php","php"); 
 
-$engine->dbConnect("database","roomReservations",TRUE);
+$options = array(
+	'username' => 'username',
+	'password' => 'password',
+	'dbName'   => 'roomReservations',
+);
+require_once '/home/www.libraries.wvu.edu/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php';
+$db = db::create('mysql', $options, 'appDB');
 
 $engine->eTemplate("load","library2012.3col");
 
