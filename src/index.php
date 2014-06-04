@@ -2,13 +2,16 @@
 require_once("engineHeader.php");
 recurseInsert("includes/functions.php","php");
 
-$sql = sprintf("SELECT * FROM building ORDER BY name");
-$sqlResult                = $engine->openDB->query($sql);
+// $localVars = localVars::getInstance();
+$db        = db::get($localvars->get('dbConnectionName'));
+
+$sql       = sprintf("SELECT * FROM building ORDER BY name");
+$sqlResult = $db->query($sql);
 
 
 $localvars->set("policyLabel",getResultMessage("policyLabel"));
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -16,7 +19,7 @@ $engine->eTemplate("include","header");
 </header>
 
 <?php
-while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+while ($row = $sqlResult->fetch()) {
 ?>
 
 <section class="reservationsLibrary">
@@ -71,5 +74,5 @@ while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 </div>
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>
