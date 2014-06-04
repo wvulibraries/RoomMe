@@ -198,18 +198,19 @@ function getConfig($value) {
 function getResultMessage($value) {
 
 	$engine = EngineAPI::singleton();
+	$localvars  = localvars::getInstance();
 
-	$sql       = sprintf("SELECT `value` FROM `resultMessages` WHERE `name`='%s'",
-		$engine->openDB->escape($value)
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$db     = db::get($localvars->get('dbConnectionName'));
 
-	if (!$sqlResult['result']) {
+	$sql       = sprintf("SELECT `value` FROM `resultMessages` WHERE `name`=?");
+	$sqlResult = $db->query($sql,array($value));
+
+	if ($sqlResult->errorCode()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return("");
 	}
 
-	$row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$row       = $sqlResult->fetch(); 
 	return($row['value']);
 
 }
