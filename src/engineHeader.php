@@ -16,7 +16,8 @@ $options = array(
 require_once '/home/www.libraries.wvu.edu/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php';
 $db = db::create('mysql', $options, 'appDB');
 
-$engine->eTemplate("load","library2012.3col");
+recurseInsert("includes/engineHeader.php","php");
+templates::load("library2012.3col");
 
 localvars::add("roomResBaseDir","/services/rooms");
 
