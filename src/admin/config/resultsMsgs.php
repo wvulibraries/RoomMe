@@ -42,7 +42,7 @@ if(isset($_POST['MYSQL']['sysconfig_submit'])) {
 
 	foreach ($fields as $name=>$value) {
 
-		if (isempty($_POST['MYSQL'][$name])) {
+		if (is_empty($_POST['MYSQL'][$name])) {
 			errorHandle::errorMsg($name." left blank.");
 			$error = TRUE;
 		}

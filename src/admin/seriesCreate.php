@@ -56,7 +56,7 @@ if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === T
 
 		$action = "Update";
 
-		if (!isempty($reservationInfo['weekdays'])) {
+		if (!is_empty($reservationInfo['weekdays'])) {
 			$weekdaysAssigned = unserialize($reservationInfo['weekdays']);
 		}
 

@@ -120,14 +120,14 @@ $engine->eTemplate("include","header");
 			<td>{local var="buildingName"}</td>
 		</tr>
 
-		<?php if (isset($room['mapURL']) && !isempty($room['mapURL'])) { ?>
+		<?php if (isset($room['mapURL']) && !is_empty($room['mapURL'])) { ?>
 		<tr>
 			<td><strong>Map:</strong></td>
 			<td><a href="{local var="mapURL"}" class="mapModal_link">View Map</a></td>
 		</tr>
 		<?php } ?>
 
-		<?php if (isset($room['policyURL']) && !isempty($room['policyURL'])) { ?>
+		<?php if (isset($room['policyURL']) && !is_empty($room['policyURL'])) { ?>
 		<tr>
 			<td><strong>{local var="policyLabel"} Information:</strong></td>
 			<td><a href="{local var="policyURL"}">View Policies</a></td>
@@ -167,7 +167,7 @@ $engine->eTemplate("include","header");
 
 <?php if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
-	<?php if(isempty(session::get("username"))) { ?>
+	<?php if(is_empty(session::get("username"))) { ?>
 
 	<p>You must be logged in to reserve a room. </p>
 	<a href="{local var="loginURL"}">Login</a>

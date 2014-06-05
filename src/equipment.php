@@ -51,7 +51,7 @@ $engine->eTemplate("include","header");
 
 	<p><strong>Type: </strong> {local var="type"}</p>
 	<p><strong>Description: </strong> {local var="description"}</p>
-	<?php if (!isempty($row['url'])) { ?>
+	<?php if (!is_empty($row['url'])) { ?>
 	<strong>More Information: </strong> <a href="{local var="url"}">{local var="url"}</a></p>
 	<?php } ?>
 

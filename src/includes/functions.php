@@ -353,7 +353,7 @@ if ($K%15 == 0) {
 
 							switch($displayNameAs) {
 								case "username":
-									if (!isempty($booking['groupname'])) {
+									if (!is_empty($booking['groupname'])) {
 										$username = $booking['groupname'];
 									}
 									else {

@@ -265,7 +265,7 @@ $engine->eTemplate("include","header");
 	<input type="submit" name="lookupSubmit" />
 </form>
 
-<?php if (!isempty($results)) { ?>
+<?php if (!is_empty($results)) { ?>
 
 <section>
 	<header>

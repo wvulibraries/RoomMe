@@ -25,14 +25,14 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		$via      = $_POST['MYSQL']['via'];
 		$override = $_POST['MYSQL']['override'];
 
-		if (isset($_POST['MYSQL']['groupname']) && !isempty($_POST['MYSQL']['groupname'])) {
+		if (isset($_POST['MYSQL']['groupname']) && !is_empty($_POST['MYSQL']['groupname'])) {
 			$groupname = $_POST['MYSQL']['groupname'];
 		}
-		if (isset($_POST['MYSQL']['comments']) && !isempty($_POST['MYSQL']['comments'])) {
+		if (isset($_POST['MYSQL']['comments']) && !is_empty($_POST['MYSQL']['comments'])) {
 			$comments = $_POST['MYSQL']['comments'];
 		}
 
-		if (isset($_POST['MYSQL']['reservationID']) && !isempty($_POST['MYSQL']['reservationID'])) {
+		if (isset($_POST['MYSQL']['reservationID']) && !is_empty($_POST['MYSQL']['reservationID'])) {
 			$reservationUpdate = $_POST['MYSQL']['reservationID'];
 		}
 	}
@@ -413,7 +413,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 		// get hours from the RSS feed. 
 		// if the RSS feed is unavailable, assume the library will be open (should this be configurable?)
-		if (!isempty($libraryHoursURL)) {
+		if (!is_empty($libraryHoursURL)) {
 
 			$opts = array(
 				'http'=>array(
@@ -449,7 +449,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 			// var_dump($hoursInfo[1]);
 			// print "</pre>";
 
-			if (isset($hoursInfo[1]) && !isempty($hoursInfo[1]) && isset($hoursInfo[0]) && !isempty($hoursInfo[0])) {
+			if (isset($hoursInfo[1]) && !is_empty($hoursInfo[1]) && isset($hoursInfo[0]) && !is_empty($hoursInfo[0])) {
 				if ($sUnix >= $hoursInfo[0] && $sUnix < $hoursInfo[1] && $eUnix > $hoursInfo[0] && $eUnix <= $hoursInfo[1]) {
 
 				}

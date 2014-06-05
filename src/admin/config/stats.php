@@ -41,7 +41,7 @@ if (isset($_POST['HTML']['genStats'])) {
 		$output .= "<li><strong>Total Reservations:</strong> ".$stats['totals']['total']."</li>";
 		$output .= "<li><strong>Created Via:</strong><ul>";
 		foreach ($stats['totals']['via'] as $via=>$stat) {
-			$output .= "<li><strong>".((isempty($via))?"Public Interface":$via)."</strong>: ".$stat."</li>";
+			$output .= "<li><strong>".((is_empty($via))?"Public Interface":$via)."</strong>: ".$stat."</li>";
 		}
 		$output .= "</ul></li>"; // created via
 
@@ -55,7 +55,7 @@ if (isset($_POST['HTML']['genStats'])) {
 				$percent = sprintf("%02.02f",
 					(((float)((float)$stat/(float)$building['total']))* 100)
 					);
-				$output .= "<li><strong>".((isempty($via))?"Public Interface":$via)."</strong>: ".$stat." (".$percent."%)</li>";
+				$output .= "<li><strong>".((is_empty($via))?"Public Interface":$via)."</strong>: ".$stat." (".$percent."%)</li>";
 			}
 			$output .= "</ul></li>"; // created via
 

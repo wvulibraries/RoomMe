@@ -28,24 +28,24 @@ while ($row = $sqlResult->fetch()) {
 	</header>
 
 	<ul>
-		<?php if (isempty($row['externalURL'])) { ?>
+		<?php if (is_empty($row['externalURL'])) { ?>
 		<li>
 			<a href="building.php?building=<?php print $row['ID'] ?>">View &amp; Reserve Rooms</a>
 		</li>
 
-		<?php if (isset($row['policyURL']) && !isempty($row['policyURL'])) { ?>
+		<?php if (isset($row['policyURL']) && !is_empty($row['policyURL'])) { ?>
 		<li>
 			<a href="<?php print $row['policyURL'] ?>">View Library {local var="policyLabel"}</a>
 		</li>
 		<?php } ?>
 
-		<?php if (isset($row['hoursURL']) && !isempty($row['hoursURL'])) { ?>
+		<?php if (isset($row['hoursURL']) && !is_empty($row['hoursURL'])) { ?>
 		<li>
 			<a href="<?php print $row['hoursURL'] ?>">View Library Hours</a>
 		</li>
 		<?php } ?>
 
-		<?php if (isset($row['url']) && !isempty($row['url'])) { ?>
+		<?php if (isset($row['url']) && !is_empty($row['url'])) { ?>
 		<li>
 			<a href="<?php print $row['url'] ?>">View Library Homepage</a>
 		</li>
@@ -63,7 +63,7 @@ while ($row = $sqlResult->fetch()) {
 		<?php } ?>
 	</ul>
 
-	<?php if (isset($row['imageURL']) && !isempty($row['imageURL'])) { ?>
+	<?php if (isset($row['imageURL']) && !is_empty($row['imageURL'])) { ?>
 	<img src="<?php print $row['imageURL']; ?>" class="reservationsLibraryImage"/>
 	<?php } ?>
 </section>

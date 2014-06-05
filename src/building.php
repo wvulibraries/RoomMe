@@ -31,13 +31,13 @@ $engine->eTemplate("include","header");
 
 	<ul>
 
-		<?php if (isset($row['hoursRSS']) && !isempty($row['hoursRSS'])) { ?>
+		<?php if (isset($row['hoursRSS']) && !is_empty($row['hoursRSS'])) { ?>
 		<li>
 			<a href="hours.php?building=<?php print $row['ID'] ?>">View Library Hours</a>
 		</li>
 		<?php } ?>
 
-		<?php if (isset($row['url']) && !isempty($row['url'])) { ?>
+		<?php if (isset($row['url']) && !is_empty($row['url'])) { ?>
 		<li>
 			<a href="<?php print $row['url'] ?>">View Library Homepage</a>
 		</li>

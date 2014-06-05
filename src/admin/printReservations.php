@@ -112,7 +112,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 			}
 
 			$displayName = $row['username'];
-			if (isset($row['groupname']) && !isempty($row['groupname'])) {
+			if (isset($row['groupname']) && !is_empty($row['groupname'])) {
 				$displayName .= " (".$row['groupname'].")";
 			}
 

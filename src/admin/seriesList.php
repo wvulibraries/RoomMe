@@ -47,7 +47,7 @@ if ($error === FALSE) {
 	while($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
 
 		$displayName = $row['username'];
-		if (isset($row['groupname']) && !isempty($row['groupname'])) {
+		if (isset($row['groupname']) && !is_empty($row['groupname'])) {
 			$displayName .= " (".$row['groupname'].")";
 		}
 
