@@ -39,7 +39,7 @@ $sql       = sprintf("SELECT reservations.*, building.name as buildingName, buil
 $sqlResult = $engine->openDB->query($sql);
 
 
-if (!$sqlResult['result']) {
+if ($sqlResult->error()) {
 	$error     = TRUE;
 	$errorMsg .= errorHandle::errorMsg("Error retrieving reservation list.");
 	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

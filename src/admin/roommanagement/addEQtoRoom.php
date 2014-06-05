@@ -21,7 +21,7 @@ if (is_empty($engine->errorStack) && isset($_POST['MYSQL']['addEQtoTemplate_subm
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::errorMsg("Error removing Equipment");
 	}
 
@@ -33,7 +33,7 @@ if (is_empty($engine->errorStack) && isset($_POST['MYSQL']['addEQtoTemplate_subm
 				);
 			$sqlResult = $engine->openDB->query($sql);
 
-			if (!$sqlResult['result']) {
+			if ($sqlResult->error()) {
 				errorHandle::errorMsg("Error adding Group");
 				break;
 			}
@@ -63,7 +63,7 @@ if (!isset($engine->errorStack['error'])) {
 	if ($sqlResult['result']) {
 		$selectedOptions = "";
 
-		while($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+		while($row = $sqlResult->fetch()) {
 			$selectedEQ[$row['equipmentID']] = $row['name'];
 			$selectedOptions .= sprintf('<option value="%s">%s</option>',
 				htmlSanitize($row['equipmentID']),
@@ -84,7 +84,7 @@ if (!isset($engine->errorStack['error'])) {
 
 	if ($sqlResult['result']) {
 		$allOptions = "";
-		while($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+		while($row = $sqlResult->fetch()) {
 			$allOptions .= sprintf('<option value="%s">%s</option>',
 				htmlSanitize($row['ID']),
 				htmlSanitize($row['name'])

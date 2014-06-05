@@ -31,7 +31,7 @@ if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === T
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		$error = TRUE;
 	}
@@ -93,13 +93,13 @@ if ($error === FALSE) {
 	$sql       = sprintf("SELECT * FROM `via` ORDER BY `name`");
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		$error = TRUE;
 	}
 	else {
 		$viaOptions = "";
-		while($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+		while($row = $sqlResult->fetch()) {
 			$viaOptions .= sprintf('<option value="%s" %s>%s</option>',
 				htmlSanitize($row['ID']),
 				(!isnull($reservationInfo) && $row['ID'] == $reservationInfo['createdVia'])?"selected":"",
@@ -457,7 +457,7 @@ else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		$engine->openDB->transRollback();
 		$engine->openDB->transEnd();
 		$error = TRUE;
@@ -471,7 +471,7 @@ else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 			);
 		$sqlResult = $engine->openDB->query($sql);
 
-		if (!$sqlResult['result']) {
+		if ($sqlResult->error()) {
 			$engine->openDB->transRollback();
 			$engine->openDB->transEnd();
 			errorHandle::successMsg("Series Reservation Deleted.");

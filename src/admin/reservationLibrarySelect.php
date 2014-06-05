@@ -5,7 +5,7 @@ $sql       = sprintf("SELECT * FROM `building` ORDER BY `name`");
 $sqlResult = $engine->openDB->query($sql);
 
 $options = "";
-while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+while ($row = $sqlResult->fetch()) {
 	$options .= sprintf('<option value="%s">%s</option>',
 		htmlSanitize($row['ID']),
 		htmlSanitize($row['name']));

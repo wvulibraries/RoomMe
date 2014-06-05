@@ -80,7 +80,7 @@ function buildRoomList($building) {
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return(FALSE);
 	}
@@ -94,13 +94,13 @@ function buildRoomList($building) {
 
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return(FALSE);
 	}
 
 	$options = "";
-	while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while ($row = $sqlResult->fetch()) {
 
 		$displayName = str_replace("{name}", $row['name'], $buildingInfo['roomListDisplay']);
 		$displayName = str_replace("{number}", $row['number'], $displayName);

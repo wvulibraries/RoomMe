@@ -16,7 +16,7 @@ $nextMin      = (!isset($_GET['MYSQL']['reservationSTime']))?"00":date("i",$_GET
 $sql       = sprintf("SELECT * FROM `building` ORDER BY `name`");
 $sqlResult = $engine->openDB->query($sql);
 $options = "";
-while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+while ($row = $sqlResult->fetch()) {
 	$options .= sprintf('<option value="%s">%s</option>',
 		htmlSanitize($row['ID']),
 		htmlSanitize($row['name']));
@@ -102,7 +102,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 
 
 
-		if (!$sqlResult['result']) {
+		if ($sqlResult->error()) {
 			errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 			$results = errorHandle::errorMsg("Error searching database");
 		}
@@ -116,7 +116,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 			}
 			else {
 				$results = "<ul>";
-				while($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+				while($row = $sqlResult->fetch()) {
 
 					$displayName = str_replace("{name}", $row['name'], $row['roomListDisplay']);
 					$displayName = str_replace("{number}", $row['number'], $displayName);

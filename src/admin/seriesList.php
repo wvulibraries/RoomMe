@@ -16,7 +16,7 @@ $reservations    = array();
 $sql       = sprintf("SELECT seriesReservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `seriesReservations` LEFT JOIN `rooms` on seriesReservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building ORDER BY building.name, rooms.name, seriesReservations.username, seriesReservations.startTime ");
 $sqlResult = $engine->openDB->query($sql);
 
-if (!$sqlResult['result']) {
+if ($sqlResult->error()) {
 	$error     = TRUE;
 	$errorMsg .= errorHandle::errorMsg("Error retrieving series reservation list.");
 	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

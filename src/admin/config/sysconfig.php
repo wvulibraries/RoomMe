@@ -50,7 +50,7 @@ if(isset($_POST['MYSQL']['sysconfig_submit'])) {
 				);
 			$sqlResult = $engine->openDB->query($sql);
 
-			if (!$sqlResult['result']) {
+			if ($sqlResult->error()) {
 				errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 				errorHandle::errorMsg($name." not updated correctly. Other fields may still be updated.");
 				$error = TRUE;

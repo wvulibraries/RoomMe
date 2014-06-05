@@ -26,7 +26,7 @@ $options['dupes'] = TRUE;
 $sql       = sprintf("SELECT * FROM building ORDER BY name");
 $sqlResult = $engine->openDB->query($sql);
 
-if (!$sqlResult['result']) {
+if ($sqlResult->error()) {
 	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 }
 
@@ -55,7 +55,7 @@ $options['dupes'] = TRUE;
 $sql       = sprintf("SELECT * FROM roomTemplates ORDER BY name");
 $sqlResult = $engine->openDB->query($sql);
 
-if (!$sqlResult['result']) {
+if ($sqlResult->error()) {
 	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 }
 

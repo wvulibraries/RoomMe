@@ -25,14 +25,14 @@ if (isset($_POST['MYSQL'])) {
 $sql       = sprintf("SELECT * FROM `building` ORDER BY `name`");
 $sqlResult = $engine->openDB->query($sql);
 
-if (!$sqlResult['result']) {
+if ($sqlResult->error()) {
 	$errorMsg .= errorHandle::errorMsg("Error retrieving library list.");
 	$error = TRUE;
 }
 
 if ($error === FALSE) {
 $options = "";
-while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+while ($row = $sqlResult->fetch()) {
 	$options .= sprintf('<option value="%s">%s</option>',
 		htmlSanitize($row['ID']),
 		htmlSanitize($row['name']));
@@ -56,7 +56,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		$error     = TRUE;
 		$errorMsg .= errorHandle::errorMsg("Error retrieving reservation list.");
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

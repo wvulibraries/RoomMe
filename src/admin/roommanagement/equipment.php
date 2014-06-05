@@ -36,7 +36,7 @@ $options['type']  = "select";
 $sql       = sprintf("SELECT * FROM equipementTypes ORDER BY name");
 $sqlResult = $engine->openDB->query($sql);
 
-if (!$sqlResult['result']) {
+if ($sqlResult->error()) {
 	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 }
 

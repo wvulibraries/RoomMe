@@ -31,10 +31,11 @@
 
 	<?php
 	// Not happy about this
-	$sql = sprintf("SELECT * FROM building ORDER BY name");
-	$sqlResult                = $engine->openDB->query($sql);
+	$db        = db::get($localvars->get('dbConnectionName'));
+	$sql       = sprintf("SELECT * FROM building ORDER BY name");
+	$sqlResult = $db->query($sql);
 
-	while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while ($row = $sqlResult->fetch()) {
 
 	?>
 

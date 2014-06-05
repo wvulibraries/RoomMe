@@ -9,7 +9,7 @@ function getBuildingName($ID) {
 
 	$sqlResult = $engine->openDB->query($sql);
 	
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - Error getting building name.", errorHandle::DEBUG);
 		return(FALSE);
 	}
@@ -18,7 +18,7 @@ function getBuildingName($ID) {
 		return("Not Found");
 	}
 
-	$row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$row = $sqlResult->fetch();
 
 	return($row['name']);
 }
@@ -31,12 +31,12 @@ function getRoomName($ID) {
 
 	$sqlResult = $engine->openDB->query($sql);
 	
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - Error getting room name.", errorHandle::DEBUG);
 		return(FALSE);
 	}
 
-	$row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$row = $sqlResult->fetch();
 
 	return($row['name']);
 }
@@ -49,7 +49,7 @@ function getRoomInfo($ID) {
 
 	$sqlResult = $engine->openDB->query($sql);
 	
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sql, errorHandle::DEBUG);
 		errorHandle::newError(__METHOD__."() - Error getting room information.".$sqlResult['error'], errorHandle::DEBUG);
 		return(FALSE);
@@ -59,7 +59,7 @@ function getRoomInfo($ID) {
 		return(FALSE);
 	}
 
-	$row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$row = $sqlResult->fetch();
 	$row['equipment'] = array();
 
 	$sql = sprintf("SELECT equipement.* FROM equipement LEFT JOIN roomTypeEquipment on roomTypeEquipment.equipmentID=equipement.ID WHERE roomTypeEquipment.roomTemplateID='%s'",
@@ -68,7 +68,7 @@ function getRoomInfo($ID) {
 
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 	}
 	else {
@@ -102,7 +102,7 @@ function getRoomsForBuilding($ID) {
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		errorHandle::errorMsg("Error retrieving rooms");
 		return(FALSE);
@@ -127,7 +127,7 @@ function getRoomPolicy($ID) {
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return(FALSE);
 	}
@@ -168,7 +168,7 @@ function getRoomBookingsForDate($ID,$month=NULL,$day=NULL,$year=NULL) {
 	$sqlResult = $engine->openDB->query($sql);
 
 	$bookings = array();
-	while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while ($row = $sqlResult->fetch()) {
 		$bookings[] = $row;
 	}
 
@@ -185,7 +185,7 @@ function getConfig($value) {
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return(FALSE);
 	}
@@ -205,7 +205,7 @@ function getResultMessage($value) {
 	$sql       = sprintf("SELECT `value` FROM `resultMessages` WHERE `name`=?");
 	$sqlResult = $db->query($sql,array($value));
 
-	if ($sqlResult->errorCode()) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return("");
 	}

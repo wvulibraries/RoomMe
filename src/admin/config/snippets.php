@@ -24,7 +24,7 @@ else {
         	);
         $sqlResult = $engine->openDB->query($sql);
 
-        if (!$sqlResult['result']) {
+        if ($sqlResult->error()) {
         	errorHandle::errorMsg("Error fetching content.");
         }
         else {

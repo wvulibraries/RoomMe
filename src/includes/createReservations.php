@@ -131,7 +131,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$engine->openDB->sanitize = FALSE;
 	$sqlResult                = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		errorHandle::errorMsg(getResultMessage("policyError"));
 		return(FALSE);
@@ -166,7 +166,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$sql       = sprintf("SELECT * FROM siteConfig");
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		errorHandle::errorMsg(getResultMessage("systemsPolicyError"));
 		return(FALSE);
@@ -257,7 +257,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$sql       = sprintf("SELECT * FROM building");
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		errorHandle::errorMsg("Error retrieving buildings");
 		return(FALSE);
@@ -271,7 +271,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$sql       = sprintf("SELECT * FROM policies");
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		errorHandle::errorMsg("Error retrieving buildings");
 		return(FALSE);
@@ -313,14 +313,14 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 	$sqlResult  = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		errorHandle::errorMsg(getResultMessage("patronReservationInfo"));
 		return(FALSE);
 	}
 
 
-	while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while ($row = $sqlResult->fetch()) {
 
 		$bookedHours = (float)(($row['endTime'] - $row['startTime']) / 60 / 60);
 
@@ -571,7 +571,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::errorMsg(getResultMessage("errorInserting"));
 		return(FALSE);
 	}
@@ -641,7 +641,7 @@ function duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) {
 		$engine->openDB->escape($eUnix)
 		);
 	$sqlResult = $engine->openDB->query($sql);
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return(NULL);
 	}
@@ -668,7 +668,7 @@ function multipleBooksings($username,$sUnix,$eUnix) {
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return(TRUE); // we return true, because there was an error and we don't want the reservation to submit on error
 	}
@@ -696,7 +696,7 @@ function conflictReservationCheck($roomID,$sUnix,$eUnix) {
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return(TRUE); // we return true, because there was an error and we don't want the reservation to submit on error
 	}

@@ -15,7 +15,7 @@ function getUserInfo($username) {
 	
 	$sqlResult = $remoteDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return(FALSE);
 	}
@@ -28,7 +28,7 @@ function getUserInfo($username) {
 		return(FALSE);
 	}
 
-	$row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$row = $sqlResult->fetch();
 
 	$userInfo             = array();
 	$userInfo['initials'] = substr($row['firstname'],0,1).substr($row['lastname'],0,1);

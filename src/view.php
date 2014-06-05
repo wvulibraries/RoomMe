@@ -13,7 +13,7 @@ if (isset($_GET['MYSQL']['id'])) {
 		$_GET['MYSQL']['id']);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		errorHandle::errorMsg("Error canceling reservation.");
 	}
@@ -31,7 +31,7 @@ if (isset($_GET['MYSQL']['id'])) {
 					$_GET['MYSQL']['id']);
 				$sqlResult = $engine->openDB->query($sql);
 
-				if (!$sqlResult['result']) {
+				if ($sqlResult->error()) {
 					errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 					errorHandle::errorMsg("Error canceling reservation.");
 				}
@@ -85,7 +85,7 @@ else {
 
 $sqlResult = $engine->openDB->query($sql);
 
-if (!$sqlResult['result']) {
+if ($sqlResult->error()) {
 	$error     = TRUE;
 	$errorMsg .= errorHandle::errorMsg("Error retrieving reservation list.");
 	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

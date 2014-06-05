@@ -13,12 +13,12 @@ if (isset($_GET['MYSQL']['id'])) {
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if (!$sqlResult['result']) {
+	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		errorHandle::errorMsg("Error retrieving Equipment information.");
 	}
 	else {
-		$row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+		$row = $sqlResult->fetch();
 		$localvars->set("name",$row['name']);
 		$localvars->set("type",$row['typeName']);
 		$localvars->set("description",$row['description']);

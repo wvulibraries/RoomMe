@@ -24,7 +24,7 @@ if (isset($_POST['HTML']['genStats'])) {
 
 	if ($sqlResult['result']) {
 		$stats = array();
-		while ($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+		while ($row = $sqlResult->fetch()) {
 
 			$roomDisplayName = str_replace("{name}", $row['roomName'], $row['roomListDisplay']);
 			$roomDisplayName = str_replace("{number}", $row['roomNumber'], $roomDisplayName);

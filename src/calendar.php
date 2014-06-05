@@ -84,12 +84,12 @@ else {
 		$engine->openDB->sanitize = FALSE;
 		$sqlResult                = $engine->openDB->query($sql);
 
-		if (!$sqlResult['result']) {
+		if ($sqlResult->error()) {
 			errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 			$error = TRUE;
 		}
 		else {
-			while($row = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+			while($row = $sqlResult->fetch()) {
 				$roomID[] = $row['ID'];
 			}
 		}
