@@ -20,7 +20,7 @@ if (isset($_GET['MYSQL']['id'])) {
 	else {
 		$row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
 
-		if (lc($row['username']) == lc(sessionGet("username"))) {
+		if (lc($row['username']) == lc(session::get("username"))) {
 
 			$timeAdjustment      = 60 * (getConfig('adjustedDeleteTime'));
 			$currentAdjustedTime = time() + $timeAdjustment;
@@ -73,13 +73,13 @@ if (isset($_GET['MYSQL']['type']) && $_GET['MYSQL']['type']=="past") {
 	$sql = sprintf("SELECT reservations.*, building.name as buildingName, rooms.number as roomNumber, rooms.name as roomName, building.roomListDisplay FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.endTime<'%s' AND reservations.endTime>'%s' AND reservations.username='%s' ORDER BY building.name, rooms.name, reservations.startTime",
 		time(),
 		$daysBack,
-		sessionGet("username")
+		session::get("username")
 		);
 }
 else {
 	$sql       = sprintf("SELECT reservations.*, building.name as buildingName, rooms.number as roomNumber, rooms.name as roomName, building.roomListDisplay FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.endTime>'%s' AND reservations.username='%s' ORDER BY building.name, rooms.name, reservations.startTime",
 		time(),
-		sessionGet("username")
+		session::get("username")
 		);
 }
 

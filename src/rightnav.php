@@ -1,5 +1,9 @@
 <?php
-	$localvars->set("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
+
+	$localvars  = localvars::getInstance();
+	$enginevars = enginevars::getInstance();
+
+	$localvars->set("loginURL",    $enginevars->get('loginPage').'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
 ?>
 
 <ul>
@@ -13,7 +17,7 @@
 		<a href="http://www.hsc.wvu.edu/its/Forms/SchedulingForms/LibraryStudyRoomRequest.aspx">Health Sciences Libraries</a>
 	</li>
 	<li>
-		<?php if (isempty(sessionGet("username"))) { ?>
+		<?php if (isempty(session::get("username"))) { ?>
 		<a href="{local var="loginURL"}">Login</a>
 		<?php } else { ?>
 		<a href="view.php">View your reservations</a>

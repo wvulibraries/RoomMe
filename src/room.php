@@ -25,7 +25,7 @@ if ($room !== FALSE && isset($room['building'])) {
 	$localvars->set("roomName",    $room['name']);
 	$localvars->set("roomNumber",  $room['number']);
 	$localvars->set("policyURL",   $room['policyURL']);
-	$localvars->set("username",    sessionGet("username"));
+	$localvars->set("username",    session::get("username"));
 	$localvars->set("buildingID",  $room['building']);
 	$localvars->set("roomID",      $room['ID']);
 	$localvars->set("buildingName",$buildingName);
@@ -43,7 +43,7 @@ else {
 	$localvars->set("roomName",    "Error");
 	$localvars->set("roomNumber",  "Error");
 	$localvars->set("policyURL",   "Error");
-	$localvars->set("username",    sessionGet("username"));
+	$localvars->set("username",    session::get("username"));
 	$localvars->set("buildingID",  "Error");
 	$localvars->set("roomID",      "Error");
 	$localvars->set("buildingName","Error");
@@ -167,7 +167,7 @@ $engine->eTemplate("include","header");
 
 <?php if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
-	<?php if(isempty(sessionGet("username"))) { ?>
+	<?php if(isempty(session::get("username"))) { ?>
 
 	<p>You must be logged in to reserve a room. </p>
 	<a href="{local var="loginURL"}">Login</a>
