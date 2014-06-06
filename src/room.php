@@ -83,7 +83,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 $localvars->set("policyLabel",getResultMessage("policyLabel"));
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 	{local var="prettyPrint"}
@@ -308,5 +308,5 @@ $engine->eTemplate("include","header");
 </div>
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>
