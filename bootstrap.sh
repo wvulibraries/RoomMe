@@ -87,6 +87,7 @@ mysql -u root EngineAPI < /tmp/git/engineAPI/sql/EngineAPI.sql
 
 mysql -u root < /vagrant/sqlFiles/setup.sql
 mysql -u root roomReservations < /vagrant/sqlFiles/baseSnapshot.sql
+mysql -u root roomReservations < /vagrant/sqlFiles/roomReservations.sql
 
 for f in $SQLFILES
 do
