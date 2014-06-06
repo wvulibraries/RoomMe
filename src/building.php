@@ -20,7 +20,7 @@ $buildingRooms = getRoomsForBuilding($buildingID);
 
 $localvars->set("errors",errorHandle::prettyPrint());
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -70,5 +70,5 @@ $engine->eTemplate("include","header");
 </div>
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>
