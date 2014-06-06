@@ -63,10 +63,10 @@ $nextHour     = (!isset($_GET['MYSQL']['reservationETime']))?(date("G")+1):date(
 $nextMin      = (!isset($_GET['MYSQL']['reservationSTime']))?"00":date("i",$_GET['MYSQL']['reservationSTime']);
 
 $sql        = sprintf("SELECT value FROM siteConfig WHERE name='24hour'");
-$sqlResult  = $engine->openDB->query($sql);
+$sqlResult  = $db->query($sql);
 
 $displayHour = 24;
-if ($sqlResult['result']) {
+if (!$sqlResult->error()) {
 	$row        = $sqlResult->fetch();
 	$displayHour = ($row['value'] == 1)?24:12;
 }
