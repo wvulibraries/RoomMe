@@ -3,6 +3,7 @@
 function getBuildingName($ID) {
 
 	$engine = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db     = db::get($localvars->get('dbConnectionName'));
 
 	$sql       = sprintf("SELECT name FROM building WHERE `ID`=? LIMIT 1");
@@ -24,6 +25,7 @@ function getBuildingName($ID) {
 
 function getRoomName($ID) {
 	$engine = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db     = db::get($localvars->get('dbConnectionName'));
 
 	$sql = sprintf("SELECT name FROM rooms WHERE `ID`=?");
@@ -42,6 +44,7 @@ function getRoomName($ID) {
 
 function getRoomInfo($ID) {
 	$engine = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db     = db::get($localvars->get('dbConnectionName'));
 
 	$sql = sprintf("SELECT rooms.*, policies.publicScheduling as publicScheduling, policies.publicViewing as publicViewing, policies.url as policyURL, roomTemplates.url as roomTemplateURL, roomTemplates.mapURL as mapURL, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID LEFT JOIN `policies` on roomTemplates.policy=policies.ID LEFT JOIN building ON building.ID=rooms.building WHERE rooms.ID=? LIMIT 1");
@@ -83,6 +86,7 @@ function getRoomInfo($ID) {
 function getRoomsForBuilding($ID) {
 
 	$engine = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db     = db::get($localvars->get('dbConnectionName'));
 
 	$sql       = sprintf("SELECT * FROM building WHERE ID=?");
@@ -116,6 +120,7 @@ function getRoomsForBuilding($ID) {
 function getRoomPolicy($ID) {
 
 	$engine = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db     = db::get($localvars->get('dbConnectionName'));
 
 	$sql = sprintf("SELECT * FROM policies LEFT JOIN roomTemplates ON roomTemplates.policy=policies.ID LEFT JOIN rooms ON rooms.roomTemplate=roomTemplates.ID WHERE rooms.ID=?");
@@ -133,6 +138,7 @@ function getRoomPolicy($ID) {
 function getRoomBookingsForDate($ID,$month=NULL,$day=NULL,$year=NULL) {
 
 	$engine = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db     = db::get($localvars->get('dbConnectionName'));
 
 	if (isnull($month)) {
@@ -169,6 +175,7 @@ function getRoomBookingsForDate($ID,$month=NULL,$day=NULL,$year=NULL) {
 function getConfig($value) {
 
 	$engine = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db     = db::get($localvars->get('dbConnectionName'));
 
 	$sql       = sprintf("SELECT `value` FROM `siteConfig` WHERE `name`=?");
