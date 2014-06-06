@@ -646,7 +646,7 @@ function duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) {
 		return(NULL);
 	}
 	else {
-		if ($sqlResult['numrows'] > 0) {
+		if ($sqlResult->rowCount() > 0) {
 			return(TRUE);
 		}
 	}
@@ -673,7 +673,7 @@ function multipleBooksings($username,$sUnix,$eUnix) {
 		return(TRUE); // we return true, because there was an error and we don't want the reservation to submit on error
 	}
 
-	if ($sqlResult['numrows'] > 0) {
+	if ($sqlResult->rowCount() > 0) {
 		return(TRUE);
 	}
 
@@ -701,7 +701,7 @@ function conflictReservationCheck($roomID,$sUnix,$eUnix) {
 		return(TRUE); // we return true, because there was an error and we don't want the reservation to submit on error
 	}
 
-	if ($sqlResult['numrows'] > 0) {
+	if ($sqlResult->rowCount() > 0) {
 		return(TRUE);
 	}
 

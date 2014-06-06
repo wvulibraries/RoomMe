@@ -20,10 +20,10 @@ function getUserInfo($username) {
 		return(FALSE);
 	}
 
-	if ($sqlResult['numrows'] < 1) {
+	if ($sqlResult->rowCount() < 1) {
 		return(FALSE);
 	}
-	else if ($sqlResult['numrows'] > 1) {
+	else if ($sqlResult->rowCount() > 1) {
 		errorHandle::newError(__METHOD__."() - More than one user returned.", errorHandle::DEBUG);
 		return(FALSE);
 	}

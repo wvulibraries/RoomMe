@@ -8,7 +8,7 @@ if (isset($_GET['MYSQL']['snippetID'])) {
 		);
 	$sqlResult = $engine->openDB->query($sql);
 
-	if ($sqlResult['numRows'] == 0) {
+	if ($sqlResult->rowCount() == 0) {
 		errorHandle::errorMsg("Provided ID is invalid.");
 	}
 	else {

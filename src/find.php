@@ -108,7 +108,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 		}
 		else {
 
-			if ($sqlResult['numrows'] == 0) {
+			if ($sqlResult->rowCount() == 0) {
 				print "<pre>";
 				var_dump($sql);
 				print "</pre>";

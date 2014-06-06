@@ -129,7 +129,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 
 		}
 
-		if ($sqlResult['numrows'] > 0) {  
+		if ($sqlResult->rowCount() > 0) {  
 			$displayOutput .= sprintf('<h1>%s</h1><h2>%s</h2><h3>%s</h3>%s',
 				$previousRow['buildingName'],
 				$previousRoomName,
@@ -137,7 +137,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 			"foo"//$table->display($reservations)
 			);
 		}
-		else if ($sqlResult['numrows'] == 0) {
+		else if ($sqlResult->rowCount() == 0) {
 			$displayOutput = "No reservations found.";
 		}
 		else {

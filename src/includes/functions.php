@@ -14,7 +14,7 @@ function getBuildingName($ID) {
 		return(FALSE);
 	}
 
-	if ($sqlResult['numrows'] < 1) {
+	if ($sqlResult->rowCount() < 1) {
 		return("Not Found");
 	}
 
@@ -56,7 +56,7 @@ function getRoomInfo($ID) {
 		return(FALSE);
 	}
 
-	if ($sqlResult['numrows'] < 1) {
+	if ($sqlResult->rowCount() < 1) {
 		return(FALSE);
 	}
 
@@ -107,7 +107,7 @@ function getRoomsForBuilding($ID) {
 		return(FALSE);
 	}
 
-	while($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while($row = $sqlResult->fetch()) {
 		$row['displayName'] = str_replace("{name}", $row['name'], $building['roomListDisplay']);
 		$row['displayName'] = str_replace("{number}", $row['number'], $row['displayName']);
 		$rooms[] = $row;
@@ -131,7 +131,7 @@ function getRoomPolicy($ID) {
 		return(FALSE);
 	}
 
-	return(mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC));
+	return($sqlResult->fetch());
 
 }
 
