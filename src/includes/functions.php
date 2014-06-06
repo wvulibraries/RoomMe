@@ -3,11 +3,10 @@
 function getBuildingName($ID) {
 
 	$engine = EngineAPI::singleton();
+	$db     = db::get($localvars->get('dbConnectionName'));
 
-	$sql = sprintf("SELECT name FROM building WHERE `ID`='%s' LIMIT 1",
-		$engine->openDB->escape($ID));
-
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT name FROM building WHERE `ID`=? LIMIT 1");
+	$sqlResult = $db->query($sql,array($ID));
 	
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - Error getting building name.", errorHandle::DEBUG);
@@ -25,11 +24,11 @@ function getBuildingName($ID) {
 
 function getRoomName($ID) {
 	$engine = EngineAPI::singleton();
+	$db     = db::get($localvars->get('dbConnectionName'));
 
-	$sql = sprintf("SELECT name FROM rooms WHERE `ID`=%s",
-		$engine->openDB->escape($ID));
+	$sql = sprintf("SELECT name FROM rooms WHERE `ID`=?");
 
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql,array($ID));
 	
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - Error getting room name.", errorHandle::DEBUG);
@@ -43,12 +42,11 @@ function getRoomName($ID) {
 
 function getRoomInfo($ID) {
 	$engine = EngineAPI::singleton();
+	$db     = db::get($localvars->get('dbConnectionName'));
 
-	$sql = sprintf("SELECT rooms.*, policies.publicScheduling as publicScheduling, policies.publicViewing as publicViewing, policies.url as policyURL, roomTemplates.url as roomTemplateURL, roomTemplates.mapURL as mapURL, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID LEFT JOIN `policies` on roomTemplates.policy=policies.ID LEFT JOIN building ON building.ID=rooms.building WHERE rooms.ID=%s LIMIT 1",
-		$engine->openDB->escape($ID));
+	$sql = sprintf("SELECT rooms.*, policies.publicScheduling as publicScheduling, policies.publicViewing as publicViewing, policies.url as policyURL, roomTemplates.url as roomTemplateURL, roomTemplates.mapURL as mapURL, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID LEFT JOIN `policies` on roomTemplates.policy=policies.ID LEFT JOIN building ON building.ID=rooms.building WHERE rooms.ID=? LIMIT 1");
+	$sqlResult = $db->query($sql,array($ID));
 
-	$sqlResult = $engine->openDB->query($sql);
-	
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sql, errorHandle::DEBUG);
 		errorHandle::newError(__METHOD__."() - Error getting room information.".$sqlResult['error'], errorHandle::DEBUG);
@@ -62,11 +60,9 @@ function getRoomInfo($ID) {
 	$row = $sqlResult->fetch();
 	$row['equipment'] = array();
 
-	$sql = sprintf("SELECT equipement.* FROM equipement LEFT JOIN roomTypeEquipment on roomTypeEquipment.equipmentID=equipement.ID WHERE roomTypeEquipment.roomTemplateID='%s'",
-		$engine->openDB->escape($row['roomTemplate'])
-		);
+	$sql = sprintf("SELECT equipement.* FROM equipement LEFT JOIN roomTypeEquipment on roomTypeEquipment.equipmentID=equipement.ID WHERE roomTypeEquipment.roomTemplateID=?");
 
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql,array($row['roomTemplate']));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -87,20 +83,19 @@ function getRoomInfo($ID) {
 function getRoomsForBuilding($ID) {
 
 	$engine = EngineAPI::singleton();
+	$db     = db::get($localvars->get('dbConnectionName'));
 
-	$sql       = sprintf("SELECT * FROM building WHERE ID='%s'",
-		$engine->openDB->escape($ID)
+	$sql       = sprintf("SELECT * FROM building WHERE ID=?");
+	$sqlResult = $db->query($sql,array($ID));
+
+	$building = $sqlResult->fetch();
+	$rooms    = array();
+
+	$sql       = sprintf("SELECT * FROM `rooms` WHERE `building`=? ORDER BY %s",
+		$db->escape($building['roomSortOrder'])
 		);
-	$sqlResult = $engine->openDB->query($sql);
-	$building  = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$sqlResult = $db->query($sql,array($ID));
 
-	$rooms = array();
-
-	$sql       = sprintf("SELECT * FROM `rooms` WHERE `building`='%s' ORDER BY %s",
-		$engine->openDB->escape($ID),
-		$engine->openDB->escape($building['roomSortOrder'])
-		);
-	$sqlResult = $engine->openDB->query($sql);
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -121,11 +116,10 @@ function getRoomsForBuilding($ID) {
 function getRoomPolicy($ID) {
 
 	$engine = EngineAPI::singleton();
+	$db     = db::get($localvars->get('dbConnectionName'));
 
-	$sql = sprintf("SELECT * FROM policies LEFT JOIN roomTemplates ON roomTemplates.policy=policies.ID LEFT JOIN rooms ON rooms.roomTemplate=roomTemplates.ID WHERE rooms.ID='%s'",
-		$engine->openDB->escape($ID)
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql = sprintf("SELECT * FROM policies LEFT JOIN roomTemplates ON roomTemplates.policy=policies.ID LEFT JOIN rooms ON rooms.roomTemplate=roomTemplates.ID WHERE rooms.ID=?");
+	$sqlResult = $db->query($sql,array($ID));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -134,12 +128,12 @@ function getRoomPolicy($ID) {
 
 	return(mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC));
 
-
 }
 
 function getRoomBookingsForDate($ID,$month=NULL,$day=NULL,$year=NULL) {
 
 	$engine = EngineAPI::singleton();
+	$db     = db::get($localvars->get('dbConnectionName'));
 
 	if (isnull($month)) {
 		$month = date("n");
@@ -158,14 +152,10 @@ function getRoomBookingsForDate($ID,$month=NULL,$day=NULL,$year=NULL) {
 		return(FALSE);
 	}
 
-	$sql       = sprintf("SELECT * FROM reservations WHERE ((startTime>='%s' AND startTime<='%s') OR (endTime>='%s' AND endTime<='%s')) AND roomID='%s'",
-		$engine->openDB->escape($dayStart),
-		$engine->openDB->escape($dayEnd),
-		$engine->openDB->escape($dayStart),
-		$engine->openDB->escape($dayEnd),
-		$engine->openDB->escape($ID)
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT * FROM reservations WHERE ((startTime>=? AND startTime<=?) OR (endTime>=? AND endTime<=?)) AND roomID=?");
+	$sqlResult = $db->query($sql,array($dayStart,$dayEnd,$dayStart,$dayEnd,$ID));
+
+	// @TODO : need sql error checking here
 
 	$bookings = array();
 	while ($row = $sqlResult->fetch()) {
@@ -179,11 +169,10 @@ function getRoomBookingsForDate($ID,$month=NULL,$day=NULL,$year=NULL) {
 function getConfig($value) {
 
 	$engine = EngineAPI::singleton();
+	$db     = db::get($localvars->get('dbConnectionName'));
 
-	$sql       = sprintf("SELECT `value` FROM `siteConfig` WHERE `name`='%s'",
-		$engine->openDB->escape($value)
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT `value` FROM `siteConfig` WHERE `name`=?");
+	$sqlResult = $db->query($sql,array($value));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -197,10 +186,10 @@ function getConfig($value) {
 
 function getResultMessage($value) {
 
-	$engine = EngineAPI::singleton();
-	$localvars  = localvars::getInstance();
-
-	$db     = db::get($localvars->get('dbConnectionName'));
+	$engine    = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
+	
+	$db        = db::get($localvars->get('dbConnectionName'));
 
 	$sql       = sprintf("SELECT `value` FROM `resultMessages` WHERE `name`=?");
 	$sqlResult = $db->query($sql,array($value));
