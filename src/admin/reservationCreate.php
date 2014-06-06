@@ -26,7 +26,7 @@ if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === T
 		$error = TRUE;
 	}
 	else {
-		$reservationInfo = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+		$reservationInfo = $sqlResult->fetch();
 		$username        = $reservationInfo['username'];
 		$groupname       = $reservationInfo['groupname'];
 		$comments        = $reservationInfo['comments'];
@@ -108,7 +108,7 @@ else if (isset($_POST['MYSQL']['createSubmit'])) {
 			$error = TRUE;
 		}
 		else {
-			$reservationInfo = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+			$reservationInfo = $sqlResult->fetch();
 			$username        = $reservationInfo['username'];
 			$groupname       = $reservationInfo['groupname'];
 			$comments        = $reservationInfo['comments'];
@@ -151,7 +151,7 @@ $sqlResult  = $engine->openDB->query($sql);
 
 $displayHour = 24;
 if ($sqlResult['result']) {
-	$row        = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$row        = $sqlResult->fetch();
 	$displayHour = ($row['value'] == 1)?24:12;
 }
 

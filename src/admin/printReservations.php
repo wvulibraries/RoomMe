@@ -85,7 +85,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 		$previousRoomName = NULL;
 		$previousRow      = NULL;
 
-		while($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+		while($row       = $sqlResult->fetch()) {
 
 			$roomDisplayName = str_replace("{name}", $row['roomName'], $row['roomListDisplay']);
 			$roomDisplayName = str_replace("{number}", $row['roomNumber'], $roomDisplayName);

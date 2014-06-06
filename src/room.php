@@ -67,7 +67,7 @@ $sqlResult  = $engine->openDB->query($sql);
 
 $displayHour = 24;
 if ($sqlResult['result']) {
-	$row        = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$row        = $sqlResult->fetch();
 	$displayHour = ($row['value'] == 1)?24:12;
 }
 

@@ -45,7 +45,7 @@ $temp['value']        = "NULL";
 $temp['label']        = "-- Select File Type --";
 $options['options'][] = $temp;
 
-while($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+while($row       = $sqlResult->fetch()) {
 
 	$selectValues          = array();
 	$selectValues['value'] = $row['ID'];

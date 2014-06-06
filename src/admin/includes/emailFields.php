@@ -17,7 +17,7 @@ if (isset($_GET['MYSQL']['ID']) && $updateTable === FALSE) {
 
 	$engine->openDB->sanitize = FALSE;
 	$sqlResult                = $engine->openDB->query($sql);
-	$emailItems          = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$emailItems          = $sqlResult->fetch();
 
 	$options = array();
 	$options['field'] = "ID";

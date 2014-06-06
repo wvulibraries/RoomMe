@@ -137,7 +137,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		return(FALSE);
 	}
 
-	$row                   = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$row                   = $sqlResult->fetch();
 
 	$libraryPeriod         = $row['building_period'];
 	$libraryMaxBookings    = $row['building_bookingsAllowedInPeriod'];
@@ -172,7 +172,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		return(FALSE);
 	}
 
-	while($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while($row       = $sqlResult->fetch()) {
 
 		switch($row['name']) {
 			case "periodSystem":
@@ -263,7 +263,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		return(FALSE);
 	}
 
-	while ($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while ($row       = $sqlResult->fetch()) {
 		$counts['hours']['building'][$row['ID']]    = 0;
 		$counts['bookings']['building'][$row['ID']] = 0;
 	}
@@ -277,7 +277,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		return(FALSE);
 	}
 
-	while ($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while ($row       = $sqlResult->fetch()) {
 		$counts['hours']['policy'][$row['ID']]    = 0;
 		$counts['bookings']['policy'][$row['ID']] = 0;
 	}

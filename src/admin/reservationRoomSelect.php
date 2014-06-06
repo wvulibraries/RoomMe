@@ -85,7 +85,7 @@ function buildRoomList($building) {
 		return(FALSE);
 	}
 
-	$buildingInfo = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$buildingInfo = $sqlResult->fetch();
 
 	$sql = sprintf("SELECT * FROM `rooms` WHERE `building`='%s' ORDER BY rooms.%s",
 		$engine->openDB->escape($building),

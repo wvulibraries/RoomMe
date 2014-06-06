@@ -71,7 +71,7 @@ function getRoomInfo($ID) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 	}
 	else {
-		while($eqRow  = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+		while($eqRow  = $sqlResult->fetch()) {
 			$row['equipment'][] = $eqRow;
 		}
 	}
@@ -186,7 +186,7 @@ function getConfig($value) {
 		return(FALSE);
 	}
 
-	$row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+	$row       = $sqlResult->fetch();
 	return($row['value']);
 
 }

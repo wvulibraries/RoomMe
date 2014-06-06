@@ -18,7 +18,7 @@ if (isset($_GET['MYSQL']['id'])) {
 		errorHandle::errorMsg("Error canceling reservation.");
 	}
 	else {
-		$row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+		$row       = $sqlResult->fetch();
 
 		if (lc($row['username']) == lc(session::get("username"))) {
 
@@ -114,7 +114,7 @@ if ($error === FALSE) {
 		$timeFormat = "m/d/Y g:iA";
 	}
 	
-	while($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while($row       = $sqlResult->fetch()) {
 
 		$row['displayName'] = str_replace("{name}", $row['roomName'], $row['roomListDisplay']);
 		$row['displayName'] = str_replace("{number}", $row['roomNumber'], $row['displayName']);

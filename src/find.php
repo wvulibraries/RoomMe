@@ -83,7 +83,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 			$_POST['MYSQL']['library']
 			);
 		$sqlResult = $engine->openDB->query($sql);
-		$building  = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+		$building  = $sqlResult->fetch();
 
 
 		$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE (((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s')) AND rooms.building='%s') ORDER BY rooms.%s",

@@ -44,7 +44,7 @@ if ($error === FALSE) {
 		$timeFormat = "m/d/Y g:iA";
 	}
 	
-	while($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+	while($row       = $sqlResult->fetch()) {
 
 		$displayName = $row['username'];
 		if (isset($row['groupname']) && !is_empty($row['groupname'])) {

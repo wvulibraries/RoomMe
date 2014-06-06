@@ -67,7 +67,7 @@ unset($temp);
 $sql       = sprintf("SELECT ID, name FROM `policies`");
 $sqlResult = $engine->openDB->query($sql);
 
-while ($row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC)) {
+while ($row       = $sqlResult->fetch()) {
 	$temp = array();
 	$temp['value'] = $row['ID'];
 	$temp['label'] = $row['name'];

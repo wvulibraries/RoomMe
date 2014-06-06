@@ -5,7 +5,7 @@ require_once("../engineHeader.php");
 // Get site configuration options used on this page
 $sql       = sprintf("SELECT value FROM siteConfig WHERE name='defaultReservationIncrements'");
 $sqlResult = $engine->openDB->query($sql);
-$row       = mysql_fetch_array($sqlResult['result'],  MYSQL_ASSOC);
+$row       = $sqlResult->fetch();
 
 $reservationIncrements = $row['value'];
 
