@@ -76,7 +76,7 @@ if (isset($_POST['HTML']['genStats'])) {
 
 $localvars->set("statsOutput",$output);
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -187,5 +187,5 @@ $engine->eTemplate("include","header");
 {local var="statsOutput"}
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

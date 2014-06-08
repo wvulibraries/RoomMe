@@ -19,7 +19,7 @@ if (isset($_GET['HTML']['type']) && $_GET['HTML']['type'] == "series") {
 }
 $localvars->set("type",$type);
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -40,5 +40,5 @@ $engine->eTemplate("include","header");
 
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

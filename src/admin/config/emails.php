@@ -15,7 +15,7 @@ else if (isset($_POST['MYSQL']['emailMessages_update'])) {
 	$errorMsg = errorHandle::prettyPrint();
 }
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -51,5 +51,5 @@ require("includes/emailFields.php");
 
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

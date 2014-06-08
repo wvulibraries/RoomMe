@@ -4,7 +4,7 @@
 require_once("engineHeader.php");
 
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -12,5 +12,5 @@ $engine->eTemplate("include","header");
 </header>
 
 <?php
-	$engine->eTemplate("include","footer");
+	templates::display('footer');
 ?>

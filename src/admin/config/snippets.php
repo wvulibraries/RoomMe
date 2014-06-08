@@ -61,7 +61,7 @@ if (!is_empty($engine->errorStack)) {
 
 $localvars->set("snippetList",$snippet->insertSnippetList("we_snippetList","ul",TRUE,TRUE));
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -91,5 +91,5 @@ $engine->eTemplate("include","header");
 
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

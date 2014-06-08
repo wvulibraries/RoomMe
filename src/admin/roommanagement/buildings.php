@@ -164,7 +164,7 @@ else if (isset($_POST['MYSQL']['building_update'])) {
 	$errorMsg = errorHandle::prettyPrint();
 }
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -195,5 +195,5 @@ if (!isnull($errorMsg)) {
 
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

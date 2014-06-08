@@ -137,7 +137,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 
 }
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -282,5 +282,5 @@ $engine->eTemplate("include","header");
 </div>
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

@@ -577,7 +577,7 @@ function getWeekdayOccurrence($time) {
     return array((($day+$posdm+6)/7), $days[$posd]);        
 } 
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -880,5 +880,5 @@ if (count($engine->errorStack) > 0) {
 
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

@@ -102,7 +102,7 @@ else {
 
 $localvars->set("calendarName",($calType == "building")?$buildingName:$roomName)
 
-// $engine->eTemplate("include","header");
+// templates::display('header');
 ?>
 
 <span class="simplemodal-close" id="closeModalCalendar"><img src="images/closeIcon.png" title="close"/></span>
@@ -173,5 +173,5 @@ $('#closeModalCalendar').live('click',handler_closeModal);
 </script>
 
 <?php
-// $engine->eTemplate("include","footer");
+// templates::display('footer');
 ?>

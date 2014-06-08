@@ -5,7 +5,7 @@ $snippet = new Snippet("pageContent","content");
 
 $engine->localVars("snippetID",$_GET['HTML']['id']);
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <!-- Page Content Goes Below This Line -->
@@ -13,5 +13,5 @@ $engine->eTemplate("include","header");
 <!-- Page Content Goes Above This Line -->
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

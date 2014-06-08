@@ -155,7 +155,7 @@ if ($sqlResult['result']) {
 	$displayHour = ($row['value'] == 1)?24:12;
 }
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -335,5 +335,5 @@ if (count($engine->errorStack) > 0) {
 
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

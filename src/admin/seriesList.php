@@ -88,7 +88,7 @@ if ($error === FALSE) {
 	}
 }
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 <header>
 <h1>Series Reservation Listing</h1>
@@ -98,5 +98,5 @@ $engine->eTemplate("include","header");
 
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>

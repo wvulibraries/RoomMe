@@ -100,7 +100,7 @@ if (!isset($engine->errorStack['error'])) {
 
 $localvars->set("prettyPrint",errorHandle::prettyPrint());
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -144,5 +144,5 @@ $engine->eTemplate("include","header");
 
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>
