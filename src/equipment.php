@@ -8,10 +8,11 @@ $buildingID = NULL;
 $roomID     = NULL;
 
 if (isset($_GET['MYSQL']['id'])) {
-	$sql       = sprintf("SELECT equipement.*, equipementTypes.name as typeName FROM equipement LEFT JOIN equipementTypes ON equipement.type=equipementTypes.ID WHERE equipement.ID='%s'",
-		$_GET['MYSQL']['id']
-		);
-	$sqlResult = $engine->openDB->query($sql);
+
+	$db  = db::get($localvars->get('dbConnectionName'));
+
+	$sql = sprintf("SELECT equipement.*, equipementTypes.name as typeName FROM equipement LEFT JOIN equipementTypes ON equipement.type=equipementTypes.ID WHERE equipement.ID=?");
+	$sqlResult = $db->query($sql,array($_GET['MYSQL']['id']));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -33,7 +34,7 @@ else {
 
 $localvars->set("prettyPrint",errorHandle::prettyPrint());
 
-$engine->eTemplate("include","header");
+templates::display('header');
 ?>
 
 <header>
@@ -61,5 +62,5 @@ $engine->eTemplate("include","header");
 <?php } ?>
 
 <?php
-$engine->eTemplate("include","footer");
+templates::display('footer');
 ?>
