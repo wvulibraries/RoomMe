@@ -6,6 +6,8 @@ recurseInsert("includes/createReservations.php","php");
 $errorMsg = "";
 $error    = FALSE;
 
+$db       = db::get($localvars->get('dbConnectionName'));
+
 // we are editing a reservation
 $reservationID   = "";
 $reservationInfo = NULL;
@@ -16,10 +18,8 @@ $action          = "Add";
 if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === TRUE) {
 	$reservationID = $_GET['MYSQL']['id'];
 	$localvars->set("reservationID",$reservationID);
-	$sql       = sprintf("SELECT reservations.*, building.ID as buildingID FROM `reservations` LEFT JOIN `rooms` ON rooms.ID=reservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.ID='%s'",
-		$reservationID
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT reservations.*, building.ID as buildingID FROM `reservations` LEFT JOIN `rooms` ON rooms.ID=reservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.ID=?");
+	$sqlResult = $db->query($sql,array($reservationID));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -68,7 +68,7 @@ if ($error === FALSE) {
 	$localvars->set("roomName",$roomName);
 
 	$sql       = sprintf("SELECT * FROM `via` ORDER BY `name`");
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -98,10 +98,8 @@ else if (isset($_POST['MYSQL']['createSubmit'])) {
 	createReservation($buildingID,$roomID);
 
 	if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === TRUE) {
-		$sql       = sprintf("SELECT reservations.*, building.ID as buildingID FROM `reservations` LEFT JOIN `rooms` ON rooms.ID=reservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.ID='%s'",
-			$reservationID
-			);
-		$sqlResult = $engine->openDB->query($sql);
+		$sql       = sprintf("SELECT reservations.*, building.ID as buildingID FROM `reservations` LEFT JOIN `rooms` ON rooms.ID=reservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.ID=?");
+		$sqlResult = $db->query($sql,array($reservationID));
 
 		if ($sqlResult->error()) {
 			errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -120,10 +118,8 @@ else if (isset($_POST['MYSQL']['createSubmit'])) {
 }
 else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 
-	$sql       = sprintf("DELETE FROM `reservations` WHERE ID='%s'",
-		$_POST['MYSQL']['reservationID']
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("DELETE FROM `reservations` WHERE ID=?");
+	$sqlResult = $db->query($sql,array($_POST['MYSQL']['reservationID']));
 
 	if ($sqlResult['result']) {
 		header('Location: reservationsList.php');
@@ -147,7 +143,7 @@ $localvars->set("comments",$comments);
 $localvars->set("action",$action);
 
 $sql        = sprintf("SELECT value FROM siteConfig WHERE name='24hour'");
-$sqlResult  = $engine->openDB->query($sql);
+$sqlResult  = $db->query($sql);
 
 $displayHour = 24;
 if ($sqlResult['result']) {

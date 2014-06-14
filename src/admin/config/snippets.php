@@ -18,11 +18,11 @@ else if (isset($_GET['MYSQL']['deleteID'])) {
 }
 else {
 	if (isset($_GET['MYSQL']['snippetID'])) {
-        $sql = sprintf("SELECT * FROM `%s` WHERE ID='%s' LIMIT 1",
-        	"pageContent",
-        	$_GET['MYSQL']['snippetID']
+		$db  = db::get($localvars->get('dbConnectionName'));
+		$sql = sprintf("SELECT * FROM `%s` WHERE ID=? LIMIT 1",
+        	"pageContent"
         	);
-        $sqlResult = $engine->openDB->query($sql);
+        $sqlResult = $db->query($sql, $_GET['MYSQL']['snippetID']);
 
         if ($sqlResult->error()) {
         	errorHandle::errorMsg("Error fetching content.");

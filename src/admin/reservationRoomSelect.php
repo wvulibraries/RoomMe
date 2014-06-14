@@ -74,11 +74,10 @@ templates::display('footer');
 function buildRoomList($building) {
 
 	$engine = EngineAPI::singleton();
+	$db     = db::get($localvars->get('dbConnectionName'));
 
-	$sql       = sprintf("SELECT roomListDisplay, roomSortOrder FROM building WHERE ID='%s'",
-		$engine->openDB->escape($building)
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT roomListDisplay, roomSortOrder FROM building WHERE ID=?");
+	$sqlResult = $db->query($sql,array($engine->openDB->escape($building)));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -87,12 +86,11 @@ function buildRoomList($building) {
 
 	$buildingInfo = $sqlResult->fetch();
 
-	$sql = sprintf("SELECT * FROM `rooms` WHERE `building`='%s' ORDER BY rooms.%s",
-		$engine->openDB->escape($building),
+	$sql = sprintf("SELECT * FROM `rooms` WHERE `building`=? ORDER BY rooms.%s",
 		$buildingInfo['roomSortOrder']
 		);
 
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql,$building);
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

@@ -22,8 +22,9 @@ if (isset($_POST['MYSQL'])) {
 	}
 }
 
+$db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT * FROM `building` ORDER BY `name`");
-$sqlResult = $engine->openDB->query($sql);
+$sqlResult = $db->query($sql);
 
 if ($sqlResult->error()) {
 	$errorMsg .= errorHandle::errorMsg("Error retrieving library list.");
@@ -50,11 +51,10 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 	$time_end = mktime(23,59,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
 
 
-	$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s AND building.ID='%s' ORDER BY building.name, rooms.name, rooms.number, reservations.startTime ",
-		(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>='".$time."' AND reservations.startTime<'".$time_end."'",
-		$_POST['MYSQL']['library']
+	$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s AND building.ID=? ORDER BY building.name, rooms.name, rooms.number, reservations.startTime ",
+		(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>='".$time."' AND reservations.startTime<'".$time_end."'"
 		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql,array($_POST['MYSQL']['library']));
 
 	if ($sqlResult->error()) {
 		$error     = TRUE;

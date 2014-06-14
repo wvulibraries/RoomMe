@@ -15,12 +15,11 @@ if (isset($_POST['HTML']['genStats'])) {
 	$stime     = mktime(0,0,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
 	$etime     = mktime(0,0,0,$_POST['MYSQL']['end_month'],$_POST['MYSQL']['end_day'],$_POST['MYSQL']['end_year']);
 
-	$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber, via.name as via FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building LEFT JOIN `via` on via.ID=reservations.createdVia WHERE reservations.endTime<='%s' AND reservations.startTime>='%s' ORDER BY building.name, rooms.name, rooms.number, via.name",
-		$engine->openDB->escape($etime),
-		$engine->openDB->escape($stime)
-		);
+	$db        = db::get($localvars->get('dbConnectionName'));
 
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber, via.name as via FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building LEFT JOIN `via` on via.ID=reservations.createdVia WHERE reservations.endTime<=? AND reservations.startTime>=? ORDER BY building.name, rooms.name, rooms.number, via.name");
+
+	$sqlResult = $db->query($sql,array($etime,$stime));
 
 	if ($sqlResult['result']) {
 		$stats = array();

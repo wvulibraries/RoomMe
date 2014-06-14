@@ -3,6 +3,8 @@ require_once("../engineHeader.php");
 
 $listObj = new listManagement("rooms");
 
+$db      = db::get($localvars->get('dbConnectionName'));
+
 $options = array();
 $options['field'] = "name";
 $options['label'] = "Room Name";
@@ -24,7 +26,7 @@ $options['type']  = "select";
 $options['dupes'] = TRUE;
 
 $sql       = sprintf("SELECT * FROM building ORDER BY name");
-$sqlResult = $engine->openDB->query($sql);
+$sqlResult = $db->query($sql);
 
 if ($sqlResult->error()) {
 	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -53,7 +55,7 @@ $options['type']  = "select";
 $options['dupes'] = TRUE;
 
 $sql       = sprintf("SELECT * FROM roomTemplates ORDER BY name");
-$sqlResult = $engine->openDB->query($sql);
+$sqlResult = $db->query($sql);
 
 if ($sqlResult->error()) {
 	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

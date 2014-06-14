@@ -64,8 +64,9 @@ $temp['label'] = "-- Select Policy --";
 $options['options'][] = $temp;
 unset($temp);
 
+$db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT ID, name FROM `policies`");
-$sqlResult = $engine->openDB->query($sql);
+$sqlResult = $db->query($sql);
 
 while ($row       = $sqlResult->fetch()) {
 	$temp = array();

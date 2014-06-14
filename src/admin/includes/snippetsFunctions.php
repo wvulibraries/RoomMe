@@ -2,11 +2,11 @@
 if (isset($_GET['MYSQL']['snippetID'])) {
 	$snippetID = $_GET['MYSQL']['snippetID'];
 
-	$sql = sprintf("SELECT * FROM `%s` WHERE ID='%s' LIMIT 1",
-		"pageContent",
-		$snippetID
+	$db  = db::get($localvars->get('dbConnectionName'));
+	$sql = sprintf("SELECT * FROM `%s` WHERE ID=? LIMIT 1",
+			"pageContent"
 		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql,array($snippetID));
 
 	if ($sqlResult->rowCount() == 0) {
 		errorHandle::errorMsg("Provided ID is invalid.");

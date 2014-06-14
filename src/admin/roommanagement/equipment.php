@@ -33,8 +33,9 @@ $options['label'] = "Type";
 $options['dupes'] = TRUE;
 $options['type']  = "select";
 
+$db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT * FROM equipementTypes ORDER BY name");
-$sqlResult = $engine->openDB->query($sql);
+$sqlResult = $db->query($sql);
 
 if ($sqlResult->error()) {
 	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

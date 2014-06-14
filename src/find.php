@@ -13,8 +13,9 @@ $nextHour     = (!isset($_GET['MYSQL']['reservationETime']))?(date("G")+1):date(
 $nextMin      = (!isset($_GET['MYSQL']['reservationSTime']))?"00":date("i",$_GET['MYSQL']['reservationSTime']);
 
 // generate library list
+$db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT * FROM `building` ORDER BY `name`");
-$sqlResult = $engine->openDB->query($sql);
+$sqlResult = $DB->query($sql);
 $options = "";
 while ($row = $sqlResult->fetch()) {
 	$options .= sprintf('<option value="%s">%s</option>',
@@ -79,26 +80,16 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 
 	if ($error === FALSE) {
 
-		$sql       = sprintf("SELECT * FROM building WHERE ID='%s'",
-			$_POST['MYSQL']['library']
-			);
-		$sqlResult = $engine->openDB->query($sql);
+		$sql       = sprintf("SELECT * FROM building WHERE ID=?");
+		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library']));
 		$building  = $sqlResult->fetch();
 
 
-		$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE (((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s')) AND rooms.building='%s') ORDER BY rooms.%s",
+		$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building=? AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE (((startTime<=? AND endTime>?) OR (startTime<? AND endTime>=?)) OR (startTime>=? AND endTime<=?)) AND rooms.building=?) ORDER BY rooms.%s",
 		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT * FROM `reservations` WHERE ( ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s') ) AND roomID='%s') ORDER BY rooms.%s",
-			$_POST['MYSQL']['library'],
-			$engine->openDB->escape($sUnix),
-			$engine->openDB->escape($sUnix),
-			$engine->openDB->escape($eUnix),
-			$engine->openDB->escape($eUnix),
-			$engine->openDB->escape($sUnix),
-			$engine->openDB->escape($eUnix),
-			$_POST['MYSQL']['library'],
 			$building['roomSortOrder']
 			);
-		$sqlResult = $engine->openDB->query($sql);
+		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library'],$sUnix,$sUnix,$eUnix,$eUnix,$sUnix,$eUnix,$_POST['MYSQL']['library']));
 
 
 

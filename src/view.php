@@ -7,11 +7,13 @@ $error    = FALSE;
 $buildingID = NULL;
 $roomID     = NULL;
 
+// @TODO : need error checking on all of these db::get() method calls
+$db = db::get($localvars->get('dbConnectionName'));
+
 if (isset($_GET['MYSQL']['id'])) {
 
-	$sql       = sprintf("SELECT username, startTime FROM reservations WHERE ID='%s'",
-		$_GET['MYSQL']['id']);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT username, startTime FROM reservations WHERE ID=?");
+	$sqlResult = $db->query($sql,array($_GET['MYSQL']['id']));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -27,9 +29,8 @@ if (isset($_GET['MYSQL']['id'])) {
 
 			if ($row['startTime'] > $currentAdjustedTime) {
 
-				$sql       = sprintf("DELETE FROM reservations WHERE ID='%s'",
-					$_GET['MYSQL']['id']);
-				$sqlResult = $engine->openDB->query($sql);
+				$sql       = sprintf("DELETE FROM reservations WHERE ID=?");
+				$sqlResult = $db->query($sql,array($_GET['MYSQL']['id']));
 
 				if ($sqlResult->error()) {
 					errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -70,20 +71,15 @@ if (isset($_POST['MYSQL'])) {
 if (isset($_GET['MYSQL']['type']) && $_GET['MYSQL']['type']=="past") {
 	$daysBack = getConfig('daysToDisplayOnCancelledPage');
 	$daysBack = strtotime("-".$daysBack." day");
-	$sql = sprintf("SELECT reservations.*, building.name as buildingName, rooms.number as roomNumber, rooms.name as roomName, building.roomListDisplay FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.endTime<'%s' AND reservations.endTime>'%s' AND reservations.username='%s' ORDER BY building.name, rooms.name, reservations.startTime",
-		time(),
-		$daysBack,
-		session::get("username")
-		);
+	$sql      = sprintf("SELECT reservations.*, building.name as buildingName, rooms.number as roomNumber, rooms.name as roomName, building.roomListDisplay FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.endTime<? AND reservations.endTime>? AND reservations.username=? ORDER BY building.name, rooms.name, reservations.startTime");
+	$options  = array(time(), $daysBack, session::get("username"));
 }
 else {
-	$sql       = sprintf("SELECT reservations.*, building.name as buildingName, rooms.number as roomNumber, rooms.name as roomName, building.roomListDisplay FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.endTime>'%s' AND reservations.username='%s' ORDER BY building.name, rooms.name, reservations.startTime",
-		time(),
-		session::get("username")
-		);
+	$sql     = sprintf("SELECT reservations.*, building.name as buildingName, rooms.number as roomNumber, rooms.name as roomName, building.roomListDisplay FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.endTime>? AND reservations.username=? ORDER BY building.name, rooms.name, reservations.startTime");
+	$options = array(time(), session::get("username"));
 }
 
-$sqlResult = $engine->openDB->query($sql);
+$sqlResult = $db->query($sql,$options);
 
 if ($sqlResult->error()) {
 	$error     = TRUE;

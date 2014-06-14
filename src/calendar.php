@@ -77,12 +77,9 @@ else {
 
 	// Get the Room IDs that we will be displaying
 	if ($calType == "building") {
-		$sql = sprintf("SELECT ID FROM `rooms` WHERE `building`='%s' ORDER BY `name`",
-			$engine->openDB->escape($buildingID)
-			);
-
-		$engine->openDB->sanitize = FALSE;
-		$sqlResult                = $engine->openDB->query($sql);
+		$db        = db::get($localvars->get('dbConnectionName'));
+		$sql       = sprintf("SELECT ID FROM `rooms` WHERE `building`=? ORDER BY `name`");
+		$sqlResult = $db->query($sql,array($buildingID));
 
 		if ($sqlResult->error()) {
 			errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

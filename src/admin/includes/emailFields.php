@@ -11,13 +11,12 @@ $listObj = new listManagement("emailMessages");
 if (isset($_GET['MYSQL']['ID']) && $updateTable === FALSE) {
 	$listObj->updateInsert   = TRUE;
 	$listObj->updateInsertID = "ID";
-
-	$sql = sprintf("SELECT * FROM emailMessages WHERE ID='%s'",
-		$_GET['MYSQL']['ID']);
-
-	$engine->openDB->sanitize = FALSE;
-	$sqlResult                = $engine->openDB->query($sql);
-	$emailItems          = $sqlResult->fetch();
+	
+	$db         = db::get($localvars->get('dbConnectionName'));
+	$sql        = sprintf("SELECT * FROM emailMessages WHERE ID=?");
+	
+	$sqlResult  = $db->query($sql,array($_GET['MYSQL']['ID']));
+	$emailItems = $sqlResult->fetch();
 
 	$options = array();
 	$options['field'] = "ID";

@@ -44,11 +44,9 @@ if(isset($_POST['MYSQL']['sysconfig_submit'])) {
 		if ($error === FALSE) {
 			$fields[$name] = $_POST['MYSQL'][$name];
 
-			$sql       = sprintf("UPDATE `siteConfig` SET `value`='%s' WHERE `name`='%s'",
-				$_POST['MYSQL'][$name],
-				$engine->openDB->escape($name)
-				);
-			$sqlResult = $engine->openDB->query($sql);
+			$db        = db::get($localvars->get('dbConnectionName'));
+			$sql       = sprintf("UPDATE `siteConfig` SET `value`=? WHERE `name`=?");
+			$sqlResult = $db->query($sql,array($_POST['MYSQL'][$name],$name));
 
 			if ($sqlResult->error()) {
 				errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

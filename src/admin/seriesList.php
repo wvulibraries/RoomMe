@@ -13,8 +13,9 @@ $table->class    = "styledTable";
 
 $reservations    = array();
 
+$db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT seriesReservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `seriesReservations` LEFT JOIN `rooms` on seriesReservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building ORDER BY building.name, rooms.name, seriesReservations.username, seriesReservations.startTime ");
-$sqlResult = $engine->openDB->query($sql);
+$sqlResult = $db->query($sql);
 
 if ($sqlResult->error()) {
 	$error     = TRUE;

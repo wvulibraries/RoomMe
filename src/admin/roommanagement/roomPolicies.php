@@ -3,8 +3,9 @@ require_once("../engineHeader.php");
 
 
 // Get site configuration options used on this page
+$db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT value FROM siteConfig WHERE name='defaultReservationIncrements'");
-$sqlResult = $engine->openDB->query($sql);
+$sqlResult = $db->query($sql);
 $row       = $sqlResult->fetch();
 
 $reservationIncrements = $row['value'];

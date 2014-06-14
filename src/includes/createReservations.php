@@ -7,6 +7,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	}
 
 	$engine = EngineAPI::singleton();
+	$db     = db::get($localvars->get('dbConnectionName'));
 
 	$validate = validateRoomPostVariables();
 
@@ -125,11 +126,8 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 	// Get System, library, and Policy information
 
-	$sql = sprintf("SELECT policies.*, building.hoursRSS as hoursRSS, building.fineLookupURL as fineLookupURL, building.fineAmount as building_fineAmount, building.maxHoursAllowed as building_maxHoursAllowed, building.period as building_period, building.bookingsAllowedInPeriod as building_bookingsAllowedInPeriod FROM rooms LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID LEFT JOIN `policies` ON roomTemplates.policy = policies.ID LEFT JOIN building ON rooms.building = building.ID WHERE rooms.ID='%s' LIMIT 1",
-		$_POST['MYSQL']['room']);
-
-	$engine->openDB->sanitize = FALSE;
-	$sqlResult                = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT policies.*, building.hoursRSS as hoursRSS, building.fineLookupURL as fineLookupURL, building.fineAmount as building_fineAmount, building.maxHoursAllowed as building_maxHoursAllowed, building.period as building_period, building.bookingsAllowedInPeriod as building_bookingsAllowedInPeriod FROM rooms LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID LEFT JOIN `policies` ON roomTemplates.policy = policies.ID LEFT JOIN building ON rooms.building = building.ID WHERE rooms.ID=? LIMIT 1");
+	$sqlResult = $db->query($sql,array($_POST['MYSQL']['room']));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -164,7 +162,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	}
 
 	$sql       = sprintf("SELECT * FROM siteConfig");
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -255,7 +253,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$counts['bookings']['total']    = 0;
  
 	$sql       = sprintf("SELECT * FROM building");
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -269,7 +267,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	}
 
 	$sql       = sprintf("SELECT * FROM policies");
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -283,11 +281,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	}
 
 	// get patron information
-	$sql = sprintf("SELECT reservations.roomID as roomID, reservations.startTime as startTime, reservations.endTime as endTime, building.ID as buildingID, roomTemplates.policy as policyID FROM reservations LEFT JOIN rooms ON reservations.roomID=rooms.ID LEFT JOIN building ON rooms.building=building.ID LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID WHERE username='%s' AND reservations.endTime>='%s' AND reservations.startTime<='%s'",
-		lc($username),
-		$sUnix - ($currentPeriod/2), // 1/2 period backwards
-		$eUnix + ($currentPeriod/2) // 1/2 period forwards
-		);
+	$sql = sprintf("SELECT reservations.roomID as roomID, reservations.startTime as startTime, reservations.endTime as endTime, building.ID as buildingID, roomTemplates.policy as policyID FROM reservations LEFT JOIN rooms ON reservations.roomID=rooms.ID LEFT JOIN building ON rooms.building=building.ID LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID WHERE username=? AND reservations.endTime>=? AND reservations.startTime<=?");
 
 // // Debugging
 // print "<pre>";
@@ -311,7 +305,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 // return(FALSE);
 
 
-	$sqlResult  = $engine->openDB->query($sql);
+	$sqlResult  = $db->query($sql,array(lc($username),$sUnix - ($currentPeriod/2),$eUnix + ($currentPeriod/2)));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -539,37 +533,38 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	}
 
 	if ($reservationUpdate === FALSE) {
-		$sql       = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-			$engine->openDB->escape(time()),
-			$engine->openDB->escape(session::get("username")),
-			$engine->openDB->escape($via),
-			$engine->openDB->escape($roomID),
-			$engine->openDB->escape($sUnix),
-			$engine->openDB->escape($eUnix),
-			$engine->openDB->escape(time()),
-			$engine->openDB->escape(session::get("username")),
-			$engine->openDB->escape(lc($username)),
-			$engine->openDB->escape($userInformation['initials']),
+		$sql        = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+		$sqlOptions = array(
+			time(),
+			session::get("username"),
+			$via,
+			$roomID,
+			$sUnix,
+			$eUnix,
+			time(),
+			session::get("username"),
+			lc($username),
+			$userInformation['initials'],
 			$groupname,
 			$comments,
 			(isnull($seriesID))?"":$seriesID
 			);
 	}
 	else {
-		$sql = sprintf("UPDATE `reservations` SET startTime='%s', endTime='%s', modifiedOn='%s', modifiedBy='%s', username='%s', initials='%s', groupname='%s', comments='%s' WHERE ID='%s'",
-			$engine->openDB->escape($sUnix),
-			$engine->openDB->escape($eUnix),
-			$engine->openDB->escape(time()),
-			$engine->openDB->escape(session::get("username")),
-			$engine->openDB->escape(lc($username)),
-			$engine->openDB->escape($userInformation['initials']),
-			$engine->openDB->escape($reservationUpdate),
+		$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=? WHERE ID=?");
+		$sqlOptions = array(			
+			$sUnix,
+			$eUnix,
+			time(),
+			session::get("username"),
+			lc($username),
+			$userInformation['initials'],
+			$reservationUpdate,
 			$groupname,
-			$comments
-			);
+			$comments);
 	}
 
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql,$sqlOptions);
 
 	if ($sqlResult->error()) {
 		errorHandle::errorMsg(getResultMessage("errorInserting"));
@@ -633,14 +628,10 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 function duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) {
 
 	$engine = EngineAPI::singleton();
+	$db        = db::get($localvars->get('dbConnectionName'));
 
-	$sql       = sprintf("SELECT * FROM `reservations` WHERE username='%s' AND roomID='%s' AND startTime='%s' AND endTime='%s'",
-		$engine->openDB->escape($username),
-		$engine->openDB->escape($roomID),
-		$engine->openDB->escape($sUnix),
-		$engine->openDB->escape($eUnix)
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT * FROM `reservations` WHERE username=? AND roomID=? AND startTime=? AND endTime=?");
+	$sqlResult = $db->query($sql,array($username, $roomID, $sUnix,	$eUnix));
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
 		return(NULL);
@@ -658,15 +649,10 @@ function duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) {
 function multipleBooksings($username,$sUnix,$eUnix) {
 
 	$engine = EngineAPI::singleton();
+	$db        = db::get($localvars->get('dbConnectionName'));
 
-	$sql       = sprintf("SELECT * FROM `reservations` WHERE ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) AND username='%s'",
-		$engine->openDB->escape($sUnix),
-		$engine->openDB->escape($sUnix),
-		$engine->openDB->escape($eUnix),
-		$engine->openDB->escape($eUnix),
-		$engine->openDB->escape($username)
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT * FROM `reservations` WHERE ((startTime<=? AND endTime>?) OR (startTime<? AND endTime>=?)) AND username=?");
+	$sqlResult = $db->query($sql,array($sUnix,$sUnix,$eUnix,$eUnix,$username));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -684,17 +670,10 @@ function multipleBooksings($username,$sUnix,$eUnix) {
 function conflictReservationCheck($roomID,$sUnix,$eUnix) {
 
 	$engine = EngineAPI::singleton();
+	$db        = db::get($localvars->get('dbConnectionName'));
 
-	$sql       = sprintf("SELECT * FROM `reservations` WHERE ( ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s') ) AND roomID='%s'",
-		$engine->openDB->escape($sUnix),
-		$engine->openDB->escape($sUnix),
-		$engine->openDB->escape($eUnix),
-		$engine->openDB->escape($eUnix),
-		$engine->openDB->escape($sUnix),
-		$engine->openDB->escape($eUnix),
-		$engine->openDB->escape($roomID)
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT * FROM `reservations` WHERE ( ((startTime<=? AND endTime>?) OR (startTime<? AND endTime>=?)) OR (startTime>=? AND endTime<=?) ) AND roomID=?");
+	$sqlResult = $db->query($sql,array($sUnix,	$sUnix,	$eUnix,	$eUnix,	$sUnix,	$eUnix, $roomID));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);

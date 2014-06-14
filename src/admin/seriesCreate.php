@@ -6,6 +6,8 @@ recurseInsert("includes/createReservations.php","php");
 $errorMsg = "";
 $error    = FALSE;
 
+$db       = db::get($localvars->get('dbConnectionName'));
+
 // we are editing a reservation
 $reservationID    = "";
 $reservationInfo  = NULL;
@@ -26,10 +28,8 @@ if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === T
 
 	$reservationID = $_GET['MYSQL']['id'];
 	$localvars->set("reservationID",$reservationID);
-	$sql       = sprintf("SELECT seriesReservations.*, building.ID as buildingID FROM `seriesReservations` LEFT JOIN `rooms` ON rooms.ID=seriesReservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE seriesReservations.ID='%s'",
-		$reservationID
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT seriesReservations.*, building.ID as buildingID FROM `seriesReservations` LEFT JOIN `rooms` ON rooms.ID=seriesReservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE seriesReservations.ID=?");
+	$sqlResult = $db->query($sql,array($reservationID));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -91,7 +91,7 @@ if ($error === FALSE) {
 	$localvars->set("roomName",$roomName);
 
 	$sql       = sprintf("SELECT * FROM `via` ORDER BY `name`");
-	$sqlResult = $engine->openDB->query($sql);
+	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
@@ -127,7 +127,7 @@ $localvars->set("comments",$comments);
 $localvars->set("action",$action);
 
 $sql        = sprintf("SELECT value FROM siteConfig WHERE name='24hour'");
-$sqlResult  = $engine->openDB->query($sql);
+$sqlResult  = $db->query($sql);
 
 $displayHour = 24;
 if ($sqlResult['result']) {
@@ -338,16 +338,15 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 
 			// put the serial information in the serial table
-			$sql       = sprintf("INSERT INTO seriesReservations (`createdOn`,`createdBy`,`createdVia`,`roomID`,`startTime`,`endTime`,`modifiedOn`,`modifiedBy`,`username`,`initials`,`groupname`,`comments`,`allDay`,`frequency`,`weekdays`,`seriesEndDate`) VALUES('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-
-				$engine->openDB->escape(time()),
-				$engine->openDB->escape(session::get("username")),
+			$sql       = sprintf("INSERT INTO seriesReservations (`createdOn`,`createdBy`,`createdVia`,`roomID`,`startTime`,`endTime`,`modifiedOn`,`modifiedBy`,`username`,`initials`,`groupname`,`comments`,`allDay`,`frequency`,`weekdays`,`seriesEndDate`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			$sqlResult = $db->query($sql,array(				$engine->openDB->escape(time()),
+				session::get("username"),
 				$_POST['MYSQL']['via'],
-				$engine->openDB->escape($roomID),
-				$engine->openDB->escape($startTime),
-				$engine->openDB->escape($endTime),
-				$engine->openDB->escape(time()),
-				$engine->openDB->escape(session::get("username")),
+				$roomID,
+				$startTime,
+				$endTime,
+				time(),
+				session::get("username"),
 				$_POST['MYSQL']['username'],
 				$userInformation['initials'],
 				$_POST['MYSQL']['groupname'],
@@ -355,9 +354,8 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 				(isset($_POST['MYSQL']['allDay']))?"1":"0",
 				$_POST['MYSQL']['frequency'],
 				(isset($_POST['MYSQL']['weekday']))?serialize($_POST['MYSQL']['weekday']):"",
-				$engine->openDB->escape($seriesEndDate)
-				);
-			$sqlResult = $engine->openDB->query($sql);
+				$seriesEndDate)
+			);
 
 			$seriesID = $sqlResult['id'];
 
@@ -451,11 +449,8 @@ else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 
 	$transResult = $engine->openDB->transBegin("reservations");
 
-	$sql       = sprintf("DELETE FROM `reservations` WHERE seriesID='%s' AND startTime>'%s'",
-		$_POST['MYSQL']['reservationID'],
-		time()
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("DELETE FROM `reservations` WHERE seriesID=? AND startTime>?");
+	$sqlResult = $db->query($sql,array($_POST['MYSQL']['reservationID'],time()));
 
 	if ($sqlResult->error()) {
 		$engine->openDB->transRollback();
@@ -466,10 +461,8 @@ else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 	}
 	else {
 
-		$sql       = sprintf("DELETE FROM `seriesReservations` WHERE ID='%s'",
-			$_POST['MYSQL']['reservationID']
-			);
-		$sqlResult = $engine->openDB->query($sql);
+		$sql       = sprintf("DELETE FROM `seriesReservations` WHERE ID=?");
+		$sqlResult = $db->query($sql,array($_POST['MYSQL']['reservationID']));
 
 		if ($sqlResult->error()) {
 			$engine->openDB->transRollback();

@@ -3,6 +3,9 @@ require_once("../engineHeader.php");
 
 $error          = FALSE;
 $roomTemplateID = "";
+
+$db             = db::get($localvars->get('dbConnectionName'));
+
 if (!isset($_GET['MYSQL']['roomTemplate'])) {
 	$error = TRUE;
 	errorHandle::errorMsg("Invalid or missing roomTemplate ID");
@@ -16,10 +19,8 @@ if (is_empty($engine->errorStack) && isset($_POST['MYSQL']['addEQtoTemplate_subm
 
 	$engine->openDB->transBegin();
 
-	$sql = sprintf("DELETE FROM `roomTypeEquipment` WHERE roomTemplateID='%s'",
-		$roomTemplateID
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("DELETE FROM `roomTypeEquipment` WHERE roomTemplateID=?");
+	$sqlResult = $db->query($sql,array($roomTemplateID));
 
 	if ($sqlResult->error()) {
 		errorHandle::errorMsg("Error removing Equipment");
@@ -27,11 +28,8 @@ if (is_empty($engine->errorStack) && isset($_POST['MYSQL']['addEQtoTemplate_subm
 
 	if (isset($_POST['MYSQL']['selectedEQ'])) {
 		foreach ($_POST['MYSQL']['selectedEQ'] as $selectedGroupID) {
-			$sql = sprintf("INSERT INTO `roomTypeEquipment` (roomTemplateID,equipmentID) VALUES ('%s','%s')",
-				$roomTemplateID,
-				$engine->openDB->escape($selectedGroupID)
-				);
-			$sqlResult = $engine->openDB->query($sql);
+			$sql       = sprintf("INSERT INTO `roomTypeEquipment` (roomTemplateID,equipmentID) VALUES (?,?)");
+			$sqlResult = $db->query($sql,array($roomTemplateID,$selectedGroupID));
 
 			if ($sqlResult->error()) {
 				errorHandle::errorMsg("Error adding Group");
@@ -54,10 +52,8 @@ if (is_empty($engine->errorStack) && isset($_POST['MYSQL']['addEQtoTemplate_subm
 if (!isset($engine->errorStack['error'])) {
 
 	// selected options
-	$sql       = sprintf("SELECT equipmentID, equipement.name as name FROM roomTypeEquipment LEFT JOIN equipement ON equipement.ID=roomTypeEquipment.equipmentID WHERE roomTemplateID='%s' ORDER BY name",
-		$engine->openDB->escape($roomTemplateID)
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	$sql       = sprintf("SELECT equipmentID, equipement.name as name FROM roomTypeEquipment LEFT JOIN equipement ON equipement.ID=roomTypeEquipment.equipmentID WHERE roomTemplateID=? ORDER BY name");
+	$sqlResult = $db->query($sql,array($roomTemplateID));
 
 	$selectedEQ      = array();
 	if ($sqlResult['result']) {
@@ -77,10 +73,9 @@ if (!isset($engine->errorStack['error'])) {
 	}
 
 	// all options
-	$sql       = sprintf("SELECT ID, name FROM equipement WHERE ID NOT IN ('%s') ORDER BY name",
-		implode("','",array_keys($selectedEQ))
-		);
-	$sqlResult = $engine->openDB->query($sql);
+	// @TODO this needs double testing/checking
+	$sql       = sprintf("SELECT ID, name FROM equipement WHERE ID NOT IN (?) ORDER BY name");
+	$sqlResult = $db->query($sql,array(implode("','",array_keys($selectedEQ))));
 
 	if ($sqlResult['result']) {
 		$allOptions = "";
