@@ -16,7 +16,7 @@ if (isset($_GET['MYSQL']['id'])) {
 	$sqlResult = $db->query($sql,array($_GET['MYSQL']['id']));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg("Error canceling reservation.");
 	}
 	else {
@@ -33,7 +33,7 @@ if (isset($_GET['MYSQL']['id'])) {
 				$sqlResult = $db->query($sql,array($_GET['MYSQL']['id']));
 
 				if ($sqlResult->error()) {
-					errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+					errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 					errorHandle::errorMsg("Error canceling reservation.");
 				}
 				else {
@@ -84,7 +84,7 @@ $sqlResult = $db->query($sql,$options);
 if ($sqlResult->error()) {
 	$error     = TRUE;
 	$errorMsg .= errorHandle::errorMsg("Error retrieving reservation list.");
-	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+	errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 }
 
 if ($error === FALSE) {

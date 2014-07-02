@@ -82,7 +82,7 @@ else {
 		$sqlResult = $db->query($sql,array($buildingID));
 
 		if ($sqlResult->error()) {
-			errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+			errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 			$error = TRUE;
 		}
 		else {

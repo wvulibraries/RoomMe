@@ -15,7 +15,7 @@ if (isset($_GET['MYSQL']['id'])) {
 	$sqlResult = $db->query($sql,array($_GET['MYSQL']['id']));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg("Error retrieving Equipment information.");
 	}
 	else {

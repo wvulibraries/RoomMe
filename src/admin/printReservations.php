@@ -59,7 +59,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 	if ($sqlResult->error()) {
 		$error     = TRUE;
 		$errorMsg .= errorHandle::errorMsg("Error retrieving reservation list.");
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 	}
 
 	if ($error === FALSE) {

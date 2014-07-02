@@ -12,11 +12,11 @@ function getUserInfo($username) {
 	$sql = sprintf("SELECT master.* FROM accountUsernames LEFT JOIN master on master.uid=accountUsernames.uid WHERE accountUsernames.username='%s'",
 		$remoteDB->escape($username)
 		);
-	
+
 	$sqlResult = $remoteDB->query($sql);
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return(FALSE);
 	}
 
@@ -24,7 +24,7 @@ function getUserInfo($username) {
 		return(FALSE);
 	}
 	else if ($sqlResult->rowCount() > 1) {
-		errorHandle::newError(__METHOD__."() - More than one user returned.", errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - More than one user returned.", errorHandle::DEBUG);
 		return(FALSE);
 	}
 

@@ -2,7 +2,7 @@
 require_once("engineHeader.php");
 recurseInsert("includes/functions.php","php");
 
-$error = FALSE; 
+$error = FALSE;
 
 if (!isset($_POST['MYSQL']['library']) && validate::integer($_POST['MYSQL']['library']) === FALSE) {
 	$error = TRUE;
@@ -80,7 +80,7 @@ function buildRoomList($building) {
 	$sqlResult = $db->query($sql,array($engine->openDB->escape($building)));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return(FALSE);
 	}
 
@@ -93,7 +93,7 @@ function buildRoomList($building) {
 	$sqlResult = $db->query($sql,$building);
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return(FALSE);
 	}
 

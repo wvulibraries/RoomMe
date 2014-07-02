@@ -8,9 +8,9 @@ function getBuildingName($ID) {
 
 	$sql       = sprintf("SELECT name FROM building WHERE `ID`=? LIMIT 1");
 	$sqlResult = $db->query($sql,array($ID));
-	
+
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - Error getting building name.", errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - Error getting building name.", errorHandle::DEBUG);
 		return(FALSE);
 	}
 
@@ -31,9 +31,9 @@ function getRoomName($ID) {
 	$sql = sprintf("SELECT name FROM rooms WHERE `ID`=?");
 
 	$sqlResult = $db->query($sql,array($ID));
-	
+
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - Error getting room name.", errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - Error getting room name.", errorHandle::DEBUG);
 		return(FALSE);
 	}
 
@@ -51,8 +51,8 @@ function getRoomInfo($ID) {
 	$sqlResult = $db->query($sql,array($ID));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sql, errorHandle::DEBUG);
-		errorHandle::newError(__METHOD__."() - Error getting room information.".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sql, errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - Error getting room information.".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return(FALSE);
 	}
 
@@ -68,7 +68,7 @@ function getRoomInfo($ID) {
 	$sqlResult = $db->query($sql,array($row['roomTemplate']));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 	}
 	else {
 		while($eqRow  = $sqlResult->fetch()) {
@@ -77,9 +77,9 @@ function getRoomInfo($ID) {
 	}
 
 
-	
+
 	$row['displayName'] = str_replace("{name}", $row['name'], $row['roomListDisplay']);
-	$row['displayName'] = str_replace("{number}", $row['number'], $row['displayName']);		
+	$row['displayName'] = str_replace("{number}", $row['number'], $row['displayName']);
 	return($row);
 }
 
@@ -102,7 +102,7 @@ function getRoomsForBuilding($ID) {
 
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg("Error retrieving rooms");
 		return(FALSE);
 	}
@@ -127,7 +127,7 @@ function getRoomPolicy($ID) {
 	$sqlResult = $db->query($sql,array($ID));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return(FALSE);
 	}
 
@@ -182,7 +182,7 @@ function getConfig($value) {
 	$sqlResult = $db->query($sql,array($value));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return(FALSE);
 	}
 
@@ -195,18 +195,18 @@ function getResultMessage($value) {
 
 	$engine    = EngineAPI::singleton();
 	$localvars = localvars::getInstance();
-	
+
 	$db        = db::get($localvars->get('dbConnectionName'));
 
 	$sql       = sprintf("SELECT `value` FROM `resultMessages` WHERE `name`=?");
 	$sqlResult = $db->query($sql,array($value));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return("");
 	}
 
-	$row       = $sqlResult->fetch(); 
+	$row       = $sqlResult->fetch();
 	return($row['value']);
 
 }
@@ -223,7 +223,7 @@ function drawRoomCalendar($roomID,$date) {
 	}
 
 	if (!is_array($date)) {
-		errorHandle::newError(__METHOD__."() - date not given as array", errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - date not given as array", errorHandle::DEBUG);
 		return(FALSE);
 	}
 
@@ -322,7 +322,7 @@ if ($K%15 == 0) {
 
 			if ($K == 0) {
 			$output .= sprintf('<th rowspan="4">%s</th>',
-				($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am"))) // someone will hate me later. 
+				($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am"))) // someone will hate me later.
 				);
 			}
 

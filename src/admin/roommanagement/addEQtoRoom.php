@@ -56,7 +56,7 @@ if (!isset($engine->errorStack['error'])) {
 	$sqlResult = $db->query($sql,array($roomTemplateID));
 
 	$selectedEQ      = array();
-	if ($sqlResult['result']) {
+	if (!$sqlResult->error()) {
 		$selectedOptions = "";
 
 		while($row = $sqlResult->fetch()) {
@@ -69,7 +69,7 @@ if (!isset($engine->errorStack['error'])) {
 		$localvars->set("selectedOptions",$selectedOptions);
 	}
 	else {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 	}
 
 	// all options
@@ -77,7 +77,7 @@ if (!isset($engine->errorStack['error'])) {
 	$sql       = sprintf("SELECT ID, name FROM equipement WHERE ID NOT IN (?) ORDER BY name");
 	$sqlResult = $db->query($sql,array(implode("','",array_keys($selectedEQ))));
 
-	if ($sqlResult['result']) {
+	if (!$sqlResult->error()) {
 		$allOptions = "";
 		while($row = $sqlResult->fetch()) {
 			$allOptions .= sprintf('<option value="%s">%s</option>',
@@ -88,7 +88,7 @@ if (!isset($engine->errorStack['error'])) {
 		$localvars->set("allOptions",$allOptions);
 	}
 	else {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 	}
 
 }

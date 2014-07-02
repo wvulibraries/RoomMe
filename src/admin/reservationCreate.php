@@ -22,7 +22,7 @@ if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === T
 	$sqlResult = $db->query($sql,array($reservationID));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 		$error = TRUE;
 	}
 	else {
@@ -71,7 +71,7 @@ if ($error === FALSE) {
 	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 		$error = TRUE;
 	}
 	else {
@@ -102,7 +102,7 @@ else if (isset($_POST['MYSQL']['createSubmit'])) {
 		$sqlResult = $db->query($sql,array($reservationID));
 
 		if ($sqlResult->error()) {
-			errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+			errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 			$error = TRUE;
 		}
 		else {
@@ -121,12 +121,12 @@ else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 	$sql       = sprintf("DELETE FROM `reservations` WHERE ID=?");
 	$sqlResult = $db->query($sql,array($_POST['MYSQL']['reservationID']));
 
-	if ($sqlResult['result']) {
+	if (!$sqlResult->error()) {
 		header('Location: reservationsList.php');
 	}
 
 	$error = TRUE;
-	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+	errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 	errorHandle::errorMsg("Error deleting reservation.");
 
 }
@@ -146,7 +146,7 @@ $sql        = sprintf("SELECT value FROM siteConfig WHERE name='24hour'");
 $sqlResult  = $db->query($sql);
 
 $displayHour = 24;
-if ($sqlResult['result']) {
+if (!$sqlResult->error()) {
 	$row        = $sqlResult->fetch();
 	$displayHour = ($row['value'] == 1)?24:12;
 }

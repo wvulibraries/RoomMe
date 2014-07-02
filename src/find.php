@@ -94,7 +94,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 
 
 		if ($sqlResult->error()) {
-			errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+			errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 			$results = errorHandle::errorMsg("Error searching database");
 		}
 		else {

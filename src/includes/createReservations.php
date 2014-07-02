@@ -50,10 +50,10 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		return(FALSE);
 	}
 
-	// convert the start time to unix 
+	// convert the start time to unix
 
 	// convert the end time to unix
-	// -- First make sure it is the same day. 
+	// -- First make sure it is the same day.
 	// -- If the end hour is less than the start hour, and the start hour is greater than 18 assume they
 	// --- Mean the next morning, otherwise error
 	$month = $_POST['MYSQL']['start_month'];
@@ -102,7 +102,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 	// is this a reservation being requested in the past?
 	// @TODO This needs to be configurable, time before current when reservation is not allowed.
-	// We may even want to beak it off into a separate check for better error message input. 
+	// We may even want to beak it off into a separate check for better error message input.
 	if (isnull($seriesID) && $sUnix < (time() - 3600)) {
 		errorHandle::errorMsg(getResultMessage("reservationInPast"));
 		return(FALSE);
@@ -130,7 +130,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$sqlResult = $db->query($sql,array($_POST['MYSQL']['room']));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg(getResultMessage("policyError"));
 		return(FALSE);
 	}
@@ -165,7 +165,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg(getResultMessage("systemsPolicyError"));
 		return(FALSE);
 	}
@@ -188,7 +188,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		}
 
 	}
-	
+
 	// Set the current period. Which ever period is the most restrictive is the period that we will use
 	// $currentPeriod = 0;
 	// if ($systemPeriod > 0 && $systemPeriod <= $libraryPeriod && $systemPeriod <= $policyPeriod) {
@@ -251,12 +251,12 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$counts['bookings']['policy']   = array();
 	$counts['hours']['total']       = 0;
 	$counts['bookings']['total']    = 0;
- 
+
 	$sql       = sprintf("SELECT * FROM building");
 	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg("Error retrieving buildings");
 		return(FALSE);
 	}
@@ -270,7 +270,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg("Error retrieving buildings");
 		return(FALSE);
 	}
@@ -308,7 +308,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$sqlResult  = $db->query($sql,array(lc($username),$sUnix - ($currentPeriod/2),$eUnix + ($currentPeriod/2)));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg(getResultMessage("patronReservationInfo"));
 		return(FALSE);
 	}
@@ -340,43 +340,43 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		// if (!isset($counts['hours']['policy'][$row['policyID']])) {
 		// 	$counts['hours']['policy'][$row['policyID']] = $totalHours;
 		// }
-		
+
 		$counts['hours']['policy'][$row['policyID']] += $bookedHours;
-		
+
 
 		// determine total number of hours patron has booked
 		// if (!isset($counts['hours']['total'])) {
 		// 	$counts['hours']['total'] = $totalHours;
 		// }
-		
+
 		$counts['hours']['total'] += $bookedHours;
-		
+
 
 		// determine number of bookings the patron as in this building
 		// if (!isset($counts['bookings']['building'][$row['buildingID']])) {
 		// 	$counts['bookings']['building'][$row['buildingID']] = 1;
 		// }
-		
+
 		$counts['bookings']['building'][$row['buildingID']]++;
-		
+
 
 		// determine number of hours patron has in this policy
 		// if (!isset($counts['bookings']['policy'][$row['policyID']])) {
 		// 	$counts['bookings']['policy'][$row['policyID']] = 1;
 		// }
-		
+
 		$counts['bookings']['policy'][$row['policyID']]++;
-		
+
 		// determine total number of bookings paron has booked
 		// if (!isset($counts['bookings']['total'])) {
 		// 	$counts['bookings']['total'] = 1;
 		// }
-		
+
 		$counts['bookings']['total']++;
 
 	} // While Loop
 
-	// Do all of the checks to see if the user can create a reservation. IF override isn't set. 
+	// Do all of the checks to see if the user can create a reservation. IF override isn't set.
 	if ($override == "0") {
 
 		// Check to see if a user is allowed to book multiple rooms at the same time. If no
@@ -405,7 +405,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 		// check against library hours
 
-		// get hours from the RSS feed. 
+		// get hours from the RSS feed.
 		// if the RSS feed is unavailable, assume the library will be open (should this be configurable?)
 		if (!is_empty($libraryHoursURL)) {
 
@@ -510,7 +510,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 			return(FALSE);
 		}
 
-		// will requesting this room push the user over the allowed bookings per period for 
+		// will requesting this room push the user over the allowed bookings per period for
 		// this policy/location
 
 		// system check
@@ -552,7 +552,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	}
 	else {
 		$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=? WHERE ID=?");
-		$sqlOptions = array(			
+		$sqlOptions = array(
 			$sUnix,
 			$eUnix,
 			time(),
@@ -587,8 +587,8 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 	// If there was an email address submitted, send an email to that address
 	if (isset($_POST['HTML']['notificationEmail']) && validate::emailAddr($_POST['HTML']['notificationEmail'])) {
-		
-		
+
+
 		$buildingName = getBuildingName($roomName['building']);
 
 		$sam = "am";
@@ -633,7 +633,7 @@ function duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) {
 	$sql       = sprintf("SELECT * FROM `reservations` WHERE username=? AND roomID=? AND startTime=? AND endTime=?");
 	$sqlResult = $db->query($sql,array($username, $roomID, $sUnix,	$eUnix));
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return(NULL);
 	}
 	else {
@@ -655,7 +655,7 @@ function multipleBooksings($username,$sUnix,$eUnix) {
 	$sqlResult = $db->query($sql,array($sUnix,$sUnix,$eUnix,$eUnix,$username));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return(TRUE); // we return true, because there was an error and we don't want the reservation to submit on error
 	}
 
@@ -676,7 +676,7 @@ function conflictReservationCheck($roomID,$sUnix,$eUnix) {
 	$sqlResult = $db->query($sql,array($sUnix,	$sUnix,	$eUnix,	$eUnix,	$sUnix,	$eUnix, $roomID));
 
 	if ($sqlResult->error()) {
-		errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		return(TRUE); // we return true, because there was an error and we don't want the reservation to submit on error
 	}
 

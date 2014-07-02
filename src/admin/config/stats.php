@@ -21,7 +21,7 @@ if (isset($_POST['HTML']['genStats'])) {
 
 	$sqlResult = $db->query($sql,array($etime,$stime));
 
-	if ($sqlResult['result']) {
+	if (!$sqlResult->error()) {
 		$stats = array();
 		while ($row = $sqlResult->fetch()) {
 

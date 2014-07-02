@@ -29,7 +29,7 @@ $sql       = sprintf("SELECT * FROM building ORDER BY name");
 $sqlResult = $db->query($sql);
 
 if ($sqlResult->error()) {
-	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+	errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 }
 
 $temp                 = array();
@@ -58,7 +58,7 @@ $sql       = sprintf("SELECT * FROM roomTemplates ORDER BY name");
 $sqlResult = $db->query($sql);
 
 if ($sqlResult->error()) {
-	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+	errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 }
 
 $temp                 = array();

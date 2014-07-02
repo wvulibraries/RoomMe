@@ -43,7 +43,7 @@ $sqlResult = $db->query($sql);
 if ($sqlResult->error()) {
 	$error     = TRUE;
 	$errorMsg .= errorHandle::errorMsg("Error retrieving reservation list.");
-	errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+	errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 }
 
 if ($error === FALSE) {

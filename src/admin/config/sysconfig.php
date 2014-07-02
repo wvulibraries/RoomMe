@@ -49,7 +49,7 @@ if(isset($_POST['MYSQL']['sysconfig_submit'])) {
 			$sqlResult = $db->query($sql,array($_POST['MYSQL'][$name],$name));
 
 			if ($sqlResult->error()) {
-				errorHandle::newError(__METHOD__."() - ".$sqlResult['error'], errorHandle::DEBUG);
+				errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 				errorHandle::errorMsg($name." not updated correctly. Other fields may still be updated.");
 				$error = TRUE;
 			}
