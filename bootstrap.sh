@@ -65,6 +65,11 @@ ln -s /vagrant/serverConfiguration/database.lib.wvu.edu.remote.php $SERVERURL/ph
 
 
 # Template
+mkdir -p $GITDIR/engineAPITemplates/library2012.2col/templateIncludes
+ln -s /vagrant/serverConfiguration/templateHeader.php $GITDIR/engineAPITemplates/library2012.2col/templateIncludes/templateHeader.php
+ln -s /vagrant/serverConfiguration/templateFooter.php $GITDIR/engineAPITemplates/library2012.2col/templateIncludes/templateFooter.php
+ln -s $GITDIR/engineAPITemplates/library2012.1col/templateIncludes/2colHeaderIncludes.php $GITDIR/engineAPITemplates/library2012.2col/templateIncludes/2colHeaderIncludes.php
+
 mkdir -p $GITDIR/engineAPITemplates/library2012.3col/templateIncludes
 ln -s /vagrant/serverConfiguration/templateHeader.php $GITDIR/engineAPITemplates/library2012.3col/templateIncludes/templateHeader.php
 ln -s /vagrant/serverConfiguration/templateFooter.php $GITDIR/engineAPITemplates/library2012.3col/templateIncludes/templateFooter.php
