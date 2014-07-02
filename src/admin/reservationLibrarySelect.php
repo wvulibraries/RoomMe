@@ -28,7 +28,7 @@ templates::display('header');
 </header>
 
 <form action="reservationRoomSelect.php?type={local var="type"}" method="post">
-	{csrf insert="post"}
+	{csrf}
 
 	<label for="library">Library:</label>
 	<select name="library" id="library">

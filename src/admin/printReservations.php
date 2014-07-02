@@ -223,7 +223,7 @@ p {
 <p><strong>Select Date and Building</strong></p>
 
 <form action="{phpself query="true"}" method="post">
-	{csrf insert="post"}
+	{csrf}
 	<table>
 		<tr>
 			<td>

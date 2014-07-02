@@ -77,7 +77,7 @@ templates::display('header');
 
 <form action="" method="post">
 
-	{csrf insert="post"}
+	{csrf}
 
 	<table>
 		<?php foreach($fields as $name=>$value) { ?>

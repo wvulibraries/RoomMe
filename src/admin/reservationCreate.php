@@ -172,7 +172,7 @@ if (count($engine->errorStack) > 0) {
 <p>Adding a reservation for Room <strong>{local var="roomName"}</strong> in building <strong>{local var="buildingName"}</strong></p>
 
 <form action="{phpself query="true"}" method="post">
-	{csrf insert="post"}
+	{csrf}
 
 	<input type="hidden" name="library" value="{local var="buildingID"}" />
 	<input type="hidden" name="room" value="{local var="roomID"}" />

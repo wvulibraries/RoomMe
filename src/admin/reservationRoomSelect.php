@@ -54,7 +54,7 @@ templates::display('header');
 <br />
 
 <form action="{local var="action"}" method="post">
-	{csrf insert="post"}
+	{csrf}
 
 	<input type="hidden" name="library" value="{local var="libraryID"}" />
 

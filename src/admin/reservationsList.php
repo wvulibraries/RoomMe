@@ -107,7 +107,7 @@ templates::display('header');
 </header>
 
 <form action="{phpself query="true"}" method="post">
-	{csrf insert="post"}
+	{csrf}
 	<table>
 		<tr>
 			<td>

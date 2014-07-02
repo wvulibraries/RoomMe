@@ -139,7 +139,7 @@ templates::display('header');
 
 
 <form action="{phpself query="true"}" method="post">
-	{csrf insert="post"}
+	{csrf}
 
 	<label for="library">Library:</label>
 	<select name="library" id="library">

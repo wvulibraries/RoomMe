@@ -175,7 +175,7 @@ templates::display('header');
 	<?php } else { ?>
 
 <form action="{phpself query="true"}" method="post">
-	{csrf insert="post"}
+	{csrf}
 
 	<input type="hidden" name="library" value="{local var="buildingID"}" />
 	<input type="hidden" name="room" value="{local var="roomID"}" />
