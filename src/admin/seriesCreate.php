@@ -17,7 +17,7 @@ $comments         = "";
 $action           = "Add";
 $weekdaysAssigned = array();
 
-// This is so broken :-/ 
+// This is so broken :-/
 if (isset($_POST['MYSQL']['library'])) {
 	http::setGet("library",$_POST['RAW']['library']);
 	http::setGet("room",$_POST['RAW']['room']);
@@ -147,7 +147,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 		}
 	}
 
-	$allDay    = (isset($_POST['MYSQL']['allDay']) && $_POST['MYSQL']['allDay'] == "1")?TRUE:FALSE; 
+	$allDay    = (isset($_POST['MYSQL']['allDay']) && $_POST['MYSQL']['allDay'] == "1")?TRUE:FALSE;
 	$frequency = $_POST['MYSQL']['frequency'];
 
 	if ($allDay === TRUE) {
@@ -244,7 +244,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 							$startTimeTemp      = strtotime($interval,$startTime);
 							$endTimeTemp        = strtotime($interval,$endTime);
 						}
-						else { // equal	
+						else { // equal
 							$startDayTemp       = $startDay;
 							$startTimeTemp      = $startTime;
 							$endTimeTemp        = $endTime;
@@ -253,16 +253,16 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 						$schedule = array_merge($schedule,$temp);
 					}
 				}
-			}	
+			}
 
 		}
-		// Every Month (Month Day) 
+		// Every Month (Month Day)
 		else if ($frequency == "2") {
 
 			$schedule = getSchedule($startTime,$endTime,$startDay,$seriesEndDate,"+1 Month");
 
 		}
-		// Every Month (Week Day) 
+		// Every Month (Week Day)
 		else if ($frequency == "3") {
 
 			$interval = "";
@@ -270,19 +270,19 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 			$weekdayOccurence = getWeekdayOccurrence($startTime);
 			// $weekdayOccurence = array("1","Sunday");
 			switch ($weekdayOccurence[0]) {
-				case 1: 
+				case 1:
 					$interval = "first";
 					break;
 				case 2:
 					$interval = "second";
 					break;
-				case 3: 
+				case 3:
 					$interval = "third";
 					break;
 				case 4:
 					$interval = "forth";
 					break;
-				case 5: 
+				case 5:
 					$interval = "fifth";
 					break;
 			}
@@ -317,7 +317,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 			// $schedule = getScheduleMonthWeek($startTime,$endTime,$startDay,$seriesEndDate,$interval);
 		}
-	
+
 
 	// print "Schedule: <pre>";
 	// var_dump($schedule);
@@ -331,8 +331,8 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 		$submissionError = FALSE;
 		$seriesID        = NULL;
 
-		recurseInsert("includes/getUserInfo.php","php"); 
-		$userInformation = getUserInfo($_POST['MYSQL']['username']);    
+		recurseInsert("includes/getUserInfo.php","php");
+		$userInformation = getUserInfo($_POST['MYSQL']['username']);
 
 		if ($userInformation !== FALSE) {
 
@@ -357,7 +357,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 				$seriesEndDate)
 			);
 
-			$seriesID = $sqlResult['id'];
+			$seriesID = $sqlResult->insertId();
 
 		}
 		else {
@@ -372,7 +372,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 			foreach ($schedule as $I=>$V) {
 				// print "<p>".(date("F j, Y, g:i a",$V['startTime']))."</p>";
 				// print "<p>".(date("F j, Y, g:i a",$V['endTime']))."</p>";
-				// print "<p>--</p>";	
+				// print "<p>--</p>";
 
 				// set all the needed posted variables
 				$_POST['MYSQL']['start_month']  = date("m",$V['startTime']);
@@ -388,7 +388,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 				// submit the reservation
 				$reservationReturn = createReservation($buildingID,$roomID,$seriesID);
 
-				// check the return value. If false, roll back the transactions and stop looping. 
+				// check the return value. If false, roll back the transactions and stop looping.
 				if ($reservationReturn === FALSE) {
 					$submissionError = TRUE;
 					break;
@@ -426,7 +426,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 // room
 // reservationID
 // username
-// groupname	
+// groupname
 // via
 // override
 // comments
@@ -531,7 +531,7 @@ function getScheduleMonthWeek($startTime,$endTime,$startDay,$seriesEndDate,$inte
 
 			$workingDay       = strtotime("+1 Month",$startDay);
 			$workingStartTime = strtotime("+1 Month",$startTime);
-			$workingEndTime   = strtotime("+1 Month",$endTime);		
+			$workingEndTime   = strtotime("+1 Month",$endTime);
 
 			$workingDay       = strtotime($interval,$startDay);
 			$workingStartTime = strtotime($interval,$startTime);
@@ -548,7 +548,7 @@ function getScheduleMonthWeek($startTime,$endTime,$startDay,$seriesEndDate,$inte
 
 		$workingDay       = strtotime("+1 Month",$workingDay);
 		$workingStartTime = strtotime("+1 Month",$workingStartTime);
-		$workingEndTime   = strtotime("+1 Month",$workingEndTime);		
+		$workingEndTime   = strtotime("+1 Month",$workingEndTime);
 
 		$workingDay       = strtotime($interval,$workingDay);
 		$workingStartTime = strtotime($interval,$workingStartTime);
@@ -558,17 +558,17 @@ function getScheduleMonthWeek($startTime,$endTime,$startDay,$seriesEndDate,$inte
 	return($schedule);
 }
 
-function getWeekdayOccurrence($time) { 
-    $month = intval(date("m", $time)); $day = intval(date("d", $time)); 
-    for ($i = 0; $i < 7; $i++) { 
-        $days[] = date("l", mktime(0, 0, 0, $month, ($i+1), date("Y", $time)));    
-    } 
+function getWeekdayOccurrence($time) {
+    $month = intval(date("m", $time)); $day = intval(date("d", $time));
+    for ($i = 0; $i < 7; $i++) {
+        $days[] = date("l", mktime(0, 0, 0, $month, ($i+1), date("Y", $time)));
+    }
 
-    $posd  = array_search(date("l", $time), $days); 
-    $posdm = array_search($days[0], $days) - $posd; 
+    $posd  = array_search(date("l", $time), $days);
+    $posdm = array_search($days[0], $days) - $posd;
 
-    return array((($day+$posdm+6)/7), $days[$posd]);        
-} 
+    return array((($day+$posdm+6)/7), $days[$posd]);
+}
 
 templates::display('header');
 ?>
@@ -613,7 +613,7 @@ if (count($engine->errorStack) > 0) {
 				<label for="start_month">Month:</label><br />
 				<select name="start_month" id="start_month" >
 					<?php
-						
+
 						for($I=1;$I<=12;$I++) {
 							printf('<option value="%s" %s>%s</option>',
 								($I < 10)?"0".$I:$I,
@@ -661,7 +661,7 @@ if (count($engine->errorStack) > 0) {
 				End Time
 			</td>
 		</tr>
-		<tr>	
+		<tr>
 			<td>
 				<label for="start_hour">Hour:</label><br />
 				<select name="start_hour" id="start_hour" >
@@ -740,7 +740,7 @@ if (count($engine->errorStack) > 0) {
 
 	<br />
 
-	<p>Weekdays</p> 
+	<p>Weekdays</p>
 
 	<table>
 		<tr>
@@ -780,14 +780,14 @@ if (count($engine->errorStack) > 0) {
 	<br />
 	<label for="seriesEndDate">
 		Series Ends On:
-	</label>	
+	</label>
 	<table>
 		<tr>
 			<td>
 				<label for="seriesEndDate_month">Month:</label><br />
 				<select name="seriesEndDate_month" id="seriesEndDate_month" >
 					<?php
-						
+
 						for($I=1;$I<=12;$I++) {
 							printf('<option value="%s" %s>%s</option>',
 								($I < 10)?"0".$I:$I,
