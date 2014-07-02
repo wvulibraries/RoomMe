@@ -1,3 +1,3 @@
 <?php
-header("Location: /about/directory/", true, 307);
+header("Location: /services/rooms/", true, 307);
 ?>
