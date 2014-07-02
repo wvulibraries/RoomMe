@@ -15,7 +15,7 @@ if (isset($_GET['MYSQL']['snippetID'])) {
 		$updateInsert   = TRUE;
 		$updateInsertID = "ID";
 
-		$snippetFields  = mysql_fetch_array($sqlResult['result'], MYSQL_ASSOC);
+		$snippetFields  = $sqlResult->fetch();
 	}
 }
 

@@ -28,7 +28,7 @@ else {
         	errorHandle::errorMsg("Error fetching content.");
         }
         else {
-        	$content = mysql_fetch_array($sqlResult['result'], MYSQL_ASSOC);
+        	$content = $sqlResult->fetch();
         	$localvars->set("content",$content['content']);
         }
 	}
