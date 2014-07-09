@@ -81,7 +81,7 @@ if ($error === FALSE) {
 		$temp['endTime']   = date($timeFormat,$row['endTime']);
 		$temp['frequency'] = $frequency;
 		$temp['edit']      = sprintf('<a href="seriesCreate.php?id=%s">Edit</a>',
-			$engine->openDB->escape($row['ID'])
+			htmlSanitize($row['ID'])
 			);
 
 		$reservations[] = $temp;

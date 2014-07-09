@@ -17,7 +17,7 @@ else {
 // Form Submission
 if (is_empty($engine->errorStack) && isset($_POST['MYSQL']['addEQtoTemplate_submit'])) {
 
-	$engine->openDB->transBegin();
+	$db->beginTransaction();
 
 	$sql       = sprintf("DELETE FROM `roomTypeEquipment` WHERE roomTemplateID=?");
 	$sqlResult = $db->query($sql,array($roomTemplateID));
@@ -39,13 +39,13 @@ if (is_empty($engine->errorStack) && isset($_POST['MYSQL']['addEQtoTemplate_subm
 	}
 
 	if (isset($engine->errorStack['error'])) {
-		$engine->openDB->transRollback();
+		$db->rollback();
 	}
 	else {
-		$engine->openDB->transCommit();
+		$db->commit();
 		errorHandle::successMsg("Database successfully updated.");
 	}
-	$engine->openDB->transEnd();
+	
 }
 // Form Submission
 

@@ -324,9 +324,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 	// print "</pre>";
 
 	// turn on transactions
-	$transResult = $engine->openDB->transBegin("reservations");
-
-	if ($transResult === TRUE) {
+	if ($db->beginTransaction() === TRUE) {
 
 		$submissionError = FALSE;
 		$seriesID        = NULL;
@@ -339,7 +337,8 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 			// put the serial information in the serial table
 			$sql       = sprintf("INSERT INTO seriesReservations (`createdOn`,`createdBy`,`createdVia`,`roomID`,`startTime`,`endTime`,`modifiedOn`,`modifiedBy`,`username`,`initials`,`groupname`,`comments`,`allDay`,`frequency`,`weekdays`,`seriesEndDate`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
-			$sqlResult = $db->query($sql,array(				$engine->openDB->escape(time()),
+			$sqlResult = $db->query($sql,array(
+				time(),
 				session::get("username"),
 				$_POST['MYSQL']['via'],
 				$roomID,
@@ -361,8 +360,8 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 		}
 		else {
-			$engine->openDB->transRollback();
-			$engine->openDB->transEnd();
+			$db->rollback();
+			
 			errorHandle::errorMsg(getResultMessage("invalidUsername"));
 			$error     = TRUE;
 		}
@@ -399,8 +398,8 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 		if ($submissionError !== FALSE) {
 			// roll back the transaction
-			$engine->openDB->transRollback();
-			$engine->openDB->transEnd();
+			$db->rollback();
+			
 
 			// set an error message
 			$errorMsg .= errorHandle::errorMsg("Failed create series reservation.");
@@ -408,8 +407,8 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 		}
 		else {
 			// end the transaction and commit it
-			$engine->openDB->transCommit();
-			$engine->openDB->transEnd();
+			$db->commit();
+			
 		}
 	}
 	else {
@@ -447,14 +446,14 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 } // submit create
 else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 
-	$transResult = $engine->openDB->transBegin("reservations");
+	$transResult = $db->beginTransaction();
 
 	$sql       = sprintf("DELETE FROM `reservations` WHERE seriesID=? AND startTime>?");
 	$sqlResult = $db->query($sql,array($_POST['MYSQL']['reservationID'],time()));
 
 	if ($sqlResult->error()) {
-		$engine->openDB->transRollback();
-		$engine->openDB->transEnd();
+		$db->rollback();
+		
 		$error = TRUE;
 		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg("Error deleting series reservation.");
@@ -465,13 +464,13 @@ else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 		$sqlResult = $db->query($sql,array($_POST['MYSQL']['reservationID']));
 
 		if ($sqlResult->error()) {
-			$engine->openDB->transRollback();
-			$engine->openDB->transEnd();
+			$db->rollback();
+			
 			errorHandle::successMsg("Series Reservation Deleted.");
 		}
 		else {
-			$engine->openDB->transCommit();
-			$engine->openDB->transEnd();
+			$db->commit();
+			
 			header('Location: seriesList.php');
 		}
 

@@ -91,7 +91,7 @@ if ($error === FALSE) {
 			$temp['hoursOnReservationTable'] = ($reserveTime > 23.6)?"24":$reserveTime;
 		}
 		$temp['edit']      = sprintf('<a href="reservationCreate.php?id=%s">Edit</a>',
-			$engine->openDB->escape($row['ID'])
+			htmlSanitize($row['ID'])
 			);
 
 		$reservations[] = $temp;

@@ -77,7 +77,7 @@ function buildRoomList($building) {
 	$db     = db::get($localvars->get('dbConnectionName'));
 
 	$sql       = sprintf("SELECT roomListDisplay, roomSortOrder FROM building WHERE ID=?");
-	$sqlResult = $db->query($sql,array($engine->openDB->escape($building)));
+	$sqlResult = $db->query($sql,array($building));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
