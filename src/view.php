@@ -129,7 +129,7 @@ if ($error === FALSE) {
 		else {
 			$temp['edit']      = sprintf('<a href="%s?id=%s" class="cancelReservation">Cancel</a>',
 				$_SERVER['PHP_SELF'],
-				$engine->openDB->escape($row['ID'])
+				htmlSanitize($row['ID'])
 				);
 		}
 		$reservations[] = $temp;
