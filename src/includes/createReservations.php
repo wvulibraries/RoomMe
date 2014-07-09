@@ -6,8 +6,9 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 		recurseInsert("includes/functions.php","php");
 	}
 
-	$engine = EngineAPI::singleton();
-	$db     = db::get($localvars->get('dbConnectionName'));
+	$engine    = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
+	$db        = db::get($localvars->get('dbConnectionName'));
 
 	$validate = validateRoomPostVariables();
 
