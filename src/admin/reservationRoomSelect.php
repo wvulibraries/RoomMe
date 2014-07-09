@@ -73,6 +73,8 @@ templates::display('footer');
 
 function buildRoomList($building) {
 
+	$localvars = localvars::getInstance();
+
 	$engine = EngineAPI::singleton();
 	$db     = db::get($localvars->get('dbConnectionName'));
 
@@ -90,7 +92,7 @@ function buildRoomList($building) {
 		$buildingInfo['roomSortOrder']
 		);
 
-	$sqlResult = $db->query($sql,$building);
+	$sqlResult = $db->query($sql,array($building));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
