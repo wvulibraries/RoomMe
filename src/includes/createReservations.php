@@ -306,7 +306,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 // return(FALSE);
 
 
-	$sqlResult  = $db->query($sql,array(lc($username),$sUnix - ($currentPeriod/2),$eUnix + ($currentPeriod/2)));
+	$sqlResult  = $db->query($sql,array(strtolower($username),$sUnix - ($currentPeriod/2),$eUnix + ($currentPeriod/2)));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
@@ -544,7 +544,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 			$eUnix,
 			time(),
 			session::get("username"),
-			lc($username),
+			strtolower($username),
 			$userInformation['initials'],
 			$groupname,
 			$comments,
@@ -558,7 +558,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 			$eUnix,
 			time(),
 			session::get("username"),
-			lc($username),
+			strtolower($username),
 			$userInformation['initials'],
 			$reservationUpdate,
 			$groupname,

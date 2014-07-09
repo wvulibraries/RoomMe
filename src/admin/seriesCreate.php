@@ -286,8 +286,8 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 					$interval = "fifth";
 					break;
 			}
-			$intervalStart = $interval." ".lc($weekdayOccurence[1])." +".$_POST['MYSQL']['start_hour']."hours +".$_POST['MYSQL']['start_minute']."minutes" ;
-			$intervalEnd   = $interval." ".lc($weekdayOccurence[1])." +".$_POST['MYSQL']['end_hour']."hours +".$_POST['MYSQL']['end_minute']."minutes" ;
+			$intervalStart = $interval." ".strtolower($weekdayOccurence[1])." +".$_POST['MYSQL']['start_hour']."hours +".$_POST['MYSQL']['start_minute']."minutes" ;
+			$intervalEnd   = $interval." ".strtolower($weekdayOccurence[1])." +".$_POST['MYSQL']['end_hour']."hours +".$_POST['MYSQL']['end_minute']."minutes" ;
 
 			$startDay = mktime(0,0,0,$_POST['MYSQL']['start_month'],1,$_POST['MYSQL']['start_year']);
 

@@ -22,7 +22,7 @@ if (isset($_GET['MYSQL']['id'])) {
 	else {
 		$row       = $sqlResult->fetch();
 
-		if (lc($row['username']) == lc(session::get("username"))) {
+		if (strtolower($row['username']) == strtolower(session::get("username"))) {
 
 			$timeAdjustment      = 60 * (getConfig('adjustedDeleteTime'));
 			$currentAdjustedTime = time() + $timeAdjustment;
