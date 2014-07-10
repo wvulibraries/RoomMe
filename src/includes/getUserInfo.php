@@ -4,16 +4,15 @@ function getUserInfo($username) {
 
 	$engine = EngineAPI::singleton();
 
-	$engine->dbConnect("server","157.182.150.27");
-	$engine->dbConnect("username","remote");
-	$engine->dbConnect("password",'My$QLnb.UP??');
-	$remoteDB = $engine->dbConnect("database","authentication",FALSE);
+	require '/home/www.libraries.wvu.edu/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php';
+	$databaseOptions['dbName'] = "authentication";
+	$authDB                   = db::create('mysql', $databaseOptions, 'authDB');;
 
-	$sql = sprintf("SELECT master.* FROM accountUsernames LEFT JOIN master on master.uid=accountUsernames.uid WHERE accountUsernames.username='%s'",
-		$remoteDB->escape($username)
+	$sql = sprintf("SELECT master.* FROM accountUsernames LEFT JOIN master on master.uid=accountUsernames.uid WHERE accountUsernames.username=?",
+		$username
 		);
 
-	$sqlResult = $remoteDB->query($sql);
+	$sqlResult = $authDB->query($sql);
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
