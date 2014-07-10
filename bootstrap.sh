@@ -61,7 +61,7 @@ touch /vagrant/serverConfiguration/serverlogs/error_log
 /etc/init.d/httpd restart
 
 mkdir -p $SERVERURL/phpincludes/databaseConnectors/
-ln -s /vagrant/serverConfiguration/database.lib.wvu.edu.remote.php $SERVERURL/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php
+ln -s /vagrant/serverConfiguration/includes/database.lib.wvu.edu.remote.php $SERVERURL/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php
 
 
 # Template
