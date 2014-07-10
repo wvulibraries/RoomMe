@@ -13,13 +13,7 @@ $enginevars = enginevars::getInstance();
 recurseInsert("acl.php","php"); 
 recurseInsert("vars.php","php");
 
-$options = array(
-	'username' => 'username',
-	'password' => 'password',
-	'dbName'   => 'roomReservations',
-);
-require_once '/home/www.libraries.wvu.edu/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php';
-$db = db::create('mysql', $options, $localvars->get('dbConnectionName'));
+require 'engineIncludes.php';
 
 recurseInsert("includes/engineHeader.php","php");
 templates::load("library2012.3col");
