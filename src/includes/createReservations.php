@@ -628,7 +628,8 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 
 function duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) {
 
-	$engine = EngineAPI::singleton();
+	$engine    = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db        = db::get($localvars->get('dbConnectionName'));
 
 	$sql       = sprintf("SELECT * FROM `reservations` WHERE username=? AND roomID=? AND startTime=? AND endTime=?");
@@ -649,7 +650,8 @@ function duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) {
 
 function multipleBooksings($username,$sUnix,$eUnix) {
 
-	$engine = EngineAPI::singleton();
+	$engine    = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db        = db::get($localvars->get('dbConnectionName'));
 
 	$sql       = sprintf("SELECT * FROM `reservations` WHERE ((startTime<=? AND endTime>?) OR (startTime<? AND endTime>=?)) AND username=?");
@@ -670,7 +672,8 @@ function multipleBooksings($username,$sUnix,$eUnix) {
 
 function conflictReservationCheck($roomID,$sUnix,$eUnix) {
 
-	$engine = EngineAPI::singleton();
+	$engine    = EngineAPI::singleton();
+	$localvars = localvars::getInstance();
 	$db        = db::get($localvars->get('dbConnectionName'));
 
 	$sql       = sprintf("SELECT * FROM `reservations` WHERE ( ((startTime<=? AND endTime>?) OR (startTime<? AND endTime>=?)) OR (startTime>=? AND endTime<=?) ) AND roomID=?");
