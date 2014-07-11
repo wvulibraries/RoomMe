@@ -4,15 +4,18 @@ function getUserInfo($username) {
 
 	$engine = EngineAPI::singleton();
 
+	// For vagrant development
+	$databaseOptions = array(
+		'username' => 'username',
+		'password' => 'password'
+		);
 	require '/home/www.libraries.wvu.edu/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php';
 	$databaseOptions['dbName'] = "authentication";
 	$authDB                   = db::create('mysql', $databaseOptions, 'authDB');;
 
-	$sql = sprintf("SELECT master.* FROM accountUsernames LEFT JOIN master on master.uid=accountUsernames.uid WHERE accountUsernames.username=?",
-		$username
-		);
+	$sql = sprintf("SELECT master.* FROM accountUsernames LEFT JOIN master on master.uid=accountUsernames.uid WHERE accountUsernames.username=?");
 
-	$sqlResult = $authDB->query($sql);
+	$sqlResult = $authDB->query($sql,array($username));
 
 	if ($sqlResult->error()) {
 		errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
