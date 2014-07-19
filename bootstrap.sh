@@ -44,6 +44,15 @@ ln -s $GITDIR/engineAPI/engine/ $SERVERURL/phpincludes/
 rm -f $GITDIR/engineAPI/engine/engineAPI/latest/config/defaultPrivate.php
 ln -s /vagrant/serverConfiguration/defaultPrivate.php $GITDIR/engineAPI/engine/engineAPI/latest/config/defaultPrivate.php
 
+rm -f /etc/hosts
+ln -s /vagrant/serverConfiguration/hosts /etc/hosts
+
+mkdir -p /home/www.libraries.wvu.edu/public_html/hours
+ln -s /vagrant/serverConfiguration/rss.php /home/www.libraries.wvu.edu/public_html/hours/rss.php
+mkdir -p /home/database.lib.wvu.edu/public_html/cgi-bin/
+ln -s /vagrant/serverConfiguration/fines.pl /home/database.lib.wvu.edu/public_html/cgi-bin/fines.pl
+chmod a+x /home/database.lib.wvu.edu/public_html/cgi-bin/fines.pl
+
 # Application Specific
 mkdir -p $SERVERURL/$DOCUMENTROOT/services
 
