@@ -6,7 +6,7 @@ if (isset($listObj)) {
 	unset($listObj);
 }
 
-$listObj = new listManagement("emailMessages");
+$listObj = new listManagement("emailMessages",db::get("appDB"));
 
 if (isset($_GET['MYSQL']['ID']) && $updateTable === FALSE) {
 	$listObj->updateInsert   = TRUE;

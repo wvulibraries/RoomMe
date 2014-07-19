@@ -10,7 +10,7 @@ $row       = $sqlResult->fetch();
 
 $reservationIncrements = $row['value'];
 
-$listObj = new listManagement("policies");
+$listObj = new listManagement("policies",db::get("appDB"));
 
 $options = array();
 $options['field'] = "name";

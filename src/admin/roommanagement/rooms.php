@@ -1,7 +1,7 @@
 <?php
 require_once("../engineHeader.php");
 
-$listObj = new listManagement("rooms");
+$listObj = new listManagement("rooms",db::get("appDB"));
 
 $db      = db::get($localvars->get('dbConnectionName'));
 

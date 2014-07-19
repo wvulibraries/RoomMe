@@ -1,8 +1,7 @@
 <?php
 require_once("../engineHeader.php");
 
-$listObj = new listManagement("via");
-
+$listObj = new listManagement("via",db::get("appDB"));
 $options = array();
 $options['field'] = "name";
 $options['label'] = "Via";

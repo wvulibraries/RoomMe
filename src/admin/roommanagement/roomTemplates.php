@@ -1,7 +1,7 @@
 <?php
 require_once("../engineHeader.php");
 
-$listObj = new listManagement("roomTemplates");
+$listObj = new listManagement("roomTemplates",db::get("appDB"));
 
 $options = array();
 $options['field'] = "ID";
