@@ -1,7 +1,10 @@
 <?php
 require_once("../engineHeader.php");
-$snippet = new Snippet("pageContent","content");
-$snippet->snippetPublicURL = localvars::get("roomResBaseDir").$snippet->snippetPublicURL;
+
+$localvars = localvars::getInstance();
+
+$snippet = new Snippet("pageContent","content",db::get("appDB"));
+$snippet->snippetPublicURL = $localvars->get("roomResBaseDir").$snippet->snippetPublicURL;
 
 require("../includes/snippetsFunctions.php");
 
@@ -10,7 +13,7 @@ if (isset($_POST['MYSQL']['pageContent_submit'])) {
 
 	if (!isset($engine->errorStack['error'])) {
 		unset($listObj);
-		$_GET['MYSQL']['snippetID'] = localvars::get("listObjInsertID");
+		$_GET['MYSQL']['snippetID'] = $localvars->get("listObjInsertID");
 	}
 }
 else if (isset($_GET['MYSQL']['deleteID'])) {
