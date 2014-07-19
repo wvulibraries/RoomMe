@@ -568,6 +568,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	$sqlResult = $db->query($sql,$sqlOptions);
 
 	if ($sqlResult->error()) {
+		errorHandle::newError(__METHOD__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 		errorHandle::errorMsg(getResultMessage("errorInserting"));
 		return(FALSE);
 	}
