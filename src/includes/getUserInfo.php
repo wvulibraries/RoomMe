@@ -9,9 +9,15 @@ function getUserInfo($username) {
 		'username' => 'username',
 		'password' => 'password'
 		);
-	require '/home/www.libraries.wvu.edu/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php';
-	$databaseOptions['dbName'] = "authentication";
-	$authDB                   = db::create('mysql', $databaseOptions, 'authDB');;
+
+	// @todo user info should be cached
+
+	$authDB = db::get("authDB");
+	if (isnull($authDB)) {
+		require '/home/www.libraries.wvu.edu/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php';
+		$databaseOptions['dbName'] = "authentication";
+		$authDB                   = db::create('mysql', $databaseOptions, 'authDB');
+	}
 
 	$sql = sprintf("SELECT master.* FROM accountUsernames LEFT JOIN master on master.uid=accountUsernames.uid WHERE accountUsernames.username=?");
 
