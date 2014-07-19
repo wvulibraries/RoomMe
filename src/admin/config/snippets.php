@@ -25,7 +25,7 @@ else {
 		$sql = sprintf("SELECT * FROM `%s` WHERE ID=? LIMIT 1",
         	"pageContent"
         	);
-        $sqlResult = $db->query($sql, $_GET['MYSQL']['snippetID']);
+        $sqlResult = $db->query($sql, array($_GET['MYSQL']['snippetID']));
 
         if ($sqlResult->error()) {
         	errorHandle::errorMsg("Error fetching content.");
