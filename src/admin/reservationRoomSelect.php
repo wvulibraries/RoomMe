@@ -4,7 +4,7 @@ recurseInsert("includes/functions.php","php");
 
 $error = FALSE;
 
-if (!isset($_POST['MYSQL']['library']) && validate::integer($_POST['MYSQL']['library']) === FALSE) {
+if (!isset($_POST['MYSQL']['library']) && validate::getInstance()->integer($_POST['MYSQL']['library']) === FALSE) {
 	$error = TRUE;
 }
 
