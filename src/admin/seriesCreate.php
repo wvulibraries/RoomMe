@@ -24,7 +24,7 @@ if (isset($_POST['MYSQL']['library'])) {
 }
 
 // We have an edit instead of a new page
-if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === TRUE) {
+if (isset($_GET['MYSQL']['id']) && validate::getInstance()->integer($_GET['MYSQL']['id']) === TRUE) {
 
 	$reservationID = $_GET['MYSQL']['id'];
 	$localvars->set("reservationID",$reservationID);
@@ -65,11 +65,11 @@ if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === T
 }
 
 
-if (!isset($_GET['MYSQL']['library']) || validate::integer($_GET['MYSQL']['library']) === FALSE) {
+if (!isset($_GET['MYSQL']['library']) || validate::getInstance()->integer($_GET['MYSQL']['library']) === FALSE) {
 	$errorMsg .= errorHandle::errorMsg("Missing or invalid building");
 	$error = TRUE;
 }
-if (!isset($_GET['MYSQL']['room']) || validate::integer($_GET['MYSQL']['room']) === FALSE) {
+if (!isset($_GET['MYSQL']['room']) || validate::getInstance()->integer($_GET['MYSQL']['room']) === FALSE) {
 	$errorMsg .= errorHandle::errorMsg("Missing or invalid room");
 	$error = TRUE;
 }

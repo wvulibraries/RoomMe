@@ -15,7 +15,7 @@ $username        = "";
 $groupname       = "";
 $comments        = "";
 $action          = "Add";
-if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === TRUE) {
+if (isset($_GET['MYSQL']['id']) && validate::getInstance()->integer($_GET['MYSQL']['id']) === TRUE) {
 	$reservationID = $_GET['MYSQL']['id'];
 	$localvars->set("reservationID",$reservationID);
 	$sql       = sprintf("SELECT reservations.*, building.ID as buildingID FROM `reservations` LEFT JOIN `rooms` ON rooms.ID=reservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.ID=?");
@@ -42,11 +42,11 @@ if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === T
 
 }
 
-if (!isset($_POST['MYSQL']['library']) && validate::integer($_POST['MYSQL']['library']) === FALSE) {
+if (!isset($_POST['MYSQL']['library']) && validate::getInstance()->integer($_POST['MYSQL']['library']) === FALSE) {
 	$errorMsg .= errorHandle::errorMsg("Missing or invalid building");
 	$error = TRUE;
 }
-if (!isset($_POST['MYSQL']['room']) && validate::integer($_POST['MYSQL']['room']) === FALSE) {
+if (!isset($_POST['MYSQL']['room']) && validate::getInstance()->integer($_POST['MYSQL']['room']) === FALSE) {
 	$errorMsg .= errorHandle::errorMsg("Missing or invalid room");
 	$error = TRUE;
 }
@@ -97,7 +97,7 @@ else if (isset($_POST['MYSQL']['createSubmit'])) {
 
 	createReservation($buildingID,$roomID);
 
-	if (isset($_GET['MYSQL']['id']) && validate::integer($_GET['MYSQL']['id']) === TRUE) {
+	if (isset($_GET['MYSQL']['id']) && validate::getInstance()->integer($_GET['MYSQL']['id']) === TRUE) {
 		$sql       = sprintf("SELECT reservations.*, building.ID as buildingID FROM `reservations` LEFT JOIN `rooms` ON rooms.ID=reservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE reservations.ID=?");
 		$sqlResult = $db->query($sql,array($reservationID));
 

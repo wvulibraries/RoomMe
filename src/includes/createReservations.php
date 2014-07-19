@@ -588,7 +588,7 @@ function createReservation($buildingID,$roomID,$seriesID=NULL) {
 	// // TODO
 
 	// If there was an email address submitted, send an email to that address
-	if (isset($_POST['HTML']['notificationEmail']) && validate::emailAddr($_POST['HTML']['notificationEmail'])) {
+	if (isset($_POST['HTML']['notificationEmail']) && validate::getInstance()->emailAddr($_POST['HTML']['notificationEmail'])) {
 
 
 		$buildingName = getBuildingName($roomName['building']);
