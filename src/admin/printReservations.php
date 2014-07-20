@@ -134,7 +134,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 				$previousRow['buildingName'],
 				$previousRoomName,
 				$_POST['MYSQL']['start_month']."/".$_POST['MYSQL']['start_day']."/".$_POST['MYSQL']['start_year'],
-			"foo"//$table->display($reservations)
+				$table->display($reservations)
 			);
 		}
 		else if ($sqlResult->rowCount() == 0) {
