@@ -53,7 +53,8 @@ require("../includes/snippetsFunctions.php");
 
 
 if (!is_empty($engine->errorStack)) {
-	$engine->localVars("errorMsg", '<section id="actionResults">
+
+	$localvars->set("errorMsg", '<section id="actionResults">
 		<header>
 			<h1>Results</h1>
 		</header>

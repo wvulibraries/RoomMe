@@ -19,7 +19,7 @@ if (isset($_GET['MYSQL']['snippetID'])) {
 	}
 }
 
-$listObj = new listManagement("pageContent");
+$listObj = new listManagement("pageContent",db::get("appDB"));
 $listObj->insertButtonText = "Save Snippet";
 $listObj->updateButtonText = "Save Snippet";
 
