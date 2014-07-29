@@ -1,18 +1,21 @@
 <?php
 
-formBuilder::ajaxHandler();
-
-$form = formBuilder::createForm('via');
+$form = formBuilder::createForm('Via');
 $form->linkToDatabase(array(
-    'table' => 'via'
+    'table'       => 'via'
 ));
+
+$form->insertTitle = "New Via";
+$form->editTitle   = "Edit Vias";
+
 
 $form->addField(
     array(
-        'name'            => 'id',
+        'name'            => 'ID',
         'primary'         => TRUE,
         'showInEditStrip' => FALSE,
-        'type'            => 'hidden'
+        'type'            => 'hidden',
+        'required'        => TRUE
     )
 );
 
