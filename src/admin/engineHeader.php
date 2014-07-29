@@ -13,6 +13,9 @@ recurseInsert("vars.php","php");
 
 require '../engineIncludes.php';
 
+formBuilder::process();
+formBuilder::ajaxHandler();
+
 templates::load("library2012.2col");
 
 $localvars->set("roomResBaseDir","/services/rooms");
