@@ -13,6 +13,7 @@ recurseInsert("vars.php","php");
 
 require '../engineIncludes.php';
 
+recurseInsert("includes/engineHeader.php","php");
 templates::load("library2012.2col");
 
 $localvars->set("roomResBaseDir","/services/rooms");
