@@ -14,8 +14,7 @@ $form->addField(
         'name'            => 'ID',
         'primary'         => TRUE,
         'showInEditStrip' => FALSE,
-        'type'            => 'hidden',
-        'required'        => TRUE
+        'type'            => 'hidden'
     )
 );
 
