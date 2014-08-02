@@ -34,7 +34,7 @@ $form->addField(
         'label'           => "Description",
         'showInEditStrip' => FALSE,
         'required'        => TRUE,
-        'type'            => 'text',
+        'type'            => 'textarea',
         'duplicates'      => TRUE
     )
 );
