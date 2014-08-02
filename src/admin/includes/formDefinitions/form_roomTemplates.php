@@ -94,7 +94,8 @@ $form->addField (
 		'name'  => "Manage Equipment Link",
 		'value' => '<a href="addEQtoRoom.php?roomTemplate={ID}">Edit</a>',
 		'label' => "Manage Equipment",
-		'type'  => "plaintext"
+		'type'  => "plaintext",
+		'showIn' => array(formBuilder::TYPE_EDIT)
 		)
 );
 
