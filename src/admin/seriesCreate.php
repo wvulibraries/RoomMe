@@ -1,7 +1,5 @@
 <?php
 require_once("engineHeader.php");
-recurseInsert("includes/functions.php","php");
-recurseInsert("includes/createReservations.php","php");
 
 $errorMsg = "";
 $error    = FALSE;
@@ -385,7 +383,12 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 				$_POST['MYSQL']['end_minute']   = date("i",$V['endTime']);
 
 				// submit the reservation
-				$reservationReturn = createReservation($buildingID,$roomID,$seriesID);
+				$reservation = new reservation;
+				
+				ß$reservation->setBuilding($_GET['MYSQL']['library']);
+				$reservation->setRoom($_GET['MYSQL']['room']);
+
+				$reservationReturn = $reservation->create($seriesID);
 
 				// check the return value. If false, roll back the transactions and stop looping.
 				if ($reservationReturn === FALSE) {
