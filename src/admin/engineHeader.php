@@ -11,7 +11,7 @@ $enginevars = enginevars::getInstance();
 recurseInsert("acl.php","php"); 
 recurseInsert("vars.php","php");
 
-require '../engineIncludes.php';
+recurseInsert('engineIncludes.php');
 
 templates::load("library2012.2col");
 
