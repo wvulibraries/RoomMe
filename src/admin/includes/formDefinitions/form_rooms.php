@@ -13,7 +13,7 @@ $form->addField(
         'name'            => "ID",
         'label'           => "Table ID",
         'primary'         => TRUE,
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'type'            => 'hidden'
     )
 );

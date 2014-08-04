@@ -13,7 +13,7 @@ $form->addField(
         'name'            => "ID",
         'label'           => "Table ID",
         'primary'         => TRUE,
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'type'            => 'hidden'
     )
 );
@@ -32,7 +32,7 @@ $form->addField(
     array(
         'name'            => "email",
         'label'           => "Building Email",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'email',
         'duplicates'      => TRUE
@@ -43,7 +43,7 @@ $form->addField(
     array(
         'name'            => "phone",
         'label'           => "Building Phone",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'text',
         'validate'        => 'phoneNumber',
@@ -55,7 +55,7 @@ $form->addField(
     array(
         'name'            => "fromEmail",
         'label'           => "From Email",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'email',
         'duplicates'      => TRUE
@@ -66,7 +66,7 @@ $form->addField(
     array(
         'name'            => "roomListDisplay",
         'label'           => "Room List Display",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'text',
         'value'           => "{name} -- {number}",
@@ -78,7 +78,7 @@ $form->addField(
     array(
         'name'            => "roomSortOrder",
         'label'           => "Room Sort Order",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'select',
         'duplicates'      => TRUE,
@@ -93,7 +93,7 @@ $form->addField(
     array(
         'name'            => "period",
         'label'           => "Period",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'text',
         'validate'        => 'integer',
@@ -105,7 +105,7 @@ $form->addField(
     array(
         'name'            => "maxHoursAllowed",
         'label'           => "Max Hours Per Period",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'text',
         'validate'        => 'integer',
@@ -117,7 +117,7 @@ $form->addField(
     array(
         'name'            => "bookingsAllowedInPeriod",
         'label'           => "Max Bookings Per Period",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'text',
         'validate'        => 'integer',
@@ -129,7 +129,7 @@ $form->addField(
     array(
         'name'            => "fineAmount",
         'label'           => "Fine Amount",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'text',
         'duplicates'      => TRUE
@@ -140,7 +140,7 @@ $form->addField(
     array(
         'name'            => "url",
         'label'           => "Building URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url',
         'duplicates'      => TRUE
@@ -151,7 +151,7 @@ $form->addField(
     array(
         'name'            => "externalURL",
         'label'           => "External URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url',
         'duplicates'      => TRUE
@@ -162,7 +162,7 @@ $form->addField(
     array(
         'name'            => "hoursRSS",
         'label'           => "Hours RSS URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url',
         'duplicates'      => TRUE
@@ -173,7 +173,7 @@ $form->addField(
     array(
         'name'            => "hoursURL",
         'label'           => "Hours URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url',
         'duplicates'      => TRUE
@@ -184,7 +184,7 @@ $form->addField(
     array(
         'name'            => "imageURL",
         'label'           => "Image URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url',
         'duplicates'      => TRUE
@@ -195,7 +195,7 @@ $form->addField(
     array(
         'name'            => "policyURL",
         'label'           => "Policy URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url',
         'duplicates'      => TRUE
@@ -206,7 +206,7 @@ $form->addField(
     array(
         'name'            => "fineLookupURL",
         'label'           => "Fine Lookup URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url',
         'duplicates'      => TRUE

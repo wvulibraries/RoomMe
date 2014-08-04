@@ -13,7 +13,7 @@ $form->addField(
         'name'            => "ID",
         'label'           => "Table ID",
         'primary'         => TRUE,
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'type'            => 'hidden'
     )
 );
@@ -32,7 +32,7 @@ $form->addField(
     array(
         'name'            => "description",
         'label'           => "Description",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'textarea',
         'duplicates'      => TRUE
@@ -43,7 +43,7 @@ $form->addField(
     array(
         'name'            => "url",
         'label'           => "URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url'
     )
@@ -52,7 +52,7 @@ $form->addField(
     array(
         'name'            => "period",
         'label'           => "Period",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'text',
         'validate'        => 'integer',
@@ -63,7 +63,7 @@ $form->addField(
     array(
         'name'            => "hoursAllowed",
         'label'           => "Hours per Period",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'text',
         'duplicates'      => TRUE,
@@ -75,7 +75,7 @@ $form->addField(
     array(
         'name'            => "bookingsAllowedInPeriod",
         'label'           => "Bookings per Period",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'text',
         'validate'        => 'integer',
@@ -86,7 +86,7 @@ $form->addField(
     array(
         'name'            => "maxLoanLength",
         'label'           => "Max Loan Length",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'text',
         'validate'        => 'integer',
@@ -97,7 +97,7 @@ $form->addField(
     array(
         'name'            => "fineAmount",
         'label'           => "Fine Amount",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'text'
     )
@@ -106,7 +106,7 @@ $form->addField(
     array(
         'name'            => "publicScheduling",
         'label'           => "Public Scheduling",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'boolean',
         'duplicates'      => TRUE,
@@ -118,7 +118,7 @@ $form->addField(
     array(
         'name'            => "publicViewing",
         'label'           => "Public Viewing",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'boolean',
         'duplicates'      => TRUE,
@@ -130,7 +130,7 @@ $form->addField(
     array(
         'name'            => "sameDayReservations",
         'label'           => "Create Same Day Reservation",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'boolean',
         'duplicates'      => TRUE,
@@ -143,7 +143,7 @@ $form->addField(
     array(
         'name'            => "reservationIncrements",
         'label'           => "Reservations Increments",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'text',
         'duplicates'      => TRUE,
@@ -154,7 +154,7 @@ $form->addField(
     array(
         'name'            => "futureScheduleLength",
         'label'           => "Future Schedule Length",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => TRUE,
         'type'            => 'text',
         'duplicates'      => TRUE,

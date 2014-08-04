@@ -13,7 +13,7 @@ $form->addField(
         'name'            => "ID",
         'label'           => "Table ID",
         'primary'         => TRUE,
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'type'            => 'hidden'
     )
 );
@@ -32,7 +32,7 @@ $form->addField(
     array(
         'name'            => "description",
         'label'           => "Description",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'textarea',
         'duplicates'      => TRUE
@@ -43,7 +43,7 @@ $form->addField(
     array(
         'name'            => "fromEmail",
         'label'           => "From Email",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'email',
         'duplicates'      => TRUE
@@ -54,7 +54,7 @@ $form->addField(
     array(
         'name'            => "url",
         'label'           => "URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url',
         'duplicates'      => TRUE
@@ -65,7 +65,7 @@ $form->addField(
     array(
         'name'            => "mapURL",
         'label'           => "Map URL",
-        'showInEditStrip' => FALSE,
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'url',
         'duplicates'      => TRUE
