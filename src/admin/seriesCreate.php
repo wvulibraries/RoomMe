@@ -39,18 +39,11 @@ if (isset($_GET['MYSQL']['id']) && validate::getInstance()->integer($_GET['MYSQL
 		$username        = $reservationInfo['username'];
 		$groupname       = $reservationInfo['groupname'];
 		$comments        = $reservationInfo['comments'];
-		$_POST['MYSQL']['library'] = $reservationInfo['buildingID'];
-		$_POST['HTML']['library']  = $reservationInfo['buildingID'];
-		$_POST['RAW']['library']   = $reservationInfo['buildingID'];
-		$_POST['MYSQL']['room']    = $reservationInfo['roomID'];
-		$_POST['HTML']['room']     = $reservationInfo['roomID'];
-		$_POST['RAW']['room']      = $reservationInfo['roomID'];
-		$_GET['MYSQL']['library'] = $reservationInfo['buildingID'];
-		$_GET['HTML']['library']  = $reservationInfo['buildingID'];
-		$_GET['RAW']['library']   = $reservationInfo['buildingID'];
-		$_GET['MYSQL']['room']    = $reservationInfo['roomID'];
-		$_GET['HTML']['room']     = $reservationInfo['roomID'];
-		$_GET['RAW']['room']      = $reservationInfo['roomID'];
+
+		http::setPost("library",$reservationInfo['buildingID']);
+		http::setPost("room",$reservationInfo['roomID']);
+		http::setGet("library",$reservationInfo['buildingID']);
+		http::setGet("room",$reservationInfo['roomID']);
 
 		$action = "Update";
 
@@ -385,7 +378,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 				// submit the reservation
 				$reservation = new reservation;
 				
-				ß$reservation->setBuilding($_GET['MYSQL']['library']);
+				$reservation->setBuilding($_GET['MYSQL']['library']);
 				$reservation->setRoom($_GET['MYSQL']['room']);
 
 				$reservationReturn = $reservation->create($seriesID);
