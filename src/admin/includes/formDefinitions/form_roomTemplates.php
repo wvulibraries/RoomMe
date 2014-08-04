@@ -11,9 +11,7 @@ $form->editTitle   = "Edit Room Templates";
 $form->addField(
     array(
         'name'            => "ID",
-        'label'           => "Table ID",
         'primary'         => TRUE,
-        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'type'            => 'hidden'
     )
 );
@@ -91,7 +89,7 @@ $form->addField(
 
 $form->addField (
 	array(
-		'name'  => "Manage Equipment Link",
+		'name'  => "edit",
 		'value' => '<a href="addEQtoRoom.php?roomTemplate={ID}">Edit</a>',
 		'label' => "Manage Equipment",
 		'type'  => "plaintext",
