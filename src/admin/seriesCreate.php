@@ -6,6 +6,8 @@ $error    = FALSE;
 
 $db       = db::get($localvars->get('dbConnectionName'));
 
+$series = new series;
+
 // we are editing a reservation
 $reservationID    = "";
 $reservationInfo  = NULL;
@@ -21,37 +23,12 @@ if (isset($_POST['MYSQL']['library'])) {
 	http::setGet("room",$_POST['RAW']['room']);
 }
 
+try {
+
 // We have an edit instead of a new page
-if (isset($_GET['MYSQL']['id']) && validate::getInstance()->integer($_GET['MYSQL']['id']) === TRUE) {
+if (isset($_GET['MYSQL']['id'])) {
 
-	$reservationID = $_GET['MYSQL']['id'];
-	$localvars->set("reservationID",$reservationID);
-	$sql       = sprintf("SELECT seriesReservations.*, building.ID as buildingID FROM `seriesReservations` LEFT JOIN `rooms` ON rooms.ID=seriesReservations.roomID LEFT JOIN `building` ON building.ID=rooms.building WHERE seriesReservations.ID=?");
-	$sqlResult = $db->query($sql,array($reservationID));
-
-	if ($sqlResult->error()) {
-		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
-		$error = TRUE;
-	}
-	else {
-
-		$reservationInfo = $sqlResult->fetch();
-		$username        = $reservationInfo['username'];
-		$groupname       = $reservationInfo['groupname'];
-		$comments        = $reservationInfo['comments'];
-
-		http::setPost("library",$reservationInfo['buildingID']);
-		http::setPost("room",$reservationInfo['roomID']);
-		http::setGet("library",$reservationInfo['buildingID']);
-		http::setGet("room",$reservationInfo['roomID']);
-
-		$action = "Update";
-
-		if (!is_empty($reservationInfo['weekdays'])) {
-			$weekdaysAssigned = unserialize($reservationInfo['weekdays']);
-		}
-
-	}
+	$series->get($_GET['MYSQL']['id']);
 
 }
 
@@ -69,36 +46,13 @@ if (!isset($_GET['MYSQL']['room']) || validate::getInstance()->integer($_GET['MY
 
 if ($error === FALSE) {
 
-	$buildingID = $_GET['MYSQL']['library'];
-	$roomID     = $_GET['MYSQL']['room'];
+	$series->setBuilding($_GET['MYSQL']['library']);
+	$series->setRoom($_GET['MYSQL']['room']);
 
 	$localvars->set("buildingID",$buildingID);
 	$localvars->set("roomID",$roomID);
-
-	$buildingName = getBuildingName($buildingID);
-	$roomName     = getRoomName($roomID);
-
-	$localvars->set("buildingName",$buildingName);
-	$localvars->set("roomName",$roomName);
-
-	$sql       = sprintf("SELECT * FROM `via` ORDER BY `name`");
-	$sqlResult = $db->query($sql);
-
-	if ($sqlResult->error()) {
-		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
-		$error = TRUE;
-	}
-	else {
-		$viaOptions = "";
-		while($row = $sqlResult->fetch()) {
-			$viaOptions .= sprintf('<option value="%s" %s>%s</option>',
-				htmlSanitize($row['ID']),
-				(!isnull($reservationInfo) && $row['ID'] == $reservationInfo['createdVia'])?"selected":"",
-				htmlSanitize($row['name'])
-				);
-		}
-		$localvars->set("viaOptions",$viaOptions);
-	}
+	$localvars->set("buildingName",$series->building['name']);
+	$localvars->set("roomName",$series->room['name']);
 
 }
 
@@ -117,15 +71,9 @@ $localvars->set("groupname",$groupname);
 $localvars->set("comments",$comments);
 $localvars->set("action",$action);
 
-$sql        = sprintf("SELECT value FROM siteConfig WHERE name='24hour'");
-$sqlResult  = $db->query($sql);
-
-$displayHour = 24;
-if (!$sqlResult->error()) {
-	$row        = $sqlResult->fetch();
-	$displayHour = ($row['value'] == 1)?24:12;
-}
-
+// Display time in 12 hour or 24 hour
+$displayHour = getConfig('24hour');
+$displayHour = ($displayHour != 1)?12:24;
 
 if (isset($_POST['MYSQL']['createSubmit'])) {
 
@@ -201,7 +149,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 		// Everyday
 		if ($frequency == "0") {
 
-			$schedule = getSchedule($startTime,$endTime,$startDay,$seriesEndDate,"+1 day");
+			$schedule = $series->getSchedule($startTime,$endTime,$startDay,$seriesEndDate,"+1 day");
 
 		}
 		// every week
@@ -209,7 +157,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 			// no weekdays are selected
 			if (!in_array(TRUE,$weekdays)) {
-				$schedule = getSchedule($startTime,$endTime,$startDay,$seriesEndDate,"+1 week");
+				$schedule = $series->getSchedule($startTime,$endTime,$startDay,$seriesEndDate,"+1 week");
 			}
 
 			// weekdays are selected
@@ -240,7 +188,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 							$startTimeTemp      = $startTime;
 							$endTimeTemp        = $endTime;
 						}
-						$temp = getSchedule($startTimeTemp,$endTimeTemp,$startDayTemp,$seriesEndDate,"+1 week");
+						$temp = $series->getSchedule($startTimeTemp,$endTimeTemp,$startDayTemp,$seriesEndDate,"+1 week");
 						$schedule = array_merge($schedule,$temp);
 					}
 				}
@@ -250,7 +198,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 		// Every Month (Month Day)
 		else if ($frequency == "2") {
 
-			$schedule = getSchedule($startTime,$endTime,$startDay,$seriesEndDate,"+1 Month");
+			$schedule = $series->getSchedule($startTime,$endTime,$startDay,$seriesEndDate,"+1 Month");
 
 		}
 		// Every Month (Week Day)
@@ -258,7 +206,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 			$interval = "";
 
-			$weekdayOccurence = getWeekdayOccurrence($startTime);
+			$weekdayOccurence = $series->getWeekdayOccurrence($startTime);
 			// $weekdayOccurence = array("1","Sunday");
 			switch ($weekdayOccurence[0]) {
 				case 1:
@@ -442,128 +390,45 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 } // submit create
 else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 
-	$transResult = $db->beginTransaction();
+	if ($series->delete($_POST['MYSQL']['reservationID'])) {
+		header('Location: seriesList.php');
+	}
 
-	$sql       = sprintf("DELETE FROM `reservations` WHERE seriesID=? AND startTime>?");
-	$sqlResult = $db->query($sql,array($_POST['MYSQL']['reservationID'],time()));
+	throw new Exception("Error Deleting Series.");
+
+}
+} // 1st Try
+catch (Exception $e) {
+	errorHandle::errorMsg($e->getMessage());
+}
+
+// Create the Via Dropdown
+try {
+	// @TODO : This needs to be taken out of here
+	$sql       = sprintf("SELECT * FROM `via` ORDER BY `name`");
+	$sqlResult = $db->query($sql);
 
 	if ($sqlResult->error()) {
-		$db->rollback();
-		
-		$error = TRUE;
 		errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
-		errorHandle::errorMsg("Error deleting series reservation.");
+		throw new Exception("Error creating via select");
 	}
 	else {
-
-		$sql       = sprintf("DELETE FROM `seriesReservations` WHERE ID=?");
-		$sqlResult = $db->query($sql,array($_POST['MYSQL']['reservationID']));
-
-		if ($sqlResult->error()) {
-			$db->rollback();
-			
-			errorHandle::successMsg("Series Reservation Deleted.");
-		}
-		else {
-			$db->commit();
-			
-			header('Location: seriesList.php');
-		}
-
-	}
-
-
-
-}
-
-function getSchedule($startTime,$endTime,$startDay,$seriesEndDate,$interval) {
-
-	$schedule = array();
-
-	$workingDay       = 0;
-	$workingStartTime = 0;
-	$workingEndTime   = 0;
-	while ($workingDay <= $seriesEndDate) {
-		if ($workingDay == 0) {
-			$schedule[] = array(
-				'startTime' => $startTime,
-				'endTime'   => $endTime
+		$viaOptions = "";
+		while($row = $sqlResult->fetch()) {
+			$viaOptions .= sprintf('<option value="%s" %s>%s</option>',
+				htmlSanitize($row['ID']),
+				(!isnull($series->reservation) && $row['ID'] == $series->reservation['createdVia'])?"selected":"",
+				htmlSanitize($row['name'])
 				);
-
-			$workingDay       = strtotime($interval,$startDay);
-			$workingStartTime = strtotime($interval,$startTime);
-			$workingEndTime   = strtotime($interval,$endTime);
-
-			continue;
 		}
-
-		$schedule[] = array(
-			'startTime' => $workingStartTime,
-			'endTime'   => $workingEndTime
-			);
-
-		$workingDay       = strtotime($interval,$workingDay);
-		$workingStartTime = strtotime($interval,$workingStartTime);
-		$workingEndTime   = strtotime($interval,$workingEndTime);
+		$localvars->set("viaOptions",$viaOptions);
 	}
-
-	return($schedule);
-
+	// End Via TODO
 }
-
-function getScheduleMonthWeek($startTime,$endTime,$startDay,$seriesEndDate,$interval) {
-	$schedule = array();
-
-	$workingDay       = 0;
-	$workingStartTime = 0;
-	$workingEndTime   = 0;
-	while ($workingDay <= $seriesEndDate) {
-		if ($workingDay == 0) {
-			$schedule[] = array(
-				'startTime' => $startTime,
-				'endTime'   => $endTime
-				);
-
-			$workingDay       = strtotime("+1 Month",$startDay);
-			$workingStartTime = strtotime("+1 Month",$startTime);
-			$workingEndTime   = strtotime("+1 Month",$endTime);
-
-			$workingDay       = strtotime($interval,$startDay);
-			$workingStartTime = strtotime($interval,$startTime);
-			$workingEndTime   = strtotime($interval,$endTime);
-
-			continue;
-		}
-
-		$schedule[] = array(
-			'startTime' => $workingStartTime,
-			'endTime'   => $workingEndTime
-			);
-
-
-		$workingDay       = strtotime("+1 Month",$workingDay);
-		$workingStartTime = strtotime("+1 Month",$workingStartTime);
-		$workingEndTime   = strtotime("+1 Month",$workingEndTime);
-
-		$workingDay       = strtotime($interval,$workingDay);
-		$workingStartTime = strtotime($interval,$workingStartTime);
-		$workingEndTime   = strtotime($interval,$workingEndTime);
-	}
-
-	return($schedule);
+catch (Exception $e) {
+	errorHandle::errorMsg($e->getMessage());
 }
-
-function getWeekdayOccurrence($time) {
-    $month = intval(date("m", $time)); $day = intval(date("d", $time));
-    for ($i = 0; $i < 7; $i++) {
-        $days[] = date("l", mktime(0, 0, 0, $month, ($i+1), date("Y", $time)));
-    }
-
-    $posd  = array_search(date("l", $time), $days);
-    $posdm = array_search($days[0], $days) - $posd;
-
-    return array((($day+$posdm+6)/7), $days[$posd]);
-}
+// End Via dropdown creation
 
 templates::display('header');
 ?>
