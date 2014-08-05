@@ -10,8 +10,12 @@ $enginevars = enginevars::getInstance();
 
 recurseInsert("acl.php","php"); 
 recurseInsert("vars.php","php");
+recurseInsert('includes/functions.php',"php");
 
 require '../engineIncludes.php';
+
+formBuilder::process();
+formBuilder::ajaxHandler();
 
 templates::load("library2012.2col");
 
