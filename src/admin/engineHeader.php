@@ -10,10 +10,14 @@ $enginevars = enginevars::getInstance();
 
 recurseInsert("acl.php","php"); 
 recurseInsert("vars.php","php");
+recurseInsert('includes/functions.php',"php");
 
-require '../engineIncludes.php';
+recurseInsert("includes/engineIncludes.php","php");
 
+formBuilder::process();
+formBuilder::ajaxHandler();
 recurseInsert("includes/engineHeader.php","php");
+
 templates::load("library2012.2col");
 
 $localvars->set("roomResBaseDir","/services/rooms");
