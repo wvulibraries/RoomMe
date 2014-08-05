@@ -12,11 +12,10 @@ recurseInsert("acl.php","php");
 recurseInsert("vars.php","php");
 recurseInsert('includes/functions.php',"php");
 
-recurseInsert("includes/engineIncludes.php","php");
+require '../engineIncludes.php';
 
 formBuilder::process();
 formBuilder::ajaxHandler();
-recurseInsert("includes/engineHeader.php","php");
 
 templates::load("library2012.2col");
 
