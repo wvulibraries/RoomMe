@@ -159,10 +159,10 @@ class reservation {
 		// is this a reservation being requested in the past?
 		// @TODO This needs to be configurable, time before current when reservation is not allowed.
 		// We may even want to beak it off into a separate check for better error message input.
-		if (isnull($seriesID) && $sUnix < (time() - 3600)) {
-			errorHandle::errorMsg(getResultMessage("reservationInPast"));
-			return FALSE;
-		}
+		// if (isnull($seriesID) && $sUnix < (time() - 3600)) {
+		// 	errorHandle::errorMsg(getResultMessage("reservationInPast"));
+		// 	return FALSE;
+		// }
 
 		// check for a duplicate reservation
 		if ($this->duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) !== FALSE) {
