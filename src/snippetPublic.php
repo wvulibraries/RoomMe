@@ -3,7 +3,7 @@ require_once("engineHeader.php");
 
 $snippet = new Snippet("pageContent","content");
 
-$engine->localVars("snippetID",$_GET['HTML']['id']);
+$localvars->set("snippetID",$_GET['HTML']['id']);
 
 templates::display('header');
 ?>
