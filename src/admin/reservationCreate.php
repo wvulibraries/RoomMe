@@ -88,7 +88,7 @@ try {
 		while($row = $sqlResult->fetch()) {
 			$viaOptions .= sprintf('<option value="%s" %s>%s</option>',
 				htmlSanitize($row['ID']),
-				(!isnull($reservation->reservation) && $row['ID'] == $reservation->reservation['createdVia'])?"selected":"",
+				(!$reservation->isNew() && $row['ID'] == $reservation->reservation['createdVia'])?"selected":"",
 				htmlSanitize($row['name'])
 				);
 		}
@@ -111,6 +111,9 @@ $currentDay   = ($reservation->isNew())?date("j"):date("j",$reservation->reserva
 $currentYear  = ($reservation->isNew())?date("Y"):date("Y",$reservation->reservation['startTime']);
 $currentHour  = ($reservation->isNew())?date("G"):date("G",$reservation->reservation['startTime']);
 $nextHour     = ($reservation->isNew())?(date("G")+1):date("G",$reservation->reservation['endTime']);
+
+$startMinute = ($reservation->isNew())?"0":date("i",$reservation->reservation['startTime']);
+$endMinute   = ($reservation->isNew())?"0":date("i",$reservation->reservation['endTime']);
 
 // Set some localvars for use in the HTML below. 
 $localvars->set("username",($reservation->isNew())?"":$reservation->reservation['username']);
@@ -227,8 +230,9 @@ if (count($engine->errorStack) > 0) {
 						<select name="start_minute" id="start_minute" >
 							<?php
 							for($I=0;$I<60;$I += 15) {
-								printf('<option value="%s">%s</option>',
+								printf('<option value="%s" %s>%s</option>',
 									($I < 10)?"0".$I:$I,
+									($I == $startMinute)?"selected":"",
 									$I);
 							}
 							?>
@@ -260,8 +264,9 @@ if (count($engine->errorStack) > 0) {
 						<select name="end_minute" id="end_minute" >
 							<?php
 							for($I=0;$I<60;$I += 15) {
-								printf('<option value="%s">%s</option>',
+								printf('<option value="%s" %s>%s</option>',
 									($I < 10)?"0".$I:$I,
+									($I == $endMinute)?"selected":"",
 									$I);
 							}
 							?>
