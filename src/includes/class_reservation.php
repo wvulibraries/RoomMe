@@ -590,7 +590,7 @@ class reservation {
 				);
 		}
 		else {
-			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=? WHERE ID=?");
+			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=? WHERE ID=?");
 			$sqlOptions = array(
 				$sUnix,
 				$eUnix,
@@ -600,6 +600,7 @@ class reservation {
 				$userInformation['initials'],
 				$groupname,
 				$comments,
+				$via,
 				$this->reservation['ID']
 				);
 		}
