@@ -156,6 +156,9 @@ if (count($engine->errorStack) > 0) {
 			<legend>Room Information</legend>
 			<table>
 				<tr>
+					<th colspan="3" style="text-align: left;"><strong>Reservation Date:</strong></th>
+				</tr>
+				<tr>
 					<td>
 						<label for="start_month">Month:</label><br />
 						<select name="start_month" id="start_month" >
@@ -201,10 +204,7 @@ if (count($engine->errorStack) > 0) {
 				</tr>
 				<tr>
 					<td colspan="2">
-						Start Time
-					</td>
-					<td colspan="2">
-						End Time
+						<strong>Start Time</strong>
 					</td>
 				</tr>
 				<tr>	
@@ -234,7 +234,13 @@ if (count($engine->errorStack) > 0) {
 							?>
 						</select>
 					</td>
-
+				</tr>
+				<tr>
+					<td colspan="2">
+						<strong>End Time</strong>
+					</td>
+				</tr>
+				<tr>
 					<td>
 						<label for="end_hour">Hour:</label><br />
 						<select name="end_hour" id="end_hour" >
