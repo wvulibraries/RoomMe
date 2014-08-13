@@ -79,6 +79,7 @@ class reservation {
 		$comments          = "";
 		$reservationUpdate = FALSE;
 		// If the fields are set AND we are coming from the staff interface, we can modify $via and $override
+		// @TODO we need to handle the preg_match dynamically. 
 		if (isset($_POST['MYSQL']['via']) && (preg_match('/\/admin\/reservationCreate\.php/',$_SERVER['PHP_SELF']) || preg_match('/\/admin\/seriesCreate\.php/',$_SERVER['PHP_SELF']))) {
 			$via      = $_POST['MYSQL']['via'];
 			$override = $_POST['MYSQL']['override'];
