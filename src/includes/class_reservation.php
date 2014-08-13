@@ -77,7 +77,6 @@ class reservation {
 		$override          = "0";
 		$groupname         = "";
 		$comments          = "";
-		$reservationUpdate = FALSE;
 		// If the fields are set AND we are coming from the staff interface, we can modify $via and $override
 		// @TODO we need to handle the preg_match dynamically. 
 		if (isset($_POST['MYSQL']['via']) && (preg_match('/\/admin\/reservationCreate\.php/',$_SERVER['PHP_SELF']) || preg_match('/\/admin\/seriesCreate\.php/',$_SERVER['PHP_SELF']))) {
@@ -89,10 +88,6 @@ class reservation {
 			}
 			if (isset($_POST['MYSQL']['comments']) && !is_empty($_POST['MYSQL']['comments'])) {
 				$comments = $_POST['MYSQL']['comments'];
-			}
-
-			if (isset($_POST['MYSQL']['reservationID']) && !is_empty($_POST['MYSQL']['reservationID'])) {
-				$reservationUpdate = $_POST['MYSQL']['reservationID'];
 			}
 		}
 
@@ -575,7 +570,7 @@ class reservation {
 			}
 		}
 
-		if ($reservationUpdate === FALSE) {
+		if ($this->isNew()) {
 			$sql        = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			$sqlOptions = array(
 				time(),
@@ -604,7 +599,7 @@ class reservation {
 				$userInformation['initials'],
 				$groupname,
 				$comments,
-				$reservationUpdate
+				$this->reservation['ID']
 				);
 		}
 
@@ -616,11 +611,9 @@ class reservation {
 			return FALSE;
 		}
 
-		$reservationID = ($reservationUpdate === FALSE)?$sqlResult->insertId():$reservationUpdate;
-
 		$roomName     = getRoomInfo($_POST['MYSQL']['room']);
 
-		if ($reservationUpdate === FALSE) {
+		if ($this->isNew()) {
 			$resultMessage = getResultMessage("reservationCreated");
 			$resultMessage = preg_replace("/{roomName}/", $roomName['displayName'], $resultMessage);
 			errorHandle::successMsg($resultMessage);
@@ -669,7 +662,8 @@ class reservation {
 		}
 
 		// refresh / get the reservation information
-		$this->get($reservationID);
+		// We populate this last, otherwise isNew() will not return correctly
+		$this->get(($this->isNew())?$sqlResult->insertId():$this->reservation['ID']);
 
 		return TRUE;
 
