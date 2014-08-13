@@ -161,7 +161,8 @@ class reservation {
 		// }
 
 		// check for a duplicate reservation
-		if ($this->duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) !== FALSE) {
+		// Check to make sure the reservation is new. If it is an update, it isn't a duplicate. 
+		if ($this->isNew() && $this->duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) !== FALSE) {
 			errorHandle::errorMsg(getResultMessage("duplicateReservation"));
 			return FALSE;
 		}
@@ -725,6 +726,30 @@ class reservation {
 
 	}
 
+	// $sqlResult is the result set from a sql call
+	// Returns true if we are trying to update a reservation and the result conflict is ONLY itself
+	// Returns false otherwise. 
+	private function updatingSelf($sqlResult) {
+
+		if ($this->isNew()) {
+			return FALSE;
+		}
+
+		if ($sqlResult->rowCount() != 1) {
+			return FALSE;
+		}
+
+		$row = $sqlResult->fetch();
+
+		if ($row['ID'] == $this->reservation['ID']) {
+			return TRUE;
+		}
+
+		return FALSE;
+
+	}
+
+	// False is good. 
 	private function multipleBooksings($username,$sUnix,$eUnix) {
 
 		$sql       = sprintf("SELECT * FROM `reservations` WHERE ((startTime<=? AND endTime>?) OR (startTime<? AND endTime>=?)) AND username=?");
@@ -735,29 +760,45 @@ class reservation {
 			return TRUE; // we return true, because there was an error and we don't want the reservation to submit on error
 		}
 
-		if ($sqlResult->rowCount() > 0) {
-			return TRUE;
+		// 0 (or less) rows return, Good to go. 
+		if ($sqlResult->rowCount() <= 0) {
+			return FALSE;
 		}
 
-		return FALSE;
+		return !$this->updatingSelf($sqlResult);
 
 	}
 
+	// Returns true on reservation conflict. False otherwise. 
+	//  False is good
 	private function conflictReservationCheck($roomID,$sUnix,$eUnix) {
 
 		$sql       = sprintf("SELECT * FROM `reservations` WHERE ( ((startTime<=? AND endTime>?) OR (startTime<? AND endTime>=?)) OR (startTime>=? AND endTime<=?) ) AND roomID=?");
-		$sqlResult = $this->db->query($sql,array($sUnix,	$sUnix,	$eUnix,	$eUnix,	$sUnix,	$eUnix, $roomID));
+		$sqlResult = $this->db->query($sql,array($sUnix, $sUnix, $eUnix, $eUnix, $sUnix, $eUnix, $roomID));
 
 		if ($sqlResult->error()) {
 			errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
 			return TRUE; // we return true, because there was an error and we don't want the reservation to submit on error
 		}
 
-		if ($sqlResult->rowCount() > 0) {
-			return TRUE;
+		// 0 (or less) rows return, Good to go. 
+		if ($sqlResult->rowCount() <= 0) {
+			return FALSE;
 		}
 
-		return FALSE;
+		return !$this->updatingSelf($sqlResult);
+
+		// Check to see if the reservation is conflicting with, ONLY, itself. 
+		// That is OK. 
+		// if (!$this->isNew() && $sqlResult->rowCount() == 1) {
+		// 	$row = $sqlResult->fetch();
+		// 	if ($row['ID'] == $this->reservation['ID']) {
+		// 		return FALSE;
+		// 	}
+		// }
+
+		// Otherwise, return TRUE (there is a conflict)
+		// return TRUE;
 
 	}
 

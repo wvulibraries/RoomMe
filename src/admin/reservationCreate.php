@@ -7,7 +7,6 @@ $error    = FALSE;
 $db       = db::get($localvars->get('dbConnectionName'));
 
 // we are editing a reservation
-$reservationID   = "";
 $reservationInfo = NULL;
 $username        = "";
 $groupname       = "";
@@ -18,9 +17,12 @@ $reservation = new Reservation;
 try {
 
 	// Is this an Update? 
-	if (isset($_GET['MYSQL']['id'])) {
+	// Currently checking for this in both get and post. 
+	if (isset($_GET['MYSQL']['id']) || (isset($_POST['MYSQL']['reservationID']) && !is_empty($_POST['MYSQL']['reservationID'])) ) {
 
-		if ($reservation->get($_GET['MYSQL']['id']) === FALSE) {
+		$reservationID = (isset($_POST['MYSQL']['reservationID']) && !is_empty($_POST['MYSQL']['reservationID']))?$_POST['MYSQL']['reservationID']:$_GET['MYSQL']['id'];
+
+		if ($reservation->get($reservationID) === FALSE) {
 			throw new Exception("Error retrieving reservation.");
 		}
 
@@ -120,7 +122,8 @@ $localvars->set("username",($reservation->isNew())?"":$reservation->reservation[
 $localvars->set("groupname",($reservation->isNew())?"":$reservation->reservation['groupname']);
 $localvars->set("comments",($reservation->isNew())?"":$reservation->reservation['comments']);
 $localvars->set("action",($reservation->isNew())?"Add":"Update");
-
+$localvars->set("reservationID",($reservation->isNew())?"":$reservation->reservation['ID']);
+$localvars->set("submitText",($reservation->isNew())?"Reserve this Room":"Update Reservation");
 templates::display('header');
 ?>
 
@@ -295,9 +298,9 @@ if (count($engine->errorStack) > 0) {
 			<textarea name="comments" id="comments">{local var="comments"}</textarea>
 		</fieldset>
 		<br /><br />
-		<input type="submit" name="createSubmit" value="Reserve this Room"/> &nbsp;&nbsp;
+		<input type="submit" name="createSubmit" value="{local var="submitText"}"/> &nbsp;&nbsp;
 
-		<?php if (!isnull($reservationInfo)) { ?>
+		<?php if (!$reservation->isNew()) { ?>
 
 		<input type="submit" name="deleteSubmit" value="Delete" id="deleteReservation"/>
 
