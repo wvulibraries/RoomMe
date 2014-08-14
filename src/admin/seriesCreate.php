@@ -98,15 +98,20 @@ $localvars->set("roomID",$series->room['ID']);
 $localvars->set("buildingName",$series->building['name']);
 $localvars->set("roomName",$series->room['name']);
 
-$currentMonth = (isnull($reservationInfo))?date("n"):date("n",$reservationInfo['startTime']);
-$currentDay   = (isnull($reservationInfo))?date("j"):date("j",$reservationInfo['startTime']);
-$currentYear  = (isnull($reservationInfo))?date("Y"):date("Y",$reservationInfo['startTime']);
-$currentHour  = (isnull($reservationInfo))?date("G"):date("G",$reservationInfo['startTime']);
-$nextHour     = (isnull($reservationInfo))?(date("G")+1):date("G",$reservationInfo['endTime']);
+// If this is a new reservation, use the current time. 
+// If this is an update, use the time from the reservation
+$currentMonth = ($series->isNew())?date("n"):date("n",$series->reservation['startTime']);
+$currentDay   = ($series->isNew())?date("j"):date("j",$series->reservation['startTime']);
+$currentYear  = ($series->isNew())?date("Y"):date("Y",$series->reservation['startTime']);
+$currentHour  = ($series->isNew())?date("G"):date("G",$series->reservation['startTime']);
+$nextHour     = ($series->isNew())?(date("G")+1):date("G",$series->reservation['endTime']);
 
-$seriesEndMonth = (isnull($reservationInfo))?date("n"):date("n",$reservationInfo['seriesEndDate']);
-$seriesEndDay   = (isnull($reservationInfo))?date("j"):date("j",$reservationInfo['seriesEndDate']);
-$seriesEndYear  = (isnull($reservationInfo))?date("Y"):date("Y",$reservationInfo['seriesEndDate']);
+$startMinute = ($series->isNew())?"0":date("i",$series->reservation['startTime']);
+$endMinute   = ($series->isNew())?"0":date("i",$series->reservation['endTime']);
+
+$seriesEndMonth = ($series->isNew())?date("n"):date("n",$series->reservation['seriesEndDate']);
+$seriesEndDay   = ($series->isNew())?date("j"):date("j",$series->reservation['seriesEndDate']);
+$seriesEndYear  = ($series->isNew())?date("Y"):date("Y",$series->reservation['seriesEndDate']);
 
 $localvars->set("username",$series->reservation['username']);
 $localvars->set("groupname",$series->reservation['groupname']);
@@ -228,8 +233,9 @@ templates::display('header');
 				<select name="start_minute" id="start_minute" >
 					<?php
 						for($I=0;$I<60;$I += 15) {
-							printf('<option value="%s">%s</option>',
+							printf('<option value="%s" %s>%s</option>',
 								($I < 10)?"0".$I:$I,
+								($I == $startMinute)?"selected":"",
 								$I);
 						}
 					?>
@@ -261,8 +267,9 @@ templates::display('header');
 				<select name="end_minute" id="end_minute" >
 					<?php
 						for($I=0;$I<60;$I += 15) {
-							printf('<option value="%s">%s</option>',
+							printf('<option value="%s" %s>%s</option>',
 								($I < 10)?"0".$I:$I,
+								($I == $endMinute)?"selected":"",
 								$I);
 						}
 					?>
