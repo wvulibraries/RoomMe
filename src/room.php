@@ -22,17 +22,17 @@ if ($room !== FALSE && isset($room['building'])) {
 	$roomPolicy   = getRoomPolicy($roomID);
 	$buildingName = getBuildingName($room['building']);
 
-	$localvars->set("roomName",    $room['name']);
-	$localvars->set("roomNumber",  $room['number']);
-	$localvars->set("policyURL",   $room['policyURL']);
+	$localvars->set("roomName",    htmlSanitize($room['name']));
+	$localvars->set("roomNumber",  htmlSanitize($room['number']));
+	$localvars->set("policyURL",   htmlSanitize($room['policyURL']));
 	$localvars->set("username",    session::get("username"));
-	$localvars->set("buildingID",  $room['building']);
-	$localvars->set("roomID",      $room['ID']);
-	$localvars->set("buildingName",$buildingName);
+	$localvars->set("buildingID",  htmlSanitize($room['building']));
+	$localvars->set("roomID",      htmlSanitize($room['ID']));
+	$localvars->set("buildingName",htmlSanitize($buildingName));
 	$localvars->set("prettyPrint", errorHandle::prettyPrint());
 	$localvars->set("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
-	$localvars->set("mapURL",      $room['mapURL']);
-	$localvars->set("displayName", $room['displayName']);
+	$localvars->set("mapURL",      htmlSanitize($room['mapURL']));
+	$localvars->set("displayName", htmlSanitize($room['displayName']));
 
 }
 else {
@@ -85,7 +85,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 	$localvars->set("prettyPrint",errorHandle::prettyPrint());
 }
 
-$localvars->set("policyLabel",getResultMessage("policyLabel"));
+$localvars->set("policyLabel",htmlSanitize(getResultMessage("policyLabel")));
 
 templates::display('header');
 ?>
@@ -147,7 +147,7 @@ templates::display('header');
 						foreach ($room['equipment'] as $I=>$equipment) { 
 					?>
 						<li>
-							<a href="equipment.php?id=<?php print $equipment['ID']; ?>"><?php print $equipment['name']; ?></a>
+							<a href="equipment.php?id=<?php print htmlSanitize($equipment['ID']); ?>"><?php print htmlSanitize($equipment['name']); ?></a>
 						</li>
 					<?php } ?>
 				</ul>

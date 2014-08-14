@@ -13,7 +13,7 @@ else {
 }
 
 $buildingName = getBuildingName($buildingID);
-$localvars->set("libraryName",$buildingName);
+$localvars->set("libraryName",htmlSanitize($buildingName));
 
 
 $buildingRooms = getRoomsForBuilding($buildingID);
@@ -33,18 +33,18 @@ templates::display('header');
 
 		<?php if (isset($row['hoursRSS']) && !is_empty($row['hoursRSS'])) { ?>
 		<li>
-			<a href="hours.php?building=<?php print $row['ID'] ?>">View Library Hours</a>
+			<a href="hours.php?building=<?php print htmlSanitize($row['ID']) ?>">View Library Hours</a>
 		</li>
 		<?php } ?>
 
 		<?php if (isset($row['url']) && !is_empty($row['url'])) { ?>
 		<li>
-			<a href="<?php print $row['url'] ?>">View Library Homepage</a>
+			<a href="<?php print htmlSanitize($row['url']) ?>">View Library Homepage</a>
 		</li>
 		<?php } ?>
 
 		<li>
-			<a href="#" class="calendarModal_link" data-type="building" data-id="<?php print $buildingID ?>">View Reservation Calendar &ndash; All Rooms</a>
+			<a href="#" class="calendarModal_link" data-type="building" data-id="<?php print htmlSanitize($buildingID) ?>">View Reservation Calendar &ndash; All Rooms</a>
 		</li>
 	</ul>
 
@@ -58,7 +58,7 @@ templates::display('header');
 <?php foreach($buildingRooms as $I=>$room) { ?>
 
 	<li>
-		<a href="room.php?room=<?php print $room['ID'];?>"><?php print $room['displayName']; ?></a>
+		<a href="room.php?room=<?php print htmlSanitize($room['ID']);?>"><?php print htmlSanitize($room['displayName']); ?></a>
 	</li>
 
 <?php } ?>

@@ -17,7 +17,7 @@ if ($error === FALSE) {
 		$error = TRUE;
 	}
 	else {
-		$localvars->set("buildingName",$return);
+		$localvars->set("buildingName",htmlSanitize($return));
 	}
 }
 
