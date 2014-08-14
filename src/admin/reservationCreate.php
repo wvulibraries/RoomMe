@@ -73,6 +73,9 @@ try {
 }
 catch(Exception $e) {
 	errorHandle::errorMsg($e->getMessage());
+
+	// Setup to repopulate form on error
+	$submitError = TRUE;
 }
 
 // Create the Via Dropdown
@@ -124,6 +127,25 @@ $localvars->set("comments",($reservation->isNew())?"":$reservation->reservation[
 $localvars->set("action",($reservation->isNew())?"Add":"Update");
 $localvars->set("reservationID",($reservation->isNew())?"":$reservation->reservation['ID']);
 $localvars->set("submitText",($reservation->isNew())?"Reserve this Room":"Update Reservation");
+
+
+if ($submitError) {
+
+	$localvars->set("username",$_POST['HTML']['username']);
+	$localvars->set("groupname",$_POST['HTML']['groupname']);
+	$localvars->set("comments",$_POST['HTML']['comments']);
+
+	$currentMonth = $_POST['HTML']['start_month'];
+	$currentDay   = $_POST['HTML']['start_day'];
+	$currentYear  = $_POST['HTML']['start_year'];
+	$currentHour  = $_POST['HTML']['start_hour'];
+	$nextHour     = $_POST['HTML']['end_hour'];
+
+	$startMinute = $_POST['HTML']['start_minute'];
+	$endMinute   = $_POST['HTML']['end_minute'];
+
+}
+
 templates::display('header');
 ?>
 
