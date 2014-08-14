@@ -186,6 +186,9 @@ templates::display('header');
 	<input type="hidden" id="username" name="username" value="{local var="username"}"/>
 
 	<table>
+						<tr>
+					<th colspan="3" style="text-align: left;"><strong>Reservation Date:</strong></th>
+				</tr>
 		<tr>
 			<td id="montDayYearSelects">
 				<label for="start_month">Month:</label><br />
@@ -227,14 +230,11 @@ templates::display('header');
 			</td>
 			<td></td>
 		</tr>
-		<tr>
-			<td colspan="2">
-				Start Time
-			</td>
-			<td colspan="2">
-				End Time
-			</td>
-		</tr>
+				<tr>
+					<td colspan="2">
+						<strong>Start Time</strong>
+					</td>
+				</tr>
 		<tr id="startEndTimeSelects">	
 			<td>
 				<label for="start_hour">Hour:</label><br />
@@ -262,7 +262,13 @@ templates::display('header');
 					?>
 				</select>
 			</td>
-
+				</tr>
+				<tr>
+					<td colspan="2">
+						<strong>End Time</strong>
+					</td>
+				</tr>
+				<tr>
 			<td>
 				<label for="end_hour">Hour:</label><br />
 				<select name="end_hour" id="end_hour" >
@@ -291,7 +297,7 @@ templates::display('header');
 			</td>
 		</tr>
 	</table>
-	
+	<br />
 	<label name="notificationEmail">Email Address (<strong><em>optional, for email confirmation</em></strong>):</label>
 	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" />
 	<br /><br />
