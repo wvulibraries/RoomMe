@@ -12,6 +12,7 @@ $enginevars = enginevars::getInstance();
 
 recurseInsert("acl.php","php"); 
 recurseInsert("vars.php","php");
+recurseInsert("includes/getUserInfo.php","php");
 
 require 'engineIncludes.php';
 

@@ -2,44 +2,17 @@
 
 function getBuildingName($ID) {
 
-	$engine    = EngineAPI::singleton();
-	$localvars = localvars::getInstance();
-	$db        = db::get($localvars->get('dbConnectionName'));
+	$buildingObject = new building;
+	$building       = $buildingObject->get($ID);
 
-	$sql       = sprintf("SELECT name FROM building WHERE `ID`=? LIMIT 1");
-	$sqlResult = $db->query($sql,array($ID));
-
-	if ($sqlResult->error()) {
-		errorHandle::newError(__FUNCTION__."() - Error getting building name.", errorHandle::DEBUG);
-		return(FALSE);
-	}
-
-	if ($sqlResult->rowCount() < 1) {
-		return("Not Found");
-	}
-
-	$row = $sqlResult->fetch();
-
-	return($row['name']);
+	return $building['name'];
 }
 
 function getRoomName($ID) {
-	$engine    = EngineAPI::singleton();
-	$localvars = localvars::getInstance();
-	$db        = db::get($localvars->get('dbConnectionName'));
+	$roomObject = new building;
+	$room       = $roomObject->get($ID);
 
-	$sql = sprintf("SELECT name FROM rooms WHERE `ID`=?");
-
-	$sqlResult = $db->query($sql,array($ID));
-
-	if ($sqlResult->error()) {
-		errorHandle::newError(__FUNCTION__."() - Error getting room name.", errorHandle::DEBUG);
-		return(FALSE);
-	}
-
-	$row = $sqlResult->fetch();
-
-	return($row['name']);
+	return $room['name'];
 }
 
 function getRoomInfo($ID) {

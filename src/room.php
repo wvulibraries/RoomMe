@@ -76,7 +76,11 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 	$buildingID = $_POST['MYSQL']['library'];
 	$roomID     = $_POST['MYSQL']['room'];
 
-	createReservation($buildingID,$roomID);
+	$reservation = new Reservation;
+	$reservation->setBuilding($buildingID);
+	$reservation->setRoom($roomID);
+
+	$reservation->create();
 
 	$localvars->set("prettyPrint",errorHandle::prettyPrint());
 }

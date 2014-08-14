@@ -8,4 +8,11 @@ $databaseOptions = array(
 $databaseOptions['dbName'] = 'roomReservations';
 $db                        = db::create('mysql', $databaseOptions, 'appDB');
 
+recurseInsert("includes/functions.php");
+recurseInsert("includes/getUserInfo.php","php");
+recurseInsert("includes/class_reservation.php");
+recurseInsert("includes/class_room.php");
+recurseInsert("includes/class_building.php");
+recurseInsert("includes/class_series.php");
+
 ?>

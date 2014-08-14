@@ -12,7 +12,7 @@ recurseInsert("acl.php","php");
 recurseInsert("vars.php","php");
 recurseInsert('includes/functions.php',"php");
 
-require '../engineIncludes.php';
+recurseInsert('engineIncludes.php');
 
 formBuilder::process();
 formBuilder::ajaxHandler();
