@@ -44,14 +44,14 @@ class reservation {
 
 	}
 
-	public function delete($ID) {
+	public function delete() {
 
-		if (!$this->validateID($ID)) {
+		if ($this->isNew()) {
 			return FALSE;
 		}
 
 		$sql       = sprintf("DELETE FROM `reservations` WHERE ID=?");
-		$sqlResult = $this->db->query($sql,array($_POST['MYSQL']['reservationID']));
+		$sqlResult = $this->db->query($sql,array($this->reservation['ID']));
 
 		if ($sqlResult->error()) {
 			errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
