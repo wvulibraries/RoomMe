@@ -128,7 +128,7 @@ templates::display('header');
 				</tr>
 			</table>
 
-			{engine name="csrf"}
+			{csrf}
 			<input type="submit" name="addEQtoTemplate_submit" id="addEQtoTemplate_submit" value="Submit" />
 		</form>
 

@@ -85,6 +85,9 @@ ln -s /vagrant/serverConfiguration/templateFooter.php $GITDIR/engineAPITemplates
 ln -s $GITDIR/engineAPITemplates/library2012.1col/templateIncludes/3colHeaderIncludes.php $GITDIR/engineAPITemplates/library2012.3col/templateIncludes/3colHeaderIncludes.php
 
 
+#favicon
+touch /home/www.libraries.wvu.edu/public_html/favicon.ico
+
 # Base Post Setup
 
 ln -s $SERVERURL $ENGINEAPIHOME
