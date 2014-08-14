@@ -131,16 +131,14 @@ templates::display('header');
 	<h1>{local var="action"} a Reservation</h1>
 </header>
 
-<?php
-if (count($engine->errorStack) > 0) {
-	?>
-	<section id="actionResults">
-		<header>
-			<h1>Results</h1>
-		</header>
-		<?php print errorHandle::prettyPrint(); ?>
-	</section>
-	<?php } ?>
+<?php if (count($engine->errorStack) > 0) {	?>
+<section id="actionResults">
+	<header>
+		<h1>Results</h1>
+	</header>
+	<?php print errorHandle::prettyPrint(); ?>
+</section>
+<?php } ?>
 
 	<p>Adding a reservation for Room <strong>{local var="roomName"} {local var="roomNumber"}</strong> in building <strong>{local var="buildingName"}</strong></p>
 

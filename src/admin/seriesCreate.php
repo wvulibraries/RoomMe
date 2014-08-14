@@ -126,9 +126,7 @@ templates::display('header');
 <h1>{local var="action"} a Series Reservation</h1>
 </header>
 
-<?php
-if (count($engine->errorStack) > 0) {
-?>
+<?php if (count($engine->errorStack) > 0) { ?>
 <section id="actionResults">
 	<header>
 		<h1>Results</h1>
