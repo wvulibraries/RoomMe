@@ -156,6 +156,9 @@ templates::display('header');
 		<legend>Room Information</legend>
 	<table>
 		<tr>
+			<th colspan="3" style="text-align: left;"><strong>Reservation Date:</strong></th>
+		</tr>
+		<tr>
 			<td>
 				<label for="start_month">Month:</label><br />
 				<select name="start_month" id="start_month" >
@@ -200,14 +203,11 @@ templates::display('header');
 			</td>
 			<td></td>
 		</tr>
-		<tr>
-			<td colspan="2">
-				Start Time
-			</td>
-			<td colspan="2">
-				End Time
-			</td>
-		</tr>
+				<tr>
+					<td colspan="2">
+						<strong>Start Time</strong>
+					</td>
+				</tr>
 		<tr>
 			<td>
 				<label for="start_hour">Hour:</label><br />
@@ -235,7 +235,13 @@ templates::display('header');
 					?>
 				</select>
 			</td>
-
+				</tr>
+				<tr>
+					<td colspan="2">
+						<strong>End Time</strong>
+					</td>
+				</tr>
+				<tr>
 			<td>
 				<label for="end_hour">Hour:</label><br />
 				<select name="end_hour" id="end_hour" >
