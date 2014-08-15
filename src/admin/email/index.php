@@ -22,14 +22,57 @@ try {
 		throw new Exception("Email was not provided for this reservation.");
 	}
 
-
-
 }
 catch (Exception $e) {
 	errorHandle::errorMsg($e->getMessage());
 
 	$error = TRUE;
 }
+
+try {
+
+	// We don't want to try submitting if there was an error from above, but we also don't want to set $error
+	// this is horribly hacky. 
+	if ($error) {
+		throw new Exception("");
+	}
+
+	if (isset($_POST['HTML']['sendEmail'])) {
+
+		// quick validation
+		if (!isset($_POST['HTML']['subject']) || is_empty($_POST['HTML']['subject'])) {
+			throw new Exception("Subject is required.");
+		}
+		if (!isset($_POST['HTML']['email']) || is_empty($_POST['HTML']['email'])) {
+			throw new Exception("Email Message is required.");
+		}
+
+		$mail = new mailSender();
+		$mail->addRecipient($reservation->reservation['email']);
+		$mail->addSender($reservation->building['fromEmail'], "WVU Libraries");
+		$mail->addSubject($_POST['HTML']['subject']);
+		$mail->addBody($_POST['HTML']['email']);
+
+		if (!$mail->sendEmail()) {
+			throw new Exception("Error Sending Email. Due to the nature of this error, please contact your administrator");
+		}
+
+		errorHandle::successMsg("Email Sent Successfully");
+
+	}
+
+}
+catch (Exception $e) {
+	errorHandle::errorMsg($e->getMessage());
+	$localvars->set("subject",$_POST['HTML']['subject']);
+	$localvars->set("emailMessage",$_POST['HTML']['email']);
+}
+
+
+$localvars->set("id",$reservation->reservation['ID']);
+$localvars->set("email",$reservation->reservation['email']);
+$localvars->set("username",$reservation->reservation['username']);
+$localvars->set("groupname",$reservation->reservation['groupname']);
 
 templates::display('header');
 ?>
