@@ -11,6 +11,7 @@ $reservationInfo = NULL;
 $username        = "";
 $groupname       = "";
 $comments        = "";
+$submitError     = FALSE;
 
 $reservation = new Reservation;
 
