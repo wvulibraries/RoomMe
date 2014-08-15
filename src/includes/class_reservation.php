@@ -587,7 +587,7 @@ class reservation {
 				$groupname,
 				$comments,
 				(isnull($seriesID))?"":$seriesID,
-				(isset($_POST['mysql']['notificationEmail']))?$_POST['HTML']['notificationEmail']:""
+				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:""
 				);
 		}
 		else {
