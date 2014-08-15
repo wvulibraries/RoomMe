@@ -1,10 +1,12 @@
 <?php
-require_once("engineHeader.php");
+require_once("../engineHeader.php");
 
 $errorMsg = "";
 $error    = FALSE;
 
 $db       = db::get($localvars->get('dbConnectionName'));
+
+$reservation = new Reservation;
 
 try {
 
