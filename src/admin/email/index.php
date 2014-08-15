@@ -34,6 +34,10 @@ catch (Exception $e) {
 templates::display('header');
 ?>
 
+<header>
+<h1>Email Patron</h1>
+</header>
+
 <?php if (count($engine->errorStack) > 0) {	?>
 <section id="actionResults">
 	<header>
