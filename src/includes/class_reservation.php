@@ -572,7 +572,7 @@ class reservation {
 		}
 
 		if ($this->isNew()) {
-			$sql        = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			$sql        = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID,email) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			$sqlOptions = array(
 				time(),
 				session::get("username"),
@@ -586,7 +586,8 @@ class reservation {
 				$userInformation['initials'],
 				$groupname,
 				$comments,
-				(isnull($seriesID))?"":$seriesID
+				(isnull($seriesID))?"":$seriesID,
+				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:""
 				);
 		}
 		else {
@@ -701,6 +702,17 @@ class reservation {
 		}
 
 		return FALSE;
+	}
+
+	public function hasEmail() {
+
+		if (isset($this->reservation['email']) && !is_empty($this->reservation['email'])) {
+			return TRUE;
+		}
+		else {
+			return FALSE;
+		}
+
 	}
 
 	private function validateID($ID) {

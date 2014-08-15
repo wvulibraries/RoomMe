@@ -11,6 +11,7 @@ $reservationInfo = NULL;
 $username        = "";
 $groupname       = "";
 $comments        = "";
+$submitError     = FALSE;
 
 $reservation = new Reservation;
 
@@ -301,6 +302,13 @@ templates::display('header');
 		<br />
 		<fieldset>
 			<legend>Administrative Information</legend>
+
+			<?php if (!$reservation->isNew() && $reservation->hasEmail()) { ?>
+
+			<a href="email/?id={local var="reservationID"}">Email Patron</a><br /><br />
+
+			<?php }	?>
+
 			<label for="via">Via:</label>
 			<select name="via" id="via">
 				{local var="viaOptions"}
