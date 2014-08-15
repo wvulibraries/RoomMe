@@ -704,6 +704,17 @@ class reservation {
 		return FALSE;
 	}
 
+	public function hasEmail() {
+
+		if (isset($this->reservation['email']) && !is_empty($this->reservation['email'])) {
+			return TRUE;
+		}
+		else {
+			return FALSE;
+		}
+
+	}
+
 	private function validateID($ID) {
 
 		return validate::getInstance()->integer($ID);
