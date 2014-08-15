@@ -16,7 +16,7 @@ try {
 		throw new Exception("Error retrieving reservation.");
 	}
 
-	if (!isset($reservation->reservation['email']) || is_empty($reservation->reservation['email'])) {
+	if (!$reservation->hasEmail()) {
 		throw new Exception("Email was not provided for this reservation.");
 	}
 
