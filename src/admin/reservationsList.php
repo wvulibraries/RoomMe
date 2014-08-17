@@ -18,6 +18,32 @@ $table->class    = "styledTable";
 
 $reservations    = array();
 
+$db              = db::get($localvars->get('dbConnectionName'));
+
+try {
+
+	if (isset($_POST['MYSQL']['multiDelete'])) {
+
+		$db->beginTransaction();
+
+		foreach ($_POST['MYSQL']['delete'] as $reservationID) {
+			$reservation = new reservation;
+			$reservation->get($reservationID);
+
+			if (!$reservation->delete()) {
+				$db->rollback();
+				throw new Exception("Error deleting reservations.");
+			}
+		}
+
+		$db->commit();
+	}
+
+}
+catch (Exception $e) {
+	errorHandle::errorMsg($e->getMessage());
+}
+
 if (isset($_POST['MYSQL'])) {
 	if (isset($_POST['MYSQL']['building'])) {
 		$buildingID = $_POST['MYSQL']['building'];
@@ -33,7 +59,6 @@ if (isset($_POST['MYSQL']['submitListDate'])) {
 	$time_end = mktime(23,59,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
 }
 
-$db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s ORDER BY building.name, rooms.name, reservations.username, reservations.startTime ",
 	(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>='".$time."' AND reservations.startTime<='".$time_end."'"
 	);
@@ -60,15 +85,10 @@ if ($error === FALSE) {
 		$headers[] = "Hours";
 	}
 	$headers[] = "Edit";
+	$headers[] = "Delete";
 	$table->headers($headers);
 
-	$hourSetting = getConfig('24hour');
-	if ($hourSetting == "1") {
-		$timeFormat = "m/d/Y H:i";
-	}
-	else {
-		$timeFormat = "m/d/Y g:iA";
-	}
+	$timeFormat = getTimeFormat();
 	
 	while($row       = $sqlResult->fetch()) {
 
@@ -91,6 +111,9 @@ if ($error === FALSE) {
 			$temp['hoursOnReservationTable'] = ($reserveTime > 23.6)?"24":$reserveTime;
 		}
 		$temp['edit']      = sprintf('<a href="reservationCreate.php?id=%s">Edit</a>',
+			htmlSanitize($row['ID'])
+			);
+		$temp['delete']    = sprintf('<input type="checkbox" name="delete[]" value="%s" />',
 			htmlSanitize($row['ID'])
 			);
 
@@ -159,8 +182,12 @@ templates::display('header');
 	
 </form>
 
-<?php print $table->display($reservations); ?>
+<form action="{phpself query="true"}" method="post" onsubmit="return confirm('Confirm Deletes');">
+	{csrf}
 
+	<input type="submit" name="multiDelete" value="Delete Selected Reservations" />
+	<?php print $table->display($reservations); ?>
+</form>
 
 <?php
 templates::display('footer');
