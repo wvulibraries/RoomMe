@@ -184,6 +184,16 @@ function getResultMessage($value) {
 
 }
 
+function getTimeFormat() {
+	$hourSetting = getConfig('24hour');
+	if ($hourSetting == "1") {
+		return "m/d/Y H:i";
+	}
+	else {
+		return "m/d/Y g:iA";
+	}
+}
+
 function drawRoomCalendar($roomID,$date) {
 
 	$engine = EngineAPI::singleton();
