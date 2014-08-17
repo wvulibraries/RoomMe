@@ -95,6 +95,7 @@ class reservation {
 		$username = $_POST['MYSQL']['username'];
 
 		// verify that the username is real and get the initials of the user
+		// @TODO this needs converted to the new user class
 		$userInformation = getUserInfo($username);         // takes a username and returns an array with info on success or FALSE on failure
 
 		if ($userInformation === FALSE) {
