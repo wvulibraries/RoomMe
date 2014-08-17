@@ -62,13 +62,7 @@ if ($error === FALSE) {
 	$headers[] = "Edit";
 	$table->headers($headers);
 
-	$hourSetting = getConfig('24hour');
-	if ($hourSetting == "1") {
-		$timeFormat = "m/d/Y H:i";
-	}
-	else {
-		$timeFormat = "m/d/Y g:iA";
-	}
+	$timeFormat = getTimeFormat();
 	
 	while($row       = $sqlResult->fetch()) {
 
