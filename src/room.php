@@ -298,6 +298,13 @@ templates::display('header');
 		</tr>
 	</table>
 	<br />
+	<label for="openEvent">Is this an open, public, event?</label><br />
+	<select name="openEvent" id="openEvent"><option value="0">No</option><option value="1">Yes</option></select><br />
+	<div id="openEventDescriptionContainer"  style="display:none;">
+		<label for="openEventDescription">Describe your event:</label><br />
+		<textarea id="openEventDescription" name="openEventDescription"></textarea>
+	</div>
+	<br /><br />
 	<label name="notificationEmail">Email Address (<strong><em>optional, for email confirmation</em></strong>):</label>
 	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" />
 	<br /><br />

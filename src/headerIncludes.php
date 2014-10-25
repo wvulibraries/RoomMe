@@ -14,7 +14,19 @@ $(document)
 		.on('click', '#deleteReservation', handler_deleteReservation)
 		.on('click', '.cancelReservation', handler_deleteReservation)
 		.on('click', '#closeModalCalendar', handler_closeModal)
+		.on('change', '#openEvent', openEvent_checkChange)
 });
+
+function openEvent_checkChange() {
+
+	if ($('#openEvent').val() == '0') {
+		$('#openEventDescriptionContainer').hide();
+	}
+	else {
+		$('#openEventDescriptionContainer').show();
+	}
+
+}
 
 function handler_closeModal() {
 	$.modal.close();
