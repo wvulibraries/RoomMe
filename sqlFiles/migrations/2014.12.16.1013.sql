@@ -1,0 +1,14 @@
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('24hour','0');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('adjustedDeleteTime','5');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('allowMultipleBookings','0');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('calendarDisplayName','{number}');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('daysToDisplayOnCancelledPage','20');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('defaultReservationIncrements','15');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('displayDurationOnBuildingCal','0');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('displayDurationOnRoomsCal','0');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('displayNameAs','username');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('hoursOnReservationTable','1');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('maxBookingsAllowedSystem','80');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('maxFineAllowedSystem','5.00');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('maxHoursAllowedSystem','200');
+INSERT INTO `siteConfig` (`name`,`value`) VALUES ('periodSystem','0');
