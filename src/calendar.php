@@ -165,7 +165,7 @@ $localvars->set("calendarName",($calType == "building")?$buildingName:$roomName)
 </footer>
 
 <script type="text/javascript">
-$('#closeModalCalendar').live('click',handler_closeModal);
+$('#closeModalCalendar').on('click',handler_closeModal);
 
 </script>
 

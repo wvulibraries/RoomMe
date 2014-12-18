@@ -1,7 +1,7 @@
 
 <link rel="stylesheet" type="text/css" href="{local var="roomResBaseDir"}/css/reservations.less" />
 <script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/doubleMultiSelect.js"></script>
-<script src="{local var="roomResBaseDir"}/javascript/jquery.simplemodal.1.4.2.min.js" type="text/javascript"></script>
+<script src="{local var="roomResBaseDir"}/javascript/jquery.simplemodal.1.4.4.min.js" type="text/javascript"></script>
 <!-- <script src="{local var="roomResBaseDir"}/javascript/jquery.tablescroll.js" type="text/javascript"></script> -->
 
 <script type="text/javascript">
@@ -14,19 +14,7 @@ $(document)
 		.on('click', '#deleteReservation', handler_deleteReservation)
 		.on('click', '.cancelReservation', handler_deleteReservation)
 		.on('click', '#closeModalCalendar', handler_closeModal)
-		.on('change', '#openEvent', openEvent_checkChange)
 });
-
-function openEvent_checkChange() {
-
-	if ($('#openEvent').val() == '0') {
-		$('#openEventDescriptionContainer').hide();
-	}
-	else {
-		$('#openEventDescriptionContainer').show();
-	}
-
-}
 
 function handler_closeModal() {
 	$.modal.close();
@@ -42,6 +30,7 @@ function handler_calModal() {
 		url: url,
 		dataType: "html",
 		success: function(responseData) {
+			console.log($('#calendarModal'));
 			$('#calendarModal').html(responseData);
 			$('#calendarModal').modal({overlayClose:true});
 			// $('#reservationsRoomTable').tableScroll({height:360});
