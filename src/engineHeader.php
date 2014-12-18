@@ -8,6 +8,8 @@ errorHandle::errorReporting(errorHandle::E_ALL);
 $localvars  = localvars::getInstance();
 $enginevars = enginevars::getInstance();
 
+$localvars->set("currentDisplayObjectTitle","Room Reservations");
+
 // require_once "/home/library/public_html/includes/engineHeader.php";
 
 recurseInsert("acl.php","php"); 
@@ -17,7 +19,8 @@ recurseInsert("includes/getUserInfo.php","php");
 require 'engineIncludes.php';
 
 recurseInsert("includes/engineHeader.php","php");
-templates::load("library2012.3col");
+// templates::load("library2012.3col");
+templates::load("library2014-backpage");
 
 $localvars->set("roomResBaseDir","/services/rooms");
 
