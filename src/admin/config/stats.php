@@ -13,7 +13,7 @@ $output = "";
 if (isset($_POST['HTML']['genStats'])) {
 
 	$stime     = mktime(0,0,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
-	$etime     = mktime(0,0,0,$_POST['MYSQL']['end_month'],$_POST['MYSQL']['end_day'],$_POST['MYSQL']['end_year']);
+	$etime     = mktime(23,0,0,$_POST['MYSQL']['end_month'],$_POST['MYSQL']['end_day'],$_POST['MYSQL']['end_year']);
 
 	$db        = db::get($localvars->get('dbConnectionName'));
 
