@@ -76,7 +76,7 @@ class building {
 		foreach ($buildings as $building) {
 
 			if (is_empty($building['externalURL'])) { 
-				$url = sprintf('%s/calendar.php?building=%s',
+				$url = sprintf('%s/calendar/building/?building=%s',
 					$this->localvars->get("roomResBaseDir"),
 					$building['ID']
 					);
