@@ -4,7 +4,16 @@ class building {
 	
 	private $buildings = array();
 
+	private $db;
+	private $engine;
+	private $localvars;
+
 	function __construct() {
+
+		$this->engine    = EngineAPI::singleton();
+		$this->localvars = localvars::getInstance();
+		$this->db        = db::get($this->localvars->get('dbConnectionName'));
+
 	}
 
 	public function get($ID) {
@@ -17,12 +26,8 @@ class building {
 			return $this->buildings[$ID]['name'];
 		}
 
-		$engine    = EngineAPI::singleton();
-		$localvars = localvars::getInstance();
-		$db        = db::get($localvars->get('dbConnectionName'));
-
 		$sql       = sprintf("SELECT * FROM building WHERE `ID`=? LIMIT 1");
-		$sqlResult = $db->query($sql,array($ID));
+		$sqlResult = $this->db->query($sql,array($ID));
 
 		if ($sqlResult->error()) {
 			errorHandle::newError(__FUNCTION__."() - Error getting building name.", errorHandle::DEBUG);
