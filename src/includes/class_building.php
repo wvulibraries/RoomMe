@@ -40,6 +40,34 @@ class building {
 
 	}
 
+	public function getall() {
+
+		$engine    = EngineAPI::singleton();
+		$localvars = localvars::getInstance();
+		$db        = db::get($localvars->get('dbConnectionName'));
+
+		$sql       = sprintf("SELECT * FROM building ORDER BY name");
+		$sqlResult = $db->query($sql,array($ID));
+
+		if ($sqlResult->error()) {
+			errorHandle::newError(__FUNCTION__."() - Error getting building name.", errorHandle::DEBUG);
+			return(FALSE);
+		}
+
+		if ($sqlResult->rowCount() < 1) {
+			errorHandle::errorMsg("No Buildings Found");
+			return FALSE;
+		}
+
+		while ($row = $sqlResult->fetch()) {
+			$this->buildings[$row['ID']] = $row;
+		}
+
+		return $this->buildings;
+
+	}
+
+
 }
 
 ?>
