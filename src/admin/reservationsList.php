@@ -86,6 +86,7 @@ if ($error === FALSE) {
 	}
 	$headers[] = "Edit";
 	$headers[] = "Delete";
+	$headers[] = "Created By";
 	$table->headers($headers);
 
 	$timeFormat = getTimeFormat();
@@ -116,6 +117,7 @@ if ($error === FALSE) {
 		$temp['delete']    = sprintf('<input type="checkbox" name="delete[]" value="%s" />',
 			htmlSanitize($row['ID'])
 			);
+		$temp['createdBy'] = ($row['createdVia'] != 'Public Interface')?$row['createdBy']:"";
 
 		$reservations[] = $temp;
 
