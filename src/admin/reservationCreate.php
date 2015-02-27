@@ -15,6 +15,15 @@ $submitError     = FALSE;
 
 $reservation = new Reservation;
 
+// Check to see if we want to create a new reservation with the patron information
+// we want to make sure the patron information remains, but all the reservation information is removed ... as if it is a new reservation.
+if (isset($_POST['MYSQL']['createNewFromOld'])) {
+
+	unset($_GET['MYSQL']['id']);
+	unset($_POST['MYSQL']['reservationID']);
+
+}
+
 try {
 
 	// Is this an Update? 
@@ -128,6 +137,15 @@ $localvars->set("comments",($reservation->isNew())?"":$reservation->reservation[
 $localvars->set("action",($reservation->isNew())?"Add":"Update");
 $localvars->set("reservationID",($reservation->isNew())?"":$reservation->reservation['ID']);
 $localvars->set("submitText",($reservation->isNew())?"Reserve this Room":"Update Reservation");
+
+// Check to see if we want to create a new reservation with the patron information
+// we want to make sure the patron information remains, but all the reservation information is removed ... as if it is a new reservation.
+if (isset($_POST['MYSQL']['createNewFromOld'])) {
+
+	$localvars->set("username", (isset($_POST['HTML']['username']) && !is_empty($_POST['HTML']['username']))?$_POST['HTML']['username']:"");
+	$localvars->set("groupname",(isset($_POST['HTML']['groupname']) && !is_empty($_POST['HTML']['groupname']))?$_POST['HTML']['groupname']:"");
+
+}
 
 
 if ($submitError) {
@@ -331,6 +349,8 @@ templates::display('header');
 		<?php if (!$reservation->isNew()) { ?>
 
 		<input type="submit" name="deleteSubmit" value="Delete" id="deleteReservation"/>
+		&nbsp;
+		<input type="submit" name="createNewFromOld" value="Create Another" id="createNewFromOld" />
 
 		<?php }	?>
 
