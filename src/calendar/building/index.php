@@ -1,6 +1,5 @@
 <?php
 require_once("../../engineHeader.php");
-recurseInsert("includes/functions.php","php");
 
 $error  = FALSE;
 $roomID = "";
@@ -97,12 +96,11 @@ else {
 
 
 
-$localvars->set("calendarName",($calType == "building")?$buildingName:$roomName)
+$localvars->set("calendarName",($calType == "building")?$buildingName:$roomName);
 
-// templates::display('header');
+templates::display('header');
 ?>
 
-<span class="simplemodal-close" id="closeModalCalendar"><img src="images/closeIcon.png" title="close"/></span>
 <header>
 	<h1>{local var="calendarName"} Calendar</h1>
 	<h2>{local var="month"} / {local var="day"} / {local var="year"}</h2>
@@ -159,10 +157,6 @@ $localvars->set("calendarName",($calType == "building")?$buildingName:$roomName)
 
 </section>
 
-<footer>
-	<h1>{local var="calendarName"} Calendar</h1>
-	<h2>{local var="month"} / {local var="day"} / {local var="year"}</h2>
-</footer>
 
 <script type="text/javascript">
 $('#closeModalCalendar').on('click',handler_closeModal);
@@ -170,5 +164,5 @@ $('#closeModalCalendar').on('click',handler_closeModal);
 </script>
 
 <?php
-// templates::display('footer');
+templates::display('footer');
 ?>
