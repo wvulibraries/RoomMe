@@ -1,3 +1,10 @@
+<?php 
+
+$localvars = localvars::getInstance();
+$building  = new building;
+$localvars->set("buildingCalendars",$building->calendarList());
+
+?>
 <ul>
 	<li><a href="{local var="roomResBaseDir"}/admin/index.php">Admin Home</a></li>
 	<li>Reservation Management
@@ -35,4 +42,9 @@
 		</ul>
 	</li>
 	<?php } ?>
+	<li> Building Calendars
+		<ul>
+			{local var="buildingCalendars"}
+		</ul>
+	</li>
 </ul>
