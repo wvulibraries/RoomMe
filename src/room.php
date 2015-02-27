@@ -22,17 +22,17 @@ if ($room !== FALSE && isset($room['building'])) {
 	$roomPolicy   = getRoomPolicy($roomID);
 	$buildingName = getBuildingName($room['building']);
 
-	$localvars->set("roomName",    $room['name']);
-	$localvars->set("roomNumber",  $room['number']);
-	$localvars->set("policyURL",   $room['policyURL']);
+	$localvars->set("roomName",    htmlSanitize($room['name']));
+	$localvars->set("roomNumber",  htmlSanitize($room['number']));
+	$localvars->set("policyURL",   htmlSanitize($room['policyURL']));
 	$localvars->set("username",    session::get("username"));
-	$localvars->set("buildingID",  $room['building']);
-	$localvars->set("roomID",      $room['ID']);
-	$localvars->set("buildingName",$buildingName);
+	$localvars->set("buildingID",  htmlSanitize($room['building']));
+	$localvars->set("roomID",      htmlSanitize($room['ID']));
+	$localvars->set("buildingName",htmlSanitize($buildingName));
 	$localvars->set("prettyPrint", errorHandle::prettyPrint());
 	$localvars->set("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
-	$localvars->set("mapURL",      $room['mapURL']);
-	$localvars->set("displayName", $room['displayName']);
+	$localvars->set("mapURL",      htmlSanitize($room['mapURL']));
+	$localvars->set("displayName", htmlSanitize($room['displayName']));
 
 }
 else {
@@ -76,12 +76,16 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 	$buildingID = $_POST['MYSQL']['library'];
 	$roomID     = $_POST['MYSQL']['room'];
 
-	createReservation($buildingID,$roomID);
+	$reservation = new Reservation;
+	$reservation->setBuilding($buildingID);
+	$reservation->setRoom($roomID);
+
+	$reservation->create();
 
 	$localvars->set("prettyPrint",errorHandle::prettyPrint());
 }
 
-$localvars->set("policyLabel",getResultMessage("policyLabel"));
+$localvars->set("policyLabel",htmlSanitize(getResultMessage("policyLabel")));
 
 templates::display('header');
 ?>
@@ -143,7 +147,7 @@ templates::display('header');
 						foreach ($room['equipment'] as $I=>$equipment) { 
 					?>
 						<li>
-							<a href="equipment.php?id=<?php print $equipment['ID']; ?>"><?php print $equipment['name']; ?></a>
+							<a href="equipment.php?id=<?php print htmlSanitize($equipment['ID']); ?>"><?php print htmlSanitize($equipment['name']); ?></a>
 						</li>
 					<?php } ?>
 				</ul>
@@ -182,6 +186,9 @@ templates::display('header');
 	<input type="hidden" id="username" name="username" value="{local var="username"}"/>
 
 	<table>
+						<tr>
+					<th colspan="3" style="text-align: left;"><strong>Reservation Date:</strong></th>
+				</tr>
 		<tr>
 			<td id="montDayYearSelects">
 				<label for="start_month">Month:</label><br />
@@ -223,14 +230,11 @@ templates::display('header');
 			</td>
 			<td></td>
 		</tr>
-		<tr>
-			<td colspan="2">
-				Start Time
-			</td>
-			<td colspan="2">
-				End Time
-			</td>
-		</tr>
+				<tr>
+					<td colspan="2">
+						<strong>Start Time</strong>
+					</td>
+				</tr>
 		<tr id="startEndTimeSelects">	
 			<td>
 				<label for="start_hour">Hour:</label><br />
@@ -258,7 +262,13 @@ templates::display('header');
 					?>
 				</select>
 			</td>
-
+				</tr>
+				<tr>
+					<td colspan="2">
+						<strong>End Time</strong>
+					</td>
+				</tr>
+				<tr>
 			<td>
 				<label for="end_hour">Hour:</label><br />
 				<select name="end_hour" id="end_hour" >
@@ -287,7 +297,14 @@ templates::display('header');
 			</td>
 		</tr>
 	</table>
-	
+	<br />
+	<label for="openEvent">Is this an open, public, event?</label><br />
+	<select name="openEvent" id="openEvent"><option value="0">No</option><option value="1">Yes</option></select><br />
+	<div id="openEventDescriptionContainer"  style="display:none;">
+		<label for="openEventDescription">Describe your event:</label><br />
+		<textarea id="openEventDescription" name="openEventDescription"></textarea>
+	</div>
+	<br /><br />
 	<label name="notificationEmail">Email Address (<strong><em>optional, for email confirmation</em></strong>):</label>
 	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" />
 	<br /><br />

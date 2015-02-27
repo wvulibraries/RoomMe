@@ -15,7 +15,7 @@ $nextMin      = (!isset($_GET['MYSQL']['reservationSTime']))?"00":date("i",$_GET
 // generate library list
 $db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT * FROM `building` ORDER BY `name`");
-$sqlResult = $DB->query($sql);
+$sqlResult = $db->query($sql);
 $options = "";
 while ($row = $sqlResult->fetch()) {
 	$options .= sprintf('<option value="%s">%s</option>',
@@ -100,9 +100,9 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 		else {
 
 			if ($sqlResult->rowCount() == 0) {
-				print "<pre>";
-				var_dump($sql);
-				print "</pre>";
+				// print "<pre>";
+				// // var_dump($sql);
+				// print "</pre>";
 				$results = errorHandle::errorMsg("No Rooms found!");
 			}
 			else {

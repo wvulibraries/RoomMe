@@ -8,6 +8,7 @@
 			<li><a href="{local var="roomResBaseDir"}/admin/reservationLibrarySelect.php?type=series">Create Series</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/seriesList.php">List all Series</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/printReservations.php">Print Reservations</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/search/">Search</a></li>
 		</ul>
 	</li>
 	<?php if (checkGroup("libraryWeb_roomReservation_rooms") || checkGroup("libraryWeb_roomReservation_admin")) { ?>

@@ -41,11 +41,11 @@
 
 	<?php if (is_empty($row['externalURL'])) { ?>
 	<li>
-		<a href="#" class="calendarModal_link" data-type="building" data-id="<?php print $row['ID'] ?>"><?php print $row['name'];?></a>
+		<a href="#" class="calendarModal_link" data-type="building" data-id="<?php print htmlSanitize($row['ID']); ?>"><?php print htmlSanitize($row['name']);?></a>
 	</li>
 	<?php } else { ?>
 	<li>
-		<a href="<?php print $row['externalURL'] ?>"><?php print $row['name'];?></a>
+		<a href="<?php print htmlSanitize($row['externalURL']) ?>"><?php print htmlSanitize($row['name']);?></a>
 	</li>
 	<?php } ?>
 
