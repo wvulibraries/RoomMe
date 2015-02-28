@@ -1,0 +1,1 @@
+INSERT INTO `resultMessages` (`name`,`value`) VALUES ('emailNotProvided','Email Address is Required.');

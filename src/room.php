@@ -305,8 +305,8 @@ templates::display('header');
 		<textarea id="openEventDescription" name="openEventDescription"></textarea>
 	</div>
 	<br /><br />
-	<label name="notificationEmail">Email Address (<strong><em>optional, for email confirmation</em></strong>):</label>
-	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" />
+	<label name="notificationEmail" class="requiredField" >Email Address:</label>
+	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" required />
 	<br /><br />
 	
 	<input type="submit" name="createSubmit" value="Reserve this Room" />
