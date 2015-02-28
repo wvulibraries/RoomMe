@@ -19,6 +19,7 @@ $room         = getRoomInfo($roomID);
 
 if ($room !== FALSE && isset($room['building'])) {
 
+	$roomObj      = new room;
 	$roomPolicy   = getRoomPolicy($roomID);
 	$buildingName = getBuildingName($room['building']);
 
@@ -33,6 +34,8 @@ if ($room !== FALSE && isset($room['building'])) {
 	$localvars->set("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
 	$localvars->set("mapURL",      htmlSanitize($room['mapURL']));
 	$localvars->set("displayName", htmlSanitize($room['displayName']));
+
+	$localvars->set("roomPicture", $roomObj->getPicture($room['ID']));
 
 }
 else {
@@ -110,6 +113,7 @@ templates::display('header');
 		<h1>Room Information</h1>
 	</header>
 
+
 	<table>
 		<tr>
 			<td><strong>Room Name:</strong></td>
@@ -156,6 +160,11 @@ templates::display('header');
 		<?php } ?>
 
 	</table>
+
+<div id="roomPictureContainer">
+	{local var="roomPicture"}
+</div>
+
 
 </section>
 

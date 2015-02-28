@@ -1,0 +1,1 @@
+ALTER TABLE `rooms` ADD COLUMN `pictureURL` varchar(255) DEFAULT NULL;

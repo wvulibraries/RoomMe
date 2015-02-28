@@ -39,4 +39,16 @@ class room {
 		return $this->rooms[$ID];
 
 	}
+
+	public function getPicture($ID) {
+
+		$room = $this->get($ID);
+
+		if (!isset($room['pictureURL']) || is_empty($room['pictureURL'])) {
+			return "";
+		}
+
+		return sprintf('<img src="%s" id="roomPicture" />',$room['pictureURL']);
+
+	}
 }
