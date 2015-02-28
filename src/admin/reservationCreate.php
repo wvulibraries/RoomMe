@@ -132,6 +132,7 @@ $endMinute   = ($reservation->isNew())?"0":date("i",$reservation->reservation['e
 
 // Set some localvars for use in the HTML below. 
 $localvars->set("username",($reservation->isNew())?"":$reservation->reservation['username']);
+$localvars->set("email",($reservation->isNew())?"":$reservation->reservation['email']);
 $localvars->set("groupname",($reservation->isNew())?"":$reservation->reservation['groupname']);
 $localvars->set("comments",($reservation->isNew())?"":$reservation->reservation['comments']);
 $localvars->set("action",($reservation->isNew())?"Add":"Update");
@@ -144,9 +145,12 @@ if (isset($_POST['MYSQL']['createNewFromOld'])) {
 
 	$localvars->set("username", (isset($_POST['HTML']['username']) && !is_empty($_POST['HTML']['username']))?$_POST['HTML']['username']:"");
 	$localvars->set("groupname",(isset($_POST['HTML']['groupname']) && !is_empty($_POST['HTML']['groupname']))?$_POST['HTML']['groupname']:"");
-
+	$localvars->set("email",(isset($_POST['HTML']['notificationEmail']) && !is_empty($_POST['HTML']['notificationEmail']))?$_POST['HTML']['notificationEmail']:"");
 }
 
+if (!$reservation->isNew() && $reservation->hasEmail()) {
+	$localvars->set("emailPatron",sprintf('<a href="email/?id=%s">Email Patron</a>',$reservation->reservation['ID']));
+}
 
 if ($submitError) {
 
@@ -192,7 +196,9 @@ templates::display('header');
 
 		<fieldset>
 			<legend>User Information</legend>
-			<label for="username" class="requiredField">Username:</label> &nbsp; <input type="text" id="username" name="username" value="{local var="username"}"/>
+			<label for="username" class="requiredField">Username:</label> &nbsp; <input type="text" id="username" name="username" value="{local var="username"}" required/>
+			<br />
+			<label for="notificationEmail" class="requiredField">Email:</label> &nbsp; <input type="text" id="notificationEmail" name="notificationEmail" value="{local var="email"}" required/> {local var="emailPatron"}
 			<br />
 			<label for="groupName">Groupname:</label> &nbsp; <input type="text" id="groupname" name="groupname" value="{local var="groupname"}"/>
 		</fieldset>
@@ -320,12 +326,6 @@ templates::display('header');
 		<br />
 		<fieldset>
 			<legend>Administrative Information</legend>
-
-			<?php if (!$reservation->isNew() && $reservation->hasEmail()) { ?>
-
-			<a href="email/?id={local var="reservationID"}">Email Patron</a><br /><br />
-
-			<?php }	?>
 
 			<label for="via">Via:</label>
 			<select name="via" id="via">

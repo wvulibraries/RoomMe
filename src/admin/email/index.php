@@ -114,7 +114,7 @@ templates::display('header');
 			<strong>Email</strong>
 		</td>	
 		<td>
-			{local var="email"}
+			<a href="mailto:{local var="email"}">{local var="email"}</a>
 		</td>
 	</tr>
 </table>

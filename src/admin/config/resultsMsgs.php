@@ -30,6 +30,7 @@ function defineFields() {
 	$fields['userOverPolicyBookings']   = getResultMessage('userOverPolicyBookings');
 	$fields['errorInserting']           = getResultMessage('errorInserting');
 	$fields['tooFarInFuture']           = getResultMessage('tooFarInFuture');
+	$fields['emailNotProvided']         = getResultMessage('emailNotProvided');
 	
 	return($fields);
 }

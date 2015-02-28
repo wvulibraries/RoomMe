@@ -103,6 +103,12 @@ class reservation {
 			return FALSE;
 		}
 
+		// check that an email address was submitted
+		if (!isset($_POST['MYSQL']['notificationEmail']) || is_empty($_POST['MYSQL']['notificationEmail'])) {
+			errorHandle::errorMsg(getResultMessage("emailNotProvided"));
+			return FALSE;
+		}
+
 		// convert the start time to unix
 
 		// convert the end time to unix
@@ -592,7 +598,7 @@ class reservation {
 				);
 		}
 		else {
-			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=? WHERE ID=?");
+			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=?, email=? WHERE ID=?");
 			$sqlOptions = array(
 				$sUnix,
 				$eUnix,
@@ -603,6 +609,7 @@ class reservation {
 				$groupname,
 				$comments,
 				$via,
+				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:"",
 				$this->reservation['ID']
 				);
 		}
