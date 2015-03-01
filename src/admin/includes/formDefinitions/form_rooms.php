@@ -59,6 +59,17 @@ $form->addField(
 
 $form->addField(
     array(
+        'name'            => "pictureURL",
+        'label'           => "Picture URL",
+        'showInEditStrip' => TRUE,
+        'required'        => FALSE,
+        'duplicates'      => TRUE,
+        'type'            => 'url'
+    )
+);
+
+$form->addField(
+    array(
         'name'            => "roomTemplate",
         'label'           => "Room Template",
         'showInEditStrip' => TRUE,
