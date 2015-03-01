@@ -104,6 +104,7 @@ class reservation {
 		}
 
 		// check that an email address was submitted
+		// @TODO move this to validateRoomPostVariables
 		if (!isset($_POST['MYSQL']['notificationEmail']) || is_empty($_POST['MYSQL']['notificationEmail'])) {
 			errorHandle::errorMsg(getResultMessage("emailNotProvided"));
 			return FALSE;
