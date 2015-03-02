@@ -112,7 +112,8 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 					$displayName = str_replace("{name}", $row['name'], $row['roomListDisplay']);
 					$displayName = str_replace("{number}", $row['number'], $displayName);
 
-					$results .= sprintf('<li><a href="room.php?room=%s&reservationSTime=%s&reservationETime=%s">%s</a></li>',
+					$results .= sprintf('<li><a href="%s/building/room/?room=%s&reservationSTime=%s&reservationETime=%s">%s</a></li>',
+						$localvars->get("roomReservationHome"),
 						htmlSanitize($row['ID']),
 						htmlSanitize($sUnix),
 						htmlSanitize($eUnix),

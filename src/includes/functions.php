@@ -197,7 +197,8 @@ function getTimeFormat() {
 function drawRoomCalendar($roomID,$date) {
 
 	$engine = EngineAPI::singleton();
-
+	$localvars = localvars::getInstance();
+	
 	$calType = "building";
 
 	if (!is_array($roomID)) {
@@ -253,7 +254,8 @@ function drawRoomCalendar($roomID,$date) {
 		$displayName = str_replace("{name}", $room['name'], $calendarDisplayName);
 		$displayName = str_replace("{number}", $room['number'], $displayName);
 
-		$output .= sprintf('<th><a href="room.php?room=%s&reservationSTime=%s&reservationETime=%s">%s</a></th>',
+		$output .= sprintf('<th><a href="%s/building/room/?room=%s&reservationSTime=%s&reservationETime=%s">%s</a></th>',
+			$localvars->get("roomReservationHome"),
 			htmlSanitize($room['ID']),
 			htmlSanitize($reservationSTime),
 			htmlSanitize($reservationETime),

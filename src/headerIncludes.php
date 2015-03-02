@@ -85,7 +85,7 @@ function handler_changeCalDate() {
 	var year  = $(this).attr('data-year');
 	var type  = $(this).attr('data-type');
 
-	url = "calendar.php?"+type+"="+$(this).attr('data-id')+"&month="+month+"&day="+day+"&year="+year;
+	url = "{local var="roomReservationHome"}/calendar/calendar.php?"+type+"="+$(this).attr('data-id')+"&month="+month+"&day="+day+"&year="+year;
 
 	$.ajax({
 		url: url,
@@ -109,7 +109,7 @@ function handler_changeCalDateForm() {
 	var type  = $(this).attr('data-type');
 	var id    = $(this).attr('data-id');
 
-	url = "calendar.php?"+type+"="+$(this).attr('data-id')+"&month="+month+"&day="+day+"&year="+year;
+	url = "{local var="roomReservationHome"}/calendar/calendar.php?"+type+"="+$(this).attr('data-id')+"&month="+month+"&day="+day+"&year="+year;
 
 	$.ajax({
 		url: url,
