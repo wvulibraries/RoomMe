@@ -253,7 +253,7 @@ templates::display('header');
 	</table>
 	
 	
-	<input type="submit" name="lookupSubmit" />
+	<input type="submit" name="lookupSubmit" class="button" />
 </form>
 
 <?php if (!is_empty($results)) { ?>

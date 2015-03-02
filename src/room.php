@@ -323,7 +323,7 @@ templates::display('header');
 	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" value="{local var="useremail"}" required />
 	<br /><br />
 	
-	<input type="submit" name="createSubmit" value="Reserve this Room" />
+	<input type="submit" name="createSubmit" class="button" value="Reserve this Room" />
 </form>
 <?php } ?>
 <?php } else { // public scheduling?>
