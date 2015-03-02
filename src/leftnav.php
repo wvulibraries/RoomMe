@@ -8,10 +8,10 @@
 
 <ul>
 	<li>
-		<a href="index.php">Room Reservation Home</a>
+		<a href="{local var="roomReservationHome"}">Room Reservation Home</a>
 	</li>
 	<li>
-		<a href="find.php">Check Room Availability</a>
+		<a href="{local var="roomReservationHome"}/find.php">Check Room Availability</a>
 	</li>
 	<li>
 		<a href="http://www.hsc.wvu.edu/its/Forms/SchedulingForms/LibraryStudyRoomRequest.aspx">Health Sciences Libraries</a>
@@ -20,7 +20,7 @@
 		<?php if (is_empty(session::get("username"))) { ?>
 		<a href="{local var="loginURL"}">Login</a>
 		<?php } else { ?>
-		<a href="view.php">View your reservations</a>
+		<a href="{local var="roomReservationHome"}/view.php">View your reservations</a>
 		<a href="{engine var="logoutPage"}?csrf={engine name="csrfGet"}">Logout</a>
 		<?php } ?>
 	</li>
