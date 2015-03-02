@@ -30,7 +30,7 @@ while ($row = $sqlResult->fetch()) {
 	<ul>
 		<?php if (is_empty($row['externalURL'])) { ?>
 		<li>
-			<a href="building.php?building=<?php print htmlSanitize($row['ID']) ?>">View &amp; Reserve Rooms</a>
+			<a href="{local var="roomReservationHome"}/building/?building=<?php print htmlSanitize($row['ID']) ?>">View &amp; Reserve Rooms</a>
 		</li>
 
 		<?php if (isset($row['policyURL']) && !is_empty($row['policyURL'])) { ?>

@@ -24,7 +24,7 @@ function handler_calModal() {
 	var type = $(this).attr('data-type');
 	var url  = "";
 
-	url = "calendar.php?"+type+"="+$(this).attr('data-id');
+	url = "{local var="roomReservationHome"}/calendar/calendar.php?"+type+"="+$(this).attr('data-id');
 
 	$.ajax({
 		url: url,

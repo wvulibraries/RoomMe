@@ -1,5 +1,5 @@
 <?php
-require_once("engineHeader.php");
+require_once("../../engineHeader.php");
 recurseInsert("includes/functions.php","php");
 recurseInsert("includes/createReservations.php","php");
 
@@ -110,7 +110,7 @@ templates::display('header');
 
 <?php } ?>
 
-<a href="building.php?building={local var="buildingID"}">Return to Building room listing</a>
+<a href="{local var="roomReservationHome"}/building/?building={local var="buildingID"}">Return to Building room listing</a>
 
 <section id="reservationsRoomInformation">
 
@@ -156,7 +156,7 @@ templates::display('header');
 						foreach ($room['equipment'] as $I=>$equipment) { 
 					?>
 						<li>
-							<a href="equipment.php?id=<?php print htmlSanitize($equipment['ID']); ?>"><?php print htmlSanitize($equipment['name']); ?></a>
+							<a href="equipment/?id=<?php print htmlSanitize($equipment['ID']); ?>"><?php print htmlSanitize($equipment['name']); ?></a>
 						</li>
 					<?php } ?>
 				</ul>

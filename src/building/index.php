@@ -1,5 +1,5 @@
 <?php
-require_once("engineHeader.php");
+require_once("../engineHeader.php");
 recurseInsert("includes/functions.php","php");
 
 $error      = FALSE;
@@ -58,7 +58,7 @@ templates::display('header');
 <?php foreach($buildingRooms as $I=>$room) { ?>
 
 	<li>
-		<a href="room.php?room=<?php print htmlSanitize($room['ID']);?>"><?php print htmlSanitize($room['displayName']); ?></a>
+		<a href="room/?room=<?php print htmlSanitize($room['ID']);?>"><?php print htmlSanitize($room['displayName']); ?></a>
 	</li>
 
 <?php } ?>
