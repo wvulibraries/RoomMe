@@ -237,7 +237,7 @@ templates::display('header');
 					?>
 				</select>
 			</td>
-			<td></td>
+			
 		</tr>
 				<tr>
 					<td colspan="2">
