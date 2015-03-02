@@ -23,6 +23,11 @@ if ($room !== FALSE && isset($room['building'])) {
 	$roomPolicy   = getRoomPolicy($roomID);
 	$buildingName = getBuildingName($room['building']);
 
+	$userinfo = new userInfo();
+	if ($userinfo->get(session::get("username"))) {
+		$localvars->set("useremail",   $userinfo->user['email']);
+	}
+
 	$localvars->set("roomName",    htmlSanitize($room['name']));
 	$localvars->set("roomNumber",  htmlSanitize($room['number']));
 	$localvars->set("policyURL",   htmlSanitize($room['policyURL']));
@@ -315,7 +320,7 @@ templates::display('header');
 	</div>
 	<br /><br />
 	<label name="notificationEmail" class="requiredField" >Email Address:</label>
-	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" required />
+	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" value="{local var="useremail"}" required />
 	<br /><br />
 	
 	<input type="submit" name="createSubmit" value="Reserve this Room" />
