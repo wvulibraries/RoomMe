@@ -96,6 +96,27 @@ class building {
 
 	}
 
+	public function getRoomIDs($id) {
+
+		$roomIDs = array();
+
+		$sql       = sprintf("SELECT ID FROM `rooms` WHERE `building`=? ORDER BY `name`");
+		$sqlResult = $this->db->query($sql,array($id));
+
+		if ($sqlResult->error()) {
+			errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
+			return FALSE;
+		}
+		else {
+			while($row = $sqlResult->fetch()) {
+				$roomIDs[] = $row['ID'];
+			}
+		}
+
+		return $roomIDs;
+
+	}
+
 
 }
 
