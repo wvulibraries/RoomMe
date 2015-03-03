@@ -176,7 +176,7 @@ class calendar {
 
 	public function setLocalvars() {
 
-		$this->localvars->set("id",$this->calObject['id']);
+		$this->localvars->set("id",$this->calObject['ID']);
 		$this->localvars->set("name",$this->calObject['name']);
 		$this->localvars->set("calType",$this->calendarType);
 
