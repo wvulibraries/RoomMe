@@ -48,7 +48,7 @@ class room {
 			return "";
 		}
 
-		return sprintf('<img src="%s" id="roomPicture" />',$room['pictureURL']);
+		return sprintf('<img src="%s" id="roomPicture" alt="%s -- %s" />',$room['pictureURL'],$room['name'],$room['number']);
 
 	}
 }

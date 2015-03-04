@@ -58,7 +58,7 @@ templates::display('header');
 <?php foreach($buildingRooms as $I=>$room) { ?>
 
 	<li>
-		<a href="room/?room=<?php print htmlSanitize($room['ID']);?>"><?php print htmlSanitize($room['displayName']); ?></a>
+		<a href="room/?room=<?php print htmlSanitize($room['ID']);?>"><img src="<?php print htmlSanitize($room['pictureURL']);?>" class="buildingListPicture" alt="<?php print htmlSanitize($room['displayName']); ?>" /><?php print htmlSanitize($room['displayName']); ?></a>
 	</li>
 
 <?php } ?>
