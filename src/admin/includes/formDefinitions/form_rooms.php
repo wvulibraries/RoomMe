@@ -63,8 +63,7 @@ $form->addField(
         'label'           => "Picture URL",
         'showInEditStrip' => TRUE,
         'required'        => FALSE,
-        'duplicates'      => TRUE,
-        'type'            => 'url'
+        'duplicates'      => TRUE
     )
 );
 
