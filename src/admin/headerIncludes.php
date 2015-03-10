@@ -8,3 +8,5 @@
 
 
 ?>
+
+<script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/doubleMultiSelect.js"></script>
