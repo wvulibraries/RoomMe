@@ -33,12 +33,11 @@ $localvars->set("buildingCalendars",$building->calendarList());
 	<?php if (checkGroup("libraryWeb_roomReservation_admin")) { ?>
 	<li>Configuration
 		<ul>
-			<li><a href="{local var="roomResBaseDir"}/admin/config/resultsMsgs.php">Result Messages</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/config/snippets.php">Snippets</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/config/stats.php">Stats</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/config/sysconfig.php">System Configuration</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/config/via.php">Via Management</a></li>
-			<!-- <li><a href="{local var="roomResBaseDir"}/admin/config/emails.php">Email Responses</a></li> -->
+			<li><a href="{local var="roomResBaseDir"}/admin/config/messages/">Messages</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/config/snippets/">Snippets</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/config/statistics/">Statistics</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/config/settings/">System Settings</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/config/via/">Via Management</a></li>
 		</ul>
 	</li>
 	<?php } ?>

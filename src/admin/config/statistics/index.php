@@ -1,5 +1,5 @@
 <?php
-require_once("../engineHeader.php");
+require_once("../../engineHeader.php");
 recurseInsert("includes/functions.php","php");
 $errorMsg = "";
 $error    = FALSE;
@@ -22,16 +22,41 @@ if (isset($_POST['HTML']['genStats'])) {
 	$sqlResult = $db->query($sql,array($etime,$stime));
 
 	if (!$sqlResult->error()) {
-		$stats = array();
+		$stats                               = array();
+		$stats['buildins']                   = array();
+		$stats['totals']['total']            = 0;
+		$stats['totals']['via']              = array();
+
 		while ($row = $sqlResult->fetch()) {
 
 			$roomDisplayName = str_replace("{name}", $row['roomName'], $row['roomListDisplay']);
 			$roomDisplayName = str_replace("{number}", $row['roomNumber'], $roomDisplayName);
 
+			// Build the array
+			if (!isset($stats['buildings'][$row['buildingName']])) {
+				$stats['buildings'][$row['buildingName']] = array();
+				$stats['buildings'][$row['buildingName']]['total'] = 0;
+			}
+			if (!isset($stats['buildings'][$row['buildingName']]['rooms'])) {
+				$stats['buildings'][$row['buildingName']]['rooms'] = array();
+			}
+			if (!isset($stats['buildings'][$row['buildingName']]['rooms'][$roomDisplayName])) {
+				$stats['buildings'][$row['buildingName']]['rooms'][$roomDisplayName] = 0;
+			}
+			if (!isset($stats['buildings'][$row['buildingName']]['via'])) {
+				$stats['buildings'][$row['buildingName']]['via'] = array();
+			}
+			if (!isset($stats['buildings'][$row['buildingName']]['via'][$row['via']])) {
+				$stats['buildings'][$row['buildingName']]['via'][$row['via']] = 0;
+			}
+			if (!isset($stats['totals']['via'][$row['via']])) {
+				$stats['totals']['via'][$row['via']] = 0;
+			}
+
 			$stats['buildings'][$row['buildingName']]['total']++;
 			$stats['buildings'][$row['buildingName']]['rooms'][$roomDisplayName]++;
 			$stats['buildings'][$row['buildingName']]['via'][$row['via']]++;
-			
+
 			$stats['totals']['total']++;
 			$stats['totals']['via'][$row['via']]++;
 		}
@@ -79,7 +104,7 @@ templates::display('header');
 ?>
 
 <header>
-<h1>Reservation Listing</h1>
+<h1>Statistics</h1>
 </header>
 
 <form action="{phpself query="true"}" method="post">

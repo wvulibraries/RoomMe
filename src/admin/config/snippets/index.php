@@ -1,12 +1,12 @@
 <?php
-require_once("../engineHeader.php");
+require_once("../../engineHeader.php");
 
 $localvars = localvars::getInstance();
 
 $snippet = new Snippet("pageContent","content",db::get("appDB"));
 $snippet->snippetPublicURL = $localvars->get("roomResBaseDir").$snippet->snippetPublicURL;
 
-require("../includes/snippetsFunctions.php");
+require("../../includes/snippetsFunctions.php");
 
 if (isset($_POST['MYSQL']['pageContent_submit'])) {
 	$listObj->insert();
@@ -49,7 +49,7 @@ else {
 
 }
 
-require("../includes/snippetsFunctions.php");
+require("../../includes/snippetsFunctions.php");
 
 
 if (!is_empty($engine->errorStack)) {
