@@ -1,1 +1,0 @@
-ALTER TABLE `reservations` ADD COLUMN `seriesID` int(10) unsigned;
