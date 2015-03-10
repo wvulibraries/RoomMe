@@ -1,5 +1,8 @@
 <?php
 
+
+$localvars = localvars::getInstance();
+
 $form = formBuilder::createForm('roomTemplates');
 $form->linkToDatabase(array(
     'table' => "roomTemplates"
@@ -90,7 +93,7 @@ $form->addField(
 $form->addField (
 	array(
 		'name'  => "edit",
-		'value' => '<a href="addEQtoRoom.php?roomTemplate={ID}">Edit</a>',
+		'value' => sprintf('<a href="%s/admin/roommanagement/templates/equipment/?roomTemplate={ID}">Edit</a>',$localvars->get("roomReservationHome")),
 		'label' => "Manage Equipment",
 		'type'  => "plaintext",
 		'showIn' => array(formBuilder::TYPE_EDIT)

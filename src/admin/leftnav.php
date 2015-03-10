@@ -21,12 +21,12 @@ $localvars->set("buildingCalendars",$building->calendarList());
 	<?php if (checkGroup("libraryWeb_roomReservation_rooms") || checkGroup("libraryWeb_roomReservation_admin")) { ?>
 	<li>Room Management
 		<ul>
-			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/buildings.php">Buildings</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/roomPolicies.php">Room Policies</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/roomTemplates.php">Room Templates</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/rooms.php">Rooms</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/equipment.php">Equipment</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/equipmentTypes.php">Equipment Types</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/buildings/">Buildings</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/policies/">Room Policies</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/templates/">Room Templates</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/rooms/">Rooms</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/equipment/">Equipment</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/equipment/types/">Equipment Types</a></li>
 		</ul>
 	</li>
 	<?php } ?>
