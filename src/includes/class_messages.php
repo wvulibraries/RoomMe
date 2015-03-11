@@ -17,10 +17,10 @@ class messages {
 	public function get($name=NULL) {
 
 		if (isnull($name)) {
-			return $messages;
+			return $this->messages;
 		}
 
-		if (isset($messages[$name])) return $messages[$name];
+		if (isset($this->messages[$name])) return $this->messages[$name];
 
 		return "";
 
