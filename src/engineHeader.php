@@ -18,6 +18,8 @@ recurseInsert("includes/getUserInfo.php","php");
 
 require 'engineIncludes.php';
 
+$messages = new messages;
+
 recurseInsert("includes/engineHeader.php","php");
 // templates::load("library2012.3col");
 templates::load("library2014-backpage");

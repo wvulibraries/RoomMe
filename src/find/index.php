@@ -44,7 +44,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 	// check to see if the provided date is valid
 	$validDate = checkdate($month,$day,$year);
 	if ($validDate === FALSE) {
-		errorHandle::errorMsg(getResultMessage("invalidDate"));
+		errorHandle::errorMsg($messages->get("invalidDate"));
 		$error = TRUE;
 	}
 
@@ -73,7 +73,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 
 		// make sure the end time is after the start time
 		if ($eUnix <= $sUnix) {
-			errorHandle::errorMsg(getResultMessage("endBeforeStart"));
+			errorHandle::errorMsg($messages->get("endBeforeStart"));
 			$error = TRUE;
 		}
 	}

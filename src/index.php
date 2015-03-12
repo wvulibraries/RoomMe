@@ -8,8 +8,7 @@ $db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT * FROM building ORDER BY name");
 $sqlResult = $db->query($sql);
 
-
-$localvars->set("policyLabel",getResultMessage("policyLabel"));
+$localvars->set("policyLabel",$messages->get("policyLabel"));
 
 templates::display('header');
 ?>

@@ -284,7 +284,9 @@ class series {
 		else {
 			$this->db->rollback();
 
-			errorHandle::errorMsg(getResultMessage("invalidUsername"));
+			$messages = new messages;
+
+			errorHandle::errorMsg($messages->get("invalidUsername"));
 			return FALSE;
 		}
 
