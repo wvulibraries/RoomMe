@@ -83,15 +83,40 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 		$sql       = sprintf("SELECT * FROM building WHERE ID=?");
 		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library']));
 		$building  = $sqlResult->fetch();
+		
+		$sql = sprintf("SELECT rooms.*,
+       building.roomlistdisplay AS roomListDisplay
+FROM   rooms
+       LEFT JOIN building
+              ON building.id = rooms.building
+       LEFT JOIN roomTemplates
+              ON roomTemplates.id = rooms.roomtemplate
+       LEFT JOIN policies
+              ON policies.id = roomTemplates.policy
+WHERE  policies.publicscheduling = '1'
+       AND rooms.building = ?
+       AND rooms.id NOT IN (SELECT rooms.id
+                        FROM   rooms
+                               LEFT JOIN reservations
+                                      ON reservations.roomid = rooms.id
+                        WHERE  ( 
+                                    (
+                                         ( ? <  reservations.startTime AND ? > reservations.endTime  )
+                                         OR 
+                                         ( ? <= reservations.startTime AND (? >  reservations.startTime AND ? < reservations.endTime))
+                                         OR
+                                         ( (? >  reservations.startTime AND ? < reservations.endTime) AND ? >= reservations.endTime )
+                                         OR
+                                         ( ? >=  reservations.startTime AND ? <= reservations.endTime )
+                                    )
+                                    AND rooms.building = ? 
+                               )
+                        )
+ORDER  BY rooms.%s",
 
-
-		$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building=? AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE (((startTime<=? AND endTime>?) OR (startTime<? AND endTime>=?)) OR (startTime>=? AND endTime<=?)) AND rooms.building=?) ORDER BY rooms.%s",
-		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT * FROM `reservations` WHERE ( ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s') ) AND roomID='%s') ORDER BY rooms.%s",
 			$building['roomSortOrder']
 			);
-		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library'],$sUnix,$sUnix,$eUnix,$eUnix,$sUnix,$eUnix,$_POST['MYSQL']['library']));
-
-
+		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library'],$sUnix,$eUnix,$sUnix,$eUnix,$eUnix,$sUnix,$sUnix,$eUnix,$sUnix,$eUnix,$_POST['MYSQL']['library']));
 
 		if ($sqlResult->error()) {
 			errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
@@ -100,10 +125,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 		else {
 
 			if ($sqlResult->rowCount() == 0) {
-				// print "<pre>";
-				// // var_dump($sql);
-				// print "</pre>";
-				$results = errorHandle::errorMsg("No Rooms found!");
+				$results = "No Rooms found!";
 			}
 			else {
 				$results = "<ul>";
@@ -129,12 +151,16 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 
 }
 
+$localvars->set("prettyPrint",errorHandle::prettyPrint());
+
 templates::display('header');
 ?>
 
 <header>
 <h1>Find a Room</h1>
 </header>
+
+{local var="prettyPrint"}
 
 <p>Select a date and time with the form below to see a list of rooms that are available at your desired time</p>
 
