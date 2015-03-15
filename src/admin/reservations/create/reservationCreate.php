@@ -1,5 +1,5 @@
 <?php
-require_once("engineHeader.php");
+require_once("../../engineHeader.php");
 
 $errorMsg = "";
 $error    = FALSE;
@@ -155,6 +155,7 @@ if (!$reservation->isNew() && $reservation->hasEmail()) {
 if ($submitError) {
 
 	$localvars->set("username",$_POST['HTML']['username']);
+	$localvars->set("email",$_POST['HTML']['notificationEmail']);
 	$localvars->set("groupname",$_POST['HTML']['groupname']);
 	$localvars->set("comments",$_POST['HTML']['comments']);
 

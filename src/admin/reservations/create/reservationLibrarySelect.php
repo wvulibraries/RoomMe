@@ -1,5 +1,5 @@
 <?php
-require_once("engineHeader.php");
+require_once("../../engineHeader.php");
 
 $db        = db::get($localvars->get('dbConnectionName'));
 $sql       = sprintf("SELECT * FROM `building` ORDER BY `name`");
@@ -17,6 +17,7 @@ $localvars->set("librarySelectOptions",$options);
 $type = "reservation";
 if (isset($_GET['HTML']['type']) && $_GET['HTML']['type'] == "series") {
 	$type = "series";
+	$localvars->set("series","Series");
 }
 $localvars->set("type",$type);
 
@@ -24,7 +25,7 @@ templates::display('header');
 ?>
 
 <header>
-<h1>Reservation Creation -- Select Library</h1>
+<h1>Reservation {local var="series"} Creation -- Select Library</h1>
 </header>
 
 <form action="reservationRoomSelect.php?type={local var="type"}" method="post">

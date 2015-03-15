@@ -1,6 +1,6 @@
 <?php
 
-require_once("engineHeader.php");
+require_once("../../../engineHeader.php");
 recurseInsert("includes/functions.php","php");
 
 $errorMsg = "";
@@ -80,7 +80,7 @@ if ($error === FALSE) {
 		$temp['startTime'] = date($timeFormat,$row['startTime']);
 		$temp['endTime']   = date($timeFormat,$row['endTime']);
 		$temp['frequency'] = $frequency;
-		$temp['edit']      = sprintf('<a href="seriesCreate.php?id=%s">Edit</a>',
+		$temp['edit']      = sprintf('<a href="../create/?id=%s">Edit</a>',
 			htmlSanitize($row['ID'])
 			);
 

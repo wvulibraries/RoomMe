@@ -1,5 +1,5 @@
 <?php
-require_once("engineHeader.php");
+require_once("../../engineHeader.php");
 recurseInsert("includes/functions.php","php");
 
 $error = FALSE;
@@ -37,7 +37,8 @@ $type   = "reservation";
 $action = "reservationCreate.php";
 if (isset($_GET['HTML']['type']) && $_GET['HTML']['type'] == "series") {
 	$type = "series";
-	$action = "seriesCreate.php";
+	$action = "../series/create/";
+	$localvars->set("series","Series");
 }
 
 $localvars->set("type",$type);
@@ -47,7 +48,7 @@ templates::display('header');
 ?>
 
 <header>
-<h1>Reservation Creation -- Select Room</h1>
+<h1>Reservation {local var="series"} Creation -- Select Room</h1>
 </header>
 
 <a href="reservationLibrarySelect.php?type={local var="type"}">&lt;&lt; Select a different Building</a>

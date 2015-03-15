@@ -1,6 +1,6 @@
 <?php
-require_once("engineHeader.php");
-recurseInsert("includes/functions.php","php");
+require_once("../../engineHeader.php");
+
 $errorMsg = "";
 $error    = FALSE;
 
