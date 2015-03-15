@@ -445,7 +445,7 @@ class reservation {
 				if ($usersFineAmount >= $currentFineAmount) {
 					$resultFineMessage = getResultMessage("maxFineExceeded");
 					$resultFineMessage = preg_replace("/{amount}/", $currentFineAmount, $resultFineMessage);
-					errorHandle::errorMsg(getResultMessage($resultFineMessage));
+					errorHandle::errorMsg($resultFineMessage);
 					return FALSE;
 				}
 			}
