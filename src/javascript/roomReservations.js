@@ -9,8 +9,41 @@ $(function() {
 		.on('click', '#calUpdateFormSubmit', handler_changeCalDateForm)
 		.on('click', '#deleteReservation', handler_deleteReservation)
 		.on('click', '.cancelReservation', handler_deleteReservation)
-		.on('click', '#closeModalCalendar', handler_closeModal);
+		.on('click', '#closeModalCalendar', handler_closeModal)
+		.on('change', '#listBuildingSelect', handler_listBuildingSelect);
 });
+
+function handler_listBuildingSelect() {
+
+	var url = roomReservationHome+"/includes/ajax/getBuildingRooms.php?buildingID="+$("#listBuildingSelect").val();
+
+	$.ajax({
+		url: url,
+		dataType: "json",
+		success: function(responseData) {
+
+			// remove all the current elements
+			$("#listBuildingRoomsSelect").find('option').remove().end()
+
+			// Add the "Any Room" option back in
+			$("#listBuildingRoomsSelect").append("<option value='any'>Any Room</option>")
+
+			$.each(responseData, function(i, room) {
+
+			$("#listBuildingRoomsSelect").append("<option value='"+room.ID+"'>"+room.name+" - "+room.number+"</option>")
+
+			})
+
+		},
+		error: function(jqXHR,error,exception) {
+
+		}
+
+	});
+
+	return false;
+
+}
 
 function handler_closeModal() {
 	$.modal.close();

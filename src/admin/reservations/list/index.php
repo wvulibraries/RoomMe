@@ -44,23 +44,32 @@ catch (Exception $e) {
 	errorHandle::errorMsg($e->getMessage());
 }
 
+// Building the building dropdown list
+$building = new building;
+$localvars->set("buildingSelectOptions",$building->selectBuildingListOptions(TRUE));
+
 if (isset($_POST['MYSQL'])) {
-	if (isset($_POST['MYSQL']['building'])) {
+	if (isset($_POST['MYSQL']['building']) && $_POST['MYSQL']['building'] != "any") {
 		$buildingID = $_POST['MYSQL']['building'];
 	}
-	if (isset($_POST['MYSQL']['room'])) {
+	if (isset($_POST['MYSQL']['room']) && $_POST['MYSQL']['room']!= "any") {
 		$roomID = $_POST['MYSQL']['room'];
 	}
 }
 
 $time = NULL;
-if (isset($_POST['MYSQL']['submitListDate'])) {
+if (isset($_POST['MYSQL']['allFutureDate']) && $_POST['MYSQL']['allFutureDate'] == 1) {
+	$time = NULL;
+}
+else if (isset($_POST['MYSQL']['submitListDate'])) {
 	$time     = mktime(0,0,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
 	$time_end = mktime(23,59,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
 }
 
-$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s ORDER BY building.name, rooms.name, reservations.username, reservations.startTime ",
-	(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>='".$time."' AND reservations.startTime<='".$time_end."'"
+$sql       = sprintf("SELECT reservations.*, building.name as buildingName, building.roomListDisplay as roomListDisplay, rooms.name as roomName, rooms.number as roomNumber FROM `reservations` LEFT JOIN `rooms` on reservations.roomID=rooms.ID LEFT JOIN `building` ON building.ID=rooms.building WHERE %s %s %s ORDER BY building.name, rooms.name, reservations.username, reservations.startTime ",
+	(isnull($time))?"reservations.endTime>'".time()."'":"reservations.startTime>='".$time."' AND reservations.startTime<='".$time_end."'",
+	(!isnull($buildingID))?"AND building.ID=".$buildingID:"",
+	(!isnull($roomID))?"AND rooms.ID=".$roomID:""
 	);
 $sqlResult = $db->query($sql);
 
@@ -136,6 +145,20 @@ templates::display('header');
 	<table>
 		<tr>
 			<td>
+				<label for="listBuildingSelect">Building</label>
+				<select name="building" id="listBuildingSelect">
+					{local var="buildingSelectOptions"}
+				</select>
+			</td>
+			<td>
+				<label for="listBuildingRoomsSelect">Room</label>
+				<select name="room" id="listBuildingRoomsSelect">
+					<option value="any">Any Room</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>
 				<label for="start_month">Month:</label>
 				<select name="start_month" id="start_month" >
 					<?php
@@ -176,8 +199,16 @@ templates::display('header');
 					?>
 				</select>
 			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="checkbox" name="allFutureDate" id="allFutureDate" value="1" checked/>
+				<label for="allFutureDate" style="display:inline;">All Dates (overrides date selected above)</label>
+			</td>
+		</tr>
+		<tr>
 			<td style="vertical-align:bottom">
-				<input type="submit" name="submitListDate" value="Change Date" />
+				<input type="submit" name="submitListDate" value="Update List" />
 			</td>
 		</tr>
 	</table>
