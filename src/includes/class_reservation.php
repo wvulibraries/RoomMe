@@ -442,6 +442,9 @@ class reservation {
 				// this should be a URL that returns a number
 				$usersFineAmount = file_get_contents($libraryfineLookupURL.$userInformation['idNumber']);
 
+				$usersFineAmount = explode("\n", $usersFineAmount);
+				$usersFineAmount = $usersFineAmount[count($usersFineAmount) - 1];
+
 				if ($usersFineAmount >= $currentFineAmount) {
 					$resultFineMessage = getResultMessage("maxFineExceeded");
 					$resultFineMessage = preg_replace("/{amount}/", $currentFineAmount, $resultFineMessage);
