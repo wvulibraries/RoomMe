@@ -96,6 +96,22 @@ class building {
 
 	}
 
+	public function getRooms($id) {
+
+		$roomIDs = $this->getRoomIDs($id);
+
+		$roomObj = new room;
+		$rooms   = array();
+		
+		foreach ($roomIDs as $roomID) {
+			$rooms[] = $roomObj->get($roomID);
+		}
+
+
+		return $rooms;
+
+	}
+
 	public function getRoomIDs($id) {
 
 		$roomIDs = array();
