@@ -1,18 +1,9 @@
 <?php
 require_once("../../engineHeader.php");
 
-$db        = db::get($localvars->get('dbConnectionName'));
-$sql       = sprintf("SELECT * FROM `building` ORDER BY `name`");
-$sqlResult = $db->query($sql);
+$building = new building;
 
-$options = "";
-while ($row = $sqlResult->fetch()) {
-	$options .= sprintf('<option value="%s">%s</option>',
-		htmlSanitize($row['ID']),
-		htmlSanitize($row['name']));
-}
-
-$localvars->set("librarySelectOptions",$options);
+$localvars->set("librarySelectOptions",$building->selectBuildingListOptions());
 
 $type = "reservation";
 if (isset($_GET['HTML']['type']) && $_GET['HTML']['type'] == "series") {
