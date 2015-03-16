@@ -68,6 +68,21 @@ class building {
 
 	}
 
+	public function selectBuildingListOptions($anyOption=FALSE,$buildingID=NULL) {
+
+		$buildings = $this->getall();
+
+		$options = ($anyOption)?'<option value="any">Any Building</a>':"";
+		foreach ($buildings as $building) {
+			$options .= sprintf('<option value="%s">%s</option>',
+				htmlSanitize($building['ID']),
+				htmlSanitize($building['name']));
+		}
+
+		return $options;
+
+	}
+
 	public function calendarList() {
 
 		$buildings = $this->getall();
