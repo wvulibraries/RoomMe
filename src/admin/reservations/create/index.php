@@ -1,4 +1,6 @@
 <?php
+// @TODO This file is a mess. It is in need of a refactoring/cleanup
+// 
 require_once("../../engineHeader.php");
 
 $errorMsg = "";
