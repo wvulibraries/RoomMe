@@ -11,7 +11,7 @@ class room {
 
 		$this->engine    = EngineAPI::singleton();
 		$this->localvars = localvars::getInstance();
-		$this->db        = db::get($localvars->get('dbConnectionName'));
+		$this->db        = db::get($this->localvars->get('dbConnectionName'));
 
 	}
 
@@ -68,6 +68,24 @@ class room {
 
 	}
 
+	public function selectRoomListOptions($anyOption=FALSE,$buildingID=NULL,$roomID=NULL) {
+
+		$building = new building;
+		$rooms = (isnull($buildingID))?$this->getall():$building->getRooms($buildingID);
+
+		$options = ($anyOption)?'<option value="any">Any Room</a>':"";
+		foreach ($rooms as $room) {
+			$options .= sprintf('<option value="%s" %s>%s - %s</option>',
+				htmlSanitize($room['ID']),
+				($roomID == $room['ID'])?"selected":"",
+				htmlSanitize($room['name']),
+				htmlSanitize($room['number'])
+				);
+		}
+
+		return $options;
+
+	}
 
 	public function getPicture($ID) {
 
