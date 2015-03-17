@@ -26,7 +26,9 @@ function handler_listBuildingSelect() {
 			$("#listBuildingRoomsSelect").find('option').remove().end()
 
 			// Add the "Any Room" option back in
-			$("#listBuildingRoomsSelect").append("<option value='any'>Any Room</option>")
+			if ($("#listBuildingRoomsSelect").attr('data-anyroom') != "false") {
+				$("#listBuildingRoomsSelect").append("<option value='any'>Any Room</option>")
+			}
 
 			$.each(responseData, function(i, room) {
 

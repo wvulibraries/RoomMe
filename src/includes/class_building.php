@@ -74,8 +74,9 @@ class building {
 
 		$options = ($anyOption)?'<option value="any">Any Building</a>':"";
 		foreach ($buildings as $building) {
-			$options .= sprintf('<option value="%s">%s</option>',
+			$options .= sprintf('<option value="%s" %s>%s</option>',
 				htmlSanitize($building['ID']),
+				($buildingID == $building['ID'])?"selected":"",
 				htmlSanitize($building['name']));
 		}
 

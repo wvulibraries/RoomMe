@@ -37,32 +37,13 @@ try {
 		}
 
 	}
-	else {
-		if (!isset($_POST['MYSQL']['library']) && validate::getInstance()->integer($_POST['MYSQL']['library']) === FALSE) {
-			throw new Exception("Missing or invalid building");
-		}
-		if (!isset($_POST['MYSQL']['room']) && validate::getInstance()->integer($_POST['MYSQL']['room']) === FALSE) {
-			throw new Exception("Missing or invalid room");
-		}
+
+
+	if (isset($_POST['MYSQL']['createSubmit'])) {
+
 
 		$reservation->setBuilding($_POST['MYSQL']['library']);
 		$reservation->setRoom($_POST['MYSQL']['room']);
-
-	}
-
-	$localvars->set("buildingID",$reservation->building['ID']);
-	$localvars->set("roomID",$reservation->room['ID']);
-	$localvars->set("buildingName",$reservation->building['name']);
-	$localvars->set("roomName",$reservation->room['name']);
-	$localvars->set("roomNumber",$reservation->room['number']);
-
-
-	if (isset($_POST['MYSQL']['roomSubmit'])) {
-
-	// This comes from the room select page
-
-	}
-	else if (isset($_POST['MYSQL']['createSubmit'])) {
 
 		if (!$reservation->create()) {
 			throw new Exception("Error Creating Reservation.");
@@ -152,6 +133,24 @@ if (!$reservation->isNew() && $reservation->hasEmail()) {
 	$localvars->set("emailPatron",sprintf('<a href="email/?id=%s">Email Patron</a>',$reservation->reservation['ID']));
 }
 
+// Building the building dropdown list
+$building = new building;
+$localvars->set("buildingSelectOptions",$building->selectBuildingListOptions(FALSE,(isset($_POST['MYSQL']['library']))?$reservation->building['ID']:NULL));
+
+// Build the room Dropdown List
+$room = new room;
+if (isset($_POST['MYSQL']['library']) && !is_empty($_POST['MYSQL']['library'])) {
+	$localvars->set("roomSelectOptions",$room->selectRoomListOptions(FALSE,$reservation->building['ID'],(isset($_POST['MYSQL']['room']))?$reservation->room['ID']:NULL));
+}
+else if (isset($reservation->building['ID'])) {
+	$localvars->set("roomSelectOptions",$room->selectRoomListOptions(FALSE,$reservation->building['ID'],$reservation->room['ID']));
+}
+else {
+	$firstBuilding = array_shift($building->getall());
+	$localvars->set("roomSelectOptions",$room->selectRoomListOptions(FALSE,$firstBuilding['ID']));
+}
+
+
 if ($submitError) {
 
 	$localvars->set("username",$_POST['HTML']['username']);
@@ -167,6 +166,8 @@ if ($submitError) {
 
 	$startMinute = $_POST['HTML']['start_minute'];
 	$endMinute   = $_POST['HTML']['end_minute'];
+
+	$localvars->set("roomSelectOptions",$room->selectRoomListOptions(FALSE,$reservation->building['ID'],$reservation->room['ID']));
 
 }
 
@@ -186,13 +187,9 @@ templates::display('header');
 </section>
 <?php } ?>
 
-	<p>Adding a reservation for Room <strong>{local var="roomName"} {local var="roomNumber"}</strong> in building <strong>{local var="buildingName"}</strong></p>
-
 	<form action="{phpself query="true"}" method="post">
 		{csrf}
 
-		<input type="hidden" name="library" value="{local var="buildingID"}" />
-		<input type="hidden" name="room" value="{local var="roomID"}" />
 		<input type="hidden" name="reservationID" value="{local var="reservationID"}" />
 
 		<fieldset>
@@ -207,6 +204,20 @@ templates::display('header');
 		<fieldset>
 			<legend>Room Information</legend>
 			<table>
+				<tr>
+					<td>
+						<label for="listBuildingSelect">Building</label>
+						<select name="library" id="listBuildingSelect">
+							{local var="buildingSelectOptions"}
+						</select>
+					</td>
+					<td>
+						<label for="listBuildingRoomsSelect">Room</label>
+						<select name="room" id="listBuildingRoomsSelect" data-anyroom="false">
+							{local var="roomSelectOptions"}
+						</select>
+					</td>
+				</tr>
 				<tr>
 					<th colspan="3" style="text-align: left;"><strong>Reservation Date:</strong></th>
 				</tr>

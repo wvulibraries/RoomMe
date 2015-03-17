@@ -120,7 +120,7 @@ if ($error === FALSE) {
 			$reserveTime = ($row['endTime'] - $row['startTime'])/60/60;
 			$temp['hoursOnReservationTable'] = ($reserveTime > 23.6)?"24":$reserveTime;
 		}
-		$temp['edit']      = sprintf('<a href="../create/reservationCreate.php?id=%s">Edit</a>',
+		$temp['edit']      = sprintf('<a href="../create/?id=%s">Edit</a>',
 			htmlSanitize($row['ID'])
 			);
 		$temp['delete']    = sprintf('<input type="checkbox" name="delete[]" value="%s" />',
