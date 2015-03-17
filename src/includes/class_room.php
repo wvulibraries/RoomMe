@@ -44,6 +44,31 @@ class room {
 
 	}
 
+
+	public function getall() {
+
+		$sql       = sprintf("SELECT * FROM rooms ORDER BY NAME");
+		$sqlResult = $this->db->query($sql,array($ID));
+
+		if ($sqlResult->error()) {
+			errorHandle::newError(__FUNCTION__."() - Error getting room name.", errorHandle::DEBUG);
+			return(FALSE);
+		}
+
+		if ($sqlResult->rowCount() < 1) {
+			errorHandle::errorMsg("Room not found.");
+			return FALSE;
+		}
+
+		while($row = $sqlResult->fetch()) {
+			$this->rooms[$ID] = $row;
+		}
+
+		return $this->rooms;
+
+	}
+
+
 	public function getPicture($ID) {
 
 		$room = $this->get($ID);
