@@ -18,7 +18,7 @@ formBuilder::process();
 formBuilder::ajaxHandler();
 
 recurseInsert("includes/engineHeader.php","php");
-templates::load("rooms2015");
+templates::load("library2012.2col");
 
 $localvars->set("roomResBaseDir","/services/rooms");
 ?>

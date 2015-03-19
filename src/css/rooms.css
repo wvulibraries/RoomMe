@@ -1,0 +1,342 @@
+@charset "utf-8";
+
+/* Table Defaults */
+table {display: table; padding: 0;}
+thead {display: table-header-group; padding: 0;}
+tbody {display: table-row-group; padding: 0;}
+th {display: table; padding: 0;}
+td {display: table-cell; padding: 0;}
+tr {display: table-row; padding: 0;}
+
+/* Header */
+.roomReservation {
+	background: #002855;
+	text-align:left;
+	padding: 30px 0;
+}
+.roomReservation h2 {
+	color:#fff;
+	font-size: 2em;
+	font-weight: 400;
+	display: inline-block;
+	margin: 0;
+}
+.userLogin {
+	float:right;
+	color:#fff;
+	text-decoration: none;
+	padding: 12px 0 0;
+}
+.userLogin:hover {text-decoration: underline;}
+.userLogin .fa {
+	color:#eeb111;
+	padding-right: 5px;
+	font-size: 1.25em;
+}
+
+/* Toggles */
+.roomMobile {display: inline-block;}
+.roomTablet {display: none;}
+.roomDesktop {display: none;}
+.roomMobileTablet {display: inline-block;}
+.roomTabletDesktop {display: none;}
+
+
+/*********************************************************************
+	768px and below
+**********************************************************************/
+a[class*=bSubmit] {margin: 10px 0 20px 0;}
+.roomH3 {
+	color: #0033A0;
+	padding: 0;
+	margin: 0;
+}
+.topPad {margin-top: 70px;}
+.currentDay {
+	color:#eeb111;
+}
+.policyLink {
+	float:left; 
+	margin: 0;
+	padding: 8px 0 0;
+	color: #a2aaad !important;
+} 
+.policyLink .fa {
+	color: #eaaa00;
+}	
+.roomHR {
+	width:100%;
+	overflow: hidden;
+}
+.styled-select {
+	width: 18%;
+	margin-right: 2.5%;
+	float: left;
+	background: url("dd.png") right no-repeat;
+}
+.styled-select select {
+	padding: 20px 10px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	border: 1px solid #000;
+   	border-radius: 0;
+   	width: 100%;
+   	background: transparent;
+   	cursor: pointer;
+}
+#nowSubmit {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: #4bb94b;
+	height: 24px;
+	padding: 14px 0 22px 0;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;	
+}	
+#nowSubmit:hover {
+	text-decoration: none;
+	background: #65c465;
+}	
+#nowSubmit .fa {
+	font-size: 1.5em;
+	font-weight: regular;
+	padding-right: 10px;
+}
+#calUpdateFormSubmit {
+	width: 18%;
+	float: left;
+	overflow: hidden;
+	background: #3399ff;
+	height: 24px;
+	padding: 14px 0 22px 0;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;	
+}	
+#calUpdateFormSubmit:hover {
+	text-decoration: none;
+	background: #5eaefe;
+}	
+#calUpdateFormSubmit .fa {
+	font-size: 1.5em;
+	font-weight: regular;
+	padding-right: 10px;
+}	
+#advancedSubmit {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: #3399ff;
+	height: 24px;
+	padding: 14px 0 22px 0;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;	
+}
+#advancedSubmit:hover {
+	text-decoration: none;
+	background: #5eaefe;
+}	
+#advancedSubmit .fa {
+	font-size: 1.5em;
+	font-weight: regular;
+	padding-right: 10px;
+}
+#userLoginSubmit {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: #eaeaea;
+	height: 24px;
+	padding: 14px 0 22px 0;
+	text-align: center;
+	color: #002855;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;	
+}
+#userLoginSubmit:hover {
+	text-decoration: none;
+	background: #efefef;
+}	
+#userLoginSubmit .fa {
+	font-size: 1.5em;
+	font-weight: regular;
+	padding-right: 10px;
+	color: #3399ff !important;
+}
+.tablePager {
+	padding: 70px 0px 10px;
+	height: auto;
+	overflow: hidden;
+	text-align: right;
+	float: left;
+	width: 100%;
+}
+.pagerButtons {
+	color: #3399ff;
+	line-height: normal;
+	display: inline-block;
+	margin: 0 0 0 40px;
+	overflow: hidden;
+	cursor: pointer;
+}
+.pagerButtons:hover {
+	color: #5eaefe !important;
+}
+.disabled {
+	color: #bfb8af !important;
+	cursor: default;
+}
+.disabled:hover {
+	color: #bfb8af !important;
+}
+
+.roomLink {
+	font-weight: bold;
+	cursor: pointer;
+}
+.roomLink:hover {
+	color: #5eaefe !important;
+	text-decoration: none !important;
+}
+#reservationsRoomTable {
+	border: 1px solid #000;
+	border-collapse: collapse;
+	width: 100%; 
+	border: 0;
+	display:none;
+}
+#reservationsRoomTable td {
+    height: 50px;
+    border: 1px solid #000;
+    vertical-align: middle;
+    text-align: center;
+}
+#reservationsRoomTable tr:nth-of-type(2n+1) {
+    background: none;
+}
+.tdHours,.col1, .col2, .col3, .col4, .col5, .col6, .col7 {
+	display: none;
+}
+.tdHours {
+	font-weight: bold;
+}
+.reserved {
+	background: #efedeb;
+	line-height: 0.8em;
+}
+.reservationStatus {
+	color: #000;
+}
+.reservationName {
+	width:100%;
+	font-size: 0.75em;
+	font-style: italic;
+	display: table;
+}
+.roomClick {
+	color: #4bb94b !important;
+	background: #fff;
+	font-size: 1.25em;
+	display: block;
+	height:30px;
+	padding: 10px 0;
+}
+.roomClick:hover {
+	background: #4bb94b;
+	color: #fff !important;
+}
+
+/*********************************************************************
+	768px to 1024px
+**********************************************************************/
+@media screen and (min-width: 754px) {
+	.roomMobile {display: none;}
+	.roomTablet {display: inline-block;}
+	.roomDesktop {display: none;}
+	.roomMobileTablet {display: inline-block;}
+	.roomTabletDesktop {display: inline-block;}
+
+	a[class*=bSubmit] {margin: 0;}
+	.policyLink {
+		float:right; 
+	}
+	#reservationsRoomTable {
+		 display: table;
+	}
+	.tdHours,.col1, .col2, .col3, .col4 {
+		display: table-cell;
+	}
+	.col5, .col6, .col7 {
+		display: none;
+	}
+	.calendarCol, .tdHours {
+		width:20%;
+	}
+	.styled-select {
+		width: 23.5%;
+		margin-right: 2%;
+	}
+	#calUpdateFormSubmit {
+		width: 23.5%;
+	}
+	.styled-select2 {
+		display: block;
+		width: 32%;
+		margin-right: 2%;
+		float: left;
+		background: url("dd.png") right no-repeat;
+	}
+	.styled-select2 select {
+		padding: 20px 10px;
+		display:block;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		border: 1px solid #000;
+	   	border-radius: 0;
+	   	width: 100%;
+	   	background: transparent;
+	   	cursor: pointer;
+	}
+	#advancedSubmit {
+		width: 32%;
+	}
+}	
+
+/*********************************************************************
+	1024px and up
+**********************************************************************/
+@media screen and (min-width: 1010px) {
+	.roomMobile {display: none;}
+	.roomTablet {display: none;}
+	.roomDesktop {display: inline-block;}
+	.roomMobileTablet {display: none;}
+	.roomTabletDesktop {display: inline-block;}
+
+	.col1, .col2, .col3, .col4, .col5, .col6, .col7 {
+		display: table-cell;
+	}
+	.calendarCol {
+		width: 12%;
+	}
+	.tdHours {
+		width:16%;
+		font-weight: bold;
+	}
+	.styled-select {
+		width: 18%;
+		margin-right: 2.5%;
+	}
+	#calUpdateFormSubmit {
+		width: 18%;
+	}
+}	
