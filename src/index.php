@@ -45,7 +45,7 @@ templates::display('header');
 			<a id="nowSubmit" class="roomMobile bSubmit">
 				<i class="fa fa-arrow-circle-o-down"></i> Available Now
 			</a>
-			<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay">Saturday, February 28</span></h3>
+			<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay">{date format="l, F j"}</span></h3>
 			<h3 class="roomH3 roomMobile">Make A Reservation</h3>
 			<a class="policyLink roomTabletDesktop" href="#">Reservation Policies 
 				<i class="fa fa-exclamation-circle"></i>
