@@ -7,10 +7,14 @@ $localvars->set("buildingSelectOptions",$building->selectBuildingListOptions(FAL
 ?>
 
 <!-- Reservations Section -->
-<a id="nowSubmit" class="roomMobile bSubmit"><i class="fa fa-arrow-circle-o-down"></i> Available Now</a>
+<a id="nowSubmit" class="roomMobile bSubmit">
+    <i class="fa fa-arrow-circle-o-down"></i> Available Now
+</a>
 <h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay">Saturday, February 28</span></h3>
 <h3 class="roomH3 roomMobile">Make A Reservation</h3>
-<a class="policyLink roomTabletDesktop" href="#">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
+<a class="policyLink roomTabletDesktop" href="#">Reservation Policies 
+    <i class="fa fa-exclamation-circle"></i>
+</a>
 <hr class="roomHR" />
 <div class="styled-select">
     <select id="library">
@@ -35,4 +39,6 @@ $localvars->set("buildingSelectOptions",$building->selectBuildingListOptions(FAL
         <option>2016</option>
     </select>    
 </div>
-<a id="calUpdateFormSubmit" class="bSubmit"><i class="fa fa-calendar"></i> Find A Room</a>
+<a id="calUpdateFormSubmit" class="bSubmit">
+    <i class="fa fa-calendar"></i> Find A Room
+</a>
