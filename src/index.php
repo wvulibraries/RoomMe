@@ -15,6 +15,7 @@ $localvars->set("buildingSelectOptions",$building->selectBuildingListOptions(FAL
 
 $date = new date;
 $localvars->set("monthSelect",$date->dropdownMonthSelect(1,TRUE,array("id"=>"start_month_modal")));
+$localvars->set("daySelect",$date->dropdownDaySelect(TRUE,array("id"=>"start_day_modal")));
 
 templates::display('header'); 
 ?>
@@ -62,10 +63,7 @@ templates::display('header');
 				{local var="monthSelect"}
 			</div>                                          
 			<div class="styled-select">
-				<select id="start_day_modal">
-					<option>1</option>
-					<option>2</option>                          
-				</select>
+				{local var="daySelect"}
 			</div>
 			<div class="styled-select">
 				<select id="start_year_modal">
