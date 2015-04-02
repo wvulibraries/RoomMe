@@ -56,7 +56,7 @@ templates::display('header');
 			</a>
 			<hr class="roomHR" />
 			<div class="styled-select">
-				<select id="library">
+				<select id="building_modal">
 					{local var="buildingSelectOptions"}             
 				</select>
 			</div>
