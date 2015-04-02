@@ -13,6 +13,8 @@ $localvars->set("policyLabel",$messages->get("policyLabel"));
 $building = new building;
 $localvars->set("buildingSelectOptions",$building->selectBuildingListOptions(FALSE,(isset($_POST['MYSQL']['library']))?$reservation->building['ID']:NULL));
 
+$date = new date;
+$localvars->set("monthSelect",$date->dropdownMonthSelect(1,TRUE,array("id"=>"start_month_modal")));
 
 templates::display('header'); 
 ?>
@@ -57,10 +59,7 @@ templates::display('header');
 				</select>
 			</div>
 			<div class="styled-select">
-				<select id="start_month_modal">
-					<option selected value='1'>Janaury</option>
-					<option value='2'>February</option>
-				</select>
+				{local var="monthSelect"}
 			</div>                                          
 			<div class="styled-select">
 				<select id="start_day_modal">
