@@ -73,6 +73,15 @@ templates::display('header');
 				<i class="fa fa-calendar"></i> Find A Room
 			</a>
 
+			<!-- Table Pager -->
+			<div class="tablePager roomTabletDesktop">
+				<a class="pagerButtons" id="pagerFirst" data-startCols="" data-endCols=""><i class="fa fa-step-backward"></i></a>
+				<a class="pagerButtons" id="pagerPrev"  data-startCols="" data-endCols=""><i class="fa fa-backward"></i></a>
+				<a class="pagerButtons" id="pagerNext"  data-startCols="" data-endCols=""><i class="fa fa-forward"></i></a>
+				<a class="pagerButtons" id="pagerLast"  data-startCols="" data-endCols=""><i class="fa fa-step-forward"></i></a>
+			</div>
+
+
 		<!-- Calendar Call -->
 		<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
 			<thead>
