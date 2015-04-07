@@ -269,7 +269,8 @@ class calendar {
 			$bookings         = getRoomBookingsForDate($room['ID'],$date['month'],$date['day'],$date['year']);
 			
 			$roomArray                = array();
-			$roomArray['displayName'] = $roomInfo['displayName']; 
+			$roomArray['displayName'] = $roomInfo['displayName'];
+			$roomArray['roomID']      = $roomInfo['ID'];
 
 			foreach ($calendarArray['times'] as $time=>$timeInfo) {
 
