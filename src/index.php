@@ -74,6 +74,16 @@ templates::display('header');
 			</a>
 
 		<!-- Calendar Call -->
+		<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr id="reservationsRoomTableHeaderRow">
+					<td class="tdHours tdEmpty">&nbsp;</td>				
+				</tr>
+			</thead>
+			<tbody id="reservationsRoomTableBody">
+
+			</tbody>
+		</table>
 
 		<!-- Mobile UI -->
 		<a class="policyLink roomMobile" href="#">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
