@@ -4,7 +4,7 @@
 table {display: table; padding: 0;}
 thead {display: table-header-group; padding: 0;}
 tbody {display: table-row-group; padding: 0;}
-th {display: table; padding: 0;}
+/*th {display: table; padding: 0;}*/
 td {display: table-cell; padding: 0;}
 tr {display: table-row; padding: 0;}
 
