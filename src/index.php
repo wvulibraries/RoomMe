@@ -75,10 +75,10 @@ templates::display('header');
 
 			<!-- Table Pager -->
 			<div class="tablePager roomTabletDesktop">
-				<a class="pagerButtons" id="pagerFirst" data-startCols="" data-endCols=""><i class="fa fa-step-backward"></i></a>
-				<a class="pagerButtons" id="pagerPrev"  data-startCols="" data-endCols=""><i class="fa fa-backward"></i></a>
-				<a class="pagerButtons" id="pagerNext"  data-startCols="" data-endCols=""><i class="fa fa-forward"></i></a>
-				<a class="pagerButtons" id="pagerLast"  data-startCols="" data-endCols=""><i class="fa fa-step-forward"></i></a>
+				<a class="pagerButtons"><i id="pagerFirst" data-startCols="0" data-endCols="7" class="fa fa-step-backward pagerLink"></i></a>
+				<a class="pagerButtons"><i id="pagerPrev"  data-startCols="" data-endCols="" class="fa fa-backward pagerLink"></i></a>
+				<a class="pagerButtons"><i id="pagerNext"  data-startCols="7" data-endCols="14"class="fa fa-forward pagerLink"></i></a>
+				<a class="pagerButtons"><i id="pagerLast"  data-startCols="" data-endCols="" class="fa fa-step-forward pagerLink" ></i></a>
 			</div>
 
 
