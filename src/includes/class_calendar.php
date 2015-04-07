@@ -246,8 +246,10 @@ class calendar {
 						$hourMarker = "half";
 						break;
 					case 15:
+						$hourMarker = "quarterPast";
+						break;
 					case 45:
-						$hourMarker = "quarter";
+						$hourMarker = "quarterTill";
 						break;
 					default:
 						$hourMarker = "minor";
@@ -279,6 +281,7 @@ class calendar {
 				$roomArray['times'][$time]['duration']    = "";
 				$roomArray['times'][$time]['reserved']    = FALSE;
 				$roomArray['times'][$time]['booking']     = "";
+				$roomArray['times'][$time]['hourType']    = $timeInfo['type'];
 
 				foreach ($bookings as $bookingsIndex=>$booking) {
 
