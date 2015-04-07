@@ -1,5 +1,8 @@
 var modalCalendarURL    = roomReservationHome+"/calendar/calendar.php";
 var buildingCalendarURL = roomReservationHome+"/calendar/building/";
+var calendarData;
+
+$(document).ready(initialCalendarLoad);
 
 $(function() {
 	$(document)
@@ -12,6 +15,11 @@ $(function() {
 		.on('click', '#closeModalCalendar', handler_closeModal)
 		.on('change', '#listBuildingSelect', handler_listBuildingSelect);
 });
+
+function initialCalendarLoad() {
+	handler_getCalendarJSON();
+
+}
 
 function handler_pager() {
 
