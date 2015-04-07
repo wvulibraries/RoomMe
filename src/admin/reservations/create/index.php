@@ -132,7 +132,7 @@ if (isset($_POST['MYSQL']['createNewFromOld'])) {
 }
 
 if (!$reservation->isNew() && $reservation->hasEmail()) {
-	$localvars->set("emailPatron",sprintf('<a href="email/?id=%s">Email Patron</a>',$reservation->reservation['ID']));
+	$localvars->set("emailPatron",sprintf('<a href="../../email/?id=%s">Email Patron</a>',$reservation->reservation['ID']));
 }
 
 // Building the building dropdown list
