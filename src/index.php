@@ -85,8 +85,7 @@ templates::display('header');
 		<!-- Calendar Call -->
 		<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
 			<thead>
-				<tr id="reservationsRoomTableHeaderRow">
-					<td class="tdHours tdEmpty">&nbsp;</td>				
+				<tr id="reservationsRoomTableHeaderRow">			
 				</tr>
 			</thead>
 			<tbody id="reservationsRoomTableBody">
