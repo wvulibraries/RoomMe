@@ -13,6 +13,30 @@ $(function() {
 		.on('change', '#listBuildingSelect', handler_listBuildingSelect);
 });
 
+function handler_getCalendarJSON() {
+
+	var url = roomReservationHome+"/includes/ajax/getCalendarJson.php?type="+"building"+"&objectID="+$("#building_modal").val()+"&month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
+	// alert(url);
+	$.ajax({
+		url: url,
+		dataType: "json",
+		success: function(responseData) {
+
+			calendarData = $.parseJSON(responseData);
+			buildCalendarTable(calendarData,0,7);
+			
+
+		},
+		error: function(jqXHR,error,exception) {
+			$("#calendarData").html("Error retrieving calendar infocmation.");
+		}
+
+	});
+
+	return false;
+
+}
+
 function handler_listBuildingSelect() {
 
 	var url = roomReservationHome+"/includes/ajax/getBuildingRooms.php?buildingID="+$("#listBuildingSelect").val();
