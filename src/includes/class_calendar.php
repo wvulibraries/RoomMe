@@ -178,7 +178,7 @@ class calendar {
 
 		$this->localvars->set("id",$this->calObject['ID']);
 		$this->localvars->set("name",$this->calObject['name']);
-		$this->localvars->set("calType",$this->calendarType);
+		$this->localvars->set("calType",$this->calendarType());
 
 		$this->localvars->set("month",$this->dates['display']['month']);
 		$this->localvars->set("day",$this->dates['display']['day']);
