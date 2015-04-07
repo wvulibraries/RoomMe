@@ -13,6 +13,26 @@ $(function() {
 		.on('change', '#listBuildingSelect', handler_listBuildingSelect);
 });
 
+function handler_pager() {
+
+	var startCols = parseInt($(this).attr("data-startCols"));
+	var endCols   = parseInt($(this).attr("data-endCols"));
+
+	// build the new calendar
+	buildCalendarTable(calendarData,startCols,endCols);
+
+	// set the new pager variables
+	// prev
+	$('#pagerPrev').attr('data-startCols',(startCols-numberOfColumns < 0)?0:startCols-numberOfColumns);
+	$('#pagerPrev').attr('data-endCols',(endCols-numberOfColumns <=0)?numberOfColumns:endCols-numberOfColumns);
+
+	// next
+	$('#pagerNext').attr('data-startCols',(endCols >= calendarData.rooms.length)?calendarData.rooms.length-numberOfColumns:endCols);
+	$('#pagerNext').attr('data-endCols',(endCols+numberOfColumns > calendarData.rooms.length)?calendarData.rooms.length:endCols+numberOfColumns);
+
+	return false;
+}
+
 function buildCalendarTable(data,startCols,endCols) {
 
 	// data = $.parseJSON(data)
