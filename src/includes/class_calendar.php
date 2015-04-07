@@ -202,6 +202,145 @@ class calendar {
 
 	}
 
+	public function buildBuildingCal($objectID,$date) {
+
+		$calendarArray = array();
+
+		# Get building Rooms
+		$buildingObject = new building;
+		$rooms = $buildingObject->getRooms($objectID);
+
+		
+		# Make sure that date is an array
+		if (!is_array($date)) {
+			errorHandle::newError(__FUNCTION__."() - date not given as array", errorHandle::DEBUG);
+			return(FALSE);
+		}
+
+		$roomsInformation    = array();
+
+		$calendarDisplayName = getConfig('calendarDisplayName');
+
+
+
+		$usernameCheck = array();
+
+		$displayHour   = getConfig("24Hour");
+		$displayHour   = ($displayHour == 0)?12:24;
+
+		$displayNameAs = getConfig("displayNameAs");
+		$durationRooms = getConfig("displayDurationOnRoomsCal");
+		$durationBuild = getConfig("displayDurationOnBuildingCal");
+
+		$calendarArray['times'] = array();
+
+		for ($I = 0;$I<=23;$I++) {
+
+			for ($K = 0;$K<60;$K=$K+15) {
+
+				switch($K) {
+					case 0:
+						$hourMarker = "hour";
+						break;
+					case 30:
+						$hourMarker = "half";
+						break;
+					case 15:
+					case 45:
+						$hourMarker = "quarter";
+						break;
+					default:
+						$hourMarker = "minor";
+						break;
+				}
+
+				$calendarArray['times'][mktime($I,$K,"0",$date['month'],$date['day'],$date['year'])] = array(
+					'time'    => mktime($I,$K,"0",$date['month'],$date['day'],$date['year']),
+					'type'    => $hourMarker,
+					'display' => ($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am")))
+					);
+
+			}
+		}
+
+		foreach ($rooms as $roomIndex=>$room) {
+
+			$roomInfo         = getRoomInfo($room['ID']);
+			$bookings         = getRoomBookingsForDate($room['ID'],$date['month'],$date['day'],$date['year']);
+			
+			$roomArray                = array();
+			$roomArray['displayName'] = $roomInfo['displayName']; 
+
+			foreach ($calendarArray['times'] as $time=>$timeInfo) {
+
+				$roomArray['times'][$time]['username']    = "";
+				$roomArray['times'][$time]['displayTime'] = "";
+				$roomArray['times'][$time]['duration']    = "";
+				$roomArray['times'][$time]['reserved']    = FALSE;
+				$roomArray['times'][$time]['booking']     = "";
+
+				foreach ($bookings as $bookingsIndex=>$booking) {
+
+					if ($time >= $booking['startTime'] && $time < $booking['endTime']) {
+
+						$roomArray['times'][$time]['booking']  = $booking['ID'];
+						$roomArray['times'][$time]['reserved'] = TRUE;
+
+						if ($durationRooms == "1" || $durationBuild == "1") {
+							$roomArray['times'][$time]['duration'] = ($booking['endTime'] - $booking['startTime'])/60/60;
+							$roomArray['times'][$time]['duration'] = "(".$duration." hour".(($duration!=1)?"s":"").")";
+						}
+
+						switch($displayNameAs) {
+							case "username":
+								$roomArray['times'][$time]['username'] = (!is_empty($booking['groupname']))?$booking['groupname']:$booking['username'];
+								break;
+							case "initials":
+								$roomArray['times'][$time]['username'] = $booking['initials'];
+								break;
+							default:
+								break;
+						}
+
+						if ($displayHour == "1") {
+							$timeFormat = "H:i";
+						}
+						else {
+							$timeFormat = "g:iA";
+						}
+
+						$roomArray['times'][$time]['displayTime'] = sprintf('%s - %s',
+							date($timeFormat,$booking['startTime']),
+							date($timeFormat,$booking['endTime'])
+							);
+					}
+				}
+			}
+
+			$calendarArray['rooms'][] = $roomArray;
+
+		}
+
+		return $calendarArray;
+
+	}
+
+	public function buildJSON($type,$objectID,$date) {
+
+		switch ($type) {
+			case "building":
+				$array = $this->buildBuildingCal($objectID,$date);
+				break;
+			case "room":
+				break;
+			default:
+				break;
+		}
+
+		return json_encode($array);
+
+	}
+
 	private function calendarType() {
 		if (isnull($this->room)) {
 			return "building";
