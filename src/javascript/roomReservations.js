@@ -13,6 +13,83 @@ $(function() {
 		.on('change', '#listBuildingSelect', handler_listBuildingSelect);
 });
 
+function buildCalendarTable(data,startCols,endCols) {
+
+	// data = $.parseJSON(data)
+
+	// console.log(data);
+
+	// remove existing content
+	$('#reservationsRoomTableHeaderRow').empty();
+	$('#reservationsRoomTableBody').empty();
+
+	// add in empty cell
+	$('#reservationsRoomTableHeaderRow').append('<td class="tdHours tdEmpty">&nbsp;</td>');
+
+    $.each(data.times, function (index, value) {
+    	if (value.type == "hour") {
+    		$('#reservationsRoomTableBody').append('<tr id="tr_'+index+'" class="'+value.type+'"><th scope="row" class="tdHours" rowspan="4">'+value.display+'</th></tr>');
+    	}
+    	else {
+    		$('#reservationsRoomTableBody').append('<tr id="tr_'+index+'" class="'+value.type+'"></tr>');
+    	}
+    	// console.log(value);
+    });
+
+    var bookings = new Array();
+    bookings[""] = "foo"; // Set the empty value, otherwise the first empty value will show as undefined.
+
+    var count = 0
+    $.each(data.rooms, function (index, room) {
+
+    	if (count >= startCols && count < endCols) {
+
+    		$('#reservationsRoomTableHeaderRow').append('<th scope="col" class="calendarCol"><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></th>');
+
+    		$.each(room.times, function (index, time) {
+				// console.log(time);
+				// console.log(index);
+				// console.log(parseInt(index)+900);
+				// if (typeof room.times[parseInt(index)+900] != 'undefined') {
+				// 	console.log(room.times[parseInt(index)+900].reserved);
+				// }
+
+    			if (time.hourType == "hour") {
+    				hasAddIndicator = false;
+    			}
+
+    			tdReservationClass = time.hourType+((time.reserved)?" reserved":" notReserved");
+
+    			var tdContent = "";
+    			if (typeof bookings[time.booking] == 'undefined') {
+    				tdContent = '<span class="reservationName">'+time.username+'</span>&nbsp; <span class="reservationTime">'+time.displayTime+'</span>&nbsp; <span class="reservationDuration">'+time.duration+'</span>';
+
+    				bookings[time.booking] = time.booking;
+    			}
+    			// If the quarter hour is not reserved
+    			// and there hasn't been a reservation indicator added for this hour yet
+    			// and it isn't the last 15 minutes of an hour
+    			// and the next 15 minute block isn't reserved
+    			// Add the indicator. 
+    			// 
+    			// This should only add the indicator if there is at least 30 minutes in a block. 
+    			else if (time.reserved === false && hasAddIndicator === false && time.hourType != "quarterTill" && typeof room.times[parseInt(index)+900] != 'undefined' && room.times[parseInt(index)+900].reserved === false) {
+    				hasAddIndicator = true;
+    				tdContent = '<a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'&reservationSTime='+index+'" class="roomClick"><i class="fa fa-plus"></i></a>';
+    			}
+
+    			$('#tr_'+index).append('<td class="'+tdReservationClass+'">'+tdContent+'</td>');
+
+    		});
+    	}
+    	count++;
+    	// console.log(value);
+    });
+
+	$("#calendarData").html(data);
+
+}
+
 function handler_getCalendarJSON() {
 
 	var url = roomReservationHome+"/includes/ajax/getCalendarJson.php?type="+"building"+"&objectID="+$("#building_modal").val()+"&month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
