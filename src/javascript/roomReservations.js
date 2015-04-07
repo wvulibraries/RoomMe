@@ -6,14 +6,16 @@ $(document).ready(initialCalendarLoad);
 
 $(function() {
 	$(document)
-		.on('click', '.calendarModal_link', handler_calModal)
-		.on('click', '.mapModal_link', handler_mapModal)
-		.on('click', '.calUpdateButton', handler_changeCalDate)
-		.on('click', '#calUpdateFormSubmit', handler_changeCalDateForm)
-		.on('click', '#deleteReservation', handler_deleteReservation)
-		.on('click', '.cancelReservation', handler_deleteReservation)
-		.on('click', '#closeModalCalendar', handler_closeModal)
-		.on('change', '#listBuildingSelect', handler_listBuildingSelect);
+		.on('click',  '.calendarModal_link',  handler_calModal)
+		.on('click',  '.mapModal_link',       handler_mapModal)
+		.on('click',  '.calUpdateButton',     handler_changeCalDate)
+		.on('click',  '#calUpdateFormSubmit', handler_changeCalDateForm)
+		.on('click',  '#deleteReservation',   handler_deleteReservation)
+		.on('click',  '.cancelReservation',   handler_deleteReservation)
+		.on('click',  '#closeModalCalendar',  handler_closeModal)
+		.on('click',  '#calUpdateFormSubmit', handler_getCalendarJSON)
+		.on('change', '#listBuildingSelect',  handler_listBuildingSelect)
+		.on('click',  '.pagerLink',           handler_pager)
 });
 
 function initialCalendarLoad() {
