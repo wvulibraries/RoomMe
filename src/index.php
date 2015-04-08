@@ -21,27 +21,7 @@ $localvars->set("yearSelect",$date->dropdownYearSelect(0,1,TRUE,array("id"=>"sta
 templates::display('header'); 
 ?>
 
-	<!-- Room Reservation Header -->
-	<div class="roomReservation">
-	    <div class="wrap">
-	        <h2>Room Reservations</h2>
-        		<?php if (is_empty(session::get("username"))) { ?>
-        			<a class="userLogin roomTabletDesktop" href="{local var="loginURL"}">
-        				<i class="fa fa-user"></i>
-        				User Login
-        			</a>
-				<?php } else { ?>
-					<a class="userLogin roomTabletDesktop" href="{engine var="logoutPage"}?csrf={engine name="csrfGet"}">
-						<i class="fa fa-user"></i>User Logout
-					</a>				
-					<a class="userLogin roomTabletDesktop" href="{local var="roomReservationHome"}/calendar/user/" class="roomMobile bSubmit">
-						<i class="fa fa-check"></i>My Reservations
-					</a>
-				<?php } ?>
-	    </div>            
-	</div>
-
-	<!-- CMS Backpage Wrapper -->
+	<!-- Page Wrapper -->
 	<div class="wrap hpcard">
 		<section class="bp-body-1c">
 
