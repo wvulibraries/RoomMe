@@ -21,10 +21,6 @@ $localvars->set("yearSelect",$date->dropdownYearSelect(0,1,TRUE,array("id"=>"sta
 templates::display('header'); 
 ?>
 
-	<!-- Page Wrapper -->
-	<div class="wrap hpcard">
-		<section class="bp-body-1c">
-
 			<!-- Reservations Section -->
 			<a id="nowSubmit" class="roomMobile bSubmit">
 				<i class="fa fa-arrow-circle-o-down"></i> Available Now
