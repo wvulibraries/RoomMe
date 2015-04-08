@@ -21,6 +21,13 @@ tr {display: table-row; padding: 0;}
 	display: inline-block;
 	margin: 0;
 }
+.roomReservation h2 a {
+	color:#fff;
+	text-decoration: none;
+}
+.roomReservation h2 a:hover {
+	text-decoration: underline;
+}	
 .userLogin {
 	float:right;
 	color:#fff;
