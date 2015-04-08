@@ -101,7 +101,7 @@ templates::display('header');
 	{local var="prettyPrint"}
 
 <header>
-<h1>{local var="displayName"} in {local var="buildingName"}</h1>
+<h3>{local var="displayName"} in {local var="buildingName"}</h3>
 </header>
 
 
@@ -117,7 +117,7 @@ templates::display('header');
 <section id="reservationsRoomInformation">
 
 	<header>
-		<h1>Room Information</h1>
+		<h4>Room Information</h4>
 	</header>
 
 
@@ -180,7 +180,7 @@ templates::display('header');
 <section id="reservationsReserveRoom">
 
 	<header>
-		<h1>Reserve Room</h1>
+		<h4>Reserve Room</h4>
 	</header>
 
 <!-- 	{local var="prettyPrint"} -->

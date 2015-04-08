@@ -143,7 +143,7 @@ templates::display('header');
 ?>
 
 <header>
-<h1>Reservation Listing</h1>
+<h3>Reservation Listing</h3>
 </header>
 
 {local var="prettyPrint"}

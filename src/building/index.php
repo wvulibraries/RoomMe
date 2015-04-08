@@ -24,7 +24,7 @@ templates::display('header');
 ?>
 
 <header>
-<h1>{local var="libraryName"}</h1>
+<h3>{local var="libraryName"}</h3>
 </header>
 
 {local var="errors"}
@@ -52,7 +52,7 @@ templates::display('header');
 <section id="reservationsBuildingRoomsList">
 
 	<header>
-		<h1>Rooms</h1>
+		<h4>Rooms</h4>
 	</header>
 
 <ul>
