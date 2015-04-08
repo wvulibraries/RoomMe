@@ -14,7 +14,7 @@
 		<a href="{local var="roomReservationHome"}/find/">Check Room Availability</a>
 	</li>
 	<li>
-		<a href="http://www.hsc.wvu.edu/its/Forms/SchedulingForms/LibraryStudyRoomRequest.aspx">Health Sciences Libraries</a>
+		<a href="http://home.hsc.wvu.edu/its/forms/library-study-room-reservation/">Health Sciences Libraries</a>
 	</li>
 	<li>
 		<?php if (is_empty(session::get("username"))) { ?>
