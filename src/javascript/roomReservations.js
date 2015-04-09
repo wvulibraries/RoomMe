@@ -130,7 +130,7 @@ function handler_getCalendarJSON() {
 		success: function(responseData) {
 
 			calendarData = $.parseJSON(responseData);
-			buildCalendarTable(calendarData,0,7);
+			buildCalendarTable(calendarData,0,numberOfColumns);
 			
 
 		},
