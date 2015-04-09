@@ -24,7 +24,7 @@ templates::display('header');
 ?>
 
 <header>
-<h1>{local var="libraryName"}</h1>
+<h3>{local var="libraryName"}</h3>
 </header>
 
 {local var="errors"}
@@ -43,15 +43,16 @@ templates::display('header');
 		</li>
 		<?php } ?>
 
-		<li>
+		<!-- This is no longer neccesary w/new table -->
+		<!-- <li>
 			<a href="#" class="calendarModal_link" data-type="building" data-id="<?php print htmlSanitize($buildingID) ?>">View Reservation Calendar &ndash; All Rooms</a>
-		</li>
+		</li> -->
 	</ul>
 
 <section id="reservationsBuildingRoomsList">
 
 	<header>
-		<h1>Rooms</h1>
+		<h4>Rooms</h4>
 	</header>
 
 <ul>

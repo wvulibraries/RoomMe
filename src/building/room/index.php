@@ -101,21 +101,23 @@ templates::display('header');
 	{local var="prettyPrint"}
 
 <header>
-<h1>{local var="displayName"} in {local var="buildingName"}</h1>
+<h3>{local var="displayName"} in {local var="buildingName"}</h3>
 </header>
+
 
 <?php if ($roomPolicy['publicViewing'] == 1) { ?>
 
-<a href="#" class="calendarModal_link" data-type="room" data-id="<?php print $roomID ?>">View Reservation Calendar &ndash; This Room</a><br />
+<!-- This is no longer neccesary w/new table -->
+<!-- <a href="#" class="calendarModal_link" data-type="room" data-id="<?php print $roomID ?>">View Reservation Calendar &ndash; This Room</a><br /> -->
 
 <?php } ?>
 
-<a href="{local var="roomReservationHome"}/building/?building={local var="buildingID"}">Return to Building room listing</a>
+<a href="{local var="roomReservationHome"}/building/?building={local var="buildingID"}">View This Building's Entire Room Listing</a>
 
 <section id="reservationsRoomInformation">
 
 	<header>
-		<h1>Room Information</h1>
+		<h4>Room Information</h4>
 	</header>
 
 
@@ -178,7 +180,7 @@ templates::display('header');
 <section id="reservationsReserveRoom">
 
 	<header>
-		<h1>Reserve Room</h1>
+		<h4>Reserve Room</h4>
 	</header>
 
 <!-- 	{local var="prettyPrint"} -->

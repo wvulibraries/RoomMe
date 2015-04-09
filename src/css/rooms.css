@@ -21,6 +21,13 @@ tr {display: table-row; padding: 0;}
 	display: inline-block;
 	margin: 0;
 }
+.roomReservation h2 a {
+	color:#fff;
+	text-decoration: none;
+}
+.roomReservation h2 a:hover {
+	text-decoration: underline;
+}	
 .userLogin {
 	float:right;
 	color:#fff;
@@ -63,7 +70,15 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 } 
 .policyLink .fa {
 	color: #eaaa00;
-}	
+}
+.policyLink1 {
+	color: #a2aaad !important;	
+	margin-right: 20px;
+}
+.policyLink1 .fa {
+	padding-right: 4px;
+	color: #39F;
+}
 .roomHR {
 	width:100%;
 	overflow: hidden;
