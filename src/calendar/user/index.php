@@ -149,9 +149,9 @@ templates::display('header');
 {local var="prettyPrint"}
 
 <?php if (isset($_GET['MYSQL']['type']) && $_GET['MYSQL']['type']=="past") { ?>
-<a href="view.php">Current Reservations</a>
+<a href="?">Current Reservations</a>
 <?php } else {?>
-<a href="view.php?type=past">Past Reservations</a>
+<a href="?type=past">Past Reservations</a>
 <?php }?>
 <br /><br />
 
