@@ -19,8 +19,8 @@ $(function() {
 });
 
 function initialCalendarLoad() {
-	handler_getCalendarJSON();
-
+	handler_getCalendarJSON(false);
+	setPagerAttributes(0,numberOfColumns);
 }
 
 function handler_pager() {
@@ -32,6 +32,13 @@ function handler_pager() {
 	buildCalendarTable(calendarData,startCols,endCols);
 
 	// set the new pager variables
+	setPagerAttributes(startCols,endCols);
+
+	return false;
+}
+
+function setPagerAttributes(startCols,endCols) {
+
 	// prev
 	$('#pagerPrev').attr('data-startCols',(startCols-numberOfColumns < 0)?0:startCols-numberOfColumns);
 	$('#pagerPrev').attr('data-endCols',(endCols-numberOfColumns <=0)?numberOfColumns:endCols-numberOfColumns);
@@ -40,7 +47,10 @@ function handler_pager() {
 	$('#pagerNext').attr('data-startCols',(endCols >= calendarData.rooms.length)?calendarData.rooms.length-numberOfColumns:endCols);
 	$('#pagerNext').attr('data-endCols',(endCols+numberOfColumns > calendarData.rooms.length)?calendarData.rooms.length:endCols+numberOfColumns);
 
-	return false;
+	// last
+	$('#pagerLast').attr('data-startCols',(calendarData.rooms.length-numberOfColumns));
+	$('#pagerLast').attr('data-endCols',calendarData.rooms.length);
+
 }
 
 function buildRoomList(data) {
@@ -132,7 +142,9 @@ function buildCalendarTable(data,startCols,endCols) {
 
 }
 
-function handler_getCalendarJSON() {
+function handler_getCalendarJSON(sync) {
+
+	sync = (typeof sync !== 'undefined')? sync : true;
 
 	var url = roomReservationHome+"/includes/ajax/getCalendarJson.php?type="+"building"+"&objectID="+$("#building_modal").val()+"&month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
 	// alert(url);
@@ -148,7 +160,8 @@ function handler_getCalendarJSON() {
 		},
 		error: function(jqXHR,error,exception) {
 			$("#calendarData").html("Error retrieving calendar infocmation.");
-		}
+		},
+		async:   sync
 
 	});
 
