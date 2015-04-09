@@ -58,6 +58,9 @@ templates::display('header');
 	</div>
 
 	<!-- Calendar Call -->
+	<ul id="mobileList">
+	</ul>
+	
 	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr id="reservationsRoomTableHeaderRow">			

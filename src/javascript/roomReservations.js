@@ -43,11 +43,25 @@ function handler_pager() {
 	return false;
 }
 
+function buildRoomList(data) {
+
+	$.each(data.rooms, function (index, room) {
+
+		$("#mobileList").append('<li><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></li>');
+
+	});
+
+}
+
 function buildCalendarTable(data,startCols,endCols) {
 
 	// data = $.parseJSON(data)
-
 	// console.log(data);
+
+	if (numberOfColumns <= 0) {
+		buildRoomList(data);
+		return;
+	}
 
 	// remove existing content
 	$('#reservationsRoomTableHeaderRow').empty();
@@ -115,8 +129,6 @@ function buildCalendarTable(data,startCols,endCols) {
     	count++;
     	// console.log(value);
     });
-
-	$("#calendarData").html(data);
 
 }
 
