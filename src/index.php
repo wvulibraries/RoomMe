@@ -18,6 +18,8 @@ $localvars->set("monthSelect",$date->dropdownMonthSelect(1,TRUE,array("id"=>"sta
 $localvars->set("daySelect",$date->dropdownDaySelect(TRUE,array("id"=>"start_day_modal")));
 $localvars->set("yearSelect",$date->dropdownYearSelect(0,1,TRUE,array("id"=>"start_year_modal")));
 
+$localvars->set("headerDate",date("l, F j"));
+
 templates::display('header'); 
 ?>
 
@@ -25,7 +27,7 @@ templates::display('header');
 	<a id="nowSubmit" class="roomMobile bSubmit">
 		<i class="fa fa-arrow-circle-o-down"></i> Available Now
 	</a>
-	<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay">{date format="l, F j"}</span></h3>
+	<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay" id="headerDate">{local var="headerDate}</span></h3>
 	<h3 class="roomH3 roomMobile">Make A Reservation</h3>
 	<a class="policyLink roomTabletDesktop" href="policies/">Reservation Policies 
 		<i class="fa fa-exclamation-circle"></i>
@@ -60,7 +62,7 @@ templates::display('header');
 	<!-- Calendar Call -->
 	<ul id="mobileList">
 	</ul>
-	
+
 	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr id="reservationsRoomTableHeaderRow">			

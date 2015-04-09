@@ -155,7 +155,7 @@ function handler_getCalendarJSON(sync) {
 
 			calendarData = $.parseJSON(responseData);
 			buildCalendarTable(calendarData,0,numberOfColumns);
-			
+			setHeaderDate();
 
 		},
 		error: function(jqXHR,error,exception) {
@@ -167,6 +167,25 @@ function handler_getCalendarJSON(sync) {
 
 	return false;
 
+}
+
+function setHeaderDate() {
+	var url = roomReservationHome+"/includes/ajax/getHeaderDate.php?month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
+	
+	$.ajax({
+		url: url,
+		dataType: "html",
+		success: function(responseData) {
+			
+			$("#headerDate").html(responseData);
+			
+
+		},
+		error: function(jqXHR,error,exception) {
+			$("#headerDate").html("Error retrieving date.");
+		}
+
+	});
 }
 
 function handler_listBuildingSelect() {
