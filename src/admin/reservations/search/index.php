@@ -73,7 +73,7 @@ if (isset($_POST['MYSQL']['search'])) {
 				$reserveTime = ($reservation->reservation['endTime'] - $reservation->reservation['startTime'])/60/60;
 				$temp['hoursOnReservationTable'] = ($reserveTime > 23.6)?"24":$reserveTime;
 			}
-			$temp['edit']      = sprintf('<a href="reservationCreate.php?id=%s">Edit</a>',
+			$temp['edit']      = sprintf('<a href="../create/?id=%s">Edit</a>',
 				htmlSanitize($reservation->reservation['ID'])
 				);
 
