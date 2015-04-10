@@ -48,7 +48,7 @@ class room {
 	public function getall() {
 
 		$sql       = sprintf("SELECT * FROM rooms ORDER BY NAME");
-		$sqlResult = $this->db->query($sql,array($ID));
+		$sqlResult = $this->db->query($sql);
 
 		if ($sqlResult->error()) {
 			errorHandle::newError(__FUNCTION__."() - Error getting room name.", errorHandle::DEBUG);
@@ -61,7 +61,7 @@ class room {
 		}
 
 		while($row = $sqlResult->fetch()) {
-			$this->rooms[$ID] = $row;
+			$this->rooms[$row["ID"]] = $row;
 		}
 
 		return $this->rooms;
