@@ -29,14 +29,7 @@ try {
 		$series->get($_GET['MYSQL']['id']);
 
 	}
-	else {
-
-		if (!isset($_GET['MYSQL']['library']) || validate::getInstance()->integer($_GET['MYSQL']['library']) === FALSE) {
-			throw new Exception("Missing or invalid building");
-		}
-		if (!isset($_GET['MYSQL']['room']) || validate::getInstance()->integer($_GET['MYSQL']['room']) === FALSE) {
-			throw new Exception("Missing or invalid room");
-		}
+	else if (isset($_POST['MYSQL']['library']) && isset($_POST['MYSQL']['room'])) {
 
 		$series->setBuilding($_POST['MYSQL']['library']);
 		$series->setRoom($_POST['MYSQL']['room']);
@@ -54,7 +47,7 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 else if (isset($_POST['MYSQL']['deleteSubmit'])) {
 
 	if ($series->delete($_POST['MYSQL']['reservationID'])) {
-		header('Location: seriesList.php');
+		header('Location: index.php');
 	}
 
 	throw new Exception("Error Deleting Series.");
@@ -93,11 +86,6 @@ catch (Exception $e) {
 }
 // End Via dropdown creation
 
-$localvars->set("buildingID",$series->building['ID']);
-$localvars->set("roomID",$series->room['ID']);
-$localvars->set("buildingName",$series->building['name']);
-$localvars->set("roomName",$series->room['name']);
-
 // If this is a new reservation, use the current time. 
 // If this is an update, use the time from the reservation
 $currentMonth = ($series->isNew())?date("n"):date("n",$series->reservation['startTime']);
@@ -114,6 +102,7 @@ $seriesEndDay   = ($series->isNew())?date("j"):date("j",$series->reservation['se
 $seriesEndYear  = ($series->isNew())?date("Y"):date("Y",$series->reservation['seriesEndDate']);
 
 $localvars->set("username",$series->reservation['username']);
+$localvars->set("email",$series->reservation['email']);
 $localvars->set("groupname",$series->reservation['groupname']);
 $localvars->set("comments",$series->reservation['comments']);
 $localvars->set("action",($series->isNew())?"Add":"Update");
@@ -123,6 +112,20 @@ $displayHour = getConfig('24hour');
 $displayHour = ($displayHour != 1)?12:24;
 
 $localvars->set("reservationID",($series->isNew())?"":$series->reservation['ID']);
+
+// Building the building dropdown list
+$building = new building;
+$localvars->set("buildingSelectOptions",$building->selectBuildingListOptions(FALSE,(isset($_POST['MYSQL']['library']))?$_POST['MYSQL']['library']:NULL));
+
+// Build the room Dropdown List
+$room = new room;
+if (isset($_POST['MYSQL']['library']) && !is_empty($_POST['MYSQL']['library'])) {
+	$localvars->set("roomSelectOptions",$room->selectRoomListOptions(FALSE,$_POST['MYSQL']['library'],(isset($_POST['MYSQL']['room']))?$_POST['MYSQL']['room']:NULL));
+}
+else {
+	$firstBuilding = array_shift($building->getall());
+	$localvars->set("roomSelectOptions",$room->selectRoomListOptions(FALSE,$firstBuilding['ID']));
+}
 
 templates::display('header');
 ?>
@@ -140,18 +143,18 @@ templates::display('header');
 </section>
 <?php } ?>
 
-<p>Adding a <em><strong>Series</strong></em> reservation for Room <strong>{local var="roomName"}</strong> in building <strong>{local var="buildingName"}</strong></p>
+<p>Adding a <em><strong>Series</strong></em> reservation</p>
 
 <form action="{phpself query="true"}" method="post">
 	{csrf}
 
-	<input type="hidden" name="library" value="{local var="buildingID"}" />
-	<input type="hidden" name="room" value="{local var="roomID"}" />
 	<input type="hidden" name="reservationID" value="{local var="reservationID"}" />
 
 	<fieldset>
 		<legend>User Information</legend>
 		<label for="username" class="requiredField">Username:</label> &nbsp; <input type="text" id="username" name="username" value="{local var="username"}"/>
+		<br />
+		<label for="notificationEmail" class="requiredField">Email:</label> &nbsp; <input type="text" id="notificationEmail" name="notificationEmail" value="{local var="email"}" required/>
 		<br />
 		<label for="groupName">Groupname:</label> &nbsp; <input type="text" id="groupname" name="groupname" value="{local var="groupname"}"/>
 	</fieldset>
@@ -159,7 +162,21 @@ templates::display('header');
 
 	<fieldset>
 		<legend>Room Information</legend>
-	<table>
+		<table>
+			<tr>
+				<td>
+					<label for="listBuildingSelect">Building</label>
+					<select name="library" id="listBuildingSelect">
+						{local var="buildingSelectOptions"}
+					</select>
+				</td>
+				<td>
+					<label for="listBuildingRoomsSelect">Room</label>
+					<select name="room" id="listBuildingRoomsSelect" data-anyroom="false">
+						{local var="roomSelectOptions"}
+					</select>
+				</td>
+			</tr>
 		<tr>
 			<th colspan="3" style="text-align: left;"><strong>Reservation Date:</strong></th>
 		</tr>
@@ -327,13 +344,13 @@ templates::display('header');
 			</th>
 		</tr>
 	<tr>
-		<td> <input type="checkbox" name="weekday[]" value="0" id="sunday" <?php print (is_array($series->reservation['weekdaysAssigned']) && in_array("0",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
-		<td> <input type="checkbox" name="weekday[]" value="1" id="monday" <?php print (is_array($series->reservation['weekdaysAssigned']) && in_array("1",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
-		<td> <input type="checkbox" name="weekday[]" value="2" id="tuesday" <?php print (is_array($series->reservation['weekdaysAssigned']) && in_array("2",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
-		<td> <input type="checkbox" name="weekday[]" value="3" id="wednesday" <?php print (is_array($series->reservation['weekdaysAssigned']) && in_array("3",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
-		<td> <input type="checkbox" name="weekday[]" value="4" id="thursday" <?php print (is_array($series->reservation['weekdaysAssigned']) && in_array("4",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
-		<td> <input type="checkbox" name="weekday[]" value="5" id="friday" <?php print (is_array($series->reservation['weekdaysAssigned']) && in_array("5",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
-		<td> <input type="checkbox" name="weekday[]" value="6" id="saturday" <?php print (is_array($series->reservation['weekdaysAssigned']) && in_array("6",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
+		<td> <input type="checkbox" name="weekday[]" value="0" id="sunday"    <?php print (isset($series->reservation['weekdaysAssigned']) && is_array($series->reservation['weekdaysAssigned']) && in_array("0",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
+		<td> <input type="checkbox" name="weekday[]" value="1" id="monday"    <?php print (isset($series->reservation['weekdaysAssigned']) && is_array($series->reservation['weekdaysAssigned']) && in_array("1",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
+		<td> <input type="checkbox" name="weekday[]" value="2" id="tuesday"   <?php print (isset($series->reservation['weekdaysAssigned']) && is_array($series->reservation['weekdaysAssigned']) && in_array("2",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
+		<td> <input type="checkbox" name="weekday[]" value="3" id="wednesday" <?php print (isset($series->reservation['weekdaysAssigned']) && is_array($series->reservation['weekdaysAssigned']) && in_array("3",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
+		<td> <input type="checkbox" name="weekday[]" value="4" id="thursday"  <?php print (isset($series->reservation['weekdaysAssigned']) && is_array($series->reservation['weekdaysAssigned']) && in_array("4",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
+		<td> <input type="checkbox" name="weekday[]" value="5" id="friday"    <?php print (isset($series->reservation['weekdaysAssigned']) && is_array($series->reservation['weekdaysAssigned']) && in_array("5",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
+		<td> <input type="checkbox" name="weekday[]" value="6" id="saturday"  <?php print (isset($series->reservation['weekdaysAssigned']) && is_array($series->reservation['weekdaysAssigned']) && in_array("6",$series->reservation['weekdaysAssigned']))?"checked":""; ?>/></td>
 	</tr>
 	</table>
 
