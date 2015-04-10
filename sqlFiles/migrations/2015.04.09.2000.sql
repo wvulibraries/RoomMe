@@ -1,0 +1,1 @@
+ALTER TABLE `seriesReservations` ADD COLUMN `email` varchar(50) DEFAULT NULL;
