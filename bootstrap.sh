@@ -54,6 +54,10 @@ ln -s /vagrant/serverConfiguration/fines.pl /home/database.lib.wvu.edu/public_ht
 chmod a+x /home/database.lib.wvu.edu/public_html/cgi-bin/fines.pl
 
 # Application Specific
+
+# set the timezone
+ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+
 mkdir -p $SERVERURL/$DOCUMENTROOT/services
 
 ln -s /vagrant/serverConfiguration/docroot_index.php $SERVERURL/$DOCUMENTROOT/index.php
