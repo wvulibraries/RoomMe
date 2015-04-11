@@ -220,8 +220,7 @@ class calendar {
 		$roomsInformation    = array();
 
 		$calendarDisplayName = getConfig('calendarDisplayName');
-
-
+		$calendarHourPrior   = getConfig('calendarHourPrior');
 
 		$usernameCheck = array();
 
@@ -235,6 +234,11 @@ class calendar {
 		$calendarArray['times'] = array();
 
 		for ($I = 0;$I<=23;$I++) {
+
+			// Only display 1 hour previous to the current hour in the table
+			if ($calendarHourPrior >= 0 && $I < date("G") - $calendarHourPrior ) {
+				continue;
+			}
 
 			for ($K = 0;$K<60;$K=$K+15) {
 
