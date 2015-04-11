@@ -18,6 +18,8 @@ function defineFields() {
 	$fields['displayDurationOnRoomsCal']    = getConfig('displayDurationOnRoomsCal');
 	$fields['displayDurationOnBuildingCal'] = getConfig('displayDurationOnBuildingCal');
 	$fields['hoursOnReservationTable']      = getConfig('hoursOnReservationTable');
+	$fields['calendarHourPrior']            = getConfig('calendarHourPrior');
+	$fields['calendarHourDisplay']          = getConfig('calendarHourDisplay');
 
 	return($fields);
 }
