@@ -225,7 +225,6 @@ class calendar {
 		$usernameCheck = array();
 
 		$displayHour   = getConfig("24Hour");
-		$displayHour   = ($displayHour == 0)?12:24;
 
 		$displayNameAs = getConfig("displayNameAs");
 		$durationRooms = getConfig("displayDurationOnRoomsCal");
@@ -263,7 +262,7 @@ class calendar {
 				$calendarArray['times'][mktime($I,$K,"0",$date['month'],$date['day'],$date['year'])] = array(
 					'time'    => mktime($I,$K,"0",$date['month'],$date['day'],$date['year']),
 					'type'    => $hourMarker,
-					'display' => ($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am")))
+					'display' => date(getConfig('calendarHourDisplay'), mktime($hour,0,0,1,1,2000))
 					);
 
 			}
