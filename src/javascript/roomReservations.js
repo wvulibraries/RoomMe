@@ -115,7 +115,7 @@ function buildCalendarTable(data,startCols,endCols) {
     			tdReservationClass = time.hourType+((time.reserved)?" reserved":" notReserved");
 
     			var tdContent = "";
-    			if (typeof bookings[time.booking] == 'undefined') {
+    			if (time.reserved && typeof bookings[time.booking] == 'undefined') {
     				tdContent = '<span class="reservationName">'+time.username+'</span>&nbsp; <span class="reservationTime">'+time.displayTime+'</span>&nbsp; <span class="reservationDuration">'+time.duration+'</span>';
 
     				bookings[time.booking] = time.booking;
@@ -130,6 +130,9 @@ function buildCalendarTable(data,startCols,endCols) {
     			else if (time.reserved === false && hasAddIndicator === false && time.hourType != "quarterTill" && typeof room.times[parseInt(index)+900] != 'undefined' && room.times[parseInt(index)+900].reserved === false) {
     				hasAddIndicator = true;
     				tdContent = '<a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'&reservationSTime='+index+'" class="roomClick"><i class="fa fa-plus"></i></a>';
+    			}
+    			else if (time.reserved === false && hasAddIndicator === true) {
+    				tdContent = '<a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'&reservationSTime='+index+'" class="roomClick roomClickEmpty"></a>';
     			}
 
     			$('#tr_'+index).append('<td class="'+tdReservationClass+'">'+tdContent+'</td>');
