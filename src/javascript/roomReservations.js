@@ -3,6 +3,7 @@ var buildingCalendarURL = roomReservationHome+"/calendar/building/";
 var calendarData;
 
 $(document).ready(initialCalendarLoad);
+$(document).ready(initialResize);
 
 $(function() {
 	$(document)
@@ -17,6 +18,56 @@ $(function() {
 		.on('change', '#listBuildingSelect',  handler_listBuildingSelect)
 		.on('click',  '.pagerLink',           handler_pager)
 });
+
+
+// ------------
+
+var windowSize;
+var sizeBreakPoint_mobile;
+var sizeBreakPoint_tablet;
+var resizeTimer; 
+
+function initialResize() {
+
+
+	windowSize = $(window).width();
+	sizeBreakPoint_mobile = 768;
+	sizeBreakPoint_tablet = 1024;
+	handle_resizing();       
+}
+
+function handle_resizing(){
+	windowSize = $(window).width();
+
+	if (windowSize < sizeBreakPoint_mobile) {
+		numberOfColumns = 0;
+	}
+	else if (windowSize < sizeBreakPoint_tablet && windowSize >= sizeBreakPoint_mobile) {	
+		numberOfColumns = 4;
+	}
+	else if (windowSize >= sizeBreakPoint_tablet) {
+		numberOfColumns = 7;
+	}
+	else {
+		// default to desktop size if something goes wrong
+		numberOfColumns = 7;
+		console.log("resize error");
+	}
+
+	buildCalendarTable(calendarData,0,numberOfColumns);
+	setPagerAttributes(0,numberOfColumns);
+	
+}
+
+
+$(window).resize(function() {
+     clearTimeout(resizeTimer);
+     resizeTimer = setTimeout(handle_resizing, 100);
+}); 
+
+//  -----------
+
+
 
 function initialCalendarLoad() {
 	handler_getCalendarJSON(false);
