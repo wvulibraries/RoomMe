@@ -25,15 +25,15 @@ To authenticate, we have provided a script that will authenticate you to the loc
 
 ### Configuration:
 
-1. [System](https://github.com/wvulibraries/Room-Reservations/blob/documentation/src/admin/config/settings/README.md)
-1. [Messages](https://github.com/wvulibraries/Room-Reservations/blob/documentation/src/admin/config/messages/README.md)
-1. [Via](https://github.com/wvulibraries/Room-Reservations/blob/documentation/src/admin/config/via/README.md)
-1. [Statistics](https://github.com/wvulibraries/Room-Reservations/blob/documentation/src/admin/config/statistics/README.md)
-1. [Buildings](https://github.com/wvulibraries/Room-Reservations/blob/documentation/src/admin/roommanagement/buildings/README.md)
-1. [Policies](https://github.com/wvulibraries/Room-Reservations/blob/documentation/src/admin/roommanagement/policies/README.md)
-1. [Templates](https://github.com/wvulibraries/Room-Reservations/blob/documentation/src/admin/roommanagement/templates/README.md)
-1. [Rooms](https://github.com/wvulibraries/Room-Reservations/blob/documentation/src/admin/roommanagement/rooms/README.md)
-1. [Snippets](https://github.com/wvulibraries/Room-Reservations/blob/documentation/src/admin/config/snippets/README.md)
+1. [System](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/settings/README.md)
+1. [Messages](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/messages/README.md)
+1. [Via](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/via/README.md)
+1. [Statistics](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/statistics/README.md)
+1. [Buildings](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/roommanagement/buildings/README.md)
+1. [Policies](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/roommanagement/policies/README.md)
+1. [Templates](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/roommanagement/templates/README.md)
+1. [Rooms](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/roommanagement/rooms/README.md)
+1. [Snippets](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/snippets/README.md)
 
 ### Access Control
 
