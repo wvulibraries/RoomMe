@@ -8,6 +8,7 @@ are being made.
 The stats for each of the Via otions are displayed on the statistics page. 
 
 System defaults are:
+
 1. Staff, in person
 1. Staff, Over the phone
 1. Staff, via email
