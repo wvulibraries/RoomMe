@@ -20,16 +20,16 @@ Room Sort Order
 : How to sort the rooms, by name or number
 
 Period
-: Number of days in a "period."  A period is used to help refine the number of hours 
+: Number of days in a "period."  The period is a a running period based on the current time. If a period of 14 is set the current period is 7 days prior and 7 days ahead of the current date.  Can be over ridden on the policy. 
 
 Max Hours Per Period
-: Maximum number of days that a patron can schedule in a given period. The period is a a running period based on the current time. If a period of 14 is set the current period is 7 days prior and 7 days ahead of the current date. 
+: Maximum number of hours that a patron can schedule in a given period. Can be over ridden on the policy.
 
 Max Bookings Per Period
-: Maximum number of reservations that a patron con contain in a given period.
+: Maximum number of reservations that a patron con contain in a given period. Can be over ridden on the policy.
 
 Fine Amount
-: Maximum fine allowed for booking a room in this building, over rides the system setting.
+: Maximum fine allowed for booking a room in this building, over rides the system setting. Can be over ridden on the policy.
 
 Building URL
 : The URL for the buildings web homepage
