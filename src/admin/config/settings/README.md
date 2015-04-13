@@ -3,7 +3,7 @@ Systems Settings
 
 These are settings that globally effect the system. 
 
-**24hour**
+**24hour**  
 : The time for the system should be in 24 hour or 12 hour time. Default: 12 hour
 
 **adjustedDeleteTime**
