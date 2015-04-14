@@ -256,9 +256,8 @@ class series {
 
 		if ($userInformation !== FALSE) {
 
-
 			// put the serial information in the serial table
-			$sql       = sprintf("INSERT INTO seriesReservations (`createdOn`,`createdBy`,`createdVia`,`roomID`,`startTime`,`endTime`,`modifiedOn`,`modifiedBy`,`username`,`initials`,`groupname`,`comments`,`allDay`,`frequency`,`weekdays`,`seriesEndDate`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			$sql       = sprintf("INSERT INTO seriesReservations (`createdOn`,`createdBy`,`createdVia`,`roomID`,`startTime`,`endTime`,`modifiedOn`,`modifiedBy`,`username`,`initials`,`groupname`,`comments`,`allDay`,`frequency`,`weekdays`,`seriesEndDate`,`email`) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			$sqlResult = $this->db->query($sql,array(
 				time(),
 				session::get("username"),
@@ -275,16 +274,33 @@ class series {
 				(isset($_POST['MYSQL']['allDay']))?"1":"0",
 				$_POST['MYSQL']['frequency'],
 				(isset($_POST['MYSQL']['weekday']))?serialize($_POST['MYSQL']['weekday']):"",
-				$this->seriesEndDate)
+				$this->seriesEndDate,
+				$_POST['MYSQL']['notificationEmail'])
 			);
 
-			$seriesID = $sqlResult->insertId();
+			if ($sqlResult->error()) {
+				$this->db->rollback();
+				errorHandle::errorMsg("Failed create series reservation.");
+				errorHandle::newError(__FUNCTION__."() - Error creating series: ".$sqlResult->errorMsg(), errorHandle::DEBUG);
+				return FALSE;
+			}
+
+			if (($seriesID = $sqlResult->insertId()) === 0) {
+				$this->db->rollback();
+				errorHandle::errorMsg("Failed create series reservation.");
+				errorHandle::newError(__FUNCTION__."() - Error creating series -- seriesID error", errorHandle::DEBUG);
+				return FALSE;
+			}
+
+			
 
 		}
 		else {
 			$this->db->rollback();
 
-			errorHandle::errorMsg(getResultMessage("invalidUsername"));
+			$messages = new messages;
+
+			errorHandle::errorMsg($messages->get("invalidUsername"));
 			return FALSE;
 		}
 
@@ -312,7 +328,7 @@ class series {
 				// check the return value. If false, roll back the transactions and stop looping.
 				if ($reservation->create($seriesID) === FALSE) {
 					$this->db->rollback();
-					$errorMsg .= errorHandle::errorMsg("Failed create series reservation.");
+					errorHandle::errorMsg("Failed create series reservation.");
 					return FALSE;
 				}
 

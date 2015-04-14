@@ -79,7 +79,8 @@ class reservation {
 		$comments          = "";
 		// If the fields are set AND we are coming from the staff interface, we can modify $via and $override
 		// @TODO we need to handle the preg_match dynamically. 
-		if (isset($_POST['MYSQL']['via']) && (preg_match('/\/admin\/reservationCreate\.php/',$_SERVER['PHP_SELF']) || preg_match('/\/admin\/seriesCreate\.php/',$_SERVER['PHP_SELF']))) {
+
+		if (isset($_POST['MYSQL']['via']) && (preg_match('/\/admin\//',$_SERVER['PHP_SELF']))) {
 			$via      = $_POST['MYSQL']['via'];
 			$override = $_POST['MYSQL']['override'];
 
@@ -100,6 +101,13 @@ class reservation {
 
 		if ($userInformation === FALSE) {
 			errorHandle::errorMsg(getResultMessage("invalidUsername"));
+			return FALSE;
+		}
+
+		// check that an email address was submitted
+		// @TODO move this to validateRoomPostVariables
+		if (!isset($_POST['MYSQL']['notificationEmail']) || is_empty($_POST['MYSQL']['notificationEmail'])) {
+			errorHandle::errorMsg(getResultMessage("emailNotProvided"));
 			return FALSE;
 		}
 
@@ -435,10 +443,13 @@ class reservation {
 				// this should be a URL that returns a number
 				$usersFineAmount = file_get_contents($libraryfineLookupURL.$userInformation['idNumber']);
 
+				$usersFineAmount = explode("\n", $usersFineAmount);
+				$usersFineAmount = $usersFineAmount[count($usersFineAmount) - 1];
+
 				if ($usersFineAmount >= $currentFineAmount) {
 					$resultFineMessage = getResultMessage("maxFineExceeded");
 					$resultFineMessage = preg_replace("/{amount}/", $currentFineAmount, $resultFineMessage);
-					errorHandle::errorMsg(getResultMessage($resultFineMessage));
+					errorHandle::errorMsg($resultFineMessage);
 					return FALSE;
 				}
 			}
@@ -592,7 +603,7 @@ class reservation {
 				);
 		}
 		else {
-			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=? WHERE ID=?");
+			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=?, email=? WHERE ID=?");
 			$sqlOptions = array(
 				$sUnix,
 				$eUnix,
@@ -603,6 +614,7 @@ class reservation {
 				$groupname,
 				$comments,
 				$via,
+				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:"",
 				$this->reservation['ID']
 				);
 		}

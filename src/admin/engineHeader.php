@@ -9,7 +9,7 @@ $localvars  = localvars::getInstance();
 $enginevars = enginevars::getInstance();
 
 recurseInsert("acl.php","php"); 
-recurseInsert("vars.php","php");
+recurseInsert("includes/vars.php","php");
 recurseInsert('includes/functions.php',"php");
 
 recurseInsert('engineIncludes.php');

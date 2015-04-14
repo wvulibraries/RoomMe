@@ -13,10 +13,12 @@ $localvars->set("currentDisplayObjectTitle","Room Reservations");
 // require_once "/home/library/public_html/includes/engineHeader.php";
 
 recurseInsert("acl.php","php"); 
-recurseInsert("vars.php","php");
+recurseInsert("includes/vars.php","php");
 recurseInsert("includes/getUserInfo.php","php");
 
 require 'engineIncludes.php';
+
+$messages = new messages;
 
 recurseInsert("includes/engineHeader.php","php");
 // templates::load("library2012.3col");
