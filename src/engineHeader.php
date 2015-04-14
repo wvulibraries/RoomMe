@@ -22,7 +22,7 @@ $messages = new messages;
 
 recurseInsert("includes/engineHeader.php","php");
 // templates::load("library2012.3col");
-templates::load("library2014-backpage");
+templates::load("rooms2015");
 
 $localvars->set("roomResBaseDir","/services/rooms");
 

@@ -12,7 +12,7 @@ $localvars->set("buildingCalendars",$building->calendarList());
 			<!-- <li><a href="">View Calendar</a></li> -->
 			<li><a href="{local var="roomResBaseDir"}/admin/reservations/create/">Create Reservation</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/reservations/list/">List all Reservations</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/reservations/create/reservationLibrarySelect.php?type=series">Create Series</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/reservations/series/create/">Create Series</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/reservations/series/list/">List all Series</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/reservations/print/">Print Reservations</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/reservations/search/">Search</a></li>

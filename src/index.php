@@ -10,68 +10,93 @@ $sqlResult = $db->query($sql);
 
 $localvars->set("policyLabel",$messages->get("policyLabel"));
 
-templates::display('header');
+$building = new building;
+$localvars->set("buildingSelectOptions",$building->selectBuildingListOptions(FALSE,(isset($_POST['MYSQL']['library']))?$reservation->building['ID']:NULL));
+
+$date = new date;
+$localvars->set("monthSelect",$date->dropdownMonthSelect(1,TRUE,array("id"=>"start_month_modal")));
+$localvars->set("daySelect",$date->dropdownDaySelect(TRUE,array("id"=>"start_day_modal")));
+$localvars->set("yearSelect",$date->dropdownYearSelect(0,1,TRUE,array("id"=>"start_year_modal")));
+
+$localvars->set("headerDate",date("l, F j"));
+
+templates::display('header'); 
 ?>
 
-<header>
-<h1>Room Reservations</h1>
-</header>
+	<!-- Reservations Section -->
+	<a id="nowSubmit" class="roomMobile bSubmit">
+		<i class="fa fa-arrow-circle-o-down"></i> Available Now
+	</a>
+	<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay" id="headerDate">{local var="headerDate}</span></h3>
+	<h3 class="roomH3 roomMobile">Make A Reservation</h3>
+	<a class="policyLink roomTabletDesktop" href="policies/">Reservation Policies 
+		<i class="fa fa-exclamation-circle"></i>
+	</a>
+	<hr class="roomHR" />
+	<div class="styled-select">
+		<select id="building_modal">
+			{local var="buildingSelectOptions"}             
+		</select>
+	</div>
+	<div class="styled-select">
+		{local var="monthSelect"}
+	</div>                                          
+	<div class="styled-select">
+		{local var="daySelect"}
+	</div>
+	<div class="styled-select">
+		{local var="yearSelect"} 
+	</div>
+	<a id="calUpdateFormSubmit" class="bSubmit">
+		<i class="fa fa-calendar"></i> Find A Room
+	</a>
 
-<?php
-while ($row = $sqlResult->fetch()) {
-?>
+	<!-- Table Pager -->
+	<div class="tablePager roomTabletDesktop">
+		<a class="pagerButtons"><i id="pagerFirst" data-startCols="0" data-endCols="7" class="fa fa-step-backward pagerLink"></i></a>
+		<a class="pagerButtons"><i id="pagerPrev"  data-startCols="" data-endCols="" class="fa fa-backward pagerLink"></i></a>
+		<a class="pagerButtons"><i id="pagerNext"  data-startCols="7" data-endCols="14"class="fa fa-forward pagerLink"></i></a>
+		<a class="pagerButtons"><i id="pagerLast"  data-startCols="" data-endCols="" class="fa fa-step-forward pagerLink" ></i></a>
+	</div>
 
-<section class="reservationsLibrary">
-	<header>
-		<h1><?php print htmlSanitize($row['name']); ?></h1>
-	</header>
-
-	<ul>
-		<?php if (is_empty($row['externalURL'])) { ?>
-		<li>
-			<a href="{local var="roomReservationHome"}/building/?building=<?php print htmlSanitize($row['ID']) ?>">View &amp; Reserve Rooms</a>
-		</li>
-
-		<?php if (isset($row['policyURL']) && !is_empty($row['policyURL'])) { ?>
-		<li>
-			<a href="<?php print htmlSanitize($row['policyURL']) ?>">View Library {local var="policyLabel"}</a>
-		</li>
-		<?php } ?>
-
-		<?php if (isset($row['hoursURL']) && !is_empty($row['hoursURL'])) { ?>
-		<li>
-			<a href="<?php print htmlSanitize($row['hoursURL']) ?>">View Library Hours</a>
-		</li>
-		<?php } ?>
-
-		<?php if (isset($row['url']) && !is_empty($row['url'])) { ?>
-		<li>
-			<a href="<?php print htmlSanitize($row['url']) ?>">View Library Homepage</a>
-		</li>
-		<?php } ?>
-
-		<li>
-			<a href="#" class="calendarModal_link" data-type="building" data-id="<?php print htmlSanitize($row['ID']) ?>">View Reservation Calendar &ndash; All Rooms</a>
-		</li>
-		<?php } else { ?>
-
-		<li>
-			<a href="<?php print htmlSanitize($row['externalURL']) ?>">View &amp; Reserve Rooms</a>
-		</li>
-
-		<?php } ?>
+	<!-- Calendar Call -->
+	<ul id="mobileList">
 	</ul>
 
-	<?php if (isset($row['imageURL']) && !is_empty($row['imageURL'])) { ?>
-	<img src="<?php print htmlSanitize($row['imageURL']); ?>" class="reservationsLibraryImage"/>
+	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr id="reservationsRoomTableHeaderRow">			
+			</tr>
+		</thead>
+		<tbody id="reservationsRoomTableBody">
+
+		</tbody>
+	</table>
+
+	<div class="clear:both;"></div>
+	<br>
+	<h4>Rooms by Building:</h4>
+	<hr class="roomHR"></hr>
+	<nobr><a class="policyLink1" href="/services/rooms/building/?building=2"><i class="fa fa-building"></i>Downtown Campus Library</a></nobr>
+	<nobr><a class="policyLink1" href="/services/rooms/building/?building=1"><i class="fa fa-building"></i>Evansdale Library</a></nobr>
+	<nobr><a class="policyLink1" href="http://home.hsc.wvu.edu/its/forms/library-study-room-reservation/" target="_blank"><i class="fa fa-building"></i>Health Sciences Library</a></nobr>
+	<hr class="roomHR"></hr>
+	<br>
+
+	<!-- Mobile UI -->			
+	<a class="policyLink roomMobile" href="#">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
+
+	<?php if (is_empty(session::get("username"))) { ?>
+		<a id="userLoginSubmit" href="{local var="loginURL"}" class="roomMobile bSubmit">
+			<i class="fa fa-user"></i> User Login
+		</a>
+	<?php } else { ?>
+		<a id="userLoginSubmit" href="{local var="roomReservationHome"}/calendar/user/" class="roomMobile bSubmit">
+			<i class="fa fa-check"></i> My Reservations
+		</a>
+		<a id="userLoginSubmit" href="{engine var="logoutPage"}?csrf={engine name="csrfGet"}" class="roomMobile bSubmit">
+			<i class="fa fa-user"></i> User Logout
+		</a>
 	<?php } ?>
-</section>
 
-<?php } ?>
-
-<div id="calendarModal">
-</div>
-
-<?php
-templates::display('footer');
-?>
+<?php templates::display('footer'); ?>

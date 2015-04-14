@@ -1,5 +1,33 @@
 <?php
 
+function buildAttributes($options) {
+
+	$output = "";
+
+	foreach ($options as $attr=>$value) {
+		$output .= sprintf(' %s="%s" ',$attr,$value);
+	}
+
+	return $output;
+
+}
+
+function dropdownDurationSelect($selectHour,$options) {
+
+	$output = sprintf('<select %s>',buildAttributes($options));
+	for ($I=0;$I<=23;$I++) {
+		$output .= sprintf('<option value="%s" %s>%s</option>',
+			$I,
+			($I == $selectHour)?"selected":"",
+			$I
+			);
+	}
+	$output .= "</select>";
+
+	return $output;
+
+}
+
 function getBuildingName($ID) {
 
 	$buildingObject = new building;

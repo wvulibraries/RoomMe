@@ -95,27 +95,34 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 $localvars->set("policyLabel",htmlSanitize(getResultMessage("policyLabel")));
 
+$date = new date;
+
+// @TODO display on month dropdown should be configurable via interface
+$localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month")));
+$localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day")));
+$localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year")));
+$localvars->set("shourSelect", $date->dropdownHourSelect(($displayHour == 12)?TRUE:FALSE,$currentHour,array("name"=>"start_hour", "id"=>"start_hour")));
+$localvars->set("sminSelect",  $date->dropdownMinuteSelect("15",0,array("name"=>"start_minute", "id"=>"start_minute"))); // @TODO need to pull increment from room config
+$localvars->set("ehourSelect", dropdownDurationSelect(1,array("name"=>"end_hour", "id"=>"end_hour")));
+$localvars->set("eminSelect",  $date->dropdownMinuteSelect("15",0,array("name"=>"end_minute", "id"=>"end_minute"))); // @TODO need to pull increment from room config
+
+$localvars->set("monthSelect_modal", $date->dropdownMonthSelect(1,$currentMonth,array("id"=>"start_month_modal")));
+$localvars->set("daySelect_modal",   $date->dropdownDaySelect($currentDay,array("id"=>"start_day_modal")));
+$localvars->set("yearSelect_modal",  $date->dropdownYearSelect(0,10,$currentYear,array("id"=>"start_year_modal")));
+
 templates::display('header');
 ?>
 
 	{local var="prettyPrint"}
 
 <header>
-<h1>{local var="displayName"} in {local var="buildingName"}</h1>
+<h3>{local var="displayName"} in {local var="buildingName"}</h3>
 </header>
-
-<?php if ($roomPolicy['publicViewing'] == 1) { ?>
-
-<a href="#" class="calendarModal_link" data-type="room" data-id="<?php print $roomID ?>">View Reservation Calendar &ndash; This Room</a><br />
-
-<?php } ?>
-
-<a href="{local var="roomReservationHome"}/building/?building={local var="buildingID"}">Return to Building room listing</a>
 
 <section id="reservationsRoomInformation">
 
 	<header>
-		<h1>Room Information</h1>
+		<h4>Room Information</h4>
 	</header>
 
 
@@ -178,7 +185,7 @@ templates::display('header');
 <section id="reservationsReserveRoom">
 
 	<header>
-		<h1>Reserve Room</h1>
+		<h4>Reserve Room</h4>
 	</header>
 
 <!-- 	{local var="prettyPrint"} -->
@@ -206,41 +213,15 @@ templates::display('header');
 		<tr>
 			<td id="montDayYearSelects">
 				<label for="start_month">Month:</label><br />
-				<select name="start_month" id="start_month" >
-					<?php
-						for($I=1;$I<=12;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentMonth)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
+				{local var="monthSelect"}
 			</td>
 				<td>
 				<label for="start_day">Day:</label><br />
-				<select name="start_day" id="start_day" >
-					<?php
-						for($I=1;$I<=31;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentDay)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
+				{local var="daySelect"}
 			</td>
 			<td>
 				<label for="start_year">Year:</label><br />
-				<select name="start_year" id="start_year" >
-					<?php
-						for($I=$currentYear;$I<=$currentYear+10;$I++) {
-							printf('<option value="%s">%s</option>',
-								$I,
-								$I);
-						}
-					?>
-				</select>
+				{local var="yearSelect"}
 			</td>
 			
 		</tr>
@@ -252,62 +233,26 @@ templates::display('header');
 		<tr id="startEndTimeSelects">	
 			<td>
 				<label for="start_hour">Hour:</label><br />
-				<select name="start_hour" id="start_hour" >
-					<?php
-						for($I=0;$I<=23;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentHour)?"selected":"",
-								($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am"))));
-						}
-					?>
-				</select>
+				{local var="shourSelect"}
 			</td>
 			<td>
 				<label for="start_minute">Minute:</label><br />
-				<select name="start_minute" id="start_minute" >
-					<?php
-						for($I=0;$I<60;$I += 15) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentMin)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
+				{local var="sminSelect"}
 			</td>
 				</tr>
 				<tr>
 					<td colspan="2">
-						<strong>End Time</strong>
+						<strong>Duration</strong>
 					</td>
 				</tr>
 				<tr>
 			<td>
 				<label for="end_hour">Hour:</label><br />
-				<select name="end_hour" id="end_hour" >
-					<?php
-						for($I=0;$I<=23;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $nextHour)?"selected":"",
-								($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am"))));
-						}
-					?>
-				</select>
+				{local var="ehourSelect"}
 			</td>
 			<td>
 				<label for="end_minute">Minute:</label><br />
-				<select name="end_minute" id="end_minute" >
-					<?php
-						for($I=0;$I<60;$I += 15) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $nextMin)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
+				{local var="eminSelect"}
 			</td>
 		</tr>
 	</table>
@@ -335,8 +280,35 @@ templates::display('header');
 </section>
 
 
-<div id="calendarModal">
-</div>
+<?php if ($roomPolicy['publicViewing'] == 1) { ?>
+
+	<input type="hidden" id="building_modal" value="{local var="buildingID"}" />
+	<input type="hidden" id="room_modal" value="{local var="roomID"}" />
+
+	<div class="styled-select">
+		{local var="monthSelect_modal"}
+	</div>                                          
+	<div class="styled-select">
+		{local var="daySelect_modal"}
+	</div>
+	<div class="styled-select">
+		{local var="yearSelect_modal"} 
+	</div>
+	<a id="calUpdateFormSubmit" class="bSubmit">
+		<i class="fa fa-calendar"></i> Change Date
+	</a>
+
+	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr id="reservationsRoomTableHeaderRow">			
+			</tr>
+		</thead>
+		<tbody id="reservationsRoomTableBody">
+
+		</tbody>
+	</table>
+
+<?php } ?>
 
 <?php
 templates::display('footer');
