@@ -197,8 +197,11 @@ function handler_getCalendarJSON(sync) {
 
 	sync = (typeof sync !== 'undefined')? sync : true;
 
-	var url = roomReservationHome+"/includes/ajax/getCalendarJson.php?type="+"building"+"&objectID="+$("#building_modal").val()+"&month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
+	var calType  = (typeof $("#room_modal").val() !== 'undefined')?"room":"building";
+	var objectID = (calType == "building")?$("#building_modal").val():$("#room_modal").val();
+	var url      = roomReservationHome+"/includes/ajax/getCalendarJson.php?type="+calType+"&objectID="+objectID+"&month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
 	// alert(url);
+	
 	$.ajax({
 		url: url,
 		dataType: "json",
