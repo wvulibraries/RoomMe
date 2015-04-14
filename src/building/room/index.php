@@ -110,6 +110,10 @@ $localvars->set("sminSelect",  $date->dropdownMinuteSelect("15",$startMinute,arr
 $localvars->set("ehourSelect", dropdownDurationSelect(1,array("name"=>"end_hour", "id"=>"end_hour")));
 $localvars->set("eminSelect",  $date->dropdownMinuteSelect("15",0,array("name"=>"end_minute", "id"=>"end_minute"))); // @TODO need to pull increment from room config
 
+$localvars->set("monthSelect_modal", $date->dropdownMonthSelect(1,$currentMonth,array("id"=>"start_month_modal")));
+$localvars->set("daySelect_modal",   $date->dropdownDaySelect($currentDay,array("id"=>"start_day_modal")));
+$localvars->set("yearSelect_modal",  $date->dropdownYearSelect(0,10,$currentYear,array("id"=>"start_year_modal")));
+
 templates::display('header');
 ?>
 
@@ -281,6 +285,32 @@ templates::display('header');
 
 
 <?php if ($roomPolicy['publicViewing'] == 1) { ?>
+
+	<input type="hidden" id="building_modal" value="{local var="buildingID"}" />
+	<input type="hidden" id="room_modal" value="{local var="roomID"}" />
+
+	<div class="styled-select">
+		{local var="monthSelect_modal"}
+	</div>                                          
+	<div class="styled-select">
+		{local var="daySelect_modal"}
+	</div>
+	<div class="styled-select">
+		{local var="yearSelect_modal"} 
+	</div>
+	<a id="calUpdateFormSubmit" class="bSubmit">
+		<i class="fa fa-calendar"></i> Change Date
+	</a>
+
+	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
+		<thead>
+			<tr id="reservationsRoomTableHeaderRow">			
+			</tr>
+		</thead>
+		<tbody id="reservationsRoomTableBody">
+
+		</tbody>
+	</table>
 
 <?php } ?>
 
