@@ -204,13 +204,18 @@ class calendar {
 
 	public function buildBuildingCal($objectID,$date) {
 
-		$calendarArray = array();
-
 		# Get building Rooms
 		$buildingObject = new building;
 		$rooms = $buildingObject->getRooms($objectID);
 
-		
+		return $this->buildCalendar($rooms,$date);
+
+	}
+
+	private function buildCalendar($rooms,$date) {
+
+		$calendarArray = array();
+
 		# Make sure that date is an array
 		if (!is_array($date)) {
 			errorHandle::newError(__FUNCTION__."() - date not given as array", errorHandle::DEBUG);
