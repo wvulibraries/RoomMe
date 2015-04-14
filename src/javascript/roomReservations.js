@@ -2,9 +2,6 @@ var modalCalendarURL    = roomReservationHome+"/calendar/calendar.php";
 var buildingCalendarURL = roomReservationHome+"/calendar/building/";
 var calendarData;
 
-$(document).ready(initialCalendarLoad);
-$(document).ready(initialResize);
-
 $(function() {
 	$(document)
 		.on('click',  '.calendarModal_link',  handler_calModal)
