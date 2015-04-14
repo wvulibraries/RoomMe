@@ -175,7 +175,9 @@ if ($submitError) {
 
 $date = new date;
 
-$duration = $nextHour - $currentHour;
+// If there was a submission error, duration is what was submitted. 
+// If we are loading, it needs calculated. 
+$duration = ($submitError)?$nextHour:$nextHour - $currentHour;
 
 // @TODO display on month dropdown should be configurable via interface
 $localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month")));
