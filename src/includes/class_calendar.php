@@ -337,6 +337,17 @@ class calendar {
 
 	}
 
+	public function buildRoomCal($objectID,$date) {
+
+		$roomObj = new room;
+		if (($room = $roomObj->get($objectID)) === FALSE) {
+			errorHandle::newError(__METHOD__."() - error getting room", errorHandle::DEBUG);
+			return FALSE;
+		}
+
+		return $this->buildCalendar(array($room),$date);
+	}
+
 	public function buildJSON($type,$objectID,$date) {
 
 		switch ($type) {
@@ -344,6 +355,7 @@ class calendar {
 				$array = $this->buildBuildingCal($objectID,$date);
 				break;
 			case "room":
+				$array = $this->buildRoomCal($objectID,$date);
 				break;
 			default:
 				break;
