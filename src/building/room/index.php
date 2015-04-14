@@ -97,16 +97,12 @@ $localvars->set("policyLabel",htmlSanitize(getResultMessage("policyLabel")));
 
 $date = new date;
 
-// If there was a submission error, duration is what was submitted. 
-// If we are loading, it needs calculated. 
-$duration = ($submitError)?$nextHour:$nextHour - $currentHour;
-
 // @TODO display on month dropdown should be configurable via interface
 $localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month")));
 $localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day")));
 $localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year")));
 $localvars->set("shourSelect", $date->dropdownHourSelect(($displayHour == 12)?TRUE:FALSE,$currentHour,array("name"=>"start_hour", "id"=>"start_hour")));
-$localvars->set("sminSelect",  $date->dropdownMinuteSelect("15",$startMinute,array("name"=>"start_minute", "id"=>"start_minute"))); // @TODO need to pull increment from room config
+$localvars->set("sminSelect",  $date->dropdownMinuteSelect("15",0,array("name"=>"start_minute", "id"=>"start_minute"))); // @TODO need to pull increment from room config
 $localvars->set("ehourSelect", dropdownDurationSelect(1,array("name"=>"end_hour", "id"=>"end_hour")));
 $localvars->set("eminSelect",  $date->dropdownMinuteSelect("15",0,array("name"=>"end_minute", "id"=>"end_minute"))); // @TODO need to pull increment from room config
 
