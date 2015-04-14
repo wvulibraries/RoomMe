@@ -136,24 +136,13 @@ class reservation {
 
 		$sUnix = mktime($shour,$smin,0,$month,$day,$year);
 
-		if ((int)$shour >= 18 && (int)$ehour < (int)$shour) {
-			// assume the end hour is the next morning/day
+		// Convert the duration into hours and minutes
+		
+		$ehour = (int)$ehour * 60 * 60;
+		$emin  = (int)$emin * 60;
 
-			// add 24 hours of seconds to the start time to get the next day
-			$nextDay = $sUnix + 86400;
-
-			// grab the new month, day, year
-			$emonth = date("n",$nextDay);
-			$eday   = date("j",$nextDay);
-			$eyear  = date("Y",$nextDay);
-
-			$eUnix = mktime($ehour,$emin,0,$emonth,$eday,$eyear);
-
-		}
-		else {
-			// otherwise just use what we were given
-			$eUnix = mktime($ehour,$emin,0,$month,$day,$year);
-		}
+		// create the end time using the new ehour and emin
+		$eUnix = $sUnix + $ehour + $emin;
 
 		// make sure the end time is after the start time
 		if ($eUnix <= $sUnix) {

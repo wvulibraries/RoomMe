@@ -262,7 +262,7 @@ class calendar {
 				$calendarArray['times'][mktime($I,$K,"0",$date['month'],$date['day'],$date['year'])] = array(
 					'time'    => mktime($I,$K,"0",$date['month'],$date['day'],$date['year']),
 					'type'    => $hourMarker,
-					'display' => date(getConfig('calendarHourDisplay'), mktime($hour,0,0,1,1,2000))
+					'display' => date(getConfig('calendarHourDisplay'), mktime($I,0,0,1,1,2000))
 					);
 
 			}
