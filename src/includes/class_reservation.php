@@ -10,6 +10,7 @@ class reservation {
 
 	public $building     = array();
 	public $room         = array();
+	public $series       = FALSE;
 
 	function __construct() {
 		$this->localvars = localvars::getInstance();
@@ -618,20 +619,24 @@ class reservation {
 
 		$roomName     = getRoomInfo($_POST['MYSQL']['room']);
 
-		if ($this->isNew()) {
-			$resultMessage = getResultMessage("reservationCreated");
-			$resultMessage = preg_replace("/{roomName}/", $roomName['displayName'], $resultMessage);
-			errorHandle::successMsg($resultMessage);
-		}
-		else {
-			errorHandle::successMsg(getResultMessage("reservationUpdated"));
+		// we don't want to show the success message for series reservations
+		if (!$this->series) {
+			if ($this->isNew()) {
+				$resultMessage = getResultMessage("reservationCreated");
+				$resultMessage = preg_replace("/{roomName}/", $roomName['displayName'], $resultMessage);
+				errorHandle::successMsg($resultMessage);
+			}
+			else {
+				errorHandle::successMsg(getResultMessage("reservationUpdated"));
+			}
 		}
 
 		// Print off slip link
 		// // TODO
 
 		// If there was an email address submitted, send an email to that address
-		if (isset($_POST['HTML']['notificationEmail']) && validate::getInstance()->emailAddr($_POST['HTML']['notificationEmail'])) {
+		// Don't send email for series reservations
+		if (!$this->series && isset($_POST['HTML']['notificationEmail']) && validate::getInstance()->emailAddr($_POST['HTML']['notificationEmail'])) {
 
 
 			$buildingName = getBuildingName($roomName['building']);

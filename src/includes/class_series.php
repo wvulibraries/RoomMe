@@ -332,6 +332,8 @@ class series {
 				// submit the reservation
 				$reservation = new reservation;
 				
+				$reservation->series = TRUE;
+
 				$reservation->setBuilding($this->building['ID']);
 				$reservation->setRoom($this->room['ID']);
 
@@ -345,6 +347,7 @@ class series {
 			}
 		}
 
+		errorHandle::successMsg("Series Reservation successfully created.");
 		$this->db->commit();
 
 		return TRUE;
