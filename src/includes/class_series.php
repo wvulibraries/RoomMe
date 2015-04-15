@@ -109,7 +109,11 @@ class series {
 		}
 
 		$this->startTime     = mktime($_POST['MYSQL']['start_hour'],$_POST['MYSQL']['start_minute'],0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
-		$this->endTime       = mktime($_POST['MYSQL']['end_hour'],$_POST['MYSQL']['end_minute'],0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
+
+		$ehour = (int)$_POST['MYSQL']['end_hour'] * 60 * 60;
+		$emin  = (int)$_POST['MYSQL']['end_minute'] * 60;
+		$this->endTime = $this->startTime + $ehour + $emin;
+
 		$this->startDay      = mktime(0,0,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
 		$this->seriesEndDate = mktime(0,0,0,$_POST['MYSQL']['seriesEndDate_month'],$_POST['MYSQL']['seriesEndDate_day'],$_POST['MYSQL']['seriesEndDate_year']);
 
@@ -316,8 +320,14 @@ class series {
 				$_POST['MYSQL']['start_hour']   = date("H",$V['startTime']);
 				$_POST['MYSQL']['start_minute'] = date("i",$V['startTime']);
 
-				$_POST['MYSQL']['end_hour']     = date("H",$V['endTime']);
-				$_POST['MYSQL']['end_minute']   = date("i",$V['endTime']);
+				// We need to convert the end time back into a duration
+				// $duration = $V['endTime'] - $V['startTime'];
+				// $hour = floor($duration/60/60);
+				// $minute = ($duration/60)%60;
+
+				$duration = $V['endTime'] - $V['startTime'];
+				$_POST['MYSQL']['end_hour']     = floor($duration/60/60);
+				$_POST['MYSQL']['end_minute']   = ($duration/60)%60;
 
 				// submit the reservation
 				$reservation = new reservation;
@@ -403,27 +413,15 @@ class series {
 		$workingStartTime = 0;
 		$workingEndTime   = 0;
 		while ($workingDay <= $this->seriesEndDate) {
-			if ($workingDay == 0) {
-				$schedule[] = array(
-					'startTime' => $this->startTime,
-					'endTime'   => $this->endTime
-					);
-
-				$workingDay       = strtotime($interval,$this->startDay);
-				$workingStartTime = strtotime($interval,$this->startTime);
-				$workingEndTime   = strtotime($interval,$this->endTime);
-
-				continue;
-			}
 
 			$schedule[] = array(
-				'startTime' => $workingStartTime,
-				'endTime'   => $workingEndTime
+				'startTime' => (!$workingDay)?$this->startTime:$workingStartTime,
+				'endTime'   => (!$workingDay)?$this->endTime:$workingEndTime
 				);
 
-			$workingDay       = strtotime($interval,$workingDay);
-			$workingStartTime = strtotime($interval,$workingStartTime);
-			$workingEndTime   = strtotime($interval,$workingEndTime);
+			$workingStartTime = strtotime($interval,(!$workingDay)?$this->startTime:$workingStartTime);
+			$workingEndTime   = strtotime($interval,(!$workingDay)?$this->endTime:$workingEndTime);
+			$workingDay       = strtotime($interval,(!$workingDay)?$this->startDay:$workingDay);
 		}
 
 		return($schedule);
