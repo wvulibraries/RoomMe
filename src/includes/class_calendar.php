@@ -240,7 +240,8 @@ class calendar {
 		for ($I = 0;$I<=23;$I++) {
 
 			// Only display 1 hour previous to the current hour in the table
-			if ($calendarHourPrior >= 0 && $I < date("G") - $calendarHourPrior ) {
+			// for the current date. Display the whole day for other dates.
+			if (($date['month'] == date("m") && $date['day'] == date("d") && $date['year'] == date("Y")) && ($calendarHourPrior >= 0 && $I < date("G") - $calendarHourPrior)) {
 				continue;
 			}
 
