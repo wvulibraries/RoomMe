@@ -60,7 +60,7 @@ templates::display('header');
 	</div>
 
 	<!-- Calendar Call -->
-	<ul id="mobileList">
+	<ul id="mobileList" class="roomMobile">
 	</ul>
 
 	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
