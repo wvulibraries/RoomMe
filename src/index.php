@@ -29,7 +29,7 @@ templates::display('header');
 	</a>
 	<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay" id="headerDate">{local var="headerDate}</span></h3>
 	<h3 class="roomH3 roomMobile">Make A Reservation</h3>
-	<a class="policyLink roomTabletDesktop" href="policies/">Reservation Policies 
+	<a class="policyLink roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
 		<i class="fa fa-exclamation-circle"></i>
 	</a>
 	<hr class="roomHR" />
