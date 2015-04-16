@@ -24,32 +24,40 @@ templates::display('header');
 ?>
 
 	<!-- Reservations Section -->
-	<a id="nowSubmit" class="roomMobile bSubmit">
-		<i class="fa fa-arrow-circle-o-down"></i> Available Now
-	</a>
+	<h3 class="roomH3 roomMobile" style="margin-top: 20px;">Available Now</h3>
+	<hr class="roomHR roomMobile" />
+	<ul id="mobileList" class="roomMobile"></ul>
+
 	<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay" id="headerDate">{local var="headerDate}</span></h3>
-	<h3 class="roomH3 roomMobile">Make A Reservation</h3>
-	<a class="policyLink roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
+
+	<!-- Extra Links -->
+	<a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
+	<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
 		<i class="fa fa-exclamation-circle"></i>
 	</a>
-	<hr class="roomHR" />
-	<div class="styled-select">
+
+	<hr class="roomHR roomTabletDesktop" />
+	<div class="styled-select roomTabletDesktop">
 		<select id="building_modal">
 			{local var="buildingSelectOptions"}             
 		</select>
 	</div>
-	<div class="styled-select">
+	<div class="styled-select roomTabletDesktop">
 		{local var="monthSelect"}
 	</div>                                          
-	<div class="styled-select">
+	<div class="styled-select roomTabletDesktop">
 		{local var="daySelect"}
 	</div>
-	<div class="styled-select">
+	<div class="styled-select roomTabletDesktop">
 		{local var="yearSelect"} 
 	</div>
-	<a id="calUpdateFormSubmit" class="bSubmit">
+	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop">
 		<i class="fa fa-calendar"></i> Find A Room
 	</a>
+	<div style="clear:both;"></div>
+	<h3 class="roomH3 roomMobile" style="margin-top: 40px;">Future Dates</h3>
+	<hr class="roomHR roomMobile" />
+	<a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
 
 	<!-- Table Pager -->
 	<div class="tablePager roomTabletDesktop">
@@ -60,9 +68,6 @@ templates::display('header');
 	</div>
 
 	<!-- Calendar Call -->
-	<ul id="mobileList" class="roomMobile">
-	</ul>
-
 	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr id="reservationsRoomTableHeaderRow">			
@@ -75,7 +80,9 @@ templates::display('header');
 
 	<div class="clear:both;"></div>
 	<br>
-	<h4>Rooms by Building:</h4>
+
+	<!-- Rooms NAvigation -->
+	<h4 style="float:left;">Rooms by Building:</h4>
 	<hr class="roomHR"></hr>
 	<nobr><a class="policyLink1" href="/services/rooms/building/?building=2"><i class="fa fa-building"></i>Downtown Campus Library</a></nobr>
 	<nobr><a class="policyLink1" href="/services/rooms/building/?building=1"><i class="fa fa-building"></i>Evansdale Library</a></nobr>

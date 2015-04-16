@@ -57,10 +57,17 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	color: #0033A0;
 	padding: 0;
 	margin: 0;
+	width: 100%;
+}
+#mobileList {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
 }
 .topPad {margin-top: 70px;}
 .currentDay {
 	color:#eeb111;
+	white-space: nowrap;
 }
 .policyLink {
 	float:left; 
@@ -78,6 +85,15 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 .policyLink1 .fa {
 	padding-right: 4px;
 	color: #39F;
+}
+.policyLink3 {
+	float:right; 
+	margin: 0;
+	padding: 8px 20px 0;
+	color: #a2aaad !important;
+} 
+.policyLink3 .fa {
+	color: #eaaa00;
 }
 .roomHR {
 	width:100%;
@@ -146,6 +162,28 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	font-weight: regular;
 	padding-right: 10px;
 }	
+#asbutton {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: #3399ff;
+	height: 24px;
+	padding: 14px 0 22px 0;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;	
+}	
+#asbutton:hover {
+	text-decoration: none;
+	background: #5eaefe;
+}	
+#asbutton .fa {
+	font-size: 1.5em;
+	font-weight: regular;
+	padding-right: 10px;
+}
 #userLoginSubmit {
 	width: 100%;
 	float: left;
@@ -261,7 +299,9 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	.roomDesktop {display: none;}
 	.roomMobileTablet {display: inline-block;}
 	.roomTabletDesktop {display: inline-block;}
-
+	.roomH3 {
+		width: 50%;
+	}
 	a[class*=bSubmit] {margin: 0;}
 	.policyLink {
 		float:right; 

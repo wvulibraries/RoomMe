@@ -29,6 +29,8 @@ templates::display('header');
 <br>
 
 <!-- Mobile UI -->			
+<a class="policyLink roomMobile" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
+
 <?php if (is_empty(session::get("username"))) { ?>
 	<a id="userLoginSubmit" href="{local var="loginURL"}" class="roomMobile bSubmit">
 		<i class="fa fa-user"></i> User Login
