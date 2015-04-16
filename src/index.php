@@ -84,7 +84,7 @@ templates::display('header');
 	<br>
 
 	<!-- Mobile UI -->			
-	<a class="policyLink roomMobile" href="#">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
+	<a class="policyLink roomMobile" href="{local var="policiesPage"}">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
 
 	<?php if (is_empty(session::get("username"))) { ?>
 		<a id="userLoginSubmit" href="{local var="loginURL"}" class="roomMobile bSubmit">

@@ -9,6 +9,7 @@ $localvars  = localvars::getInstance();
 $enginevars = enginevars::getInstance();
 
 $localvars->set("currentDisplayObjectTitle","Room Reservations");
+$localvars->set("policiesPage","/services/rooms/policies/");
 
 // require_once "/home/library/public_html/includes/engineHeader.php";
 
