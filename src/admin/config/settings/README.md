@@ -41,3 +41,15 @@ These are settings that globally effect the system.
 
 **hoursOnReservationTable**  
 : Display the start and end hours on the calendar. 
+
+**calendarHourPrior**  
+: How many hours prior to the current hour to display on the homepage calendar. 
+
+**calendarHourDisplay**  
+: Format for the time display on the calendar pages. Uses standard date() formatting
+
+**showOpenEvent**  
+: Show the "is this an open event" on public reservation creation pages
+
+**openEventEmail**  
+: Email address to send open event information too
