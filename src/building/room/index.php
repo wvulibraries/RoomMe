@@ -223,6 +223,7 @@ templates::display('header');
 		</div>
 		<strong>Provide Additional Information:</strong>
 		<div class="roomReservationRows">
+			<?php if (getConfig('showOpenEvent')) { ?>
 			<span class="reserveRoomInput"><label for="openEvent">Is this an open, public, event?</label>
 			<select name="openEvent" id="openEvent">
 				<option value="0">No</option>
@@ -231,6 +232,8 @@ templates::display('header');
 			<!--<label for="openEventDescription">Describe your event:</label>
 			<textarea id="openEventDescription" name="openEventDescription"></textarea>-->
 			<br><br>
+			<?php } ?>
+			
 			<label name="notificationEmail" class="requiredField" >Email Address:</label>
 			<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" value="{local var="useremail"}" required />
 		</div>	
