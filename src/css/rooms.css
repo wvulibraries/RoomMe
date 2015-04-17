@@ -84,7 +84,7 @@ tr {display: table-row; padding: 0;}
 .roomDesktop {display: none;}
 .roomMobileTablet {display: inline-block;}
 .roomTabletDesktop {display: none;}
-
+.roomAvailability {display:none;}
 
 /*********************************************************************
 	768px and below
@@ -110,8 +110,6 @@ tr {display: table-row; padding: 0;}
 .styledTable tr:nth-of-type(2n+1) {
     background: none repeat scroll 0% 0% #f5f8fa;
 }
-
-
 
 .errorPrettyPrint {
 	margin-bottom: 20px;
@@ -407,11 +405,37 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	border: 0;
 	display:none;
 }
+#roomPictureContainer img {
+	width: 100%;
+	max-width: 640px;
+}
+
+.iroomTable .tdHours, .iroomTable .hour {
+	width: 50%;
+}
+
+#reservationsRoomTableHeaderRow .tdEmpty {
+	border: 1px solid #000;
+}
 #reservationsRoomTable td {
     height: 50px;
-    border: 1px solid #000;
     vertical-align: middle;
     text-align: center;
+}
+#reservationsRoomTable td {
+    padding: 0;
+    border: 1px dotted #CCC;
+    text-align: center;
+}
+#reservationsRoomTable .hour, #reservationsRoomTable .quarterPast, #reservationsRoomTable .half {
+    border-right: 1px solid #000;
+}
+#reservationsRoomTable .quarterTill {
+	border-bottom: 1px solid #000;	
+	border-right: 1px solid #000;
+}
+#reservationsRoomTable .hour {
+    border-top: 1px solid #000;
 }
 #reservationsRoomTable tr:nth-of-type(2n+1) {
     background: none;
@@ -430,6 +454,10 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	color: #000;
 }
 .reservationName {
+	width:100%;
+	display: table;
+}
+.reservationTime {
 	width:100%;
 	font-size: 0.75em;
 	font-style: italic;
@@ -464,6 +492,7 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	.roomDesktop {display: none;}
 	.roomMobileTablet {display: inline-block;}
 	.roomTabletDesktop {display: inline-block;}
+	.roomAvailability {display:block;}
 	.roomH3 {
 		width: 50%;
 	}
@@ -482,6 +511,9 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	}
 	.calendarCol, .tdHours {
 		width:20%;
+		border: 1px solid #000;
+		text-align: center;
+		background: #fff;
 	}
 	.styled-select {
 		width: 23.5%;
@@ -524,6 +556,8 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	.tdHours {
 		width:16%;
 		font-weight: bold;
+		background: #fff;
+		text-align: center;
 	}
 	.styled-select {
 		width: 18%;

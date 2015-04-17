@@ -174,6 +174,7 @@ templates::display('header');
 		<?php } ?>
 	</table>
 	<div id="roomPictureContainer">
+		<h4>Room Picture</h4>
 		{local var="roomPicture"}
 	</div>
 </section>
@@ -254,7 +255,7 @@ templates::display('header');
 <div style="clear:both;"</div>
 
 <!-- Room Availability -->
-<section>
+<section class="roomAvailability">
 	<?php if ($roomPolicy['publicViewing'] == 1) { ?>
 		<br>
 		<br>
@@ -277,7 +278,12 @@ templates::display('header');
 			<i class="fa fa-calendar"></i> Change Date
 		</a>
 
-		<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
+		<div style="clear:both"></div>
+
+		<br>
+		<br>
+
+		<table id="reservationsRoomTable" class="iroomTable" cellspacing="0" cellpadding="0">
 			<thead>
 				<tr id="reservationsRoomTableHeaderRow">			
 				</tr>
