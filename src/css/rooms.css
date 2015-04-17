@@ -1,5 +1,42 @@
 @charset "utf-8";
 
+/*********************************************************************
+    - 760px
+**********************************************************************/
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    /* Force table to not be like tables anymore */
+    .styledTable , .styledTable thead, .styledTable tbody, .styledTable th, .styledTable td, .styledTable tr { 
+		display: block; 
+	}
+	/* Hide table headers  */
+	.styledTable thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	.styledTable tr {
+		border: 1px solid #ccc;
+	}
+	.styledTable td { 
+		/* Behave  like a "row"  */
+		border: none;
+		position: relative;
+        display: block;
+        overflow: hidden;
+	}	
+	.styledTable td:before { 
+		/* Now like a table header  */
+		position: absolute;
+		/* Top/left values mimic padding  */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+}
+
 /* Table Defaults */
 table {display: table; padding: 0;}
 thead {display: table-header-group; padding: 0;}
@@ -52,9 +89,38 @@ tr {display: table-row; padding: 0;}
 /*********************************************************************
 	768px and below
 **********************************************************************/
+.styledTable {
+    border: 1px solid #ababab; 
+    border-collapse: collapse; 
+    width:99%;
+}
+.styledTable td {
+    vertical-align: top; 
+    text-align: left;
+}
+.styledTable th { 
+  background: #EFEFEF; 
+  font-weight: bold; 
+}
+.styledTable td, .styledTable th {
+    padding: 6px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+.styledTable tr:nth-of-type(2n+1) {
+    background: none repeat scroll 0% 0% #f5f8fa;
+}
+
+
+
 .errorPrettyPrint {
-	color:#ff0000;
 	margin-bottom: 20px;
+}
+.errorMessage {
+	color: #FF0000;
+}
+.successMessage {
+	color: #00FF00;
 }
 #reservationsReserveRoom {
 }
