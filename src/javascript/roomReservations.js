@@ -152,7 +152,7 @@ function buildRoomList(data) {
 
 	$.each(mobileCalendarData, function(index, building) {
 
-		$("#mobileList").append('<li><h3>'+index+'</h3></li>');
+		$("#mobileList").append('<li><h4>'+index+'</h4></li>');
 
 		$.each(building.rooms, function (index, room) {
 		
