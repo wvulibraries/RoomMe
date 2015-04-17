@@ -115,18 +115,20 @@ templates::display('header');
 
 	{local var="prettyPrint"}
 
-<header>
-<h3>{local var="displayName"} in {local var="buildingName"}</h3>
-</header>
+<h3 class="roomH3" style="display: inline-block;">{local var="displayName"} in {local var="buildingName"}</h3>
 
+<!-- Extra Links -->
+<a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
+<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
+	<i class="fa fa-exclamation-circle"></i>
+</a>
+<hr class="roomHR roomTabletDesktop" />
+
+<!-- Room Information -->
 <section id="reservationsRoomInformation">
-
-	<header>
-		<h4>Room Information</h4>
-	</header>
-
-
-	<table>
+	<h4>Room Information</h4>
+	<hr class="roomHR" />
+	<table id="roomInformationTable">
 		<tr>
 			<td><strong>Room Name:</strong></td>
 			<td>{local var="roomName"}</td>
@@ -170,27 +172,17 @@ templates::display('header');
 			</td>
 		</tr>
 		<?php } ?>
-
 	</table>
-
-<div id="roomPictureContainer">
-	{local var="roomPicture"}
-</div>
-
-
+	<div id="roomPictureContainer">
+		{local var="roomPicture"}
+	</div>
 </section>
 
-
-
+<!-- Reserve Room -->
 <section id="reservationsReserveRoom">
-
-	<header>
-		<h4>Reserve Room</h4>
-	</header>
-
-<!-- 	{local var="prettyPrint"} -->
-
-<?php if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
+	<h4>Reserve Room</h4>
+	<hr class="roomHR" />
+	<?php if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
 	<?php if(is_empty(session::get("username"))) { ?>
 
@@ -199,115 +191,129 @@ templates::display('header');
 
 	<?php } else { ?>
 
-<form action="{phpself query="true"}" method="post">
-	{csrf}
+	<form action="{phpself query="true"}" method="post">
+		{csrf}
 
-	<input type="hidden" name="library" value="{local var="buildingID"}" />
-	<input type="hidden" name="room" value="{local var="roomID"}" />
-	<input type="hidden" id="username" name="username" value="{local var="username"}"/>
+		<input type="hidden" name="library" value="{local var="buildingID"}" />
+		<input type="hidden" name="room" value="{local var="roomID"}" />
+		<input type="hidden" id="username" name="username" value="{local var="username"}"/>
 
-	<table>
-						<tr>
-					<th colspan="3" style="text-align: left;"><strong>Reservation Date:</strong></th>
-				</tr>
-		<tr>
-			<td id="montDayYearSelects">
-				<label for="start_month">Month:</label><br />
-				{local var="monthSelect"}
-			</td>
-				<td>
-				<label for="start_day">Day:</label><br />
-				{local var="daySelect"}
-			</td>
-			<td>
-				<label for="start_year">Year:</label><br />
-				{local var="yearSelect"}
-			</td>
-			
-		</tr>
-				<tr>
-					<td colspan="2">
-						<strong>Start Time</strong>
-					</td>
-				</tr>
-		<tr id="startEndTimeSelects">	
-			<td>
-				<label for="start_hour">Hour:</label><br />
-				{local var="shourSelect"}
-			</td>
-			<td>
-				<label for="start_minute">Minute:</label><br />
-				{local var="sminSelect"}
-			</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<strong>Duration</strong>
-					</td>
-				</tr>
-				<tr>
-			<td>
-				<label for="end_hour">Hour:</label><br />
-				{local var="ehourSelect"}
-			</td>
-			<td>
-				<label for="end_minute">Minute:</label><br />
-				{local var="eminSelect"}
-			</td>
-		</tr>
-	</table>
-	<br />
-	<label for="openEvent">Is this an open, public, event?</label><br />
-	<select name="openEvent" id="openEvent"><option value="0">No</option><option value="1">Yes</option></select><br />
-	<div id="openEventDescriptionContainer"  style="display:none;">
-		<label for="openEventDescription">Describe your event:</label><br />
-		<textarea id="openEventDescription" name="openEventDescription"></textarea>
-	</div>
-	<br /><br />
-	<label name="notificationEmail" class="requiredField" >Email Address:</label>
-	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" value="{local var="useremail"}" required />
-	<br /><br />
-	
-	<input type="submit" name="createSubmit" class="button" value="Reserve this Room" />
-</form>
-<?php } ?>
-<?php } else { // public scheduling?>
+		<strong>Select The Date:</strong>
+		<div class="roomReservationRows">
+			<span class="reserveRoomInput"><label for="start_month">Month:</label> 
+			{local var="monthSelect"}</span>
+			<span class="reserveRoomInput"><label for="start_day">Day:</label> 
+			{local var="daySelect"}</span>
+			<span class="reserveRoomInput"><label for="start_year">Year:</label> 
+			{local var="yearSelect"}</span>
+		</div>
+		<strong>Select The Start Time:</strong>
+		<div class="roomReservationRows">	
+			<span class="reserveRoomInput"><label for="start_hour">Hour:</label>
+			{local var="shourSelect"}</span>
+			<span class="reserveRoomInput"><label for="start_minute">Minute:</label>
+			{local var="sminSelect"}</span>
+		</div>	
+		<strong>Select The Duration:</strong>
+		<div class="roomReservationRows">
+			<span class="reserveRoomInput"><label for="end_hour">Hour:</label>
+			{local var="ehourSelect"}</span>
+			<span class="reserveRoomInput"><label for="end_minute">Minute:</label>
+			{local var="eminSelect"}</span>
+		</div>
+		<strong>Provide Additional Information:</strong>
+		<div class="roomReservationRows">
+			<span class="reserveRoomInput"><label for="openEvent">Is this an open, public, event?</label>
+			<select name="openEvent" id="openEvent">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</select></span>
+			<!--<label for="openEventDescription">Describe your event:</label>
+			<textarea id="openEventDescription" name="openEventDescription"></textarea>-->
+			<br><br>
+			<label name="notificationEmail" class="requiredField" >Email Address:</label>
+			<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" value="{local var="useremail"}" required />
+		</div>	
+		<input id="nowSubmit" type="submit" name="createSubmit" value="Reserve this Room" />
+	</form>
 
+	<?php } ?>
+	<?php } else { // public scheduling?>
 
-	{snippet id="8" field="content"}
-	
-<?php } ?>
+		{snippet id="8" field="content"}
+		
+	<?php } ?>
 </section>
 
+<div style="clear:both;"</div>
 
-<?php if ($roomPolicy['publicViewing'] == 1) { ?>
+<!-- Room Availability -->
+<section>
+	<?php if ($roomPolicy['publicViewing'] == 1) { ?>
+		<br>
+		<br>
+		<h4>Room Availability</h4>
+		<hr class="roomHR" />
 
-	<input type="hidden" id="building_modal" value="{local var="buildingID"}" />
-	<input type="hidden" id="room_modal" value="{local var="roomID"}" />
+		<input type="hidden" id="building_modal" value="{local var="buildingID"}" />
+		<input type="hidden" id="room_modal" value="{local var="roomID"}" />
 
-	<div class="styled-select">
-		{local var="monthSelect_modal"}
-	</div>                                          
-	<div class="styled-select">
-		{local var="daySelect_modal"}
-	</div>
-	<div class="styled-select">
-		{local var="yearSelect_modal"} 
-	</div>
-	<a id="calUpdateFormSubmit" class="bSubmit">
-		<i class="fa fa-calendar"></i> Change Date
+		<div class="styled-select">
+			{local var="monthSelect_modal"}
+		</div>                                          
+		<div class="styled-select">
+			{local var="daySelect_modal"}
+		</div>
+		<div class="styled-select">
+			{local var="yearSelect_modal"} 
+		</div>
+		<a id="calUpdateFormSubmit" class="bSubmit">
+			<i class="fa fa-calendar"></i> Change Date
+		</a>
+
+		<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr id="reservationsRoomTableHeaderRow">			
+				</tr>
+			</thead>
+			<tbody id="reservationsRoomTableBody">
+
+			</tbody>
+		</table>
+	<?php } ?>
+</section>	
+
+<!-- Advanced Search -->
+<div style="clear:both;"></div>
+<hr class="roomHR roomMobile" />
+<a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
+
+<div class="clear:both;"></div>
+<br>
+
+<!-- Rooms Navigation -->
+<h4 style="float:left;">Rooms by Building:</h4>
+<hr class="roomHR"></hr>
+<nobr><a class="policyLink1" href="/services/rooms/building/?building=2"><i class="fa fa-building"></i>Downtown Campus Library</a></nobr>
+<nobr><a class="policyLink1" href="/services/rooms/building/?building=1"><i class="fa fa-building"></i>Evansdale Library</a></nobr>
+<nobr><a class="policyLink1" href="http://home.hsc.wvu.edu/its/forms/library-study-room-reservation/" target="_blank"><i class="fa fa-building"></i>Health Sciences Library</a></nobr>
+<hr class="roomHR"></hr>
+<br>
+
+<!-- Mobile UI -->			
+<a class="policyLink roomMobile" href="{local var="policiesPage"}">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
+
+<?php if (is_empty(session::get("username"))) { ?>
+	<a id="userLoginSubmit" href="{local var="loginURL"}" class="roomMobile bSubmit">
+		<i class="fa fa-user"></i> User Login
 	</a>
-
-	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
-		<thead>
-			<tr id="reservationsRoomTableHeaderRow">			
-			</tr>
-		</thead>
-		<tbody id="reservationsRoomTableBody">
-
-		</tbody>
-	</table>
-
+<?php } else { ?>
+	<a id="userLoginSubmit" href="{local var="roomReservationHome"}/calendar/user/" class="roomMobile bSubmit">
+		<i class="fa fa-check"></i> My Reservations
+	</a>
+	<a id="userLoginSubmit" href="{engine var="logoutPage"}?csrf={engine name="csrfGet"}" class="roomMobile bSubmit">
+		<i class="fa fa-user"></i> User Logout
+	</a>
 <?php } ?>
 
 <?php
