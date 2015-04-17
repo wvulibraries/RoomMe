@@ -52,6 +52,32 @@ tr {display: table-row; padding: 0;}
 /*********************************************************************
 	768px and below
 **********************************************************************/
+#reservationsBuildingRoomsList ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;	
+}
+#reservationsBuildingRoomsList ul li {
+	display: inline-block;
+	float:left;
+	width: 100%;
+	margin: 0 0 40px 0;
+	background: #f5f8fa;
+		text-align: center;	
+}
+#reservationsBuildingRoomsList ul li a {
+}
+#reservationsBuildingRoomsList ul li a img {
+	width: 100%;
+	max-width: 640px;
+	height: auto;
+	padding:0;
+	margin:0;
+}		
+.reservationsBuildingRoomsListName {
+	width: 100%;
+	display: block;
+}
 a[class*=bSubmit] {margin: 10px 0 20px 0;}
 .roomH3 {
 	color: #0033A0;
@@ -294,6 +320,13 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	768px to 1024px
 **********************************************************************/
 @media screen and (min-width: 754px) {
+	#reservationsBuildingRoomsList ul li {
+		width: 47%;
+		margin: 0 6% 40px 0;
+	}
+	#reservationsBuildingRoomsList ul li:nth-child(2n) {
+		margin-right: 0;
+	}	
 	.roomMobile {display: none;}
 	.roomTablet {display: inline-block;}
 	.roomDesktop {display: none;}
@@ -334,6 +367,16 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	1024px and up
 **********************************************************************/
 @media screen and (min-width: 1010px) {
+	#reservationsBuildingRoomsList ul li {
+		width: 30%;
+		margin: 0 5% 40px 0;
+	}
+	#reservationsBuildingRoomsList ul li:nth-child(2n) {
+		margin-right: 5%;
+	}		
+	#reservationsBuildingRoomsList ul li:nth-child(3n) {
+		margin-right: 0;
+	}
 	.roomMobile {display: none;}
 	.roomTablet {display: none;}
 	.roomDesktop {display: inline-block;}
