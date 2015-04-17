@@ -20,6 +20,8 @@ function defineFields() {
 	$fields['hoursOnReservationTable']      = getConfig('hoursOnReservationTable');
 	$fields['calendarHourPrior']            = getConfig('calendarHourPrior');
 	$fields['calendarHourDisplay']          = getConfig('calendarHourDisplay');
+	$fields['showOpenEvent']                = getConfig('showOpenEvent');
+	$fields['openEventEmail']               = getConfig('openEventEmail');
 
 	return($fields);
 }
@@ -92,7 +94,7 @@ templates::display('header');
 				<?php 
 				// I hate how i'm doing this. product of needing to get it done instead of doing it well. 
 				// TODO: Fix this!
-				if ($name == "24hour" || $name=="allowMultipleBookings" || $name=="displayDurationOnRoomsCal" || $name=="displayDurationOnBuildingCal" || $name=="hoursOnReservationTable") { ?>
+				if ($name == "24hour" || $name=="allowMultipleBookings" || $name=="displayDurationOnRoomsCal" || $name=="displayDurationOnBuildingCal" || $name=="hoursOnReservationTable" || $name=="showOpenEvent") { ?>
 
 				<select name="<?php print $name; ?>">
 					<option value="0" <?php print ($value=="0")?"selected":""; ?>>No</option>
