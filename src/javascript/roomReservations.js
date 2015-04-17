@@ -15,6 +15,7 @@ $(function() {
 		.on('click',  '#calUpdateFormSubmit', handler_getCalendarJSON)
 		.on('change', '#listBuildingSelect',  handler_listBuildingSelect)
 		.on('click',  '.pagerLink',           handler_pager)
+		.on('change', '#openEvent',           handler_openEvent)
 });
 
 
@@ -24,6 +25,17 @@ var windowSize;
 var sizeBreakPoint_mobile;
 var sizeBreakPoint_tablet;
 var resizeTimer; 
+
+function handler_openEvent() {
+
+	if ($(this).val() == "1") {
+		$(".openEventDescription").show();
+	}
+	else {
+		$(".openEventDescription").hide();
+	}
+
+}
 
 function initialResize() {
 

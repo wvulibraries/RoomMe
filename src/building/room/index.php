@@ -229,8 +229,11 @@ templates::display('header');
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</select></span>
-			<!--<label for="openEventDescription">Describe your event:</label>
-			<textarea id="openEventDescription" name="openEventDescription"></textarea>-->
+			
+			<br />
+			<label for="openEventDescription" class="openEventDescription" style="display:none;">Describe your event:</label>
+			<textarea id="openEventDescription" name="openEventDescription"  class="openEventDescription" rows="5" style="display:none;"></textarea>
+
 			<br><br>
 			<?php } ?>
 			
