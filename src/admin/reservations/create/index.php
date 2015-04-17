@@ -59,7 +59,7 @@ try {
 		}
 
 		// @TODO this should not be hard coded. 
-		header('Location: reservationsList.php');
+		header('Location: ../list/');
 
 	}
 
