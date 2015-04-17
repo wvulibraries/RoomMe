@@ -1,6 +1,7 @@
 var modalCalendarURL    = roomReservationHome+"/calendar/calendar.php";
 var buildingCalendarURL = roomReservationHome+"/calendar/building/";
 var calendarData;
+var mobileCalendarData  = undefined;
 
 $(function() {
 	$(document)
@@ -101,12 +102,69 @@ function setPagerAttributes(startCols,endCols) {
 
 }
 
+function getMobileCalendarData() {
+
+	var url      = roomReservationHome+"/includes/ajax/getMobileCalendarJson.php";
+
+	$.ajax({
+		url: url,
+		dataType: "json",
+		success: function(responseData) {
+
+			mobileCalendarData = $.parseJSON(responseData);
+			buildCalendarTable(calendarData,0,numberOfColumns);
+			setHeaderDate();
+
+		},
+		error: function(jqXHR,error,exception) {
+			$("#calendarData").html("Error retrieving calendar infocmation.");
+		},
+		async:   false
+
+	});
+
+}
+
 function buildRoomList(data) {
 
-	$.each(data.rooms, function (index, room) {
+	if (typeof mobileCalendarData == 'undefined' ) {
 
-		$("#mobileList").append('<li><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></li>');
+		getMobileCalendarData();
 
+	}
+
+	// console.log(mobileCalendarData);
+
+	$("#mobileList").empty();
+
+	// what is the nearest 30 minutes?
+	// Current time in seconds, date.now provides milliseconds
+	var currentTime     = Date.now() / 1000 | 0;
+	var prevHalfHour    = currentTime - (currentTime % 1800);
+	var nextHalfHour    = prevHalfHour + 1800;
+	var closestHalfHour = ((currentTime - prevHalfHour) > (nextHalfHour - currentTime))?nextHalfHour:prevHalfHour;
+
+	// console.log(currentTime);
+	// console.log(prevHalfHour);
+	// console.log(nextHalfHour);
+	// console.log(closestHalfHour);
+
+
+	$.each(mobileCalendarData, function(index, building) {
+
+		$("#mobileList").append('<li><h3>'+index+'</h3></li>');
+
+		$.each(building.rooms, function (index, room) {
+		
+			// is room available at the nearest 30?
+			if (room.times[closestHalfHour].reserved) {
+				return;
+			}
+
+			// display the room
+			$("#mobileList").append('<li><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></li>');
+
+		});
 	});
 
 }

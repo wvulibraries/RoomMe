@@ -212,6 +212,24 @@ class calendar {
 
 	}
 
+	public function buildMobileCal($date) {
+
+		$buildingObject = new building;
+		$buildings      = $buildingObject->getall();
+
+		$mobileCalendarArray = array();
+
+		foreach ($buildings as $building) {
+
+			$rooms                                  = $buildingObject->getRooms($building['ID']);			
+			$mobileCalendarArray[$building['name']] = $this->buildCalendar($rooms,$date);
+
+		}
+
+		return $mobileCalendarArray;
+
+	}
+
 	private function buildCalendar($rooms,$date) {
 
 		$calendarArray = array();
@@ -357,6 +375,9 @@ class calendar {
 				break;
 			case "room":
 				$array = $this->buildRoomCal($objectID,$date);
+				break;
+			case "mobile":
+				$array = $this->buildMobileCal($date);
 				break;
 			default:
 				break;
