@@ -71,6 +71,10 @@ class calendar {
 
 	public function setDates() {
 
+		if (!isset($this->dates['display']['month']) || is_empty($this->dates['display']['month'])) {
+			return FALSE;
+		}
+
 		// The display date is the day of the calendar that we are displaying
 		// If the date is provided via a query string, we use that date. Otherwise
 		// we use the current date. 
@@ -238,6 +242,11 @@ class calendar {
 		if (!is_array($date)) {
 			errorHandle::newError(__FUNCTION__."() - date not given as array", errorHandle::DEBUG);
 			return(FALSE);
+		}
+
+		if (!isset($date['month']) || is_empty($date['month']) || $date['month'] == "undefined") {
+
+			return FALSE;
 		}
 
 		$roomsInformation    = array();
