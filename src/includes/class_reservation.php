@@ -574,7 +574,7 @@ class reservation {
 		}
 
 		if ($this->isNew()) {
-			$sql        = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID,email) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			$sql        = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID,email,openEvent,openEventDescription) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			$sqlOptions = array(
 				time(),
 				session::get("username"),
@@ -589,11 +589,13 @@ class reservation {
 				$groupname,
 				$comments,
 				(isnull($seriesID))?"":$seriesID,
-				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:""
+				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:"",
+				($_POST['MYSQL']['openEvent'])?$_POST['MYSQL']['openEvent']:"",
+				($_POST['MYSQL']['openEventDescription'])?$_POST['MYSQL']['openEventDescription']:""
 				);
 		}
 		else {
-			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=?, email=? WHERE ID=?");
+			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=?, email=?, openEvent=?, openEventDescription=? WHERE ID=?");
 			$sqlOptions = array(
 				$sUnix,
 				$eUnix,
@@ -605,6 +607,8 @@ class reservation {
 				$comments,
 				$via,
 				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:"",
+				($_POST['MYSQL']['openEvent'])?$_POST['MYSQL']['openEvent']:"",
+				($_POST['MYSQL']['openEventDescription'])?$_POST['MYSQL']['openEventDescription']:"",
 				$this->reservation['ID']
 				);
 		}
