@@ -52,6 +52,68 @@ tr {display: table-row; padding: 0;}
 /*********************************************************************
 	768px and below
 **********************************************************************/
+#reservationsReserveRoom {
+}
+#reservationsReserveRoom input[type=submit] {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: none repeat scroll 0% 0% #4BB94B;
+	height: auto;
+	padding: 20px;
+	text-align: center;
+	color: #FFF;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;
+	border: none;
+	margin: 0 0 20px 0;
+	display: block;
+}
+.roomReservationRows {
+	margin: 0 0 20px 0;
+	padding: 10px 0 20px 0;
+	border-bottom: 1px dotted #ddd;
+}
+.roomReservationRows select {
+	padding: 10px;
+}
+.reserveRoomInput {
+	white-space: nowrap;
+	padding: 0px 30px 6px 0;
+	display: inline-block;
+}
+.reserveRoomInput label {
+	font-style: italic;
+	padding-right: 4px;
+}
+#roomInformationTable {	
+	border: none;
+	background: #fff;
+	width: 100%;
+	max-width: 640px;
+}
+#roomInformationTable tbody {
+	text-align: left;
+	color: #585858;
+	line-height: 150%;
+}
+#roomInformationTable tr:nth-of-type(2n+1) {
+    background: #fff;
+}
+#roomInformationTable td, th {
+    padding: 0 10px 10px 0;
+    border: none;
+    text-align: left;
+}
+#roomInformationTable ul {	
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#reserveRoomTable {
+}
 #reservationsBuildingRoomsList ul {
 	list-style-type: none;
 	padding: 0;
