@@ -265,30 +265,29 @@ templates::display('header');
 
 	<br />
 
-	<p>Weekdays</p>
-
+	<p>Weekdays (<em>Only used when "Every Week" is selected.</em>)</p>
 	<table>
 		<tr>
 			<th>
-				<label for="sunday">Sunday:</label>
+				<label for="sunday">Sunday</label>
 			</th>
 			<th>
-				<label for="monday">Monday:</label>
+				<label for="monday">Monday</label>
 			</th>
 			<th>
-				<label for="tuesday">Tuesday:</label>
+				<label for="tuesday">Tuesday</label>
 			</th>
 			<th>
-				<label for="wednesday">Wednesday:</label>
+				<label for="wednesday">Wednesday</label>
 			</th>
 			<th>
-				<label for="thursday">Thursday:</label>
+				<label for="thursday">Thursday</label>
 			</th>
 			<th>
-				<label for="friday">Friday:</label>
+				<label for="friday">Friday</label>
 			</th>
 			<th>
-				<label for="saturday">Saturday:</label>
+				<label for="saturday">Saturday</label>
 			</th>
 		</tr>
 	<tr>
@@ -358,6 +357,7 @@ templates::display('header');
 </p>
 <ul>
 	<li>Every Week: This is every 7 days. so, if the date falls on a Friday, the next schedule day will also be a Friday.</li>
+	<li>Every Week: If you select week days, this overrides the above note. The first day selected should be the start date.</li>
 	<li>Every Month (Month Day): Will schedule this event every month, on the same Month Day. If you schedule a room on the 13th, it will be on the 13th every month</li>
 	<li>Every Month (Week Day): Will schedule this event every month, on the same Week Day. If you schedule a room on the second Friday of the month, it will be on the second Friday every month</li>
 </ul>
