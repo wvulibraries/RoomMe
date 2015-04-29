@@ -156,32 +156,44 @@ class series {
 
 				$dateInfo = getdate($this->startTime);
 
+				// Save original start and end times
+				$originalStartDay  = $this->startDay;
+				$originalStartTime = $this->startTime;
+				$originalEndTime   = $this->endTime;
+
 				foreach ($weekdays as $I=>$V) {
+
 					if ($V === TRUE) {
 						if ($dateInfo['wday'] > $I) {
 							$interval = 7 - $dateInfo['wday'] + $I;
 							$interval = "+".$interval." days";
 
-							$startDayTemp       = strtotime($interval,$this->startDay);
-							$startTimeTemp      = strtotime($interval,$this->startTime);
-							$endTimeTemp        = strtotime($interval,$this->endTime);
+							$this->startDay       = strtotime($interval,$this->startDay);
+							$this->startTime      = strtotime($interval,$this->startTime);
+							$this->endTime        = strtotime($interval,$this->endTime);
 
 						}
 						else if ($dateInfo['wday'] < $I) {
 							$interval = "+".($I - $dateInfo['wday'])." days";
 
-							$startDayTemp       = strtotime($interval,$this->startDay);
-							$startTimeTemp      = strtotime($interval,$this->startTime);
-							$endTimeTemp        = strtotime($interval,$this->endTime);
+							$this->startDay       = strtotime($interval,$this->startDay);
+							$this->startTime      = strtotime($interval,$this->startTime);
+							$this->endTime        = strtotime($interval,$this->endTime);
 						}
 						else { // equal
-							$startDayTemp       = $this->startDay;
-							$startTimeTemp      = $this->startTime;
-							$endTimeTemp        = $this->endTime;
+							// $startDayTemp       = $this->startDay;
+							// $startTimeTemp      = $this->startTime;
+							// $endTimeTemp        = $this->endTime;
 						}
 						$temp = $this->getSchedule("+1 week");
 						$schedule = array_merge($schedule,$temp);
 					}
+
+
+					$this->startDay  = $originalStartDay;
+					$thie->startTime = $originalStartTime;
+					$this->endTime   = $originalEndTime;
+					
 				}
 			}
 		}
