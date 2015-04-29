@@ -152,7 +152,7 @@ class series {
 			// weekdays are selected
 			else {
 
-				$dateInfo = getdate($startTime);
+				$dateInfo = getdate($this->startTime);
 
 				foreach ($weekdays as $I=>$V) {
 					if ($V === TRUE) {
@@ -160,22 +160,22 @@ class series {
 							$interval = 7 - $dateInfo['wday'] + $I;
 							$interval = "+".$interval." days";
 
-							$startDayTemp       = strtotime($interval,$startDay);
-							$startTimeTemp      = strtotime($interval,$startTime);
-							$endTimeTemp        = strtotime($interval,$endTime);
+							$startDayTemp       = strtotime($interval,$this->startDay);
+							$startTimeTemp      = strtotime($interval,$this->startTime);
+							$endTimeTemp        = strtotime($interval,$this->endTime);
 
 						}
 						else if ($dateInfo['wday'] < $I) {
 							$interval = "+".($I - $dateInfo['wday'])." days";
 
-							$startDayTemp       = strtotime($interval,$startDay);
-							$startTimeTemp      = strtotime($interval,$startTime);
-							$endTimeTemp        = strtotime($interval,$endTime);
+							$startDayTemp       = strtotime($interval,$this->startDay);
+							$startTimeTemp      = strtotime($interval,$this->startTime);
+							$endTimeTemp        = strtotime($interval,$this->endTime);
 						}
 						else { // equal
-							$startDayTemp       = $startDay;
-							$startTimeTemp      = $startTime;
-							$endTimeTemp        = $endTime;
+							$startDayTemp       = $this->startDay;
+							$startTimeTemp      = $this->startTime;
+							$endTimeTemp        = $this->endTime;
 						}
 						$temp = $this->getSchedule("+1 week");
 						$schedule = array_merge($schedule,$temp);
@@ -196,7 +196,7 @@ class series {
 
 			$interval = "";
 
-			$weekdayOccurence = $this->getWeekdayOccurrence($startTime);
+			$weekdayOccurence = $this->getWeekdayOccurrence($this->startTime);
 			// $weekdayOccurence = array("1","Sunday");
 			switch ($weekdayOccurence[0]) {
 				case 1:
