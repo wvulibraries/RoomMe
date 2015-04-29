@@ -89,6 +89,8 @@ class series {
 
 	public function create() {
 
+		$errorMsg = "";
+
 		$schedule = array();
 
 		$weekdays = array(FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE);
