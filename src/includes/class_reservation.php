@@ -590,8 +590,8 @@ class reservation {
 				$comments,
 				(isnull($seriesID))?"":$seriesID,
 				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:"",
-				($_POST['MYSQL']['openEvent'])?$_POST['MYSQL']['openEvent']:"",
-				($_POST['MYSQL']['openEventDescription'])?$_POST['MYSQL']['openEventDescription']:""
+				(isset($_POST['MYSQL']['openEvent']))?$_POST['MYSQL']['openEvent']:"",
+				(isset($_POST['MYSQL']['openEventDescription']))?$_POST['MYSQL']['openEventDescription']:""
 				);
 		}
 		else {
