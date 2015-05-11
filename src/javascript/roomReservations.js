@@ -11,7 +11,6 @@ $(function() {
 		// .on('click',  '#calUpdateFormSubmit', handler_changeCalDateForm)
 		.on('click',  '#deleteReservation',   handler_deleteReservation)
 		.on('click',  '.cancelReservation',   handler_deleteReservation)
-		.on('click',  '#closeModalCalendar',  handler_closeModal)
 		.on('click',  '#calUpdateFormSubmit', handler_getCalendarJSON)
 		.on('change', '#listBuildingSelect',  handler_listBuildingSelect)
 		.on('click',  '.pagerLink',           handler_pager)
@@ -344,10 +343,6 @@ function handler_listBuildingSelect() {
 
 	return false;
 
-}
-
-function handler_closeModal() {
-	$.modal.close();
 }
 
 function handler_calModal() {
