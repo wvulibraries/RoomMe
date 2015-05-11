@@ -345,31 +345,6 @@ function handler_listBuildingSelect() {
 
 }
 
-function handler_calModal() {
-	var type = $(this).attr('data-type');
-	var url  = "";
-
-	url = roomReservationHome+"/calendar/calendar.php?"+type+"="+$(this).attr('data-id');
-
-	$.ajax({
-		url: url,
-		dataType: "html",
-		success: function(responseData) {
-			console.log($('#calendarModal'));
-			$('#calendarModal').html(responseData);
-			$('#calendarModal').modal({overlayClose:true});
-			// $('#reservationsRoomTable').tableScroll({height:360});
-		},
-		error: function(jqXHR,error,exception) {
-			$('#calendarModal').html("An Error has occurred: "+error);
-			$('#calendarModal').modal({overlayClose:true});
-		}
-	});
-
-
-	return false;
-}
-
 function handler_mapModal() {
 	var url = $(this).attr("href");
 
