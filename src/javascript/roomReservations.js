@@ -1,12 +1,8 @@
-var modalCalendarURL    = roomReservationHome+"/calendar/calendar.php";
-var buildingCalendarURL = roomReservationHome+"/calendar/building/";
 var calendarData;
 var mobileCalendarData  = undefined;
 
 $(function() {
 	$(document)
-		// .on('click',  '.calUpdateButton',     handler_changeCalDate)
-		// .on('click',  '#calUpdateFormSubmit', handler_changeCalDateForm)
 		.on('click',  '#deleteReservation',   handler_deleteReservation)
 		.on('click',  '.cancelReservation',   handler_deleteReservation)
 		.on('click',  '#calUpdateFormSubmit', handler_getCalendarJSON)
@@ -341,65 +337,6 @@ function handler_listBuildingSelect() {
 
 	return false;
 
-}
-
-
-
-// function handler_changeCalDate() {
-// 	var month = $(this).attr('data-month');
-// 	var day   = $(this).attr('data-day');
-// 	var year  = $(this).attr('data-year');
-// 	var type  = $(this).attr('data-type');
-
-// 	url = (($(this).attr('data-modal') == "true")?modalCalendarURL:buildingCalendarURL)+"?"+type+"="+$(this).attr('data-id')+"&month="+month+"&day="+day+"&year="+year;
-
-// 	if ($(this).attr('data-modal') == "false") {
-// 		window.location.href = url;
-// 		return;
-// 	}
-
-// 	$.ajax({
-// 		url: url,
-// 		dataType: "html",
-// 		success: function(responseData) {
-// 			$('#calendarModal').html(responseData);
-// 				// $('#calendarModal').modal({overlayClose:true});
-// 				// $('#reservationsRoomTable').tableScroll({height:360});
-// 			},
-// 			error: function(jqXHR,error,exception) {
-// 				$('#calendarModal').html("An Error has occurred: "+error);
-// 				// $('#calendarModal').modal({overlayClose:true});
-// 			}
-// 		});
-// }
-
-function handler_changeCalDateForm() {
-	var month = $('#start_month_modal option:selected').val();
-	var day   = $('#start_day_modal option:selected').val();
-	var year  = $('#start_year_modal option:selected').val();
-	var type  = $(this).attr('data-type');
-	var id    = $(this).attr('data-id');
-
-	url = (($(this).attr('data-modal') == "true")?modalCalendarURL:buildingCalendarURL)+"?"+type+"="+$(this).attr('data-id')+"&month="+month+"&day="+day+"&year="+year;
-
-	if ($(this).attr('data-modal') == "false") {
-		window.location.href = url;
-		return;
-	}
-
-	$.ajax({
-		url: url,
-		dataType: "html",
-		success: function(responseData) {
-			$('#calendarModal').html(responseData);
-				// $('#calendarModal').modal({overlayClose:true});
-				// $('#reservationsRoomTable').tableScroll({height:360});
-			},
-			error: function(jqXHR,error,exception) {
-				$('#calendarModal').html("An Error has occurred: "+error);
-				// $('#calendarModal').modal({overlayClose:true});
-			}
-		});
 }
 
 function handler_deleteReservation() {
