@@ -1,5 +1,3 @@
-<link rel="stylesheet" type="text/css" href="{local var="roomResBaseDir"}/css/reservations.less" />
-
 <script type="text/javascript">
 var roomReservationHome = '{local var="roomReservationHome"}';
 </script>
