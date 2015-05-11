@@ -68,9 +68,6 @@ $(window).resize(function() {
      resizeTimer = setTimeout(handle_resizing, 100);
 }); 
 
-//  -----------
-
-
 
 function initialCalendarLoad() {
 	handler_getCalendarJSON(false);
