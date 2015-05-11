@@ -5,8 +5,6 @@ var mobileCalendarData  = undefined;
 
 $(function() {
 	$(document)
-		.on('click',  '.calendarModal_link',  handler_calModal)
-		.on('click',  '.mapModal_link',       handler_mapModal)
 		// .on('click',  '.calUpdateButton',     handler_changeCalDate)
 		// .on('click',  '#calUpdateFormSubmit', handler_changeCalDateForm)
 		.on('click',  '#deleteReservation',   handler_deleteReservation)
@@ -345,39 +343,7 @@ function handler_listBuildingSelect() {
 
 }
 
-function handler_mapModal() {
-	var url = $(this).attr("href");
 
-	var src = url;
-	$.modal('<iframe src="' + src + '" height="800" width="600" style="border:0; overflow: hidden;">', {
-		closeHTML:"",
-		containerCss:{
-			backgroundColor:"#fff",
-			borderColor:"#fff",
-			height:450,
-			padding:0,
-			width:830
-		},
-		overlayClose:true,
-		minHeight:700,
-		minWidth: 500,
-	});
-	
-
-	// $.ajax({
-	// 	url: url,
-	// 	success: function(responseData) {
-	// 		$('#calendarModal').html(responseData);
-	// 		$('#calendarModal').modal({overlayClose:true});
-	// 	},
-	// 	error: function(jqXHR,error,exception) {
-	// 		$('#calendarModal').html("An Error has occurred: "+error);
-	// 		$('#calendarModal').modal({overlayClose:true});
-	// 	}
-	// });
-
-	return(false);
-}
 
 // function handler_changeCalDate() {
 // 	var month = $(this).attr('data-month');
