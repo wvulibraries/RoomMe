@@ -644,24 +644,14 @@ class reservation {
 
 
 			$buildingName = getBuildingName($roomName['building']);
-
-			$sam = "am";
-			if ($shour > 12) {
-				$shour = $shour - 12;
-				$sam = "pm";
-			}
-
-			$eam = "am";
-			if ($ehour > 12) {
-				$ehour = $ehour - 12;
-				$eam = "pm";
-			}
-
-			$subject  = "Room Reservation Created: ".$month."/".$day."/".$year;
+			$subject      = "Room Reservation Created: ".$month."/".$day."/".$year;
 
 			$emailMsg  = "Your room reservation has been successfully created: \n";
 			$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
-			$emailMsg .= "Time: ".$shour.":".$smin." ".$sam." - ".$ehour.":".$emin." ".$eam."\n";
+			$emailMsg .= sprintf("Time: %s - %s\n", 
+				date("g:i a",$sUnix),
+				date("g:i a",$eUnix)
+				);
 			$emailMsg .= "Building: ".$buildingName."\n";
 			$emailMsg .= "Room: ".$roomName['displayName']."\n";
 
@@ -680,18 +670,6 @@ class reservation {
 
 			$buildingName = getBuildingName($roomName['building']);
 
-			$sam = "am";
-			if ($shour > 12) {
-				$shour = $shour - 12;
-				$sam = "pm";
-			}
-
-			$eam = "am";
-			if ($ehour > 12) {
-				$ehour = $ehour - 12;
-				$eam = "pm";
-			}
-
 			$subject  = "Room Reservation Created as Open Event: ".$month."/".$day."/".$year;
 
 			$emailMsg  = "The following reservation has been successfully created, and marked as an Open, Public, Event: \n";
@@ -699,7 +677,10 @@ class reservation {
 			$emailMsg .= "Created By:".$_POST['HTML']['notificationEmail']."\n\n";
 
 			$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
-			$emailMsg .= "Time: ".$shour.":".$smin." ".$sam." - ".$ehour.":".$emin." ".$eam."\n";
+			$emailMsg .= sprintf("Time: %s - %s\n", 
+				date("g:i a",$sUnix),
+				date("g:i a",$eUnix)
+				);
 			$emailMsg .= "Building: ".$buildingName."\n";
 			$emailMsg .= "Room: ".$roomName['displayName']."\n\n";
 			$emailMsg .= "Open Event Description: \n".$_POST['HTML']['openEventDescription']."\n\n";
