@@ -28,6 +28,7 @@ function dropdownDurationSelect($selectHour,$options) {
 
 }
 
+// @TODO move into building class
 function getBuildingName($ID) {
 
 	$buildingObject = new building;
@@ -36,6 +37,7 @@ function getBuildingName($ID) {
 	return $building['name'];
 }
 
+// @TODO move into room class
 function getRoomName($ID) {
 	$roomObject = new building;
 	$room       = $roomObject->get($ID);
@@ -43,6 +45,8 @@ function getRoomName($ID) {
 	return $room['name'];
 }
 
+
+// @TODO move into room class
 function getRoomInfo($ID) {
 	$engine    = EngineAPI::singleton();
 	$localvars = localvars::getInstance();
@@ -84,6 +88,7 @@ function getRoomInfo($ID) {
 	return($row);
 }
 
+// @todo move into building class
 function getRoomsForBuilding($ID) {
 
 	$engine    = EngineAPI::singleton();
@@ -118,6 +123,7 @@ function getRoomsForBuilding($ID) {
 
 }
 
+// @todo move into room class
 function getRoomPolicy($ID) {
 
 	$engine    = EngineAPI::singleton();
@@ -136,6 +142,7 @@ function getRoomPolicy($ID) {
 
 }
 
+// @todo move into room (or reservation?) class
 function getRoomBookingsForDate($ID,$month=NULL,$day=NULL,$year=NULL) {
 
 	$engine    = EngineAPI::singleton();
@@ -192,6 +199,7 @@ function getConfig($value) {
 
 }
 
+// @TOD move into messages class
 function getResultMessage($value) {
 
 	$engine    = EngineAPI::singleton();
