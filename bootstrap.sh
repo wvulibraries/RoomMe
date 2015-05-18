@@ -34,12 +34,15 @@ ln -s $GITDIR/engineAPITemplates/* $GITDIR/engineAPI/engine/template/
 ln -s $GITDIR/engineAPI-Modules/src/modules/* $GITDIR/engineAPI/engine/engineAPI/latest/modules/
 ln -s $GITDIR/engineAPI/engine/ $SERVERURL/phpincludes/
 
+rm /tmp/git/engineAPI/engine/template/rooms2015
+ln -s /vagrant/serverConfiguration/genericTemplate/ $GITDIR/engineAPI/engine/template/rooms2015
+
 # ln -s /tmp/git/engineAPITemplates/library2012.1col/ /tmp/git/engineAPI/engine/template/library2012.1col
 # ln -s /tmp/git/engineAPITemplates/library2012.2col/ /tmp/git/engineAPI/engine/template/library2012.2col
 # ln -s /tmp/git/engineAPITemplates/library2012.2col.right/ /tmp/git/engineAPI/engine/template/library2012.2col.right
 # ln -s /tmp/git/engineAPITemplates/library2012.3col/ /tmp/git/engineAPI/engine/template/library2012.3col
 # ln -s /tmp/git/engineAPITemplates/default/ /tmp/git/engineAPI/engine/template/default
-# ln -s /tmp/git/engineAPITemplates/library2012.1col/templateIncludes/ /home/www.libraries.wvu.edu/public_html/templateIncludes
+ln -s /tmp/git/engineAPITemplates/library2012.1col/templateIncludes/ /home/www.libraries.wvu.edu/public_html/templateIncludes
 
 rm -f $GITDIR/engineAPI/engine/engineAPI/latest/config/defaultPrivate.php
 ln -s /vagrant/serverConfiguration/defaultPrivate.php $GITDIR/engineAPI/engine/engineAPI/latest/config/defaultPrivate.php
