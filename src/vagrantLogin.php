@@ -12,5 +12,5 @@ session::import(unserialize($session));
 
 <ul>
 	<li><a href="/services/rooms/">Public Pages</a></li>
-	<li><a href="/services/rooms/admin">Admin Pages</a></li>
+	<li><a href="/services/rooms/admin/">Admin Pages</a></li>
 </ul>
