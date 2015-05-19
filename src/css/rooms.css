@@ -1,8 +1,33 @@
 @charset "utf-8";
 
+html, body, form, nav, ul {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    font-family: sans-serif;
+}
+.wrap {
+    width: 90%;
+    margin: 0px auto;
+    display: block;
+    max-width: 1000px;
+    height: auto;
+    overflow: hidden;
+}
+.hpcard {
+    padding: 50px 0px 100px;
+}
+hr {
+    height: 1px;
+    border: medium none;
+    margin: 20px 0px;
+    padding: 0px;
+    background: none repeat scroll 0% 0% #E0E0E0;
+}
+
 /*********************************************************************
     - 760px
-**********************************************************************/
+**********************************************************************/\
 @media only screen and (max-width: 760px),
 (min-device-width: 768px) and (max-device-width: 1024px)  {
     /* Force table to not be like tables anymore */
