@@ -122,3 +122,5 @@ do
   echo "Processing $f ..."
   mysql -u root roomReservations < $f
 done
+
+#mysql -u root roomReservations < roomReservations.sql
