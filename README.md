@@ -31,15 +31,15 @@ By default no data is loaded into the database. You will need to create building
 
 ### Configuration:
 
-1. [System](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/settings/README.md)
-1. [Messages](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/messages/README.md)
-1. [Via](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/via/README.md)
-1. [Statistics](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/statistics/README.md)
-1. [Buildings](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/roommanagement/buildings/README.md)
-1. [Policies](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/roommanagement/policies/README.md)
-1. [Templates](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/roommanagement/templates/README.md)
-1. [Rooms](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/roommanagement/rooms/README.md)
-1. [Snippets](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/snippets/README.md)
+1. [System](https://github.com/wvulibraries/RoomMe/blob/master/src/admin/config/settings/README.md)
+1. [Messages](https://github.com/wvulibraries/RoomMe/blob/master/src/admin/config/messages/README.md)
+1. [Via](https://github.com/wvulibraries/RoomMe/blob/master/src/admin/config/via/README.md)
+1. [Statistics](https://github.com/wvulibraries/RoomMe/blob/master/src/admin/config/statistics/README.md)
+1. [Buildings](https://github.com/wvulibraries/RoomMe/blob/master/src/admin/roommanagement/buildings/README.md)
+1. [Policies](https://github.com/wvulibraries/RoomMe/blob/master/src/admin/roommanagement/policies/README.md)
+1. [Templates](https://github.com/wvulibraries/RoomMe/blob/master/src/admin/roommanagement/templates/README.md)
+1. [Rooms](https://github.com/wvulibraries/RoomMe/blob/master/src/admin/roommanagement/rooms/README.md)
+1. [Snippets](https://github.com/wvulibraries/RoomMe/blob/master/src/admin/config/snippets/README.md)
 
 ### Hours Information
 
