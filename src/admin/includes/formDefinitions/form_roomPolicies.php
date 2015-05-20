@@ -128,6 +128,30 @@ $form->addField(
 
 $form->addField(
     array(
+        'name'            => "roomsClosed",
+        'label'           => "Rooms Closed",
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
+        'required'        => TRUE,
+        'type'            => 'boolean',
+        'duplicates'      => TRUE,
+        'options'         => array("No","Yes")
+    )
+);
+
+$form->addField(
+    array(
+        'name'            => "roomsClosedSnippet",
+        'label'           => "Rooms Closed Snippet",
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
+        'required'        => FALSE,
+        'type'            => 'text',
+        'validate'        => 'integer',
+        'duplicates'      => TRUE
+    )
+);
+
+$form->addField(
+    array(
         'name'            => "sameDayReservations",
         'label'           => "Create Same Day Reservation",
         'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),

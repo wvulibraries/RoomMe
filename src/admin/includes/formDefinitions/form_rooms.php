@@ -84,4 +84,16 @@ $form->addField(
     )
 );
 
+$form->addField(
+    array(
+        'name'            => "roomClosed",
+        'label'           => "Rooms Closed",
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
+        'required'        => TRUE,
+        'type'            => 'boolean',
+        'duplicates'      => TRUE,
+        'options'         => array("No","Yes")
+    )
+);
+
 ?>
