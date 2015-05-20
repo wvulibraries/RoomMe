@@ -68,6 +68,18 @@ class room {
 
 	}
 
+	public function getPolicyInfo($ID) {
+		$sql       = sprintf("SELECT * FROM policies LEFT JOIN roomTemplates ON roomTemplates.policy=policies.ID LEFT JOIN rooms ON rooms.roomTemplate=roomTemplates.ID WHERE rooms.ID=? LIMIT 1");
+		$sqlResult = $this->db->query($sql,array($ID));
+
+		if ($sqlResult->error()) {
+			errorHandle::newError(__FUNCTION__."() - Error getting room policy.", errorHandle::DEBUG);
+			return(FALSE);
+		}
+
+		return $sqlResult->fetch();
+	}
+
 	public function selectRoomListOptions($anyOption=FALSE,$buildingID=NULL,$roomID=NULL) {
 
 		$building = new building;

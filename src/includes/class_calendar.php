@@ -71,6 +71,10 @@ class calendar {
 
 	public function setDates() {
 
+		if (!isset($this->dates['display']['month']) || is_empty($this->dates['display']['month'])) {
+			return FALSE;
+		}
+
 		// The display date is the day of the calendar that we are displaying
 		// If the date is provided via a query string, we use that date. Otherwise
 		// we use the current date. 
@@ -178,7 +182,7 @@ class calendar {
 
 		$this->localvars->set("id",$this->calObject['ID']);
 		$this->localvars->set("name",$this->calObject['name']);
-		$this->localvars->set("calType",$this->calendarType);
+		$this->localvars->set("calType",$this->calendarType());
 
 		$this->localvars->set("month",$this->dates['display']['month']);
 		$this->localvars->set("day",$this->dates['display']['day']);
@@ -199,6 +203,196 @@ class calendar {
 		$this->localvars->set("nextYear",$this->dates['next']['year']);
 
 		return TRUE;
+
+	}
+
+	public function buildBuildingCal($objectID,$date) {
+
+		# Get building Rooms
+		$buildingObject = new building;
+		$rooms = $buildingObject->getRooms($objectID);
+
+		return $this->buildCalendar($rooms,$date);
+
+	}
+
+	public function buildMobileCal($date) {
+
+		$buildingObject = new building;
+		$buildings      = $buildingObject->getall();
+
+		$mobileCalendarArray = array();
+
+		foreach ($buildings as $building) {
+
+			$rooms                                  = $buildingObject->getRooms($building['ID']);			
+			$mobileCalendarArray[$building['name']] = $this->buildCalendar($rooms,$date);
+
+		}
+
+		return $mobileCalendarArray;
+
+	}
+
+	private function buildCalendar($rooms,$date) {
+
+		$calendarArray = array();
+
+		# Make sure that date is an array
+		if (!is_array($date)) {
+			errorHandle::newError(__FUNCTION__."() - date not given as array", errorHandle::DEBUG);
+			return(FALSE);
+		}
+
+		if (!isset($date['month']) || is_empty($date['month']) || $date['month'] == "undefined") {
+
+			return FALSE;
+		}
+
+		$roomsInformation    = array();
+
+		$calendarDisplayName = getConfig('calendarDisplayName');
+		$calendarHourPrior   = getConfig('calendarHourPrior');
+
+		$usernameCheck = array();
+
+		$displayHour   = getConfig("24Hour");
+
+		$displayNameAs = getConfig("displayNameAs");
+		$durationRooms = getConfig("displayDurationOnRoomsCal");
+		$durationBuild = getConfig("displayDurationOnBuildingCal");
+
+		$calendarArray['times'] = array();
+
+		for ($I = 0;$I<=23;$I++) {
+
+			// Only display 1 hour previous to the current hour in the table
+			// for the current date. Display the whole day for other dates.
+			if (($date['month'] == date("m") && $date['day'] == date("d") && $date['year'] == date("Y")) && ($calendarHourPrior >= 0 && $I < date("G") - $calendarHourPrior)) {
+				continue;
+			}
+
+			for ($K = 0;$K<60;$K=$K+15) {
+
+				switch($K) {
+					case 0:
+						$hourMarker = "hour";
+						break;
+					case 30:
+						$hourMarker = "half";
+						break;
+					case 15:
+						$hourMarker = "quarterPast";
+						break;
+					case 45:
+						$hourMarker = "quarterTill";
+						break;
+					default:
+						$hourMarker = "minor";
+						break;
+				}
+
+				$calendarArray['times'][mktime($I,$K,"0",$date['month'],$date['day'],$date['year'])] = array(
+					'time'    => mktime($I,$K,"0",$date['month'],$date['day'],$date['year']),
+					'type'    => $hourMarker,
+					'display' => date(getConfig('calendarHourDisplay'), mktime($I,0,0,1,1,2000))
+					);
+
+			}
+		}
+
+		foreach ($rooms as $roomIndex=>$room) {
+
+			$roomInfo         = getRoomInfo($room['ID']);
+			$bookings         = getRoomBookingsForDate($room['ID'],$date['month'],$date['day'],$date['year']);
+			
+			$roomArray                = array();
+			$roomArray['displayName'] = $roomInfo['displayName'];
+			$roomArray['roomID']      = $roomInfo['ID'];
+
+			foreach ($calendarArray['times'] as $time=>$timeInfo) {
+
+				$roomArray['times'][$time]['username']    = "";
+				$roomArray['times'][$time]['displayTime'] = "";
+				$roomArray['times'][$time]['duration']    = "";
+				$roomArray['times'][$time]['reserved']    = FALSE;
+				$roomArray['times'][$time]['booking']     = "";
+				$roomArray['times'][$time]['hourType']    = $timeInfo['type'];
+
+				foreach ($bookings as $bookingsIndex=>$booking) {
+
+					if ($time >= $booking['startTime'] && $time < $booking['endTime']) {
+
+						$roomArray['times'][$time]['booking']  = $booking['ID'];
+						$roomArray['times'][$time]['reserved'] = TRUE;
+
+						if ($durationRooms == "1" || $durationBuild == "1") {
+							$roomArray['times'][$time]['duration'] = ($booking['endTime'] - $booking['startTime'])/60/60;
+							$roomArray['times'][$time]['duration'] = "(".$duration." hour".(($duration!=1)?"s":"").")";
+						}
+
+						switch($displayNameAs) {
+							case "username":
+								$roomArray['times'][$time]['username'] = (!is_empty($booking['groupname']))?$booking['groupname']:$booking['username'];
+								break;
+							case "initials":
+								$roomArray['times'][$time]['username'] = $booking['initials'];
+								break;
+							default:
+								break;
+						}
+
+						if ($displayHour == "1") {
+							$timeFormat = "H:i";
+						}
+						else {
+							$timeFormat = "g:iA";
+						}
+
+						$roomArray['times'][$time]['displayTime'] = sprintf('%s - %s',
+							date($timeFormat,$booking['startTime']),
+							date($timeFormat,$booking['endTime'])
+							);
+					}
+				}
+			}
+
+			$calendarArray['rooms'][] = $roomArray;
+
+		}
+
+		return $calendarArray;
+
+	}
+
+	public function buildRoomCal($objectID,$date) {
+
+		$roomObj = new room;
+		if (($room = $roomObj->get($objectID)) === FALSE) {
+			errorHandle::newError(__METHOD__."() - error getting room", errorHandle::DEBUG);
+			return FALSE;
+		}
+
+		return $this->buildCalendar(array($room),$date);
+	}
+
+	public function buildJSON($type,$objectID,$date) {
+
+		switch ($type) {
+			case "building":
+				$array = $this->buildBuildingCal($objectID,$date);
+				break;
+			case "room":
+				$array = $this->buildRoomCal($objectID,$date);
+				break;
+			case "mobile":
+				$array = $this->buildMobileCal($date);
+				break;
+			default:
+				break;
+		}
+
+		return json_encode($array);
 
 	}
 

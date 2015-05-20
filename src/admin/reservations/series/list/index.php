@@ -78,7 +78,7 @@ if ($error === FALSE) {
 		$temp['building']  = $row['buildingName'];
 		$temp['room']      = $roomDisplayName; //$row['roomName'];
 		$temp['startTime'] = date($timeFormat,$row['startTime']);
-		$temp['endTime']   = date($timeFormat,$row['endTime']);
+		$temp['endTime']   = date($timeFormat,$row['seriesEndDate']);
 		$temp['frequency'] = $frequency;
 		$temp['edit']      = sprintf('<a href="../create/?id=%s">Edit</a>',
 			htmlSanitize($row['ID'])

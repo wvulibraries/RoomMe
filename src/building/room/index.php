@@ -5,6 +5,7 @@ recurseInsert("includes/createReservations.php","php");
 
 $snippet = new Snippet("pageContent","content");
 
+$roomClosed = FALSE;
 $error      = FALSE;
 $roomID = "";
 if (!isset($_GET['MYSQL']['room'])) {
@@ -17,11 +18,17 @@ else {
 
 $room         = getRoomInfo($roomID);
 
-if ($room !== FALSE && isset($room['building'])) {
+if ($room !== FALSE && isset($room['building']) && $room['publicViewing'] == '1') {
 
 	$roomObj      = new room;
 	$roomPolicy   = getRoomPolicy($roomID);
 	$buildingName = getBuildingName($room['building']);
+
+	// is the room closed?
+	if ($roomPolicy['roomsClosed'] == '1' || $room['roomClosed'] == "1") {
+		$roomClosed        = TRUE;
+		$localvars->set("roomClosedMessage",(!isnull($roomPolicy['roomsClosedSnippet']) && $roomPolicy['roomsClosedSnippet'] > 0)?$roomPolicy['roomsClosedSnippet']:getResultMessage("roomClosed"));
+	}
 
 	$userinfo = new userInfo();
 	if ($userinfo->get(session::get("username"))) {
@@ -95,31 +102,48 @@ if (isset($_POST['MYSQL']['createSubmit'])) {
 
 $localvars->set("policyLabel",htmlSanitize(getResultMessage("policyLabel")));
 
+$date = new date;
+
+// @TODO display on month dropdown should be configurable via interface
+$localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month")));
+$localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day")));
+$localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year")));
+$localvars->set("shourSelect", $date->dropdownHourSelect(($displayHour == 12)?TRUE:FALSE,$currentHour,array("name"=>"start_hour", "id"=>"start_hour")));
+$localvars->set("sminSelect",  $date->dropdownMinuteSelect("15",0,array("name"=>"start_minute", "id"=>"start_minute"))); // @TODO need to pull increment from room config
+$localvars->set("ehourSelect", dropdownDurationSelect(1,array("name"=>"end_hour", "id"=>"end_hour")));
+$localvars->set("eminSelect",  $date->dropdownMinuteSelect("15",0,array("name"=>"end_minute", "id"=>"end_minute"))); // @TODO need to pull increment from room config
+
+$localvars->set("monthSelect_modal", $date->dropdownMonthSelect(1,$currentMonth,array("id"=>"start_month_modal")));
+$localvars->set("daySelect_modal",   $date->dropdownDaySelect($currentDay,array("id"=>"start_day_modal")));
+$localvars->set("yearSelect_modal",  $date->dropdownYearSelect(0,10,$currentYear,array("id"=>"start_year_modal")));
+
 templates::display('header');
 ?>
 
 	{local var="prettyPrint"}
 
-<header>
-<h1>{local var="displayName"} in {local var="buildingName"}</h1>
-</header>
-
-<?php if ($roomPolicy['publicViewing'] == 1) { ?>
-
-<a href="#" class="calendarModal_link" data-type="room" data-id="<?php print $roomID ?>">View Reservation Calendar &ndash; This Room</a><br />
-
+<h3 class="roomH3" style="display: inline-block;">
+<?php if ($room['publicViewing'] == '1') { ?> 
+	{local var="displayName"} in {local var="buildingName"}
+<?php } else { ?> 
+	Room Not Found
 <?php } ?>
 
-<a href="{local var="roomReservationHome"}/building/?building={local var="buildingID"}">Return to Building room listing</a>
+</h3>
 
+<!-- Extra Links -->
+<a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
+<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
+	<i class="fa fa-exclamation-circle"></i>
+</a>
+<hr class="roomHR roomTabletDesktop" />
+
+<!-- Room Information -->
+<?php if ($room['publicViewing'] == '1') { ?> 
 <section id="reservationsRoomInformation">
-
-	<header>
-		<h1>Room Information</h1>
-	</header>
-
-
-	<table>
+	<h4>Room Information</h4>
+	<hr class="roomHR" />
+	<table id="roomInformationTable">
 		<tr>
 			<td><strong>Room Name:</strong></td>
 			<td>{local var="roomName"}</td>
@@ -163,27 +187,26 @@ templates::display('header');
 			</td>
 		</tr>
 		<?php } ?>
-
 	</table>
-
-<div id="roomPictureContainer">
-	{local var="roomPicture"}
-</div>
-
-
+	<div id="roomPictureContainer">
+		<h4>Room Picture</h4>
+		{local var="roomPicture"}
+	</div>
 </section>
 
-
-
+<!-- Reserve Room -->
 <section id="reservationsReserveRoom">
+	<h4>Reserve Room</h4>
+	<hr class="roomHR" />
+	<?php if ($roomClosed) { ?>
 
-	<header>
-		<h1>Reserve Room</h1>
-	</header>
+	<?php if (is_numeric($localvars->get("roomClosedMessage"))) { ?>
+		{snippet id="{local var="roomClosedMessage"}" field="content"}
+	<?php } else { ?>
+		<p>{local var="roomClosedMessage"}</p>
+	<?php } ?>
 
-<!-- 	{local var="prettyPrint"} -->
-
-<?php if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
+	<?php } else if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
 	<?php if(is_empty(session::get("username"))) { ?>
 
@@ -192,151 +215,135 @@ templates::display('header');
 
 	<?php } else { ?>
 
-<form action="{phpself query="true"}" method="post">
-	{csrf}
+	<form action="{phpself query="true"}" method="post">
+		{csrf}
 
-	<input type="hidden" name="library" value="{local var="buildingID"}" />
-	<input type="hidden" name="room" value="{local var="roomID"}" />
-	<input type="hidden" id="username" name="username" value="{local var="username"}"/>
+		<input type="hidden" name="library" value="{local var="buildingID"}" />
+		<input type="hidden" name="room" value="{local var="roomID"}" />
+		<input type="hidden" id="username" name="username" value="{local var="username"}"/>
 
-	<table>
-						<tr>
-					<th colspan="3" style="text-align: left;"><strong>Reservation Date:</strong></th>
-				</tr>
-		<tr>
-			<td id="montDayYearSelects">
-				<label for="start_month">Month:</label><br />
-				<select name="start_month" id="start_month" >
-					<?php
-						for($I=1;$I<=12;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentMonth)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
-			</td>
-				<td>
-				<label for="start_day">Day:</label><br />
-				<select name="start_day" id="start_day" >
-					<?php
-						for($I=1;$I<=31;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentDay)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
-			</td>
-			<td>
-				<label for="start_year">Year:</label><br />
-				<select name="start_year" id="start_year" >
-					<?php
-						for($I=$currentYear;$I<=$currentYear+10;$I++) {
-							printf('<option value="%s">%s</option>',
-								$I,
-								$I);
-						}
-					?>
-				</select>
-			</td>
+		<strong>Select The Date:</strong>
+		<div class="roomReservationRows">
+			<span class="reserveRoomInput"><label for="start_month">Month:</label> 
+			{local var="monthSelect"}</span>
+			<span class="reserveRoomInput"><label for="start_day">Day:</label> 
+			{local var="daySelect"}</span>
+			<span class="reserveRoomInput"><label for="start_year">Year:</label> 
+			{local var="yearSelect"}</span>
+		</div>
+		<strong>Select The Start Time:</strong>
+		<div class="roomReservationRows">	
+			<span class="reserveRoomInput"><label for="start_hour">Hour:</label>
+			{local var="shourSelect"}</span>
+			<span class="reserveRoomInput"><label for="start_minute">Minute:</label>
+			{local var="sminSelect"}</span>
+		</div>	
+		<strong>Select The Duration:</strong>
+		<div class="roomReservationRows">
+			<span class="reserveRoomInput"><label for="end_hour">Hour:</label>
+			{local var="ehourSelect"}</span>
+			<span class="reserveRoomInput"><label for="end_minute">Minute:</label>
+			{local var="eminSelect"}</span>
+		</div>
+		<strong>Provide Additional Information:</strong>
+		<div class="roomReservationRows">
+			<?php if (getConfig('showOpenEvent')) { ?>
+			<span class="reserveRoomInput"><label for="openEvent">Is this an open, public, event?</label>
+			<select name="openEvent" id="openEvent">
+				<option value="0">No</option>
+				<option value="1">Yes</option>
+			</select></span>
 			
-		</tr>
-				<tr>
-					<td colspan="2">
-						<strong>Start Time</strong>
-					</td>
-				</tr>
-		<tr id="startEndTimeSelects">	
-			<td>
-				<label for="start_hour">Hour:</label><br />
-				<select name="start_hour" id="start_hour" >
-					<?php
-						for($I=0;$I<=23;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentHour)?"selected":"",
-								($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am"))));
-						}
-					?>
-				</select>
-			</td>
-			<td>
-				<label for="start_minute">Minute:</label><br />
-				<select name="start_minute" id="start_minute" >
-					<?php
-						for($I=0;$I<60;$I += 15) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentMin)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
-			</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<strong>End Time</strong>
-					</td>
-				</tr>
-				<tr>
-			<td>
-				<label for="end_hour">Hour:</label><br />
-				<select name="end_hour" id="end_hour" >
-					<?php
-						for($I=0;$I<=23;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $nextHour)?"selected":"",
-								($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am"))));
-						}
-					?>
-				</select>
-			</td>
-			<td>
-				<label for="end_minute">Minute:</label><br />
-				<select name="end_minute" id="end_minute" >
-					<?php
-						for($I=0;$I<60;$I += 15) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $nextMin)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
-			</td>
-		</tr>
-	</table>
-	<br />
-	<label for="openEvent">Is this an open, public, event?</label><br />
-	<select name="openEvent" id="openEvent"><option value="0">No</option><option value="1">Yes</option></select><br />
-	<div id="openEventDescriptionContainer"  style="display:none;">
-		<label for="openEventDescription">Describe your event:</label><br />
-		<textarea id="openEventDescription" name="openEventDescription"></textarea>
-	</div>
-	<br /><br />
-	<label name="notificationEmail" class="requiredField" >Email Address:</label>
-	<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" value="{local var="useremail"}" required />
-	<br /><br />
-	
-	<input type="submit" name="createSubmit" class="button" value="Reserve this Room" />
-</form>
-<?php } ?>
-<?php } else { // public scheduling?>
+			<br />
+			<label for="openEventDescription" class="openEventDescription" style="display:none;">Describe your event:</label>
+			<textarea id="openEventDescription" name="openEventDescription"  class="openEventDescription" rows="5" style="display:none;"></textarea>
 
+			<br><br>
+			<?php } ?>
+			
+			<label name="notificationEmail" class="requiredField" >Email Address:</label>
+			<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" value="{local var="useremail"}" required />
+		</div>	
+		<input id="nowSubmit" type="submit" name="createSubmit" value="Reserve this Room" />
+	</form>
 
-	{snippet id="8" field="content"}
-	
-<?php } ?>
+	<?php } ?>
+	<?php } else { // public scheduling?>
+
+		{snippet id="8" field="content"}
+		
+	<?php } ?>
 </section>
 
+<div style="clear:both;"</div>
 
-<div id="calendarModal">
-</div>
+<!-- Room Availability -->
+<section class="roomAvailability">
+		<br>
+		<br>
+		<h4>Room Availability</h4>
+		<hr class="roomHR" />
+
+		<input type="hidden" id="building_modal" value="{local var="buildingID"}" />
+		<input type="hidden" id="room_modal" value="{local var="roomID"}" />
+
+		<div class="styled-select">
+			{local var="monthSelect_modal"}
+		</div>                                          
+		<div class="styled-select">
+			{local var="daySelect_modal"}
+		</div>
+		<div class="styled-select">
+			{local var="yearSelect_modal"} 
+		</div>
+		<a id="calUpdateFormSubmit" class="bSubmit">
+			<i class="fa fa-calendar"></i> Change Date
+		</a>
+
+		<div style="clear:both"></div>
+
+		<br>
+		<br>
+
+		<table id="reservationsRoomTable" class="iroomTable" cellspacing="0" cellpadding="0">
+			<thead>
+				<tr id="reservationsRoomTableHeaderRow">			
+				</tr>
+			</thead>
+			<tbody id="reservationsRoomTableBody">
+
+			</tbody>
+		</table>
+</section>	
+
+<!-- Advanced Search -->
+<div style="clear:both;"></div>
+<hr class="roomHR roomMobile" />
+<a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
+
+<<?php } // if room is publically viewable ?>
+
+<div class="clear:both;"></div>
+<br>
+
+<!-- Rooms Navigation -->
+<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
+
+<!-- Mobile UI -->			
+<a class="policyLink roomMobile" href="{local var="policiesPage"}">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
+
+<?php if (is_empty(session::get("username"))) { ?>
+	<a id="userLoginSubmit" href="{local var="loginURL"}" class="roomMobile bSubmit">
+		<i class="fa fa-user"></i> User Login
+	</a>
+<?php } else { ?>
+	<a id="userLoginSubmit" href="{local var="roomReservationHome"}/calendar/user/" class="roomMobile bSubmit">
+		<i class="fa fa-check"></i> My Reservations
+	</a>
+	<a id="userLoginSubmit" href="{engine var="logoutPage"}?csrf={engine name="csrfGet"}" class="roomMobile bSubmit">
+		<i class="fa fa-user"></i> User Logout
+	</a>
+<?php } ?>
 
 <?php
 templates::display('footer');

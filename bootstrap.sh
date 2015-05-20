@@ -34,12 +34,15 @@ ln -s $GITDIR/engineAPITemplates/* $GITDIR/engineAPI/engine/template/
 ln -s $GITDIR/engineAPI-Modules/src/modules/* $GITDIR/engineAPI/engine/engineAPI/latest/modules/
 ln -s $GITDIR/engineAPI/engine/ $SERVERURL/phpincludes/
 
+rm /tmp/git/engineAPI/engine/template/rooms2015
+ln -s /vagrant/serverConfiguration/genericTemplate/ $GITDIR/engineAPI/engine/template/rooms2015
+
 # ln -s /tmp/git/engineAPITemplates/library2012.1col/ /tmp/git/engineAPI/engine/template/library2012.1col
 # ln -s /tmp/git/engineAPITemplates/library2012.2col/ /tmp/git/engineAPI/engine/template/library2012.2col
 # ln -s /tmp/git/engineAPITemplates/library2012.2col.right/ /tmp/git/engineAPI/engine/template/library2012.2col.right
 # ln -s /tmp/git/engineAPITemplates/library2012.3col/ /tmp/git/engineAPI/engine/template/library2012.3col
 # ln -s /tmp/git/engineAPITemplates/default/ /tmp/git/engineAPI/engine/template/default
-# ln -s /tmp/git/engineAPITemplates/library2012.1col/templateIncludes/ /home/www.libraries.wvu.edu/public_html/templateIncludes
+ln -s /tmp/git/engineAPITemplates/library2012.1col/templateIncludes/ /home/www.libraries.wvu.edu/public_html/templateIncludes
 
 rm -f $GITDIR/engineAPI/engine/engineAPI/latest/config/defaultPrivate.php
 ln -s /vagrant/serverConfiguration/defaultPrivate.php $GITDIR/engineAPI/engine/engineAPI/latest/config/defaultPrivate.php
@@ -54,6 +57,10 @@ ln -s /vagrant/serverConfiguration/fines.pl /home/database.lib.wvu.edu/public_ht
 chmod a+x /home/database.lib.wvu.edu/public_html/cgi-bin/fines.pl
 
 # Application Specific
+
+# set the timezone
+ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+
 mkdir -p $SERVERURL/$DOCUMENTROOT/services
 
 ln -s /vagrant/serverConfiguration/docroot_index.php $SERVERURL/$DOCUMENTROOT/index.php
@@ -104,7 +111,7 @@ mysql -u root EngineAPI < /tmp/git/engineAPI/sql/EngineAPI.sql
 
 mysql -u root < /vagrant/sqlFiles/setup.sql
 mysql -u root roomReservations < /vagrant/sqlFiles/baseSnapshot.sql
-mysql -u root roomReservations < /vagrant/sqlFiles/roomReservations.sql
+# mysql -u root roomReservations < /vagrant/sqlFiles/roomReservations.sql
 
 # mock authentication database setup
 mysql -u root < /vagrant/sqlFiles/authenticationStructureOnly.sql
@@ -115,3 +122,5 @@ do
   echo "Processing $f ..."
   mysql -u root roomReservations < $f
 done
+
+#mysql -u root roomReservations < roomReservations.sql

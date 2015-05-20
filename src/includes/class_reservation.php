@@ -10,6 +10,7 @@ class reservation {
 
 	public $building     = array();
 	public $room         = array();
+	public $series       = FALSE;
 
 	function __construct() {
 		$this->localvars = localvars::getInstance();
@@ -136,24 +137,13 @@ class reservation {
 
 		$sUnix = mktime($shour,$smin,0,$month,$day,$year);
 
-		if ((int)$shour >= 18 && (int)$ehour < (int)$shour) {
-			// assume the end hour is the next morning/day
+		// Convert the duration into hours and minutes
+		
+		$ehour = (int)$ehour * 60 * 60;
+		$emin  = (int)$emin * 60;
 
-			// add 24 hours of seconds to the start time to get the next day
-			$nextDay = $sUnix + 86400;
-
-			// grab the new month, day, year
-			$emonth = date("n",$nextDay);
-			$eday   = date("j",$nextDay);
-			$eyear  = date("Y",$nextDay);
-
-			$eUnix = mktime($ehour,$emin,0,$emonth,$eday,$eyear);
-
-		}
-		else {
-			// otherwise just use what we were given
-			$eUnix = mktime($ehour,$emin,0,$month,$day,$year);
-		}
+		// create the end time using the new ehour and emin
+		$eUnix = $sUnix + $ehour + $emin;
 
 		// make sure the end time is after the start time
 		if ($eUnix <= $sUnix) {
@@ -584,7 +574,7 @@ class reservation {
 		}
 
 		if ($this->isNew()) {
-			$sql        = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID,email) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+			$sql        = sprintf("INSERT INTO `reservations` (createdOn,createdBy,createdVia,roomID,startTime,endTime,modifiedOn,modifiedBy,username,initials,groupname,comments,seriesID,email,openEvent,openEventDescription) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
 			$sqlOptions = array(
 				time(),
 				session::get("username"),
@@ -599,11 +589,13 @@ class reservation {
 				$groupname,
 				$comments,
 				(isnull($seriesID))?"":$seriesID,
-				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:""
+				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:"",
+				(isset($_POST['MYSQL']['openEvent']))?$_POST['MYSQL']['openEvent']:"",
+				(isset($_POST['MYSQL']['openEventDescription']))?$_POST['MYSQL']['openEventDescription']:""
 				);
 		}
 		else {
-			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=?, email=? WHERE ID=?");
+			$sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=?, email=?, openEvent=?, openEventDescription=? WHERE ID=?");
 			$sqlOptions = array(
 				$sUnix,
 				$eUnix,
@@ -615,6 +607,8 @@ class reservation {
 				$comments,
 				$via,
 				(isset($_POST['MYSQL']['notificationEmail']))?$_POST['MYSQL']['notificationEmail']:"",
+				($_POST['MYSQL']['openEvent'])?$_POST['MYSQL']['openEvent']:"",
+				($_POST['MYSQL']['openEventDescription'])?$_POST['MYSQL']['openEventDescription']:"",
 				$this->reservation['ID']
 				);
 		}
@@ -629,46 +623,70 @@ class reservation {
 
 		$roomName     = getRoomInfo($_POST['MYSQL']['room']);
 
-		if ($this->isNew()) {
-			$resultMessage = getResultMessage("reservationCreated");
-			$resultMessage = preg_replace("/{roomName}/", $roomName['displayName'], $resultMessage);
-			errorHandle::successMsg($resultMessage);
-		}
-		else {
-			errorHandle::successMsg(getResultMessage("reservationUpdated"));
+		// we don't want to show the success message for series reservations
+		if (!$this->series) {
+			if ($this->isNew()) {
+				$resultMessage = getResultMessage("reservationCreated");
+				$resultMessage = preg_replace("/{roomName}/", $roomName['displayName'], $resultMessage);
+				errorHandle::successMsg($resultMessage);
+			}
+			else {
+				errorHandle::successMsg(getResultMessage("reservationUpdated"));
+			}
 		}
 
 		// Print off slip link
 		// // TODO
 
 		// If there was an email address submitted, send an email to that address
-		if (isset($_POST['HTML']['notificationEmail']) && validate::getInstance()->emailAddr($_POST['HTML']['notificationEmail'])) {
+		// Don't send email for series reservations
+		if (!$this->series && isset($_POST['HTML']['notificationEmail']) && validate::getInstance()->emailAddr($_POST['HTML']['notificationEmail'])) {
 
 
 			$buildingName = getBuildingName($roomName['building']);
-
-			$sam = "am";
-			if ($shour > 12) {
-				$shour = $shour - 12;
-				$sam = "pm";
-			}
-
-			$eam = "am";
-			if ($ehour > 12) {
-				$ehour = $ehour - 12;
-				$eam = "pm";
-			}
-
-			$subject  = "Room Reservation Created: ".$month."/".$day."/".$year;
+			$subject      = "Room Reservation Created: ".$month."/".$day."/".$year;
 
 			$emailMsg  = "Your room reservation has been successfully created: \n";
 			$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
-			$emailMsg .= "Time: ".$shour.":".$smin." ".$sam." - ".$ehour.":".$emin." ".$eam."\n";
+			$emailMsg .= sprintf("Time: %s - %s\n", 
+				date("g:i a",$sUnix),
+				date("g:i a",$eUnix)
+				);
 			$emailMsg .= "Building: ".$buildingName."\n";
 			$emailMsg .= "Room: ".$roomName['displayName']."\n";
 
 			$mail = new mailSender();
 			$mail->addRecipient($_POST['HTML']['notificationEmail']);
+			$mail->addSender("libsys@mail.wvu.edu", "WVU Libraries");
+			$mail->addSubject($subject);
+			$mail->addBody($emailMsg);
+
+			$sendResult = $mail->sendEmail();
+
+		}
+
+		// send an email to the open event email address
+		if (!$this->series && $_POST['MYSQL']['openEvent'] && !is_empty(getConfig('openEventEmail'))) {
+
+			$buildingName = getBuildingName($roomName['building']);
+
+			$subject  = "Room Reservation Created as Open Event: ".$month."/".$day."/".$year;
+
+			$emailMsg  = "The following reservation has been successfully created, and marked as an Open, Public, Event: \n";
+
+			$emailMsg .= "Created By:".$_POST['HTML']['notificationEmail']."\n\n";
+
+			$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
+			$emailMsg .= sprintf("Time: %s - %s\n", 
+				date("g:i a",$sUnix),
+				date("g:i a",$eUnix)
+				);
+			$emailMsg .= "Building: ".$buildingName."\n";
+			$emailMsg .= "Room: ".$roomName['displayName']."\n\n";
+			$emailMsg .= "Open Event Description: \n".$_POST['HTML']['openEventDescription']."\n\n";
+
+			$mail = new mailSender();
+			$mail->addRecipient(getConfig('openEventEmail'));
 			$mail->addSender("libsys@mail.wvu.edu", "WVU Libraries");
 			$mail->addSubject($subject);
 			$mail->addBody($emailMsg);

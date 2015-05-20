@@ -55,9 +55,10 @@ class messages {
 		$messages['errorInserting']           = $this->getMessage('errorInserting');
 		$messages['tooFarInFuture']           = $this->getMessage('tooFarInFuture');
 		$messages['emailNotProvided']         = $this->getMessage('emailNotProvided');
-
+		$messages['roomClosed']               = $this->getMessage('roomClosed');
+		
 		return $messages;
-	}
+		}
 
 	private function getMessage($name) {
 

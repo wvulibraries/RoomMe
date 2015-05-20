@@ -83,6 +83,10 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 		$sql       = sprintf("SELECT * FROM building WHERE ID=?");
 		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library']));
 		$building  = $sqlResult->fetch();
+
+
+		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building=? AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE ( (startTime<? AND endTime<=?) OR (startTime>=? AND endTime>?) AND rooms.building=?)) ORDER BY rooms.%s",
+		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT * FROM `reservations` WHERE ( ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s') ) AND roomID='%s') ORDER BY rooms.%s",
 		
 		$sql = sprintf("SELECT rooms.*,
        building.roomlistdisplay AS roomListDisplay
@@ -103,9 +107,9 @@ WHERE  policies.publicscheduling = '1'
                                     (
                                          ( ? <  reservations.startTime AND ? > reservations.endTime  )
                                          OR 
-                                         ( ? <= reservations.startTime AND (? >  reservations.startTime AND ? < reservations.endTime))
+                                         ( ? <= reservations.startTime AND (? >  reservations.startTime AND ? <= reservations.endTime))
                                          OR
-                                         ( (? >  reservations.startTime AND ? < reservations.endTime) AND ? >= reservations.endTime )
+                                         ( (? >=  reservations.startTime AND ? < reservations.endTime) AND ? >= reservations.endTime )
                                          OR
                                          ( ? >=  reservations.startTime AND ? <= reservations.endTime )
                                     )
@@ -117,6 +121,14 @@ ORDER  BY rooms.%s",
 			$building['roomSortOrder']
 			);
 		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library'],$sUnix,$eUnix,$sUnix,$eUnix,$eUnix,$sUnix,$sUnix,$eUnix,$sUnix,$eUnix,$_POST['MYSQL']['library']));
+
+		// $sql2      = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building=? AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE ( (startTime<'%s' AND endTime<='%s') OR (startTime>='%s' AND endTime>'%s') AND rooms.building='%s')) ORDER BY rooms.%s",
+		// 	$_POST['MYSQL']['library'],$sUnix,$eUnix,$sUnix,$eUnix,$_POST['MYSQL']['library'],$building['roomSortOrder']
+		// 	);
+
+		// print "<pre>";
+		// var_dump($sql);
+		// print "</pre>";
 
 		if ($sqlResult->error()) {
 			errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
@@ -156,9 +168,15 @@ $localvars->set("prettyPrint",errorHandle::prettyPrint());
 templates::display('header');
 ?>
 
-<header>
-<h1>Find a Room</h1>
-</header>
+<h3 class="roomH3" style="display: inline-block;">Find a Room</h3>
+
+<!-- Extra Links -->
+<a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
+<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
+	<i class="fa fa-exclamation-circle"></i>
+</a>
+
+<hr class="roomHR roomTabletDesktop" />
 
 {local var="prettyPrint"}
 
@@ -168,118 +186,101 @@ templates::display('header');
 <form action="{phpself query="true"}" method="post">
 	{csrf}
 
-	<label for="library">Library:</label>
-	<select name="library" id="library">
-		{local var="librarySelectOptions"}
-	</select>
+	<strong>Select Library:</strong>
+	<div class="roomReservationRows">
+		<span class="reserveRoomInput"><label for="library">Library:</label>
+		<select name="library" id="library">
+			{local var="librarySelectOptions"}
+		</select></span>
+	</div>
 
-	<table>
-		<tr>
-			<td id="montDayYearSelects">
-				<label for="start_month">Month:</label><br />
-				<select name="start_month" id="start_month" >
-					<?php
-						for($I=1;$I<=12;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentMonth)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
-			</td>
-				<td>
-				<label for="start_day">Day:</label><br />
-				<select name="start_day" id="start_day" >
-					<?php
-						for($I=1;$I<=31;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentDay)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
-			</td>
-			<td>
-				<label for="start_year">Year:</label><br />
-				<select name="start_year" id="start_year" >
-					<?php
-						for($I=$currentYear;$I<=$currentYear+10;$I++) {
-							printf('<option value="%s">%s</option>',
-								$I,
-								$I);
-						}
-					?>
-				</select>
-			</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td colspan="2">
-				Start Time
-			</td>
-			<td colspan="2">
-				End Time
-			</td>
-		</tr>
-		<tr id="startEndTimeSelects">	
-			<td>
-				<label for="start_hour">Hour:</label><br />
-				<select name="start_hour" id="start_hour" >
-					<?php
-						for($I=0;$I<=23;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $currentHour)?"selected":"",
-								($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am"))));
-						}
-					?>
-				</select>
-			</td>
-			<td>
-				<label for="start_minute">Minute:</label><br />
-				<select name="start_minute" id="start_minute" >
-					<?php
-						for($I=0;$I<60;$I += 15) {
-							printf('<option value="%s">%s</option>',
-								($I < 10)?"0".$I:$I,
-								$I);
-						}
-					?>
-				</select>
-			</td>
+	<strong>Select The Date:</strong>
+	<div class="roomReservationRows">
+		<span class="reserveRoomInput"><label for="start_month">Month:</label>
+		<select name="start_month" id="start_month" >
+			<?php
+				for($I=1;$I<=12;$I++) {
+					printf('<option value="%s" %s>%s</option>',
+						($I < 10)?"0".$I:$I,
+						($I == $currentMonth)?"selected":"",
+						$I);
+				}
+			?>
+		</select></span>
+		<span class="reserveRoomInput"><label for="start_day">Day:</label>
+		<select name="start_day" id="start_day" >
+			<?php
+				for($I=1;$I<=31;$I++) {
+					printf('<option value="%s" %s>%s</option>',
+						($I < 10)?"0".$I:$I,
+						($I == $currentDay)?"selected":"",
+						$I);
+				}
+			?>
+		</select></span>
+		<span class="reserveRoomInput"><label for="start_year">Year:</label>
+		<select name="start_year" id="start_year" >
+			<?php
+				for($I=$currentYear;$I<=$currentYear+10;$I++) {
+					printf('<option value="%s">%s</option>',
+						$I,
+						$I);
+				}
+			?>
+		</select></span>
+	</div>
 
-			<td>
-				<label for="end_hour">Hour:</label><br />
-				<select name="end_hour" id="end_hour" >
-					<?php
-						for($I=0;$I<=23;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $nextHour)?"selected":"",
-								($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am")))
-								);
-						}
-					?>
-				</select>
-			</td>
-			<td>
-				<label for="end_minute">Minute:</label><br />
-				<select name="end_minute" id="end_minute" >
-					<?php
-						for($I=0;$I<60;$I += 15) {
-							printf('<option value="%s">%s</option>',
-								($I < 10)?"0".$I:$I,
-								$I);
-						}
-					?>
-				</select>
-			</td>
-		</tr>
-	</table>
-	
-	
+	<strong>Select The Start Time:</strong>
+	<div class="roomReservationRows">
+		<span class="reserveRoomInput"><label for="start_hour">Hour:</label>
+		<select name="start_hour" id="start_hour" >
+			<?php
+				for($I=0;$I<=23;$I++) {
+					printf('<option value="%s" %s>%s</option>',
+						($I < 10)?"0".$I:$I,
+						($I == $currentHour)?"selected":"",
+						($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am"))));
+				}
+			?>
+		</select></span>
+		<span class="reserveRoomInput"><label for="start_minute">Minute:</label>
+		<select name="start_minute" id="start_minute" >
+			<?php
+				for($I=0;$I<60;$I += 15) {
+					printf('<option value="%s">%s</option>',
+						($I < 10)?"0".$I:$I,
+						$I);
+				}
+			?>
+		</select></span>
+	</div>
+
+	<strong>Select The Duration:</strong>
+	<div class="roomReservationRows">
+		<span class="reserveRoomInput"><label for="end_hour">Hour:</label>
+		<select name="end_hour" id="end_hour" >
+			<?php
+				for($I=0;$I<=23;$I++) {
+					printf('<option value="%s" %s>%s</option>',
+						($I < 10)?"0".$I:$I,
+						($I == $nextHour)?"selected":"",
+						($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am")))
+						);
+				}
+			?>
+		</select></span>
+		<span class="reserveRoomInput"><label for="end_minute">Minute:</label>
+		<select name="end_minute" id="end_minute" >
+			<?php
+				for($I=0;$I<60;$I += 15) {
+					printf('<option value="%s">%s</option>',
+						($I < 10)?"0".$I:$I,
+						$I);
+				}
+			?>
+		</select></span>
+	</div>
+	<br>
 	<input type="submit" name="lookupSubmit" class="button" />
 </form>
 
@@ -287,7 +288,7 @@ templates::display('header');
 
 <section>
 	<header>
-		<h1>Rooms Available at the Requested Day and Time</h1>
+		<h3>Rooms Available at the Requested Day and Time</h3>
 	</header>
 
 	{local var="results"}
@@ -298,6 +299,28 @@ templates::display('header');
 
 <div id="calendarModal">
 </div>
+
+	<div class="clear:both;"></div>
+	<br>
+
+	<!-- Rooms Navigation -->
+	<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
+
+	<!-- Mobile UI -->			
+	<a class="policyLink roomMobile" href="{local var="policiesPage"}">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
+
+	<?php if (is_empty(session::get("username"))) { ?>
+		<a id="userLoginSubmit" href="{local var="loginURL"}" class="roomMobile bSubmit">
+			<i class="fa fa-user"></i> User Login
+		</a>
+	<?php } else { ?>
+		<a id="userLoginSubmit" href="{local var="roomReservationHome"}/calendar/user/" class="roomMobile bSubmit">
+			<i class="fa fa-check"></i> My Reservations
+		</a>
+		<a id="userLoginSubmit" href="{engine var="logoutPage"}?csrf={engine name="csrfGet"}" class="roomMobile bSubmit">
+			<i class="fa fa-user"></i> User Logout
+		</a>
+	<?php } ?>
 
 <?php
 templates::display('footer');

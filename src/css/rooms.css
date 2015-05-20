@@ -1,0 +1,597 @@
+@charset "utf-8";
+
+html, body, form, nav, ul {
+    display: block;
+    margin: 0px;
+    padding: 0px;
+    font-family: sans-serif;
+}
+.wrap {
+    width: 90%;
+    margin: 0px auto;
+    display: block;
+    max-width: 1000px;
+    height: auto;
+    overflow: hidden;
+}
+.hpcard {
+    padding: 50px 0px 100px;
+}
+hr {
+    height: 1px;
+    border: medium none;
+    margin: 20px 0px;
+    padding: 0px;
+    background: none repeat scroll 0% 0% #E0E0E0;
+}
+
+/*********************************************************************
+    - 760px
+**********************************************************************/\
+@media only screen and (max-width: 760px),
+(min-device-width: 768px) and (max-device-width: 1024px)  {
+    /* Force table to not be like tables anymore */
+    .styledTable , .styledTable thead, .styledTable tbody, .styledTable th, .styledTable td, .styledTable tr { 
+		display: block; 
+	}
+	/* Hide table headers  */
+	.styledTable thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	.styledTable tr {
+		border: 1px solid #ccc;
+	}
+	.styledTable td { 
+		/* Behave  like a "row"  */
+		border: none;
+		position: relative;
+        display: block;
+        overflow: hidden;
+	}	
+	.styledTable td:before { 
+		/* Now like a table header  */
+		position: absolute;
+		/* Top/left values mimic padding  */
+		top: 6px;
+		left: 6px;
+		width: 45%; 
+		padding-right: 10px; 
+		white-space: nowrap;
+	}
+}
+
+/* Table Defaults */
+table {display: table; padding: 0;}
+thead {display: table-header-group; padding: 0;}
+tbody {display: table-row-group; padding: 0;}
+/*th {display: table; padding: 0;}*/
+td {display: table-cell; padding: 0;}
+tr {display: table-row; padding: 0;}
+
+/* Header */
+.roomReservation {
+	background: #002855;
+	text-align:left;
+	padding: 30px 0;
+}
+.roomReservation h2 {
+	color:#fff;
+	font-size: 2em;
+	font-weight: 400;
+	display: inline-block;
+	margin: 0;
+}
+.roomReservation h2 a {
+	color:#fff;
+	text-decoration: none;
+}
+.roomReservation h2 a:hover {
+	text-decoration: underline;
+}	
+.userLogin {
+	float:right;
+	color:#fff;
+	text-decoration: none;
+	padding: 12px 0 0 20px;
+}
+.userLogin:hover {text-decoration: underline;}
+.userLogin .fa {
+	color:#eeb111;
+	padding-right: 5px;
+	font-size: 1.25em;
+}
+
+/* Toggles */
+.roomMobile {display: inline-block;}
+.roomTablet {display: none;}
+.roomDesktop {display: none;}
+.roomMobileTablet {display: inline-block;}
+.roomTabletDesktop {display: none;}
+.roomAvailability {display:none;}
+
+/*********************************************************************
+	768px and below
+**********************************************************************/
+.styledTable {
+    border: 1px solid #ababab; 
+    border-collapse: collapse; 
+    width:99%;
+}
+.styledTable td {
+    vertical-align: top; 
+    text-align: left;
+}
+.styledTable th { 
+  background: #EFEFEF; 
+  font-weight: bold; 
+}
+.styledTable td, .styledTable th {
+    padding: 6px;
+    border: 1px solid #ccc;
+    text-align: left;
+}
+.styledTable tr:nth-of-type(2n+1) {
+    background: none repeat scroll 0% 0% #f5f8fa;
+}
+
+.errorPrettyPrint {
+	margin-bottom: 20px;
+}
+.errorMessage {
+	color: #FF0000;
+}
+.successMessage {
+	color: #4BB94B;
+}
+#reservationsReserveRoom {
+}
+#reservationsReserveRoom input[type=submit] {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: none repeat scroll 0% 0% #4BB94B;
+	height: auto;
+	padding: 20px;
+	text-align: center;
+	color: #FFF;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;
+	border: none;
+	margin: 0 0 20px 0;
+	display: block;
+}
+.roomReservationRows {
+	margin: 0 0 20px 0;
+	padding: 10px 0 20px 0;
+	border-bottom: 1px dotted #ddd;
+}
+.roomReservationRows select {
+	padding: 10px;
+}
+.reserveRoomInput {
+	white-space: nowrap;
+	padding: 0px 30px 6px 0;
+	display: inline-block;
+}
+.reserveRoomInput label {
+	font-style: italic;
+	padding-right: 4px;
+}
+#roomInformationTable {	
+	border: none;
+	background: #fff;
+	width: 100%;
+	max-width: 640px;
+}
+#roomInformationTable tbody {
+	text-align: left;
+	color: #585858;
+	line-height: 150%;
+}
+#roomInformationTable tr:nth-of-type(2n+1) {
+    background: #fff;
+}
+#roomInformationTable td, th {
+    padding: 0 10px 10px 0;
+    border: none;
+    text-align: left;
+}
+#roomInformationTable ul {	
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#reserveRoomTable {
+}
+#reservationsBuildingRoomsList ul {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;	
+}
+#reservationsBuildingRoomsList ul li {
+	display: inline-block;
+	float:left;
+	width: 100%;
+	margin: 0 0 40px 0;
+	background: #f5f8fa;
+		text-align: center;	
+}
+#reservationsBuildingRoomsList ul li a {
+}
+#reservationsBuildingRoomsList ul li a img {
+	width: 100%;
+	max-width: 640px;
+	height: auto;
+	padding:0;
+	margin:0;
+}		
+.reservationsBuildingRoomsListName {
+	width: 100%;
+	display: block;
+}
+a[class*=bSubmit] {margin: 10px 0 20px 0;}
+.roomH3 {
+	color: #0033A0;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+}
+#mobileList {
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+}
+.topPad {margin-top: 70px;}
+.currentDay {
+	color:#eeb111;
+	white-space: nowrap;
+}
+.policyLink {
+	float:left; 
+	margin: 0;
+	padding: 8px 0 0;
+	color: #a2aaad !important;
+} 
+.policyLink .fa {
+	color: #eaaa00;
+}
+.policyLink1 {
+	color: #a2aaad !important;	
+	margin-right: 20px;
+}
+.policyLink1 .fa {
+	padding-right: 4px;
+	color: #39F;
+}
+.policyLink3 {
+	float:right; 
+	margin: 0;
+	padding: 8px 20px 0;
+	color: #a2aaad !important;
+} 
+.policyLink3 .fa {
+	color: #eaaa00;
+}
+.roomHR {
+	width:100%;
+	overflow: hidden;
+}
+.styled-select {
+	width: 100%;
+	margin: 0 0 1em 0;
+	float: left;
+	background: url("../images/dd.png") right no-repeat;
+}
+.styled-select:nth-of-type(4) {
+	margin: 0 0 1em 0;
+}
+.styled-select select {
+	padding: 20px 10px;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	border: 1px solid #000;
+   	border-radius: 0;
+   	width: 100%;
+   	background: transparent;
+   	cursor: pointer;
+}
+#nowSubmit {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: #4bb94b;
+	height: 24px;
+	padding: 14px 0 22px 0;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;	
+}	
+#nowSubmit:hover {
+	text-decoration: none;
+	background: #65c465;
+}	
+#nowSubmit .fa {
+	font-size: 1.5em;
+	font-weight: regular;
+	padding-right: 10px;
+}
+#calUpdateFormSubmit {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: #3399ff;
+	height: 24px;
+	padding: 14px 0 22px 0;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;	
+}	
+#calUpdateFormSubmit:hover {
+	text-decoration: none;
+	background: #5eaefe;
+}	
+#calUpdateFormSubmit .fa {
+	font-size: 1.5em;
+	font-weight: regular;
+	padding-right: 10px;
+}	
+#asbutton {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: #3399ff;
+	height: 24px;
+	padding: 14px 0 22px 0;
+	text-align: center;
+	color: #fff;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;	
+}	
+#asbutton:hover {
+	text-decoration: none;
+	background: #5eaefe;
+}	
+#asbutton .fa {
+	font-size: 1.5em;
+	font-weight: regular;
+	padding-right: 10px;
+}
+#userLoginSubmit {
+	width: 100%;
+	float: left;
+	overflow: hidden;
+	background: #eaeaea;
+	height: 24px;
+	padding: 14px 0 22px 0;
+	text-align: center;
+	color: #002855;
+	border-radius: 5px;
+	font-weight: bold;
+	cursor: pointer;	
+}
+#userLoginSubmit:hover {
+	text-decoration: none;
+	background: #efefef;
+}	
+#userLoginSubmit .fa {
+	font-size: 1.5em;
+	font-weight: regular;
+	padding-right: 10px;
+	color: #3399ff !important;
+}
+.tablePager {
+	padding: 70px 0px 10px;
+	height: auto;
+	overflow: hidden;
+	text-align: right;
+	float: left;
+	width: 100%;
+}
+.pagerButtons {
+	color: #3399ff;
+	line-height: normal;
+	display: inline-block;
+	margin: 0 0 0 40px;
+	overflow: hidden;
+	cursor: pointer;
+}
+.pagerButtons:hover {
+	color: #5eaefe !important;
+}
+.disabled {
+	color: #bfb8af !important;
+	cursor: default;
+}
+.disabled:hover {
+	color: #bfb8af !important;
+}
+
+.roomLink {
+	font-weight: bold;
+	cursor: pointer;
+}
+.roomLink:hover {
+	color: #5eaefe !important;
+	text-decoration: none !important;
+}
+#reservationsRoomTable {
+	border: 1px solid #000;
+	border-collapse: collapse;
+	width: 100%; 
+	border: 0;
+	display:none;
+}
+#roomPictureContainer img {
+	width: 100%;
+	max-width: 640px;
+}
+
+.iroomTable .tdHours, .iroomTable .hour {
+	width: 50%;
+}
+
+#reservationsRoomTableHeaderRow .tdEmpty {
+	border: 1px solid #000;
+}
+#reservationsRoomTable td {
+    height: 50px;
+    vertical-align: middle;
+    text-align: center;
+}
+#reservationsRoomTable td {
+    padding: 0;
+    border: 1px dotted #CCC;
+    text-align: center;
+}
+#reservationsRoomTable .hour, #reservationsRoomTable .quarterPast, #reservationsRoomTable .half {
+    border-right: 1px solid #000;
+}
+#reservationsRoomTable .quarterTill {
+	border-bottom: 1px solid #000;	
+	border-right: 1px solid #000;
+}
+#reservationsRoomTable .hour {
+    border-top: 1px solid #000;
+}
+#reservationsRoomTable tr:nth-of-type(2n+1) {
+    background: none;
+}
+.tdHours,.col1, .col2, .col3, .col4, .col5, .col6, .col7 {
+	display: none;
+}
+.tdHours {
+	font-weight: bold;
+}
+.reserved {
+	background: #efedeb;
+	line-height: 0.8em;
+}
+.reservationStatus {
+	color: #000;
+}
+.reservationName {
+	width:100%;
+	display: table;
+}
+.reservationTime {
+	width:100%;
+	font-size: 0.75em;
+	font-style: italic;
+	display: table;
+}
+.roomClick {
+	color: #4bb94b !important;
+	background: #fff;
+	font-size: 1.25em;
+	display: block;
+	height:30px;
+	padding: 10px 0;
+}
+.roomClick:hover {
+	background: #4bb94b;
+	color: #fff !important;
+}
+
+/*********************************************************************
+	768px to 1024px
+**********************************************************************/
+@media screen and (min-width: 754px) {
+	#reservationsBuildingRoomsList ul li {
+		width: 47%;
+		margin: 0 6% 40px 0;
+	}
+	#reservationsBuildingRoomsList ul li:nth-child(2n) {
+		margin-right: 0;
+	}	
+	.roomMobile {display: none;}
+	.roomTablet {display: inline-block;}
+	.roomDesktop {display: none;}
+	.roomMobileTablet {display: inline-block;}
+	.roomTabletDesktop {display: inline-block;}
+	.roomAvailability {display:block;}
+	.roomH3 {
+		width: 50%;
+	}
+	a[class*=bSubmit] {margin: 0;}
+	.policyLink {
+		float:right; 
+	}
+	#reservationsRoomTable {
+		 display: table;
+	}
+	.tdHours,.col1, .col2, .col3, .col4 {
+		display: table-cell;
+	}
+	.col5, .col6, .col7 {
+		display: none;
+	}
+	.calendarCol, .tdHours {
+		width:20%;
+		border: 1px solid #000;
+		text-align: center;
+		background: #fff;
+	}
+	.styled-select {
+		width: 23.5%;
+		margin: 0 2% 1em 0;
+	}
+	.styled-select:nth-of-type(4) {
+		margin: 0 0 1em 0;
+	}
+	#calUpdateFormSubmit {
+		width: 23.5%;
+	}
+}	
+
+/*********************************************************************
+	1024px and up
+**********************************************************************/
+@media screen and (min-width: 1010px) {
+	#reservationsBuildingRoomsList ul li {
+		width: 30%;
+		margin: 0 5% 40px 0;
+	}
+	#reservationsBuildingRoomsList ul li:nth-child(2n) {
+		margin-right: 5%;
+	}		
+	#reservationsBuildingRoomsList ul li:nth-child(3n) {
+		margin-right: 0;
+	}
+	.roomMobile {display: none;}
+	.roomTablet {display: none;}
+	.roomDesktop {display: inline-block;}
+	.roomMobileTablet {display: none;}
+	.roomTabletDesktop {display: inline-block;}
+
+	.col1, .col2, .col3, .col4, .col5, .col6, .col7 {
+		display: table-cell;
+	}
+	.calendarCol {
+		width: 12%;
+	}
+	.tdHours {
+		width:16%;
+		font-weight: bold;
+		background: #fff;
+		text-align: center;
+	}
+	.styled-select {
+		width: 18%;
+		margin: 0 2.5% 0 0;
+	}
+	.styled-select:nth-of-type(4) {
+		margin: 0 2.5% 0 0;
+	}
+	#calUpdateFormSubmit {
+		width: 18%;
+	}
+}	

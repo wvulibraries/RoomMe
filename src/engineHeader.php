@@ -9,6 +9,8 @@ $localvars  = localvars::getInstance();
 $enginevars = enginevars::getInstance();
 
 $localvars->set("currentDisplayObjectTitle","Room Reservations");
+$localvars->set("policiesPage","/services/rooms/policies/");
+$localvars->set("advancedSearch","/services/rooms/find/");
 
 // require_once "/home/library/public_html/includes/engineHeader.php";
 
@@ -22,7 +24,7 @@ $messages = new messages;
 
 recurseInsert("includes/engineHeader.php","php");
 // templates::load("library2012.3col");
-templates::load("library2014-backpage");
+templates::load("rooms2015");
 
 $localvars->set("roomResBaseDir","/services/rooms");
 

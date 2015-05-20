@@ -14,26 +14,39 @@ To view the system as an unauthenticated patron, go to [localhost:8090/services/
 
 To authenticate, we have provided a script that will authenticate you to the local vagrant box, please visit [Vagrant Login](http://localhost:8090/services/rooms/vagrantLogin.php). Once authenticated visit the [Admin Interface](http://localhost:8090/services/rooms/admin)
 
+By default no data is loaded into the database. You will need to create buildings, rooms, templates, and configure the system. A SQL file, roomReservations.sql is provided as a way to test the system with some default data. This is a stripped down copy of the production database at WVU Libraries. To load this file by default uncomment the last line in the bootstrap.sh file. The example dataset includes 3 buildings, 2 that use the RoomMe software and one (Health Sciences Library) that links to an external form. 
+
 ## Setup:
 
-1. Upload files to the server
+1. Setup [EngineAPI 4.0](https://github.com/wvulibraries/Engineapi/) on your server
+	* Upload the files outside of your document root
+	* %%%More Steps Here%%%
+1. Upload RoomMe files to the server
 1. Delete the vagrantLogin.php file
-1. modify the roomReservationHome localvar to reflect the path to the software
+1. modify the roomReservationHome localvar, in src/includes/vars.php to reflect the path to the software
 1. %%%User Information setup here%%%
 1. %%%Database Connection Setup information here%%%
 1. Configure your software
 
 ### Configuration:
 
-1. [System](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/settings/README.md)
-1. [Messages](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/messages/README.md)
-1. [Via](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/via/README.md)
-1. [Statistics](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/statistics/README.md)
-1. [Buildings](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/roommanagement/buildings/README.md)
-1. [Policies](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/roommanagement/policies/README.md)
-1. [Templates](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/roommanagement/templates/README.md)
-1. [Rooms](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/roommanagement/rooms/README.md)
-1. [Snippets](https://github.com/wvulibraries/Room-Reservations/blob/develop/src/admin/config/snippets/README.md)
+1. [System](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/settings/README.md)
+1. [Messages](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/messages/README.md)
+1. [Via](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/via/README.md)
+1. [Statistics](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/statistics/README.md)
+1. [Buildings](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/roommanagement/buildings/README.md)
+1. [Policies](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/roommanagement/policies/README.md)
+1. [Templates](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/roommanagement/templates/README.md)
+1. [Rooms](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/roommanagement/rooms/README.md)
+1. [Snippets](https://github.com/wvulibraries/RoomMe/blob/develop/src/admin/config/snippets/README.md)
+
+### Hours Information
+
+RoomMe allows for an Hours RSS URL per building. When defined this will prevent RoomMe from allowing reservations while a building is closed. 
+
+
+
+### Fines Information
 
 ### Access Control
 

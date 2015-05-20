@@ -112,9 +112,10 @@ class building {
 
 	}
 
-	public function getRooms($id) {
+	// if publicViewing is TRUE, only return the rooms that are publically viewable
+	public function getRooms($id,$publicViewing=TRUE) {
 
-		$roomIDs = $this->getRoomIDs($id);
+		$roomIDs = $this->getRoomIDs($id,$publicViewing);
 
 		$roomObj = new room;
 		$rooms   = array();
@@ -128,7 +129,8 @@ class building {
 
 	}
 
-	public function getRoomIDs($id) {
+	// if publicViewing is TRUE, only return the rooms that are publically viewable
+	public function getRoomIDs($id,$publicViewing=TRUE) {
 
 		$roomIDs = array();
 
@@ -141,6 +143,15 @@ class building {
 		}
 		else {
 			while($row = $sqlResult->fetch()) {
+
+				if ($publicViewing) {
+					$roomObj = new room;
+					$roomPolicy = $roomObj->getPolicyInfo($row['ID']);
+					if ($roomPolicy['publicViewing'] != '1') {
+						continue;
+					}
+				}
+
 				$roomIDs[] = $row['ID'];
 			}
 		}

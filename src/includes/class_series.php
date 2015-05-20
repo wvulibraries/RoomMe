@@ -89,6 +89,8 @@ class series {
 
 	public function create() {
 
+		$errorMsg = "";
+
 		$schedule = array();
 
 		$weekdays = array(FALSE,FALSE,FALSE,FALSE,FALSE,FALSE,FALSE);
@@ -109,7 +111,11 @@ class series {
 		}
 
 		$this->startTime     = mktime($_POST['MYSQL']['start_hour'],$_POST['MYSQL']['start_minute'],0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
-		$this->endTime       = mktime($_POST['MYSQL']['end_hour'],$_POST['MYSQL']['end_minute'],0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
+
+		$ehour = (int)$_POST['MYSQL']['end_hour'] * 60 * 60;
+		$emin  = (int)$_POST['MYSQL']['end_minute'] * 60;
+		$this->endTime = $this->startTime + $ehour + $emin;
+
 		$this->startDay      = mktime(0,0,0,$_POST['MYSQL']['start_month'],$_POST['MYSQL']['start_day'],$_POST['MYSQL']['start_year']);
 		$this->seriesEndDate = mktime(0,0,0,$_POST['MYSQL']['seriesEndDate_month'],$_POST['MYSQL']['seriesEndDate_day'],$_POST['MYSQL']['seriesEndDate_year']);
 
@@ -148,34 +154,46 @@ class series {
 			// weekdays are selected
 			else {
 
-				$dateInfo = getdate($startTime);
+				$dateInfo = getdate($this->startTime);
+
+				// Save original start and end times
+				$originalStartDay  = $this->startDay;
+				$originalStartTime = $this->startTime;
+				$originalEndTime   = $this->endTime;
 
 				foreach ($weekdays as $I=>$V) {
+
 					if ($V === TRUE) {
 						if ($dateInfo['wday'] > $I) {
 							$interval = 7 - $dateInfo['wday'] + $I;
 							$interval = "+".$interval." days";
 
-							$startDayTemp       = strtotime($interval,$startDay);
-							$startTimeTemp      = strtotime($interval,$startTime);
-							$endTimeTemp        = strtotime($interval,$endTime);
+							$this->startDay       = strtotime($interval,$this->startDay);
+							$this->startTime      = strtotime($interval,$this->startTime);
+							$this->endTime        = strtotime($interval,$this->endTime);
 
 						}
 						else if ($dateInfo['wday'] < $I) {
 							$interval = "+".($I - $dateInfo['wday'])." days";
 
-							$startDayTemp       = strtotime($interval,$startDay);
-							$startTimeTemp      = strtotime($interval,$startTime);
-							$endTimeTemp        = strtotime($interval,$endTime);
+							$this->startDay       = strtotime($interval,$this->startDay);
+							$this->startTime      = strtotime($interval,$this->startTime);
+							$this->endTime        = strtotime($interval,$this->endTime);
 						}
 						else { // equal
-							$startDayTemp       = $startDay;
-							$startTimeTemp      = $startTime;
-							$endTimeTemp        = $endTime;
+							// $startDayTemp       = $this->startDay;
+							// $startTimeTemp      = $this->startTime;
+							// $endTimeTemp        = $this->endTime;
 						}
 						$temp = $this->getSchedule("+1 week");
 						$schedule = array_merge($schedule,$temp);
 					}
+
+
+					$this->startDay  = $originalStartDay;
+					$thie->startTime = $originalStartTime;
+					$this->endTime   = $originalEndTime;
+					
 				}
 			}
 		}
@@ -192,7 +210,7 @@ class series {
 
 			$interval = "";
 
-			$weekdayOccurence = $this->getWeekdayOccurrence($startTime);
+			$weekdayOccurence = $this->getWeekdayOccurrence($this->startTime);
 			// $weekdayOccurence = array("1","Sunday");
 			switch ($weekdayOccurence[0]) {
 				case 1:
@@ -316,12 +334,20 @@ class series {
 				$_POST['MYSQL']['start_hour']   = date("H",$V['startTime']);
 				$_POST['MYSQL']['start_minute'] = date("i",$V['startTime']);
 
-				$_POST['MYSQL']['end_hour']     = date("H",$V['endTime']);
-				$_POST['MYSQL']['end_minute']   = date("i",$V['endTime']);
+				// We need to convert the end time back into a duration
+				// $duration = $V['endTime'] - $V['startTime'];
+				// $hour = floor($duration/60/60);
+				// $minute = ($duration/60)%60;
+
+				$duration = $V['endTime'] - $V['startTime'];
+				$_POST['MYSQL']['end_hour']     = floor($duration/60/60);
+				$_POST['MYSQL']['end_minute']   = ($duration/60)%60;
 
 				// submit the reservation
 				$reservation = new reservation;
 				
+				$reservation->series = TRUE;
+
 				$reservation->setBuilding($this->building['ID']);
 				$reservation->setRoom($this->room['ID']);
 
@@ -335,6 +361,7 @@ class series {
 			}
 		}
 
+		errorHandle::successMsg("Series Reservation successfully created.");
 		$this->db->commit();
 
 		return TRUE;
@@ -403,27 +430,15 @@ class series {
 		$workingStartTime = 0;
 		$workingEndTime   = 0;
 		while ($workingDay <= $this->seriesEndDate) {
-			if ($workingDay == 0) {
-				$schedule[] = array(
-					'startTime' => $this->startTime,
-					'endTime'   => $this->endTime
-					);
-
-				$workingDay       = strtotime($interval,$this->startDay);
-				$workingStartTime = strtotime($interval,$this->startTime);
-				$workingEndTime   = strtotime($interval,$this->endTime);
-
-				continue;
-			}
 
 			$schedule[] = array(
-				'startTime' => $workingStartTime,
-				'endTime'   => $workingEndTime
+				'startTime' => (!$workingDay)?$this->startTime:$workingStartTime,
+				'endTime'   => (!$workingDay)?$this->endTime:$workingEndTime
 				);
 
-			$workingDay       = strtotime($interval,$workingDay);
-			$workingStartTime = strtotime($interval,$workingStartTime);
-			$workingEndTime   = strtotime($interval,$workingEndTime);
+			$workingStartTime = strtotime($interval,(!$workingDay)?$this->startTime:$workingStartTime);
+			$workingEndTime   = strtotime($interval,(!$workingDay)?$this->endTime:$workingEndTime);
+			$workingDay       = strtotime($interval,(!$workingDay)?$this->startDay:$workingDay);
 		}
 
 		return($schedule);
