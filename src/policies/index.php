@@ -45,13 +45,7 @@ templates::display('header');
 	<br>
 
 	<!-- Rooms Navigation -->
-	<h4 style="float:left;">Rooms by Building:</h4>
-	<hr class="roomHR"></hr>
-	<nobr><a class="policyLink1" href="/services/rooms/building/?building=2"><i class="fa fa-building"></i>Downtown Campus Library</a></nobr>
-	<nobr><a class="policyLink1" href="/services/rooms/building/?building=1"><i class="fa fa-building"></i>Evansdale Library</a></nobr>
-	<nobr><a class="policyLink1" href="http://home.hsc.wvu.edu/its/forms/library-study-room-reservation/" target="_blank"><i class="fa fa-building"></i>Health Sciences Library</a></nobr>
-	<hr class="roomHR"></hr>
-	<br>
+	<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
 
 <!-- Mobile UI -->			
 <?php if (is_empty(session::get("username"))) { ?>
