@@ -1,4 +1,5 @@
-## WVU Libraries' Room Reservations
+## RoomMe
+**WVU Libraries' Room Reservations Software**
 
 Room Reservations provides a robust, secure, and highly configurable room reservation software platform that can handle the requirements multiple buildings, rooms, and policies with a single installation. 
 
