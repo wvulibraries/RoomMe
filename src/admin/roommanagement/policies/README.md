@@ -35,6 +35,12 @@ supposed to be used for.
 **Public Viewing**  
 : Is the room visible on the public interface. Useful for hiding a room that is not currently available or has been removed. If we hide the room, instead of deleting it, then it will still show up in statistics. 
 
+**Rooms Closed**  
+: All rooms in this policy are closed. Public scheduling is removed and a message is displayed. See **Rooms Closed Snippet** for information on the message.
+
+**Rooms Closed Snippet**  
+: Optional. If provided with a snippet ID (an integer from the snippets page), this snippet will be displayed in place of the reservation creation form in the public interface. If this is not provided the Result Message "roomClosed" will appear instead. 
+
 **Create Same Day Reservation**  
 : Allow the users to create reservations for the current day. If set to know only future reservations are allowed.
 

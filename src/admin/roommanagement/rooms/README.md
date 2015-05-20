@@ -15,3 +15,6 @@ Room Configuration
 
 **Room Template**  
 : The template that applies to this room
+
+**Rooms Closed**  
+: The room in this policy are closed. Public scheduling is removed and a message is displayed. The message is determined by the policy governing the room. See **Rooms Closed Snippet** on the Policy page for information on the message.
