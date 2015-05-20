@@ -5,6 +5,7 @@ recurseInsert("includes/createReservations.php","php");
 
 $snippet = new Snippet("pageContent","content");
 
+$roomClosed = FALSE;
 $error      = FALSE;
 $roomID = "";
 if (!isset($_GET['MYSQL']['room'])) {
@@ -22,6 +23,12 @@ if ($room !== FALSE && isset($room['building']) && $room['publicViewing'] == '1'
 	$roomObj      = new room;
 	$roomPolicy   = getRoomPolicy($roomID);
 	$buildingName = getBuildingName($room['building']);
+
+	// is the room closed?
+	if ($roomPolicy['roomsClosed'] == '1' || $room['roomClosed'] == "1") {
+		$roomClosed        = TRUE;
+		$localvars->set("roomClosedMessage",(!isnull($roomPolicy['roomsClosedSnippet']) && $roomPolicy['roomsClosedSnippet'] > 0)?$roomPolicy['roomsClosedSnippet']:getResultMessage("roomClosed"));
+	}
 
 	$userinfo = new userInfo();
 	if ($userinfo->get(session::get("username"))) {
@@ -191,7 +198,15 @@ templates::display('header');
 <section id="reservationsReserveRoom">
 	<h4>Reserve Room</h4>
 	<hr class="roomHR" />
-	<?php if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
+	<?php if ($roomClosed) { ?>
+
+	<?php if (is_numeric($localvars->get("roomClosedMessage"))) { ?>
+		{snippet id="{local var="roomClosedMessage"}" field="content"}
+	<?php } else { ?>
+		<p>{local var="roomClosedMessage"}</p>
+	<?php } ?>
+
+	<?php } else if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
 	<?php if(is_empty(session::get("username"))) { ?>
 
@@ -264,7 +279,6 @@ templates::display('header');
 
 <!-- Room Availability -->
 <section class="roomAvailability">
-	<?php if ($roomPolicy['publicViewing'] == 1) { ?>
 		<br>
 		<br>
 		<h4>Room Availability</h4>
@@ -300,7 +314,6 @@ templates::display('header');
 
 			</tbody>
 		</table>
-	<?php } ?>
 </section>	
 
 <!-- Advanced Search -->
