@@ -17,7 +17,7 @@ else {
 
 $room         = getRoomInfo($roomID);
 
-if ($room !== FALSE && isset($room['building'])) {
+if ($room !== FALSE && isset($room['building']) && $room['publicViewing'] == '1') {
 
 	$roomObj      = new room;
 	$roomPolicy   = getRoomPolicy($roomID);
@@ -115,7 +115,14 @@ templates::display('header');
 
 	{local var="prettyPrint"}
 
-<h3 class="roomH3" style="display: inline-block;">{local var="displayName"} in {local var="buildingName"}</h3>
+<h3 class="roomH3" style="display: inline-block;">
+<?php if ($room['publicViewing'] == '1') { ?> 
+	{local var="displayName"} in {local var="buildingName"}
+<?php } else { ?> 
+	Room Not Found
+<?php } ?>
+
+</h3>
 
 <!-- Extra Links -->
 <a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
@@ -125,6 +132,7 @@ templates::display('header');
 <hr class="roomHR roomTabletDesktop" />
 
 <!-- Room Information -->
+<?php if ($room['publicViewing'] == '1') { ?> 
 <section id="reservationsRoomInformation">
 	<h4>Room Information</h4>
 	<hr class="roomHR" />
@@ -299,6 +307,8 @@ templates::display('header');
 <div style="clear:both;"></div>
 <hr class="roomHR roomMobile" />
 <a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
+
+<<?php } // if room is publically viewable ?>
 
 <div class="clear:both;"></div>
 <br>
