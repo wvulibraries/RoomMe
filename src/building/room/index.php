@@ -278,6 +278,7 @@ templates::display('header');
 <div style="clear:both;"</div>
 
 <!-- Room Availability -->
+<?php if (!$roomClosed) { ?>
 <section class="roomAvailability">
 		<br>
 		<br>
@@ -315,13 +316,14 @@ templates::display('header');
 			</tbody>
 		</table>
 </section>	
+<?php } ?>
 
 <!-- Advanced Search -->
 <div style="clear:both;"></div>
 <hr class="roomHR roomMobile" />
 <a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
 
-<<?php } // if room is publically viewable ?>
+<?php } // if room is publically viewable ?>
 
 <div class="clear:both;"></div>
 <br>
