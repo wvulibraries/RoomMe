@@ -200,12 +200,14 @@ templates::display('header');
 	<hr class="roomHR" />
 	<?php if ($roomClosed) { ?>
 
-	<?php if (is_numeric($localvars->get("roomClosedMessage"))) { ?>
+	<div id="closedMessageContainer">
+		<?php if (is_numeric($localvars->get("roomClosedMessage"))) { ?>
 		{snippet id="{local var="roomClosedMessage"}" field="content"}
-	<?php } else { ?>
-		<p>{local var="roomClosedMessage"}</p>
-	<?php } ?>
-
+		<?php } else { ?>
+		<p id="genericClosedMessage">{local var="roomClosedMessage"}</p>
+		<?php } ?>
+	</div>
+	
 	<?php } else if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
 	<?php if(is_empty(session::get("username"))) { ?>
