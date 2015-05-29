@@ -504,7 +504,7 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 /*********************************************************************
 	768px to 1024px
 **********************************************************************/
-@media screen and (min-width: 754px) {
+@media screen and (min-width: 768px) {
 	#reservationsBuildingRoomsList ul li {
 		width: 47%;
 		margin: 0 6% 40px 0;
@@ -555,7 +555,7 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 /*********************************************************************
 	1024px and up
 **********************************************************************/
-@media screen and (min-width: 1010px) {
+@media screen and (min-width: 1024px) {
 	#reservationsBuildingRoomsList ul li {
 		width: 30%;
 		margin: 0 5% 40px 0;
