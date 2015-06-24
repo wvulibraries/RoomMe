@@ -5,8 +5,8 @@ $form->linkToDatabase(array(
     'table' => "equipement"
 ));
 
-$form->insertTitle = "New Equipement";
-$form->editTitle   = "Edit Equipement";
+$form->insertTitle = "New Equipment";
+$form->editTitle   = "Edit Equipment";
 
 $form->addField(
     array(
@@ -21,7 +21,7 @@ $form->addField(
 $form->addField(
     array(
         'name'            => "name",
-        'label'           => "Equipement Name",
+        'label'           => "Equipment Name",
         'showInEditStrip' => TRUE,
         'required'        => TRUE,
         'type'            => 'text'
