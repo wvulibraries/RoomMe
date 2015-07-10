@@ -7,6 +7,7 @@ $form->linkToDatabase(array(
 
 $form->insertTitle = "New Equipment";
 $form->editTitle   = "Edit Equipment";
+$form->submitFieldCSSEdit = "display: none;";
 
 $form->addField(
     array(
