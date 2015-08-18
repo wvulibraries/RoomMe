@@ -16,7 +16,7 @@ $buildingName = getBuildingName($buildingID);
 $localvars->set("libraryName",htmlSanitize($buildingName));
 
 
-$buildingRooms = getRoomsForBuilding($buildingID);
+$buildingRooms = getRoomsForBuilding($buildingID,TRUE);
 
 $localvars->set("errors",errorHandle::prettyPrint());
 
