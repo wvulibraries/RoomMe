@@ -31,7 +31,6 @@ html, body, form, nav, ul {
     width: 90%;
     margin: 0px auto;
     display: block;
-    max-width: 1000px;
     height: auto;
     overflow: hidden;
 }
