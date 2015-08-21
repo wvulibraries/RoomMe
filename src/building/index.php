@@ -81,21 +81,7 @@ templates::display('header');
 	<!-- Rooms Navigation -->
 	<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
 
-	<!-- Mobile UI -->			
-	<a class="policyLink roomMobile" href="{local var="policiesPage"}">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
-
-	<?php if (is_empty(session::get("username"))) { ?>
-		<a id="userLoginSubmit" href="{local var="loginURL"}" class="roomMobile bSubmit">
-			<i class="fa fa-user"></i> User Login
-		</a>
-	<?php } else { ?>
-		<a id="userLoginSubmit" href="{local var="roomReservationHome"}/calendar/user/" class="roomMobile bSubmit">
-			<i class="fa fa-check"></i> My Reservations
-		</a>
-		<a id="userLoginSubmit" href="{engine var="logoutPage"}?csrf={engine name="csrfGet"}" class="roomMobile bSubmit">
-			<i class="fa fa-user"></i> User Logout
-		</a>
-	<?php } ?>
+	 
 
 <?php
 templates::display('footer');
