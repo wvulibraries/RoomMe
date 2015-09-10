@@ -84,8 +84,10 @@ $form->addField(
         'type'            => 'select',
         'duplicates'      => TRUE,
         'options'         => array(
-			'name'   => 'Room Name',
-			'number' => 'Room Number'
+			'name'        => 'Room Name',
+			'number'      => 'Room Number',
+            'name,number'  => 'Room Name, Then Number',
+            'number,name'  => 'Room Number, Then Name'
         	)
     )
 );

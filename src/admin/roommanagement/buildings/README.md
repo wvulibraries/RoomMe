@@ -17,7 +17,7 @@ Building Configuration
 : How to display room name on building calendar. Possible variables are {name} and {number}
 
 **Room Sort Order**  
-: How to sort the rooms, by name or number
+: How to sort the rooms. By Name, By Number, By Name and then Number, by Number and then Name.
 
 **Period**  
 : Number of days in a "period."  The period is a a running period based on the current time. If a period of 14 is set the current period is 7 days prior and 7 days ahead of the current date.  Can be over ridden on the policy. 
