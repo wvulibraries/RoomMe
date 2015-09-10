@@ -132,9 +132,10 @@ class building {
 	// if publicViewing is TRUE, only return the rooms that are publically viewable
 	public function getRoomIDs($id,$publicViewing=TRUE) {
 
-		$roomIDs = array();
+		$roomIDs  = array();
+		$building = $this->get($id);
 
-		$sql       = sprintf("SELECT ID FROM `rooms` WHERE `building`=? ORDER BY `name`");
+		$sql       = sprintf("SELECT ID FROM `rooms` WHERE `building`=? ORDER BY %s", $building['roomSortOrder']);
 		$sqlResult = $this->db->query($sql,array($id));
 
 		if ($sqlResult->error()) {
