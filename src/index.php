@@ -20,7 +20,7 @@ $localvars->set("yearSelect",$date->dropdownYearSelect(0,1,TRUE,array("id"=>"sta
 
 $localvars->set("headerDate",date("l, F j"));
 
-templates::display('header'); 
+templates::display('header');
 ?>
 
 	<!-- Reservations Section -->
@@ -32,26 +32,26 @@ templates::display('header');
 
 	<!-- Extra Links -->
 	<a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
-	<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
+	<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies
 		<i class="fa fa-exclamation-circle"></i>
 	</a>
 
 	<hr class="roomHR roomTabletDesktop" />
 	<div class="styled-select roomTabletDesktop">
 		<select id="building_modal">
-			{local var="buildingSelectOptions"}             
+			{local var="buildingSelectOptions"}
 		</select>
 	</div>
 	<div class="styled-select roomTabletDesktop">
 		{local var="monthSelect"}
-	</div>                                          
+	</div>
 	<div class="styled-select roomTabletDesktop">
 		{local var="daySelect"}
 	</div>
 	<div class="styled-select roomTabletDesktop">
-		{local var="yearSelect"} 
+		{local var="yearSelect"}
 	</div>
-	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop">
+	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop button_inactive">
 		<i class="fa fa-calendar"></i> Find A Room
 	</a>
 	<div style="clear:both;"></div>
@@ -70,7 +70,7 @@ templates::display('header');
 	<!-- Calendar Call -->
 	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
 		<thead>
-			<tr id="reservationsRoomTableHeaderRow">			
+			<tr id="reservationsRoomTableHeaderRow">
 			</tr>
 		</thead>
 		<tbody id="reservationsRoomTableBody">
@@ -84,6 +84,6 @@ templates::display('header');
 	<!-- Rooms NAvigation -->
 	<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
 
-	 
+
 
 <?php templates::display('footer'); ?>

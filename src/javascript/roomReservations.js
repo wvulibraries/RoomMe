@@ -9,6 +9,10 @@ $(function() {
 		.on('change', '#listBuildingSelect',  handler_listBuildingSelect)
 		.on('click',  '.pagerLink',           handler_pager)
 		.on('change', '#openEvent',           handler_openEvent)
+		.on('change', '#building_modal', handler_activate_submit_button)
+		.on('change', '#start_month_modal', handler_activate_submit_button)
+		.on('change', '#start_day_modal', handler_activate_submit_button)
+		.on('change', '#start_year_modal', handler_activate_submit_button)
 });
 
 
@@ -17,7 +21,12 @@ $(function() {
 var windowSize;
 var sizeBreakPoint_mobile;
 var sizeBreakPoint_tablet;
-var resizeTimer; 
+var resizeTimer;
+
+function handler_activate_submit_button() {
+	$("#calUpdateFormSubmit").removeClass("button_inactive");
+	$("#calUpdateFormSubmit").addClass("button_active");
+}
 
 function handler_openEvent() {
 
@@ -36,7 +45,7 @@ function initialResize() {
 	windowSize = $(window).width();
 	sizeBreakPoint_mobile = 768;
 	sizeBreakPoint_tablet = 1024;
-	handle_resizing();       
+	handle_resizing();
 }
 
 function handle_resizing(){
@@ -45,7 +54,7 @@ function handle_resizing(){
 	if (windowSize < sizeBreakPoint_mobile) {
 		numberOfColumns = 0;
 	}
-	else if (windowSize < sizeBreakPoint_tablet && windowSize >= sizeBreakPoint_mobile) {	
+	else if (windowSize < sizeBreakPoint_tablet && windowSize >= sizeBreakPoint_mobile) {
 		numberOfColumns = 4;
 	}
 	else if (windowSize >= sizeBreakPoint_tablet) {
@@ -59,14 +68,14 @@ function handle_resizing(){
 
 	buildCalendarTable(calendarData,0,numberOfColumns);
 	setPagerAttributes(0,numberOfColumns);
-	
+
 }
 
 
 $(window).resize(function() {
      clearTimeout(resizeTimer);
      resizeTimer = setTimeout(handle_resizing, 100);
-}); 
+});
 
 
 function initialCalendarLoad() {
@@ -157,7 +166,7 @@ function buildRoomList(data) {
 		$("#mobileList").append('<li><h4>'+index+'</h4></li>');
 
 		$.each(building.rooms, function (index, room) {
-		
+
 			// is room available at the nearest 30?
 			if (room.times[closestHalfHour].reserved) {
 				return;
@@ -238,9 +247,9 @@ function buildCalendarTable(data,startCols,endCols) {
     			// and there hasn't been a reservation indicator added for this hour yet
     			// and it isn't the last 15 minutes of an hour
     			// and the next 15 minute block isn't reserved
-    			// Add the indicator. 
-    			// 
-    			// This should only add the indicator if there is at least 30 minutes in a block. 
+    			// Add the indicator.
+    			//
+    			// This should only add the indicator if there is at least 30 minutes in a block.
     			else if (time.reserved === false && hasAddIndicator === false && time.hourType != "quarterTill" && typeof room.times[parseInt(index)+900] != 'undefined' && room.times[parseInt(index)+900].reserved === false) {
     				hasAddIndicator = true;
     				tdContent = '<a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'&reservationSTime='+index+'" class="roomClick"><i class="fa fa-plus"></i></a>';
@@ -267,7 +276,7 @@ function handler_getCalendarJSON(sync) {
 	var objectID = (calType == "building")?$("#building_modal").val():$("#room_modal").val();
 	var url      = roomReservationHome+"/includes/ajax/getCalendarJson.php?type="+calType+"&objectID="+objectID+"&month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
 	// alert(url);
-	
+
 	$.ajax({
 		url: url,
 		dataType: "json",
@@ -291,14 +300,14 @@ function handler_getCalendarJSON(sync) {
 
 function setHeaderDate() {
 	var url = roomReservationHome+"/includes/ajax/getHeaderDate.php?month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
-	
+
 	$.ajax({
 		url: url,
 		dataType: "html",
 		success: function(responseData) {
-			
+
 			$("#headerDate").html(responseData);
-			
+
 
 		},
 		error: function(jqXHR,error,exception) {
