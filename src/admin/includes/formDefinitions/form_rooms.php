@@ -5,8 +5,8 @@ $form->linkToDatabase(array(
     'table' => "rooms"
 ));
 
-$form->insertTitle = "New Room Template";
-$form->editTitle   = "Edit Room Templates";
+$form->insertTitle = "New Room";
+$form->editTitle   = "Edit Rooms";
 $form->submitFieldCSSEdit = "display: none;";
 
 $form->addField(
@@ -52,7 +52,7 @@ $form->addField(
         'blankOption'     => "-- Select Building --",
         'linkedTo'         => array(
         	'foreignTable' => 'building',
-        	'foreignKey'   => 'ID',       
+        	'foreignKey'   => 'ID',
         	'foreignLabel' => 'name'
             )
     )
@@ -79,7 +79,7 @@ $form->addField(
         'blankOption'     => "-- Select Room Template --",
         'linkedTo'         => array(
         	'foreignTable' => 'roomTemplates',
-        	'foreignKey'   => 'ID',       
+        	'foreignKey'   => 'ID',
         	'foreignLabel' => 'name'
             )
     )
