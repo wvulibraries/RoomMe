@@ -228,6 +228,12 @@ function buildCalendarTable(data,startCols,endCols) {
 
     				bookings[time.booking] = time.booking;
     			}
+    			else if (time.reserved && time.displayTime == '' && time.username == 'Closed' && typeof bookings["closed" + room.roomID] == 'undefined') {
+
+    				tdContent = '<span class="reservationName">'+time.username+'</span>';
+    				bookings["closed" + room.roomID] = "closed";
+
+    			}
     			// If the quarter hour is not reserved
     			// and there hasn't been a reservation indicator added for this hour yet
     			// and it isn't the last 15 minutes of an hour

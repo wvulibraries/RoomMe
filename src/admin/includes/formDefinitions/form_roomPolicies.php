@@ -5,8 +5,9 @@ $form->linkToDatabase(array(
     'table' => "policies"
 ));
 
-$form->insertTitle = "New Policy Type";
-$form->editTitle   = "Edit Policy Types";
+$form->insertTitle        = "New Policy Type";
+$form->editTitle          = "Edit Policy Types";
+$form->submitFieldCSSEdit = "display: none;";
 
 $form->addField(
     array(

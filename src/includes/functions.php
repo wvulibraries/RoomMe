@@ -52,7 +52,7 @@ function getRoomInfo($ID) {
 	$localvars = localvars::getInstance();
 	$db        = db::get($localvars->get('dbConnectionName'));
 
-	$sql = sprintf("SELECT rooms.*, policies.publicScheduling as publicScheduling, policies.publicViewing as publicViewing, policies.url as policyURL, roomTemplates.url as roomTemplateURL, roomTemplates.mapURL as mapURL, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID LEFT JOIN `policies` on roomTemplates.policy=policies.ID LEFT JOIN building ON building.ID=rooms.building WHERE rooms.ID=? LIMIT 1");
+	$sql = sprintf("SELECT rooms.*, policies.roomsClosed as roomsClosed, policies.publicScheduling as publicScheduling, policies.publicViewing as publicViewing, policies.url as policyURL, roomTemplates.url as roomTemplateURL, roomTemplates.mapURL as mapURL, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID LEFT JOIN `policies` on roomTemplates.policy=policies.ID LEFT JOIN building ON building.ID=rooms.building WHERE rooms.ID=? LIMIT 1");
 	$sqlResult = $db->query($sql,array($ID));
 
 	if ($sqlResult->error()) {
@@ -89,7 +89,7 @@ function getRoomInfo($ID) {
 }
 
 // @todo move into building class
-function getRoomsForBuilding($ID) {
+function getRoomsForBuilding($ID,$publicViewing=FALSE) {
 
 	$engine    = EngineAPI::singleton();
 	$localvars = localvars::getInstance();
@@ -113,7 +113,15 @@ function getRoomsForBuilding($ID) {
 		return(FALSE);
 	}
 
+	$roomObj = new room;
+
 	while($row = $sqlResult->fetch()) {
+
+		$roomPolicy = $roomObj->getPolicyInfo($row['ID']);
+		if ($publicViewing && $roomPolicy['publicViewing'] != '1') {
+			continue;
+		}
+
 		$row['displayName'] = str_replace("{name}", $row['name'], $building['roomListDisplay']);
 		$row['displayName'] = str_replace("{number}", $row['number'], $row['displayName']);
 		$rooms[] = $row;

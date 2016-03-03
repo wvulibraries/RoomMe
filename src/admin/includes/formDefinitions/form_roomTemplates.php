@@ -10,6 +10,7 @@ $form->linkToDatabase(array(
 
 $form->insertTitle = "New Room Template";
 $form->editTitle   = "Edit Room Templates";
+$form->submitFieldCSSEdit = "display: none;";
 
 $form->addField(
     array(

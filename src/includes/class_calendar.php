@@ -310,14 +310,21 @@ class calendar {
 			$roomArray['displayName'] = $roomInfo['displayName'];
 			$roomArray['roomID']      = $roomInfo['ID'];
 
+			$roomClosed = ($roomInfo['roomsClosed'] == '1' || $roomInfo['roomClosed'] == "1")?TRUE:FALSE;
+
 			foreach ($calendarArray['times'] as $time=>$timeInfo) {
 
-				$roomArray['times'][$time]['username']    = "";
+				$roomArray['times'][$time]['username']    = ($roomClosed)?"Closed":"";
 				$roomArray['times'][$time]['displayTime'] = "";
 				$roomArray['times'][$time]['duration']    = "";
-				$roomArray['times'][$time]['reserved']    = FALSE;
+				$roomArray['times'][$time]['reserved']    = ($roomClosed)?TRUE:FALSE; 
 				$roomArray['times'][$time]['booking']     = "";
 				$roomArray['times'][$time]['hourType']    = $timeInfo['type'];
+
+				// if closed, continue
+				if ($roomClosed) {
+					continue;
+				}
 
 				foreach ($bookings as $bookingsIndex=>$booking) {
 

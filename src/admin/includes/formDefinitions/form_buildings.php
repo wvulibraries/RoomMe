@@ -7,6 +7,7 @@ $form->linkToDatabase(array(
 
 $form->insertTitle = "New Building";
 $form->editTitle   = "Edit Buildings";
+$form->submitFieldCSSEdit = "display: none;";
 
 $form->addField(
     array(
@@ -83,8 +84,10 @@ $form->addField(
         'type'            => 'select',
         'duplicates'      => TRUE,
         'options'         => array(
-			'name'   => 'Room Name',
-			'number' => 'Room Number'
+			'name'        => 'Room Name',
+			'number'      => 'Room Number',
+            'name,number'  => 'Room Name, Then Number',
+            'number,name'  => 'Room Number, Then Name'
         	)
     )
 );

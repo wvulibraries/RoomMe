@@ -200,12 +200,14 @@ templates::display('header');
 	<hr class="roomHR" />
 	<?php if ($roomClosed) { ?>
 
-	<?php if (is_numeric($localvars->get("roomClosedMessage"))) { ?>
+	<div id="closedMessageContainer">
+		<?php if (is_numeric($localvars->get("roomClosedMessage"))) { ?>
 		{snippet id="{local var="roomClosedMessage"}" field="content"}
-	<?php } else { ?>
-		<p>{local var="roomClosedMessage"}</p>
-	<?php } ?>
-
+		<?php } else { ?>
+		<p id="genericClosedMessage">{local var="roomClosedMessage"}</p>
+		<?php } ?>
+	</div>
+	
 	<?php } else if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
 	<?php if(is_empty(session::get("username"))) { ?>
@@ -278,6 +280,7 @@ templates::display('header');
 <div style="clear:both;"</div>
 
 <!-- Room Availability -->
+<?php if (!$roomClosed) { ?>
 <section class="roomAvailability">
 		<br>
 		<br>
@@ -315,13 +318,14 @@ templates::display('header');
 			</tbody>
 		</table>
 </section>	
+<?php } ?>
 
 <!-- Advanced Search -->
 <div style="clear:both;"></div>
 <hr class="roomHR roomMobile" />
 <a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
 
-<<?php } // if room is publically viewable ?>
+<?php } // if room is publically viewable ?>
 
 <div class="clear:both;"></div>
 <br>

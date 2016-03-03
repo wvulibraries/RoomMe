@@ -7,7 +7,7 @@ templates::display('header');
 ?>
 
 <header>
-<h1>Equipement Management</h1>
+<h1>Equipment Management</h1>
 </header>
 
 <section>

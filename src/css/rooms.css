@@ -6,11 +6,31 @@ html, body, form, nav, ul {
     padding: 0px;
     font-family: sans-serif;
 }
+.ask {
+	display: block;
+	position: fixed;
+	z-index: 200;
+	right: 0;
+	top:250px;
+	box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+	border-radius: 5px 0px 0px 5px;
+    background: #fff;
+    border-color: #fff;
+    border-width: 2px 0 2px 2px;
+    border-style: solid;
+}
+.ask a {
+    display: block;
+    height: 127px;
+    width: 40px;
+}
+.ask a:hover {
+    opacity: 0.75;
+} 
 .wrap {
     width: 90%;
     margin: 0px auto;
     display: block;
-    max-width: 1000px;
     height: auto;
     overflow: hidden;
 }
