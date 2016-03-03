@@ -97,4 +97,15 @@ $form->addField(
     )
 );
 
+$form->addField(
+    array(
+        'name'            => "capacity",
+        'label'           => "Room Capacity",
+        'showInEditStrip' => TRUE,
+        'required'        => FALSE,
+        'duplicates'      => TRUE,
+        'type'            => 'text'
+    )
+);
+
 ?>

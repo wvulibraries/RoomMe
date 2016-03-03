@@ -46,6 +46,7 @@ if ($room !== FALSE && isset($room['building']) && $room['publicViewing'] == '1'
 	$localvars->set("loginURL",    $engineVars['loginPage'].'?page='.$_SERVER['PHP_SELF']."&qs=".(urlencode($_SERVER['QUERY_STRING'])));
 	$localvars->set("mapURL",      htmlSanitize($room['mapURL']));
 	$localvars->set("displayName", htmlSanitize($room['displayName']));
+	$localvars->set("capacity",    htmlSanitize($room['capacity']));
 
 	$localvars->set("roomPicture", $roomObj->getPicture($room['ID']));
 
@@ -123,9 +124,9 @@ templates::display('header');
 	{local var="prettyPrint"}
 
 <h3 class="roomH3" style="display: inline-block;">
-<?php if ($room['publicViewing'] == '1') { ?> 
+<?php if ($room['publicViewing'] == '1') { ?>
 	{local var="displayName"} in {local var="buildingName"}
-<?php } else { ?> 
+<?php } else { ?>
 	Room Not Found
 <?php } ?>
 
@@ -133,13 +134,13 @@ templates::display('header');
 
 <!-- Extra Links -->
 <a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
-<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
+<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies
 	<i class="fa fa-exclamation-circle"></i>
 </a>
 <hr class="roomHR roomTabletDesktop" />
 
 <!-- Room Information -->
-<?php if ($room['publicViewing'] == '1') { ?> 
+<?php if ($room['publicViewing'] == '1') { ?>
 <section id="reservationsRoomInformation">
 	<h4>Room Information</h4>
 	<hr class="roomHR" />
@@ -156,6 +157,13 @@ templates::display('header');
 			<td><strong>Building:</strong></td>
 			<td>{local var="buildingName"}</td>
 		</tr>
+
+		<?php if (isset($room['capacity']) && !is_empty($room['capacity'])) { ?>
+		<tr>
+			<td><strong>Capacity:</strong></td>
+			<td>{local var="capacity"}</td>
+		</tr>
+		<?php } ?>
 
 		<?php if (isset($room['mapURL']) && !is_empty($room['mapURL'])) { ?>
 		<tr>
@@ -176,8 +184,8 @@ templates::display('header');
 			<td><strong>Equipment:</strong></td>
 			<td>
 				<ul>
-					<?php 
-						foreach ($room['equipment'] as $I=>$equipment) { 
+					<?php
+						foreach ($room['equipment'] as $I=>$equipment) {
 					?>
 						<li>
 							<a href="equipment/?id=<?php print htmlSanitize($equipment['ID']); ?>"><?php print htmlSanitize($equipment['name']); ?></a>
@@ -207,7 +215,7 @@ templates::display('header');
 		<p id="genericClosedMessage">{local var="roomClosedMessage"}</p>
 		<?php } ?>
 	</div>
-	
+
 	<?php } else if(isset($roomPolicy['publicScheduling']) && $roomPolicy['publicScheduling']=="1") { // public scheduling?>
 
 	<?php if(is_empty(session::get("username"))) { ?>
@@ -226,20 +234,20 @@ templates::display('header');
 
 		<strong>Select The Date:</strong>
 		<div class="roomReservationRows">
-			<span class="reserveRoomInput"><label for="start_month">Month:</label> 
+			<span class="reserveRoomInput"><label for="start_month">Month:</label>
 			{local var="monthSelect"}</span>
-			<span class="reserveRoomInput"><label for="start_day">Day:</label> 
+			<span class="reserveRoomInput"><label for="start_day">Day:</label>
 			{local var="daySelect"}</span>
-			<span class="reserveRoomInput"><label for="start_year">Year:</label> 
+			<span class="reserveRoomInput"><label for="start_year">Year:</label>
 			{local var="yearSelect"}</span>
 		</div>
 		<strong>Select The Start Time:</strong>
-		<div class="roomReservationRows">	
+		<div class="roomReservationRows">
 			<span class="reserveRoomInput"><label for="start_hour">Hour:</label>
 			{local var="shourSelect"}</span>
 			<span class="reserveRoomInput"><label for="start_minute">Minute:</label>
 			{local var="sminSelect"}</span>
-		</div>	
+		</div>
 		<strong>Select The Duration:</strong>
 		<div class="roomReservationRows">
 			<span class="reserveRoomInput"><label for="end_hour">Hour:</label>
@@ -255,17 +263,17 @@ templates::display('header');
 				<option value="0">No</option>
 				<option value="1">Yes</option>
 			</select></span>
-			
+
 			<br />
 			<label for="openEventDescription" class="openEventDescription" style="display:none;">Describe your event:</label>
 			<textarea id="openEventDescription" name="openEventDescription"  class="openEventDescription" rows="5" style="display:none;"></textarea>
 
 			<br><br>
 			<?php } ?>
-			
+
 			<label name="notificationEmail" class="requiredField" >Email Address:</label>
 			<input type="email" name="notificationEmail" id="notificationEmail" placeholder="" value="{local var="useremail"}" required />
-		</div>	
+		</div>
 		<input id="nowSubmit" type="submit" name="createSubmit" value="Reserve this Room" />
 	</form>
 
@@ -273,7 +281,7 @@ templates::display('header');
 	<?php } else { // public scheduling?>
 
 		{snippet id="8" field="content"}
-		
+
 	<?php } ?>
 </section>
 
@@ -292,12 +300,12 @@ templates::display('header');
 
 		<div class="styled-select">
 			{local var="monthSelect_modal"}
-		</div>                                          
+		</div>
 		<div class="styled-select">
 			{local var="daySelect_modal"}
 		</div>
 		<div class="styled-select">
-			{local var="yearSelect_modal"} 
+			{local var="yearSelect_modal"}
 		</div>
 		<a id="calUpdateFormSubmit" class="bSubmit">
 			<i class="fa fa-calendar"></i> Change Date
@@ -310,14 +318,14 @@ templates::display('header');
 
 		<table id="reservationsRoomTable" class="iroomTable" cellspacing="0" cellpadding="0">
 			<thead>
-				<tr id="reservationsRoomTableHeaderRow">			
+				<tr id="reservationsRoomTableHeaderRow">
 				</tr>
 			</thead>
 			<tbody id="reservationsRoomTableBody">
 
 			</tbody>
 		</table>
-</section>	
+</section>
 <?php } ?>
 
 <!-- Advanced Search -->
@@ -333,7 +341,7 @@ templates::display('header');
 <!-- Rooms Navigation -->
 <?php recurseInsert("includes/roomsByBuilding.php","php") ?>
 
-<!-- Mobile UI -->			
+<!-- Mobile UI -->
 <a class="policyLink roomMobile" href="{local var="policiesPage"}">Reservation Policies <i class="fa fa-exclamation-circle"></i></a>
 
 <?php if (is_empty(session::get("username"))) { ?>
