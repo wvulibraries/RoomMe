@@ -1,9 +1,9 @@
 <?php
 
 class reservation {
-	
+
 	public $reservation = NULL;
-	
+
 	private $localvars;
 	private $engine;
 	private $db;
@@ -31,7 +31,7 @@ class reservation {
 			errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
 			return FALSE;
 		}
-		
+
 		$this->reservation = $sqlResult->fetch();
 
 		if ($this->setBuilding($this->reservation['buildingID']) === FALSE) {
@@ -41,7 +41,7 @@ class reservation {
 			return FALSE;
 		}
 
-		return TRUE;		
+		return TRUE;
 
 	}
 
@@ -79,7 +79,7 @@ class reservation {
 		$groupname         = "";
 		$comments          = "";
 		// If the fields are set AND we are coming from the staff interface, we can modify $via and $override
-		// @TODO we need to handle the preg_match dynamically. 
+		// @TODO we need to handle the preg_match dynamically.
 
 		if (isset($_POST['MYSQL']['via']) && (preg_match('/\/admin\//',$_SERVER['PHP_SELF']))) {
 			$via      = $_POST['MYSQL']['via'];
@@ -138,7 +138,7 @@ class reservation {
 		$sUnix = mktime($shour,$smin,0,$month,$day,$year);
 
 		// Convert the duration into hours and minutes
-		
+
 		$ehour = (int)$ehour * 60 * 60;
 		$emin  = (int)$emin * 60;
 
@@ -160,7 +160,7 @@ class reservation {
 		// }
 
 		// check for a duplicate reservation
-		// Check to make sure the reservation is new. If it is an update, it isn't a duplicate. 
+		// Check to make sure the reservation is new. If it is an update, it isn't a duplicate.
 		if ($this->isNew() && $this->duplicateReservationCheck($username,$roomID,$sUnix,$eUnix) !== FALSE) {
 			errorHandle::errorMsg(getResultMessage("duplicateReservation"));
 			return FALSE;
@@ -648,16 +648,24 @@ class reservation {
 
 			$emailMsg  = "Your room reservation has been successfully created: \n";
 			$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
-			$emailMsg .= sprintf("Time: %s - %s\n", 
+			$emailMsg .= sprintf("Time: %s - %s\n",
 				date("g:i a",$sUnix),
 				date("g:i a",$eUnix)
 				);
 			$emailMsg .= "Building: ".$buildingName."\n";
 			$emailMsg .= "Room: ".$roomName['displayName']."\n";
 
+			$buildingObject = new building;
+			$building       = $buildingObject->get($roomName['building']);
+
 			$mail = new mailSender();
 			$mail->addRecipient($_POST['HTML']['notificationEmail']);
-			$mail->addSender("libsys@mail.wvu.edu", "WVU Libraries");
+			if (isset($building['fromEmail']) && !is_empty($building['fromEmail'])) {
+				$mail->addSender($building['fromEmail'], "WVU Libraries");
+			}
+			else {
+				$mail->addSender("libsys@mail.wvu.edu", "WVU Libraries");
+			}
 			$mail->addSubject($subject);
 			$mail->addBody($emailMsg);
 
@@ -677,7 +685,7 @@ class reservation {
 			$emailMsg .= "Created By:".$_POST['HTML']['notificationEmail']."\n\n";
 
 			$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
-			$emailMsg .= sprintf("Time: %s - %s\n", 
+			$emailMsg .= sprintf("Time: %s - %s\n",
 				date("g:i a",$sUnix),
 				date("g:i a",$eUnix)
 				);
@@ -772,7 +780,7 @@ class reservation {
 
 	// $sqlResult is the result set from a sql call
 	// Returns true if we are trying to update a reservation and the result conflict is ONLY itself
-	// Returns false otherwise. 
+	// Returns false otherwise.
 	private function updatingSelf($sqlResult) {
 
 		if ($this->isNew()) {
@@ -793,7 +801,7 @@ class reservation {
 
 	}
 
-	// False is good. 
+	// False is good.
 	private function multipleBooksings($username,$sUnix,$eUnix) {
 
 		$sql       = sprintf("SELECT * FROM `reservations` WHERE ((startTime<=? AND endTime>?) OR (startTime<? AND endTime>=?)) AND username=?");
@@ -804,7 +812,7 @@ class reservation {
 			return TRUE; // we return true, because there was an error and we don't want the reservation to submit on error
 		}
 
-		// 0 (or less) rows return, Good to go. 
+		// 0 (or less) rows return, Good to go.
 		if ($sqlResult->rowCount() <= 0) {
 			return FALSE;
 		}
@@ -813,7 +821,7 @@ class reservation {
 
 	}
 
-	// Returns true on reservation conflict. False otherwise. 
+	// Returns true on reservation conflict. False otherwise.
 	//  False is good
 	private function conflictReservationCheck($roomID,$sUnix,$eUnix) {
 
@@ -825,15 +833,15 @@ class reservation {
 			return TRUE; // we return true, because there was an error and we don't want the reservation to submit on error
 		}
 
-		// 0 (or less) rows return, Good to go. 
+		// 0 (or less) rows return, Good to go.
 		if ($sqlResult->rowCount() <= 0) {
 			return FALSE;
 		}
 
 		return !$this->updatingSelf($sqlResult);
 
-		// Check to see if the reservation is conflicting with, ONLY, itself. 
-		// That is OK. 
+		// Check to see if the reservation is conflicting with, ONLY, itself.
+		// That is OK.
 		// if (!$this->isNew() && $sqlResult->rowCount() == 1) {
 		// 	$row = $sqlResult->fetch();
 		// 	if ($row['ID'] == $this->reservation['ID']) {
