@@ -51,24 +51,29 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 	if ($error === FALSE) {
 		$sUnix = mktime($shour,$smin,0,$month,$day,$year);
 
-		if ((int)$shour >= 18 && (int)$ehour < (int)$shour) {
-			// assume the end hour is the next morning/day
+		$ehour = $ehour * 60 * 60;
+		$emin  = $emin  * 60;
 
-			// add 24 hours of seconds to the start time
-			$nextDay = $sunix + 86400;
+		$eUnix = $sUnix + $ehour + $emin;
 
-			// grab the new month, day, year
-			$emonth = date("n",$nextDay);
-			$eday   = date("j",$nextDay);
-			$eyear  = date("Y",$nextDay);
-
-			$eUnix = mktime($ehour,$emin,0,$emonth,$eday,$eyear);
-
-		}
-		else {
-			// otherwise just use what we were given
-			$eUnix = mktime($ehour,$emin,0,$month,$day,$year);
-		}
+		// if ((int)$shour >= 18 && (int)$ehour < (int)$shour) {
+		// 	// assume the end hour is the next morning/day
+		//
+		// 	// add 24 hours of seconds to the start time
+		// 	$nextDay = $sunix + 86400;
+		//
+		// 	// grab the new month, day, year
+		// 	$emonth = date("n",$nextDay);
+		// 	$eday   = date("j",$nextDay);
+		// 	$eyear  = date("Y",$nextDay);
+		//
+		// 	$eUnix = mktime($ehour,$emin,0,$emonth,$eday,$eyear);
+		//
+		// }
+		// else {
+		// 	// otherwise just use what we were given
+		// 	$eUnix = mktime($ehour,$emin,0,$month,$day,$year);
+		// }
 
 
 		// make sure the end time is after the start time
@@ -87,7 +92,7 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 
 		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building=? AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE ( (startTime<? AND endTime<=?) OR (startTime>=? AND endTime>?) AND rooms.building=?)) ORDER BY rooms.%s",
 		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT * FROM `reservations` WHERE ( ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s') ) AND roomID='%s') ORDER BY rooms.%s",
-		
+
 		$sql = sprintf("SELECT rooms.*,
        building.roomlistdisplay AS roomListDisplay
 FROM   rooms
@@ -103,17 +108,17 @@ WHERE  policies.publicscheduling = '1'
                         FROM   rooms
                                LEFT JOIN reservations
                                       ON reservations.roomid = rooms.id
-                        WHERE  ( 
+                        WHERE  (
                                     (
                                          ( ? <  reservations.startTime AND ? > reservations.endTime  )
-                                         OR 
+                                         OR
                                          ( ? <= reservations.startTime AND (? >  reservations.startTime AND ? <= reservations.endTime))
                                          OR
                                          ( (? >=  reservations.startTime AND ? < reservations.endTime) AND ? >= reservations.endTime )
                                          OR
                                          ( ? >=  reservations.startTime AND ? <= reservations.endTime )
                                     )
-                                    AND rooms.building = ? 
+                                    AND rooms.building = ?
                                )
                         )
 ORDER  BY rooms.%s",
@@ -172,7 +177,7 @@ templates::display('header');
 
 <!-- Extra Links -->
 <a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
-<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
+<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies
 	<i class="fa fa-exclamation-circle"></i>
 </a>
 
@@ -261,10 +266,9 @@ templates::display('header');
 		<select name="end_hour" id="end_hour" >
 			<?php
 				for($I=0;$I<=23;$I++) {
-					printf('<option value="%s" %s>%s</option>',
-						($I < 10)?"0".$I:$I,
-						($I == $nextHour)?"selected":"",
-						($displayHour == 24)?$I:(($I==12)?"12pm":(($I>=13)?($I-12)."pm":(($I == 0)?"12am":$I."am")))
+					printf('<option value="%s">%s</option>',
+						$I,
+						$I
 						);
 				}
 			?>
@@ -274,7 +278,7 @@ templates::display('header');
 			<?php
 				for($I=0;$I<60;$I += 15) {
 					printf('<option value="%s">%s</option>',
-						($I < 10)?"0".$I:$I,
+						$I,
 						$I);
 				}
 			?>
@@ -306,7 +310,7 @@ templates::display('header');
 	<!-- Rooms Navigation -->
 	<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
 
-	 
+
 
 <?php
 templates::display('footer');
