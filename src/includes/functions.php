@@ -12,10 +12,10 @@ function buildAttributes($options) {
 
 }
 
-function dropdownDurationSelect($selectHour,$options) {
+function dropdownDurationSelect($selectHour,$options,$length=23) {
 
 	$output = sprintf('<select %s>',buildAttributes($options));
-	for ($I=0;$I<=23;$I++) {
+	for ($I=0;$I<=$length;$I++) {
 		$output .= sprintf('<option value="%s" %s>%s</option>',
 			$I,
 			($I == $selectHour)?"selected":"",

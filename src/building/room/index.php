@@ -111,7 +111,7 @@ $localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"
 $localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year")));
 $localvars->set("shourSelect", $date->dropdownHourSelect(($displayHour == 12)?TRUE:FALSE,$currentHour,array("name"=>"start_hour", "id"=>"start_hour")));
 $localvars->set("sminSelect",  $date->dropdownMinuteSelect("15",0,array("name"=>"start_minute", "id"=>"start_minute"))); // @TODO need to pull increment from room config
-$localvars->set("ehourSelect", dropdownDurationSelect(1,array("name"=>"end_hour", "id"=>"end_hour")));
+$localvars->set("ehourSelect", dropdownDurationSelect(1,array("name"=>"end_hour", "id"=>"end_hour"),$roomPolicy['hoursAllowed']));
 $localvars->set("eminSelect",  $date->dropdownMinuteSelect("15",0,array("name"=>"end_minute", "id"=>"end_minute"))); // @TODO need to pull increment from room config
 
 $localvars->set("monthSelect_modal", $date->dropdownMonthSelect(1,$currentMonth,array("id"=>"start_month_modal")));
