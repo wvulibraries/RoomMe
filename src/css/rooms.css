@@ -6,6 +6,13 @@ html, body, form, nav, ul {
     padding: 0px;
     font-family: sans-serif;
 }
+#imageLoader {
+	max-width: 280px;
+	height: auto;
+	width: 100%;
+	display: none;
+	margin: 0px auto;
+}
 .button_inactive {
 	background: #ededed !important;
 }
@@ -531,6 +538,9 @@ a[class*=bSubmit] {margin: 10px 0 20px 0;}
 	768px to 1024px
 **********************************************************************/
 @media screen and (min-width: 768px) {
+	#imageLoader {
+		display: block;
+	}
 	#reservationsBuildingRoomsList ul li {
 		width: 47%;
 		margin: 0 6% 40px 0;

@@ -68,6 +68,9 @@ templates::display('header');
 	</div>
 
 	<!-- Calendar Call -->
+	<div style="clear: both;"></div>
+	<img id="imageLoader" src="{local var="roomResBaseDir"}/images/loading.gif" />
+	<div style="clear: both;"></div>
 	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
 		<thead>
 			<tr id="reservationsRoomTableHeaderRow">
