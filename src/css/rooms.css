@@ -6,6 +6,9 @@ html, body, form, nav, ul {
     padding: 0px;
     font-family: sans-serif;
 }
+input[type="submit"] {
+	-webkit-appearance: button;
+}
 .ask {
 	display: block;
 	position: fixed;
