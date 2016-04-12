@@ -3,4 +3,4 @@
 /.vagrant/
 sessionLogin.php
 RoomReservationWishlist2014.docx
-roomReservations.sql
+sqlFiles/roomReservations.sql
