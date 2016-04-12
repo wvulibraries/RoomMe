@@ -6,6 +6,9 @@ html, body, form, nav, ul {
     padding: 0px;
     font-family: sans-serif;
 }
+.button_inactive {
+	background: #ededed !important;
+}
 input[type="submit"] {
 	-webkit-appearance: button;
 }
