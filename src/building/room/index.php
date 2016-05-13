@@ -352,7 +352,7 @@ templates::display('header');
 	<a id="userLoginSubmit" href="{local var="roomReservationHome"}/calendar/user/" class="roomMobile bSubmit">
 		<i class="fa fa-check"></i> My Reservations
 	</a>
-	<a id="userLoginSubmit" href="{engine var="logoutPage"}?csrf={engine name="csrfGet"}" class="roomMobile bSubmit">
+	<a id="userLoginSubmit" href="{engine var="logoutPage"}" class="roomMobile bSubmit">
 		<i class="fa fa-user"></i> User Logout
 	</a>
 <?php } ?>
