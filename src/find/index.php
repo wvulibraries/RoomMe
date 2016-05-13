@@ -173,6 +173,12 @@ $localvars->set("prettyPrint",errorHandle::prettyPrint());
 templates::display('header');
 ?>
 
+<section>
+	
+	{local var="results"}
+
+</section>
+
 <h3 class="roomH3" style="display: inline-block;">Find a Room</h3>
 
 <!-- Extra Links -->
@@ -290,14 +296,7 @@ templates::display('header');
 
 <?php if (!is_empty($results)) { ?>
 
-<section>
-	<header>
-		<h3>Rooms Available at the Requested Day and Time</h3>
-	</header>
 
-	{local var="results"}
-
-</section>
 
 <?php } ?>
 

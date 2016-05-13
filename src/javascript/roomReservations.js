@@ -277,6 +277,9 @@ function handler_getCalendarJSON(sync) {
 	var url      = roomReservationHome+"/includes/ajax/getCalendarJson.php?type="+calType+"&objectID="+objectID+"&month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
 	// alert(url);
 
+
+    $('#imageLoader').css('display', 'block');
+
 	$.ajax({
 		url: url,
 		dataType: "json",
@@ -307,7 +310,7 @@ function setHeaderDate() {
 		success: function(responseData) {
 
 			$("#headerDate").html(responseData);
-
+			$('#imageLoader').css('display', 'none');
 
 		},
 		error: function(jqXHR,error,exception) {
