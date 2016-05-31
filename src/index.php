@@ -20,13 +20,17 @@ $localvars->set("yearSelect",$date->dropdownYearSelect(0,1,TRUE,array("id"=>"sta
 
 $localvars->set("headerDate",date("l, F j"));
 
+$localvars->set("future_date_list",future_date_list(time()));
+$localvars->set("available_now",available_now((isset($_GET['MYSQL']['time']))?$_GET['MYSQL']['time']:time(),"2"));
+$localvars->set("now_text",(isset($_GET['MYSQL']['time']))?date("l, M j",$_GET['MYSQL']['time']):"Now");
+
 templates::display('header');
 ?>
 
 	<!-- Reservations Section -->
-	<h3 class="roomH3 roomMobile" style="margin-top: 20px;">Available Now</h3>
+	<h3 class="roomH3 roomMobile" style="margin-top: 20px;">Available {local var="now_text"}</h3>
 	<hr class="roomHR roomMobile" />
-	<ul id="mobileList" class="roomMobile"></ul>
+	<ul id="mobileList" class="roomMobile">{local var="available_now"}</ul>
 
 	<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay" id="headerDate">{local var="headerDate}</span></h3>
 
@@ -57,6 +61,9 @@ templates::display('header');
 	<div style="clear:both;"></div>
 	<h3 class="roomH3 roomMobile" style="margin-top: 40px;">Future Dates</h3>
 	<hr class="roomHR roomMobile" />
+
+	{local var="future_date_list"}
+
 	<a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
 
 	<!-- Table Pager -->

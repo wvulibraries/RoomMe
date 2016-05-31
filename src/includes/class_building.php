@@ -143,8 +143,8 @@ class building {
 			return FALSE;
 		}
 		else {
-			while($row = $sqlResult->fetch()) {
 
+			while($row = $sqlResult->fetch()) {
 				if ($publicViewing) {
 					$roomObj = new room;
 					$roomPolicy = $roomObj->getPolicyInfo($row['ID']);

@@ -146,7 +146,7 @@ function buildRoomList(data) {
 
 	// console.log(mobileCalendarData);
 
-	$("#mobileList").empty();
+	// $("#mobileList").empty();
 
 	// what is the nearest 30 minutes?
 	// Current time in seconds, date.now provides milliseconds
@@ -163,7 +163,7 @@ function buildRoomList(data) {
 
 	$.each(mobileCalendarData, function(index, building) {
 
-		$("#mobileList").append('<li><h4>'+index+'</h4></li>');
+		// $("#mobileList").append('<li><h4>'+index+'</h4></li>');
 
 		$.each(building.rooms, function (index, room) {
 
@@ -173,7 +173,7 @@ function buildRoomList(data) {
 			}
 
 			// display the room
-			$("#mobileList").append('<li><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></li>');
+			// $("#mobileList").append('<li><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></li>');
 
 		});
 	});
