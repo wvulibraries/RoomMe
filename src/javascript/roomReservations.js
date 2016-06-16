@@ -9,10 +9,10 @@ $(function() {
 		.on('change', '#listBuildingSelect',  handler_listBuildingSelect)
 		.on('click',  '.pagerLink',           handler_pager)
 		.on('change', '#openEvent',           handler_openEvent)
-		.on('change', '#building_modal', handler_activate_submit_button)
-		.on('change', '#start_month_modal', handler_activate_submit_button)
-		.on('change', '#start_day_modal', handler_activate_submit_button)
-		.on('change', '#start_year_modal', handler_activate_submit_button)
+		.on('change', '#building_modal',      handler_activate_submit_button)
+		.on('change', '#start_month_modal',   handler_activate_submit_button)
+		.on('change', '#start_day_modal',     handler_activate_submit_button)
+		.on('change', '#start_year_modal',    handler_activate_submit_button)
 });
 
 
@@ -110,6 +110,26 @@ function setPagerAttributes(startCols,endCols) {
 	// last
 	$('#pagerLast').attr('data-startCols',(calendarData.rooms.length-numberOfColumns));
 	$('#pagerLast').attr('data-endCols',calendarData.rooms.length);
+
+
+
+	if (startCols <= 0) {
+		$('#pagerPrev').addClass("pager-disabled");
+		$('#pagerFirst').addClass("pager-disabled");
+	}
+	else {
+		$('#pagerPrev').removeClass("pager-disabled");
+		$('#pagerFirst').removeClass("pager-disabled");
+	}
+
+	if (endCols >= calendarData.rooms.length) {
+		$('#pagerNext').addClass("pager-disabled");
+		$('#pagerLast').addClass("pager-disabled");
+	}
+	else {
+		$('#pagerNext').removeClass("pager-disabled");
+		$('#pagerLast').removeClass("pager-disabled");
+	}
 
 }
 
