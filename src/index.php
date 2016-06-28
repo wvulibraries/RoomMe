@@ -20,43 +20,50 @@ $localvars->set("yearSelect",$date->dropdownYearSelect(0,1,TRUE,array("id"=>"sta
 
 $localvars->set("headerDate",date("l, F j"));
 
-templates::display('header'); 
+$localvars->set("future_date_list",future_date_list(time()));
+$localvars->set("available_now",available_now((isset($_GET['MYSQL']['time']))?$_GET['MYSQL']['time']:time(),"2"));
+$localvars->set("now_text",(isset($_GET['MYSQL']['time']))?date("l, M j",$_GET['MYSQL']['time']):"Now");
+
+templates::display('header');
 ?>
 
 	<!-- Reservations Section -->
-	<h3 class="roomH3 roomMobile" style="margin-top: 20px;">Available Now</h3>
+	<h3 class="roomH3 roomMobile" style="margin-top: 20px;">Available {local var="now_text"}</h3>
 	<hr class="roomHR roomMobile" />
-	<ul id="mobileList" class="roomMobile"></ul>
+	<ul id="mobileList" class="roomMobile">{local var="available_now"}</ul>
 
 	<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay" id="headerDate">{local var="headerDate}</span></h3>
 
 	<!-- Extra Links -->
 	<a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
-	<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
+	<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies
 		<i class="fa fa-exclamation-circle"></i>
 	</a>
 
 	<hr class="roomHR roomTabletDesktop" />
 	<div class="styled-select roomTabletDesktop">
 		<select id="building_modal">
-			{local var="buildingSelectOptions"}             
+			{local var="buildingSelectOptions"}
 		</select>
 	</div>
 	<div class="styled-select roomTabletDesktop">
 		{local var="monthSelect"}
-	</div>                                          
+	</div>
 	<div class="styled-select roomTabletDesktop">
 		{local var="daySelect"}
 	</div>
 	<div class="styled-select roomTabletDesktop">
-		{local var="yearSelect"} 
+		{local var="yearSelect"}
 	</div>
-	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop">
+	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop button_inactive">
 		<i class="fa fa-calendar"></i> Find A Room
 	</a>
 	<div style="clear:both;"></div>
 	<h3 class="roomH3 roomMobile" style="margin-top: 40px;">Future Dates</h3>
 	<hr class="roomHR roomMobile" />
+
+	{local var="future_date_list"}
+
 	<a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
 
 	<!-- Table Pager -->
@@ -68,9 +75,12 @@ templates::display('header');
 	</div>
 
 	<!-- Calendar Call -->
+	<div style="clear: both;"></div>
+	<img id="imageLoader" src="{local var="roomResBaseDir"}/images/loading.gif" />
+	<div style="clear: both;"></div>
 	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
 		<thead>
-			<tr id="reservationsRoomTableHeaderRow">			
+			<tr id="reservationsRoomTableHeaderRow">
 			</tr>
 		</thead>
 		<tbody id="reservationsRoomTableBody">
@@ -84,6 +94,6 @@ templates::display('header');
 	<!-- Rooms NAvigation -->
 	<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
 
-	 
+
 
 <?php templates::display('footer'); ?>

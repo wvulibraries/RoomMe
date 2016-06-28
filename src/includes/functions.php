@@ -1,5 +1,61 @@
 <?php
 
+function future_date_list($time) {
+
+	$output = '<ul class="roomMobile">';
+	for ($I=0;$I<7;$I++) {
+		$next_time = date("l, M j",$time + 86400*($I+1));
+		$output .= sprintf('<li><a href="index.php?time=%s">%s</a></li>',strtotime($next_time),$next_time);
+	}
+	$output .= "</ul>";
+
+	return $output;
+
+}
+
+function closestHalfHour() {
+	$current_time      = time();
+	$prev_half_hour    = $current_time - ($current_time % 1800);
+	$next_half_hour    = $current_time + 1800;
+	$closest_half_hour = (($current_time - $prev_half_hour) > ($next_half_hour - $current_time))?$next_half_hour:$prev_half_hour;
+
+
+}
+
+function available_now($date,$building) {
+	// return "<li>$time</li>";
+
+	$building_obj      = new building;
+	$rooms_in_building = $building_obj->getRooms($building);
+
+	// Example: downtown campus library , may 28 at 3pm
+	//SELECT `rooms`.`ID` as `ID`, `rooms`.`name` as `name`, `rooms`.`number` as `number` FROM `rooms` WHERE `rooms`.`building`='2' AND `rooms`.`ID` NOT IN (SELECT `rooms`.`ID` FROM `rooms` LEFT JOIN `reservations` ON `rooms`.`ID`=`reservations`.`roomID` LEFT JOIN `building` ON `building`.`ID`=`rooms`.`building` WHERE `building`.`ID`='2' AND `reservations`.`startTime` >= '1464462000' AND `reservations`.`endTime` <= '1464462000')
+
+	$localvars = localvars::getInstance();
+	$db        = db::get($localvars->get('dbConnectionName'));
+	$sql       = "SELECT `rooms`.`ID` FROM `rooms` LEFT JOIN `reservations` ON `rooms`.`ID`=`reservations`.`roomID` LEFT JOIN `building` ON `building`.`ID`=`rooms`.`building` WHERE `building`.`ID`='?' AND `reservations`.`startTime` <= '?' AND `reservations`.`endTime` >= '?'";
+	$sqlResult = $db->query($sql,array($building,$date,$date));
+
+	if ($sqlResult->error()) {
+	  errorHandle::newError(__METHOD__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
+		return false;
+	}
+
+	$unavailable_rooms = array();
+	while ($row = $sqlResult->fetch()) {
+		$unavailable_rooms[] = $row['ID'];
+	}
+
+	$output = "";
+	foreach ($rooms_in_building as $room) {
+		if (isset($unavailable_rooms[$room['ID']])) continue;
+		$output .= sprintf('<li><a href="%s/building/room/?room=%s">%s -- %s</a></li>', $localvars->get("roomReservationHome"), $room['ID'], $room['name'], $room['number']);
+	}
+
+	return $output;
+
+}
+
 function buildAttributes($options) {
 
 	$output = "";
@@ -12,10 +68,10 @@ function buildAttributes($options) {
 
 }
 
-function dropdownDurationSelect($selectHour,$options) {
+function dropdownDurationSelect($selectHour,$options,$length=23) {
 
 	$output = sprintf('<select %s>',buildAttributes($options));
-	for ($I=0;$I<=23;$I++) {
+	for ($I=0;$I<=$length;$I++) {
 		$output .= sprintf('<option value="%s" %s>%s</option>',
 			$I,
 			($I == $selectHour)?"selected":"",

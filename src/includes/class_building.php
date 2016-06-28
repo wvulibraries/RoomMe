@@ -1,7 +1,7 @@
 <?php
 
 class building {
-	
+
 	private $buildings = array();
 
 	private $db;
@@ -91,7 +91,7 @@ class building {
 		$output = "<ul>";
 		foreach ($buildings as $building) {
 
-			if (is_empty($building['externalURL'])) { 
+			if (is_empty($building['externalURL'])) {
 				$url = sprintf('%s/calendar/building/?building=%s',
 					$this->localvars->get("roomResBaseDir"),
 					$building['ID']
@@ -100,7 +100,7 @@ class building {
 			else {
 				$url = $building['externalURL'];
 			}
-				
+
 			$output .= sprintf('<li><a href="%s">%s</a></li>',
 				$url,
 				htmlSanitize($building['name'])
@@ -119,7 +119,7 @@ class building {
 
 		$roomObj = new room;
 		$rooms   = array();
-		
+
 		foreach ($roomIDs as $roomID) {
 			$rooms[] = $roomObj->get($roomID);
 		}
@@ -135,7 +135,7 @@ class building {
 		$roomIDs  = array();
 		$building = $this->get($id);
 
-		$sql       = sprintf("SELECT ID FROM `rooms` WHERE `building`=? ORDER BY %s", $building['roomSortOrder']);
+		$sql       = sprintf("SELECT ID FROM `rooms` WHERE `building`=? %s", (is_empty($building['roomSortOrder']))?"":"ORDER BY ".$building['roomSortOrder']);
 		$sqlResult = $this->db->query($sql,array($id));
 
 		if ($sqlResult->error()) {
@@ -143,8 +143,8 @@ class building {
 			return FALSE;
 		}
 		else {
-			while($row = $sqlResult->fetch()) {
 
+			while($row = $sqlResult->fetch()) {
 				if ($publicViewing) {
 					$roomObj = new room;
 					$roomPolicy = $roomObj->getPolicyInfo($row['ID']);
