@@ -223,6 +223,15 @@ templates::display('header');
 	<p>You must be logged in to reserve a room. </p>
 	<a href="{local var="loginURL"}">Login</a>
 
+	<?php } if ($roomPermissions && $user_not_allowed) { ?>
+
+		<!-- The above variables are not set yet. If the user isn't allowed to
+		reserve the room, based on the room permissions, display this section of
+		HTML.
+
+		I would setup this section as a snippet and provide a way to edit it in the interface
+	-->
+
 	<?php } else { ?>
 
 	<form action="{phpself query="true"}" method="post">
