@@ -216,4 +216,15 @@ $form->addField(
     )
 );
 
+$form->addField(
+    array(
+        'name'            => "restricted",
+        'label'           => "Restrict Building",
+        'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
+        'required'        => FALSE,
+        'type'            => 'boolean',
+        'duplicates'      => TRUE
+    )
+);
+
 ?>

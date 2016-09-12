@@ -14,7 +14,7 @@ Permissions should be building based.
   * resourceType
   * resourceID
 
-We are doing "resourceType" and resourceID in case we need to expand this to "Room", "Template", or "Policy" at a later date. the pumbiing will all be in place.
+We are doing "resourceType" and resourceID in case we need to expand this to "Room", "Template", or "Policy" at a later date. the plumbing will all be in place.
 
 If the buildingID has a count > 0 in the permissions table where resourceType == building and resourceID=buildingID then the room shouldn't allow the user to create a reservation without the username being present in the permissions table.
 
