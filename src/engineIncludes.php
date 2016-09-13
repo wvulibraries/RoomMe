@@ -17,6 +17,6 @@ recurseInsert("includes/class_series.php");
 recurseInsert("includes/class_userInfo.php");
 recurseInsert("includes/class_calendar.php");
 recurseInsert("includes/class_messages.php");
-
+recurseInsert("includes/class_reservationPermissions.php")
 
 ?>
