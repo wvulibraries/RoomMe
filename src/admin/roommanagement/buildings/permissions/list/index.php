@@ -38,7 +38,7 @@ if ($error === FALSE) {
 		$temp = array();
 		$temp['resourceID']  = $row['resourceID'];
 		$temp['resourceType']  = $row['resourceType'];
-		$temp['resourceType']  = $row['resourceType'];
+		$temp['username']  = $row['username'];
 		$temp['edit']      = sprintf('<a href="../create/?id=%s">Edit</a>',
 			htmlSanitize($row['ID'])
 			);
