@@ -1,69 +1,38 @@
 <?php
 
-require_once("../../../../engineHeader.php");
-recurseInsert("../includes/functions.php","php");
+	require_once("../../../../engineHeader.php");
 
-$errorMsg = "";
-$error    = FALSE;
+	$errorMsg = "";
+	$error    = FALSE;
+	$id       = NULL;
 
-$table           = new tableObject("array");
-$table->sortable = TRUE;
-$table->summary  = "Reserve Permissions";
-$table->class    = "styledTable";
+	$db       = db::get($localvars->get('dbConnectionName'));
 
-$permissions    = array();
+	$reservationPermissions = new reservationPermissions;
 
-$db        = db::get($localvars->get('dbConnectionName'));
-$sql       = sprintf("SELECT * FROM reservePermissions ");
-$sqlResult = $db->query($sql);
+	try {
 
-if ($sqlResult->error()) {
-	$error     = TRUE;
-	$errorMsg .= errorHandle::errorMsg("Error retrieving reserve premissions list.");
-	errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
-}
-
-if ($error === FALSE) {
-
-	$headers = array();
-	$headers[] = "Resource ID";
-	$headers[] = "Resource Type";
-	$headers[] = "Username";
-	$headers[] = "Edit";
-	$headers[] = "Delete";
-	$table->headers($headers);
-
-	while($row       = $sqlResult->fetch()) {
-
-		$temp = array();
-		$temp['resourceID']  = $row['resourceID'];
-		$temp['resourceType']  = $row['resourceType'];
-		$temp['username']  = $row['username'];
-		$temp['edit']      = sprintf('<a href="../create/?id=%s">Edit</a>',
-			htmlSanitize($row['ID'])
-			);
-		$temp['delete']    = sprintf('<input type="checkbox" name="delete[]" value="%s" />',
-			htmlSanitize($row['ID'])
-			);
-		$permissions[] = $temp;
+		if (isset($_POST['MYSQL']['multiDelete'])) {
+			foreach ($_POST['MYSQL']['delete'] as $reservationID) {
+				$reservationPermissions->deleteRecord($reservationID);
+			}
+		}
 
 	}
-}
+	catch (Exception $e) {
+		errorHandle::errorMsg($e->getMessage());
+	}
 
-templates::display('header');
+	$localvars->set('table', $reservationPermissions->renderDataTable());
+
+	templates::display('header');
 ?>
+
 <header>
-<h1>Reserve Permissions</h1>
+	<h1>Reservation Permissions</h1>
 </header>
 
-<form action="{phpself query="true"}" method="post" onsubmit="return confirm('Confirm Deletes');">
-	{csrf}
-
-	<input type="submit" name="multiDelete" value="Delete Selected Reserve Permissions" />
-	<?php print $table->display($permissions); ?>
-</form>
-
-
+{local var="table"}
 
 <?php
 templates::display('footer');

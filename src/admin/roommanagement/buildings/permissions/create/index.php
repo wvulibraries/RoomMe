@@ -11,11 +11,13 @@
 		$reservationPermissions = new reservationPermissions;
 
 		try {
-			// Is this an Update?
+
+
+			//Is this an Update?
 			if (isset($_GET['MYSQL']['id']) ) {
 
 				$id = $_GET['MYSQL']['id'];
-				$data = $reservationPermissions->getRecords($ID);
+				$data = $reservationPermissions->getRecords($id);
 				$action = 'Update';
 			}
 

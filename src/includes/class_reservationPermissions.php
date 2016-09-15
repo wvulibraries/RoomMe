@@ -1,8 +1,6 @@
 <?php
 class reservationPermissions {
 
-  //public $reservationPermissions = NULL;
-
   public function getRecords($id = null){
       try {
           // call engine
@@ -51,14 +49,11 @@ class reservationPermissions {
           $form->linkToDatabase( array(
               'table' => 'reservePermissions'
           ));
-          // if(!is_empty($_POST) || session::has('POST')) {
-          //     $processor = formBuilder::createProcessor();
-          //     $processor->processPost();
-          // }
+
           // form titles
           $form->insertTitle = "Add Permissions";
           $form->editTitle   = "Edit Permissions";
-          $form->updateTitle = "Edit Permissions";
+          $form->updateTitle = "Update Permissions";
           // if no valid id throw an exception
           if(!$validate->integer($id) && !isnull($id)){
               throw new Exception(__METHOD__.'() - Not a valid integer, please check the integer and try again.');
@@ -75,19 +70,45 @@ class reservationPermissions {
           $form->addField(array(
               'name'     => 'resourceID',
               'label'    => 'Resource ID:',
+              'type'     => 'select',
+              'blankOption' => 'Select a Building',
+              'linkedTo' => array(
+                    'foreignTable' => 'building',
+                    'foreignField' => 'ID',
+                    'foreignLabel' => 'name',
+                  ),
               'required' => TRUE
           ));
           $form->addField(array(
-              'name'     => 'resourceType',
-              'label'    => 'Resource Type:',
-              'required' => TRUE
+              'name'       => 'resourceType',
+              'label'      => 'Resource Type:',
+              'type'       => 'select',
+              'value'      => "Building",
+              'options'    => array("Building", "Policy", "Template", "Room"),
+              'required'   => TRUE,
+              'duplicates' => TRUE
           ));
           $form->addField(array(
               'name'     => 'username',
               'label'    => 'Username:',
               'required' => TRUE
           ));
+
           // buttons and submissions
+          $form->addField(array(
+              'showIn'     => array(formBuilder::TYPE_UPDATE),
+              'name'       => 'update',
+              'type'       => 'submit',
+              'fieldClass' => 'submit',
+              'value'      => 'Update'
+          ));
+          $form->addField(array(
+              'showIn'     => array(formBuilder::TYPE_UPDATE),
+              'name'       => 'delete',
+              'type'       => 'delete',
+              'fieldClass' => 'delete hidden',
+              'value'      => 'Delete'
+          ));
           $form->addField(array(
               'showIn'     => array(formBuilder::TYPE_INSERT),
               'name'       => 'insert',
@@ -95,6 +116,7 @@ class reservationPermissions {
               'fieldClass' => 'submit',
               'value'      => $localvars->get('submitText')
           ));
+
           return '{form name="createPermissions" display="form"}';
       } catch (Exception $e) {
           errorHandle::errorMsg($e->getMessage());
@@ -125,95 +147,97 @@ class reservationPermissions {
           return $e->getMessage();
       }
   }
-public function renderDeleteData($id){
-  try {
-      $engine    = EngineAPI::singleton();
-      $localvars = localvars::getInstance();
-      $validate  = new validate;
-      if(isnull($id) || !$validate->integer($id)){
-          throw new Exception('Id is null or not an integer.  Please try again.');
-      }
-      else {
-          $dataRecord = self::getRecords($id);
-          $output = "";
-          foreach($dataRecord as $data){
-               $output .= sprintf("<div class='permissionsRecord'>
-                                      <h2 class='permissions'>%s</h2>
-                                      <div class='name'>
-                                          <strong>Customer Name:</strong>
-                                          %s
-                                      </div>
-                                      <div class='contactInfo'>
-                                          <div class='email'>%s</div>
-                                          <div class='phone'>%s</div>
-                                          <div class='website'><a href='%s'>%s</a></div>
-                                      </div>
-                                      <div class='actions'>
-                                          <a href='/customers/delete/%s'> <span class='glyphicon glyphicon-ok'></span> </a>
-                                          <a href='/customers'> <span class='glyphicon glyphicon-remove'></span> </a>
-                                      </div>
-                                  </div>",
-                      $data['companyName'],
-                      $data['firstName']." ".$data['lastName'],
-                      $data['email'],
-                      $data['phone'],
-                      $data['website'],
-                      $data['website'],
-                      $data['ID']
-              );
-          }
-          return $output;
-      }
-  } catch (Exception $e) {
-      errorHandle::errorMsg($e->getMessage());
-      return $e->getMessage();
-  }
-}
-public function renderSingleRecord($id){
-  try {
-      $engine    = EngineAPI::singleton();
-      $localvars = localvars::getInstance();
-      $validate  = new validate;
-      if(isnull($id) || !$validate->integer($id)){
-          throw new Exception('Id is null or not an integer.  Please try again.');
-      }
-      else {
-          $dataRecord = self::getRecords($id);
-          $output = "";
-          foreach($dataRecord as $data){
-              $output .= sprintf("<div class='customerRecord'>
-                                      <h2 class='company'>%s</h2>
-                                      <div class='name'>
-                                          <strong>Customer Name:</strong>
-                                          %s
-                                      </div>
-                                      <div class='contactInfo'>
-                                          <div class='email'>%s</div>
-                                          <div class='phone'>%s</div>
-                                          <div class='website'><a href='%s'>%s</a></div>
-                                      </div>
-                                      <div class='actions'>
-                                          <a href='/customers/edit/%s'> <span class='glyphicon glyphicon-edit'></span> </a>
-                                          <a href='/customers/delete/%s'><span class='glyphicon glyphicon-trash'></span> </a>
-                                      </div>
-                                  </div>",
-                      $data['companyName'],
-                      $data['firstName']." ".$data['lastName'],
-                      $data['email'],
-                      $data['phone'],
-                      $data['website'],
-                      $data['website'],
-                      $data['ID'],
-                      $data['ID']
-              );
-          }
-          return $output;
-      }
-  } catch (Exception $e) {
-      errorHandle::errorMsg($e->getMessage());
-      return $e->getMessage();
-  }
-}
+
+// public function renderDeleteData($id){
+//   try {
+//       $engine    = EngineAPI::singleton();
+//       $localvars = localvars::getInstance();
+//       $validate  = new validate;
+//       if(isnull($id) || !$validate->integer($id)){
+//           throw new Exception('Id is null or not an integer.  Please try again.');
+//       }
+//       else {
+//           $dataRecord = self::getRecords($id);
+//           $output = "";
+//           foreach($dataRecord as $data){
+//                $output .= sprintf("<div class='permissionsRecord'>
+//                                       <h2 class='permissions'>%s</h2>
+//                                       <div class='name'>
+//                                           <strong>Customer Name:</strong>
+//                                           %s
+//                                       </div>
+//                                       <div class='contactInfo'>
+//                                           <div class='email'>%s</div>
+//                                           <div class='phone'>%s</div>
+//                                           <div class='website'><a href='%s'>%s</a></div>
+//                                       </div>
+//                                       <div class='actions'>
+//                                           <a href='/customers/delete/%s'> <span class='glyphicon glyphicon-ok'></span> </a>
+//                                           <a href='/customers'> <span class='glyphicon glyphicon-remove'></span> </a>
+//                                       </div>
+//                                   </div>",
+//                       $data['companyName'],
+//                       $data['firstName']." ".$data['lastName'],
+//                       $data['email'],
+//                       $data['phone'],
+//                       $data['website'],
+//                       $data['website'],
+//                       $data['ID']
+//               );
+//           }
+//           return $output;
+//       }
+//   } catch (Exception $e) {
+//       errorHandle::errorMsg($e->getMessage());
+//       return $e->getMessage();
+//   }
+// }
+// public function renderSingleRecord($id){
+//   try {
+//       $engine    = EngineAPI::singleton();
+//       $localvars = localvars::getInstance();
+//       $validate  = new validate;
+//       if(isnull($id) || !$validate->integer($id)){
+//           throw new Exception('Id is null or not an integer.  Please try again.');
+//       }
+//       else {
+//           $dataRecord = self::getRecords($id);
+//           $output = "";
+//           foreach($dataRecord as $data){
+//               $output .= sprintf("<div class='customerRecord'>
+//                                       <h2 class='company'>%s</h2>
+//                                       <div class='name'>
+//                                           <strong>Customer Name:</strong>
+//                                           %s
+//                                       </div>
+//                                       <div class='contactInfo'>
+//                                           <div class='email'>%s</div>
+//                                           <div class='phone'>%s</div>
+//                                           <div class='website'><a href='%s'>%s</a></div>
+//                                       </div>
+//                                       <div class='actions'>
+//                                           <a href='/customers/edit/%s'> <span class='glyphicon glyphicon-edit'></span> </a>
+//                                           <a href='/customers/delete/%s'><span class='glyphicon glyphicon-trash'></span> </a>
+//                                       </div>
+//                                   </div>",
+//                       $data['companyName'],
+//                       $data['firstName']." ".$data['lastName'],
+//                       $data['email'],
+//                       $data['phone'],
+//                       $data['website'],
+//                       $data['website'],
+//                       $data['ID'],
+//                       $data['ID']
+//               );
+//           }
+//           return $output;
+//       }
+//   } catch (Exception $e) {
+//       errorHandle::errorMsg($e->getMessage());
+//       return $e->getMessage();
+//   }
+// }
+
 public function renderDataTable(){
   try {
       $engine     = EngineAPI::singleton();
@@ -226,34 +250,30 @@ public function renderDataTable(){
                                   <td>%s</td>
                                   <td>%s</td>
                                   <td>%s</td>
-                                  <td>%s</td>
-                                  <td>%s</td>
-                                  <td>%s</td>
-                                  <td><a href='customers/edit/%s'><span class='glyphicon glyphicon-edit'></span> </a></td>
-                                  <td><a href='customers/confirmDelete/%s'> <span class='glyphicon glyphicon-trash'></span> </a></td>
+                                  <td><a href='../create/?id=%s'>Edit</a></td>
+                                  <td><input type='checkbox' name='delete[]' value='%s' /></td>
                               </tr>",
-                  $data['companyName'],
-                  $data['firstName'],
-                  $data['lastName'],
-                  $data['email'],
-                  $data['phone'],
-                  $data['website'],
+                  $data['resourceID'],
+                  $data['resourceType'],
+                  $data['username'],
                   $data['ID'],
                   $data['ID']
           );
       }
-      $output     = sprintf("<div class='dataTable table-responsive'>
+
+      $output     = sprintf("	<form action='{phpself query='true'}' method='post' onsubmit='return confirm('Confirm Deletes');'>
+	                             {csrf}
+
+                               <input type='submit' name='multiDelete' value='Delete Selected Reserve Permissions' />
+                                <div class='dataTable table-responsive'>
                                   <table class='table table-striped'>
                                       <thead>
                                           <tr class='info'>
-                                              <th> Company Name </th>
-                                              <th> First name </th>
-                                              <th> Last Name </th>
-                                              <th> Email </th>
-                                              <th> Phone Number </th>
-                                              <th> Website </th>
-                                              <th> </th>
-                                              <th> </th>
+                                              <th> Resource ID </th>
+                                              <th> Resource Type </th>
+                                              <th> Username </th>
+                                              <th> Edit </th>
+                                              <th> Delete </th>
                                           </tr>
                                       </thead>
                                       <tbody>
@@ -269,29 +289,17 @@ public function renderDataTable(){
       return $e->getMessage();
   }
 }
-public function getJSON($id = null){
-  $validate = new validate;
-  if(!isnull($id) && $validate->integer($id)){
-      $data = self::getRecords($id);
-  } else {
-      $data = self::getRecords();
-  }
-  return json_encode($data);
-}
 
-public function insert($username,$resourceID,$resourceType) {
+// public function getJSON($id = null){
+//   $validate = new validate;
+//   if(!isnull($id) && $validate->integer($id)){
+//       $data = self::getRecords($id);
+//   } else {
+//       $data = self::getRecords();
+//   }
+//   return json_encode($data);
+// }
 
-  $sql       = "INSERT INTO `reservePermissions` (`username`,`resourceType`,`resourceID`) VALUES('%s','%s','%s')";
-  $sqlResult = $this->db->query($sql,array($username,$resourceType,$resourceID));
-
-  if ($sqlResult->error()) {
-    errorHandle::newError(__FUNCTION__."() - Error inserting permissions name.", errorHandle::DEBUG);
-    return false;
-  }
-
-  return true;
-
-}
 
 }
 ?>
