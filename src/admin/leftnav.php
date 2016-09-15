@@ -22,8 +22,8 @@ $localvars->set("buildingCalendars",$building->calendarList());
 	<li>Room Management
 		<ul>
 			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/buildings/">Buildings</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/buildings/permissions/create/">Create Reserve Permissions</a></li>
-			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/buildings/permissions/list/">List all Reserve Permissions</a></li>	
+			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/buildings/permissions/create/">Create Reservation Permissions</a></li>
+			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/buildings/permissions/list/">List all Reservation Permissions</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/policies/">Room Policies</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/templates/">Room Templates</a></li>
 			<li><a href="{local var="roomResBaseDir"}/admin/roommanagement/rooms/">Rooms</a></li>
