@@ -67,6 +67,18 @@ class reservation {
 	public function create($seriesID=NULL) {
 
 		$buildingID = $this->building['ID'];
+
+		$reservationPermissions = new reservationPermissions;
+
+		//check if there is Building Permissions currently in place on current buildingID
+		if ($reservationPermissions->verifyBuildingPermissions($buildingID) === TRUE) {
+			//if Permissions are in place check and see if email address is on the list
+			if ((isset($_POST['MYSQL']['notificationEmail']) && ($reservationPermissions->checkPermissions($buildingID, $_POST['MYSQL']['notificationEmail']))) === FALSE) {
+				errorHandle::errorMsg(" Error email address not on Permissions list for this Resource ");
+				return FALSE;
+			}
+		}
+
 		$roomID     = $this->room['ID'];
 
 		if ($this->validateRoomPostVariables() === FALSE) {

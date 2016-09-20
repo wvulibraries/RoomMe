@@ -223,7 +223,8 @@ $form->addField(
         'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
         'required'        => FALSE,
         'type'            => 'boolean',
-        'duplicates'      => TRUE
+        'duplicates'      => TRUE,
+        'disabled'        => TRUE
     )
 );
 
