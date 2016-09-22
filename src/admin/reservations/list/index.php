@@ -99,7 +99,7 @@ if ($error === FALSE) {
 	$table->headers($headers);
 
 	$timeFormat = getTimeFormat();
-	
+
 	while($row       = $sqlResult->fetch()) {
 
 		$displayName = $row['username'];
@@ -133,6 +133,13 @@ if ($error === FALSE) {
 	}
 }
 
+$date = new date;
+
+// @TODO display on month dropdown should be configurable via interface
+$localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month", "class" => "date_select")));
+$localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day", "class" => "date_select")));
+$localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year", "class" => "date_select")));
+
 templates::display('header');
 ?>
 
@@ -160,44 +167,15 @@ templates::display('header');
 		<tr>
 			<td>
 				<label for="start_month">Month:</label>
-				<select name="start_month" id="start_month" >
-					<?php
-
-					for($I=1;$I<=12;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							($I < 10)?"0".$I:$I,
-							($I == $currentMonth)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="monthSelect"}
 			</td>
 			<td>
 				<label for="start_day">Day:</label>
-				<select name="start_day" id="start_day" >
-					<?php
-
-					for($I=1;$I<=31;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							($I < 10)?"0".$I:$I,
-							($I == $currentDay)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="daySelect"}
 			</td>
 			<td>
 				<label for="start_year">Year:</label>
-				<select name="start_year" id="start_year" >
-					<?php
-
-					for($I=$currentYear;$I<=$currentYear+10;$I++) {
-						printf('<option value="%s">%s</option>',
-							$I,
-							$I);
-					}
-					?>
-				</select>
+				{local var="yearSelect"}
 			</td>
 		</tr>
 		<tr>
@@ -212,15 +190,17 @@ templates::display('header');
 			</td>
 		</tr>
 	</table>
-	
+
 </form>
 
-<form action="{phpself query="true"}" method="post" onsubmit="return confirm('Confirm Deletes');">
-	{csrf}
+<section class="reservationlisting listTable">
+	<form action="{phpself query="true"}" method="post" onsubmit="return confirm('Confirm Deletes');">
+		{csrf}
 
-	<input type="submit" name="multiDelete" value="Delete Selected Reservations" />
-	<?php print $table->display($reservations); ?>
-</form>
+		<input type="submit" name="multiDelete" value="Delete Selected Reservations" />
+		<?php print $table->display($reservations); ?>
+	</form>
+</section>
 
 <?php
 templates::display('footer');
