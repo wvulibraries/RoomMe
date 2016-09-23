@@ -2,18 +2,48 @@ var calendarData;
 var mobileCalendarData  = undefined;
 
 $(function() {
-	$(document)
-		.on('click',  '#deleteReservation',   handler_deleteReservation)
-		.on('click',  '.cancelReservation',   handler_deleteReservation)
-		.on('click',  '#calUpdateFormSubmit', handler_getCalendarJSON)
-		.on('change', '#listBuildingSelect',  handler_listBuildingSelect)
-		.on('click',  '.pagerLink',           handler_pager)
-		.on('change', '#openEvent',           handler_openEvent)
-		.on('change', '#building_modal',      handler_activate_submit_button)
-		.on('change', '#start_month_modal',   handler_activate_submit_button)
-		.on('change', '#start_day_modal',     handler_activate_submit_button)
-		.on('change', '#start_year_modal',    handler_activate_submit_button)
-});
+			var $doc = $(document);
+
+			if($('#deleteReservation').length) {
+				$doc.on('click',  '#deleteReservation',   handler_deleteReservation);
+			}
+
+			if($('.cancelReservation').length) {
+				$doc.on('click',  '.cancelReservation',   handler_deleteReservation);
+			}
+
+			if($('#calUpdateFormSubmit').length) {
+				$doc.on('click',  '#calUpdateFormSubmit', handler_getCalendarJSON);
+			}
+
+			if($('#listBuildingSelect').length) {
+				$doc.on('change', '#listBuildingSelect', handler_listBuildingSelect);
+			}
+
+			if($('.pagerLink').length) {
+				$doc.on('click',  '.pagerLink', 				 handler_pager);
+			}
+
+			if($('#openEvent').length) {
+				$doc.on('change', '#openEvent',           handler_openEvent);
+			}
+
+			if($('#building_modal').length) {
+				$doc.on('change', '#building_modal',      handler_activate_submit_button);
+			}
+
+			if($('#start_month_modal').length) {
+				$doc.on('change', '#start_month_modal',   handler_activate_submit_button);
+			}
+
+			if($('#start_day_modal').length) {
+				$doc.on('change', '#start_day_modal',     handler_activate_submit_button);
+			}
+
+			if($('#start_year_modal').length) {
+				$doc.on('change', '#start_year_modal',    handler_activate_submit_button);
+			}
+	})
 
 
 // ------------
@@ -40,8 +70,6 @@ function handler_openEvent() {
 }
 
 function initialResize() {
-
-
 	windowSize = $(window).width();
 	sizeBreakPoint_mobile = 768;
 	sizeBreakPoint_tablet = 1024;
@@ -50,6 +78,7 @@ function initialResize() {
 
 function handle_resizing(){
 	windowSize = $(window).width();
+	console.log(windowSize);
 
 	if (windowSize < sizeBreakPoint_mobile) {
 		numberOfColumns = 0;
