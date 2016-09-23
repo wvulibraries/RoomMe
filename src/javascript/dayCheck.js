@@ -3,7 +3,7 @@ $(function(){
   var $startMonth;
   var $startYear;
 
-  $('body').on('change', '.date_select', function(){
+  $('body').on('change', '.start_date', function(){
   	$startDay = $('#start_day').val();
   	$startMonth = $('#start_month').val();
   	$startYear = $('#start_year').val();
@@ -21,8 +21,28 @@ $(function(){
   	setNumberOfDays($numberofdays, '#seriesEndDate_day');
   });
 
+  $('body').on('change', '.end_date', function(){
+    $startDay = $('#end_day').val();
+    $startMonth = $('#end_month').val();
+    $startYear = $('#end_year').val();
+
+    $numberofdays = findNumberOfDays($startMonth, $startYear);
+    setNumberOfDays($numberofdays, '#end_day');
+  });
+
+  $('body').on('change', '.date_select_modal', function(){
+  	$startDay = $('#start_day_modal').val();
+  	$startMonth = $('#start_month_modal').val();
+  	$startYear = $('#start_year_modal').val();
+
+  	$numberofdays = findNumberOfDays($startMonth, $startYear);
+  	setNumberOfDays($numberofdays, '#start_day_modal');
+  });
+
 	$("select#start_day").change();
 	$("select#seriesEndDate_day").change();
+	$("select#end_day").change();
+  $("select#start_day_modal").change();
 });
 
 /**
