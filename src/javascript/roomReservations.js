@@ -92,7 +92,6 @@ function handle_resizing(){
 	else {
 		// default to desktop size if something goes wrong
 		numberOfColumns = 7;
-		console.log("resize error");
 	}
 
 	buildCalendarTable(calendarData,0,numberOfColumns);
