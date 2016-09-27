@@ -2,39 +2,13 @@
 
 		require_once("../../../../engineHeader.php");
 
-		$errorMsg = "";
-		$error    = FALSE;
-		$id       = NULL;
-
-		$db       = db::get($localvars->get('dbConnectionName'));
-
 		$reservationPermissions = new reservationPermissions;
 
-		try {
-
-
-			//Is this an Update?
-			if (isset($_GET['MYSQL']['id']) ) {
-
-				$id = $_GET['MYSQL']['id'];
-				$data = $reservationPermissions->getRecords($id);
-				$action = 'Update';
-			}
-
-			else {
-				$action = 'Add';
-			}
-
-    }
-		catch(Exception $e) {
- 			errorHandle::errorMsg($e->getMessage());
-    }
-
-		// Set some localvars for use in the Form and HTML below.
-		$localvars->set('action', $action);
-		$localvars->set('submitText', $action . ' a Permission');
+		$id = isset($_GET['MYSQL']['id']) ? $_GET['MYSQL']['id'] : null;
+		$action = $id !== null ? "Update" : "Insert";
 
 		$localvars->set('form', $reservationPermissions->setupForm($id));
+		$localvars->set('action', $action);
 
 		templates::display('header');
 	?>

@@ -9,14 +9,21 @@ class reservationPermissions {
           $db        = db::get($localvars->get('dbConnectionName'));
           $sql       = "SELECT * FROM `reservePermissions`";
           $validate  = new validate;
+
+          if (isset($id)) {
+           $id        = dbSanitize($id);
+          }
+
           // test to see if Id is present and valid
           if(!isnull($id) && $validate->integer($id)){
               $sql .= sprintf('WHERE id = %s LIMIT 1', $id);
           }
+
           // if no valid id throw an exception
           if(!$validate->integer($id) && !isnull($id)){
               throw new Exception("I don't want to be tried!");
           }
+
           // get the results of the query
           $sqlResult = $db->query($sql);
           // if return no results
@@ -47,14 +54,21 @@ class reservationPermissions {
           $db        = db::get($localvars->get('dbConnectionName'));
           $sql       = "SELECT * FROM `building`";
           $validate  = new validate;
+
+          if (isset($id)) {
+           $id        = dbSanitize($id);
+          }
+
           // test to see if Id is present and valid
           if(!isnull($id) && $validate->integer($id)){
               $sql .= sprintf('WHERE id = %s LIMIT 1', $id);
           }
+
           // if no valid id throw an exception
           if(!$validate->integer($id) && !isnull($id)){
               throw new Exception("I don't want to be tried!");
           }
+
           // get the results of the query
           $sqlResult = $db->query($sql);
           // if return no results
@@ -87,14 +101,21 @@ class reservationPermissions {
           $db        = db::get($localvars->get('dbConnectionName'));
           $sql       = "SELECT * FROM `reservePermissions`";
           $validate  = new validate;
+
+          if (isset($id)) {
+           $id        = dbSanitize($id);
+          }
+
           // test to see if Id is present and valid
           if(!isnull($id) && $validate->integer($id)){
               $sql .= sprintf('WHERE resourceID = %s LIMIT 1', $id);
           }
+
           // if no valid id throw an exception
           if(!$validate->integer($id) && !isnull($id)){
               throw new Exception("I don't want to be tried!");
           }
+
           // get the results of the query
           $sqlResult = $db->query($sql);
           // if return no results
@@ -124,16 +145,26 @@ class reservationPermissions {
           $db        = db::get($localvars->get('dbConnectionName'));
           $sql       = "SELECT * FROM `reservePermissions`";
           $validate  = new validate;
-          $email     = dbSanitize($email);
 
-          // test to see if Id is present and valid
+          if (isset($id)) {
+           $id        = dbSanitize($id);
+          }
+
+          if (isset($email)) {
+           $email     = dbSanitize($email);
+          }
+
+          // test to see if Id and Email is present and valid
           if(!isnull($id) && $validate->integer($id) && !isnull($email) && $validate->emailAddr($email)){
               $sql .= sprintf(' WHERE resourceID="%s" AND email="%s" LIMIT 1', $id, $email);
           }
+
           // if no valid id throw an exception
           if(!$validate->integer($id) && !isnull($id)){
               throw new Exception("Error No Valid Resource ID");
           }
+
+          // if no valid email throw an exception
           if(!$validate->emailAddr($email) && !isnull($email)){
               throw new Exception("Error No Valid Email Address");
           }
@@ -163,6 +194,10 @@ class reservationPermissions {
           $engine    = EngineAPI::singleton();
           $localvars = localvars::getInstance();
           $validate  = new validate;
+          if (isset($id)) {
+           $id        = dbSanitize($id);
+          }
+
           // create customer form
           $form = formBuilder::createForm('createPermissions');
           $form->linkToDatabase( array(
@@ -173,10 +208,12 @@ class reservationPermissions {
           $form->insertTitle = "Add Permissions";
           $form->editTitle   = "Edit Permissions";
           $form->updateTitle = "Update Permissions";
+
           // if no valid id throw an exception
           if(!$validate->integer($id) && !isnull($id)){
               throw new Exception(__METHOD__.'() - Not a valid integer, please check the integer and try again.');
           }
+
           // form information
           $form->addField(array(
               'name'    => 'ID',
@@ -201,16 +238,15 @@ class reservationPermissions {
           $form->addField(array(
               'name'       => 'resourceType',
               'label'      => 'Resource Type:',
-              'type'       => 'select',
+              'type'       => 'hidden',
               'value'      => "Building",
               'options'    => array("Building", "Policy", "Template", "Room"),
               'required'   => TRUE,
-              'duplicates' => TRUE,
-              'hidden'     => TRUE
+              'duplicates' => TRUE
           ));
           $form->addField(array(
-              'name'     => 'username',
-              'label'    => 'Username:',
+              'name'     => 'email',
+              'label'    => 'Email:',
               'required' => TRUE
           ));
 
@@ -220,7 +256,7 @@ class reservationPermissions {
               'name'       => 'update',
               'type'       => 'submit',
               'fieldClass' => 'submit',
-              'value'      => 'Update'
+              'value'      => 'Update Permissions'
           ));
           $form->addField(array(
               'showIn'     => array(formBuilder::TYPE_UPDATE),
@@ -233,8 +269,8 @@ class reservationPermissions {
               'showIn'     => array(formBuilder::TYPE_INSERT),
               'name'       => 'insert',
               'type'       => 'submit',
-              'fieldClass' => 'submit',
-              'value'      => $localvars->get('submitText')
+              'fieldClass' => 'submit something',
+              'value'      => 'Save Permissions'
           ));
 
           return '{form name="createPermissions" display="form"}';
@@ -250,10 +286,16 @@ class reservationPermissions {
           $localvars = localvars::getInstance();
           $db        = db::get($localvars->get('dbConnectionName'));
           $validate  = new validate;
+
+          if (isset($id)) {
+           $id        = dbSanitize($id);
+          }
+
           // test to see if Id is present and valid
           if(isnull($id) || !$validate->integer($id)){
               throw new Exception(__METHOD__.'() -Delete failed, improper id or no id was sent');
           }
+
           // SQL Results
           $sql = sprintf("DELETE FROM `reservePermissions` WHERE id=%s LIMIT 1", $id);
           $sqlResult = $db->query($sql);
@@ -277,15 +319,29 @@ class reservationPermissions {
           $db        = db::get($localvars->get('dbConnectionName'));
           $validate  = new validate;
 
+          if (isset($id)) {
+           $id        = dbSanitize($id);
+          }
+
+          if (isset($type)) {
+           $type      = dbSanitize($type);
+          }
+
+          if (isset($email)) {
+           $email     = dbSanitize($email);
+          }
+
           // test to see if Id is present and valid
           if(isnull($id) || !$validate->integer($id)){
               throw new Exception(__METHOD__.'() -insert failed, improper resource id or no id was sent');
           }
 
+          // test to see if type is present and valid
           if(isnull($type) || !$validate->integer($type)){
               throw new Exception(__METHOD__.'() -insert failed, improper resource type or no type was sent');
           }
 
+          // test to see if email is present and valid
           if(isnull($email) || !$validate->emailAddr($email)){
               throw new Exception(__METHOD__.'() -insert failed, improper email address or no email was sent');
           }
@@ -316,18 +372,19 @@ class reservationPermissions {
         $records    = "";
 
         foreach($dataRecord as $data){
+            //get building record
+            $temp = self::getBuildings($data['resourceID']);
+
             $records .= sprintf("<tr>
-                                    <td>%s</td>
                                     <td>%s</td>
                                     <td>%s</td>
                                     <td><a href='../create/?id=%s'>Edit</a></td>
                                     <td><input type='checkbox' name='delete[]' value='%s' /></td>
                                 </tr>",
-                    $data['resourceID'],
-                    $data['resourceType'],
-                    $data['email'],
-                    $data['ID'],
-                    $data['ID']
+                    htmlSanitize($temp[0]['name']),
+                    htmlSanitize($data['email']),
+                    htmlSanitize($data['ID']),
+                    htmlSanitize($data['ID'])
             );
         }
 
@@ -339,7 +396,6 @@ class reservationPermissions {
                                         <thead>
                                             <tr class='info'>
                                                 <th> Resource ID </th>
-                                                <th> Resource Type </th>
                                                 <th> Email </th>
                                                 <th> Edit </th>
                                                 <th> Delete </th>
@@ -370,8 +426,8 @@ class reservationPermissions {
         $records .= sprintf(" <option value='NULL'>Select a Building</option>");
         foreach($dataRecord as $data){
             $records .= sprintf(" <option value=%s>%s</option>",
-                    $data['ID'],
-                    $data['name']
+                    htmlSanitize($data['ID']),
+                    htmlSanitize($data['name'])
             );
         }
 
@@ -432,6 +488,17 @@ class reservationPermissions {
     }
     catch(Exception $e) {
       errorHandle::errorMsg($e->getMessage());
+    }
+  }
+
+  public function multiDelete($items = null){
+    try{
+  		foreach ($items as $reservationID){
+  			self::deleteRecord($reservationID);
+  		}
+    }
+    catch (Exception $e){
+    	errorHandle::errorMsg($e->getMessage());
     }
   }
 

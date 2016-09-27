@@ -10,17 +10,9 @@
 
 	$reservationPermissions = new reservationPermissions;
 
-	try {
 
-		if (isset($_POST['MYSQL']['multiDelete'])) {
-			foreach ($_POST['MYSQL']['delete'] as $reservationID) {
-				$reservationPermissions->deleteRecord($reservationID);
-			}
-		}
-
-	}
-	catch (Exception $e) {
-		errorHandle::errorMsg($e->getMessage());
+	if (isset($_POST['MYSQL']['multiDelete'])){
+		$reservationPermissions->multiDelete($_POST['MYSQL']['delete']);
 	}
 
 	$localvars->set('table', $reservationPermissions->renderDataTable());
