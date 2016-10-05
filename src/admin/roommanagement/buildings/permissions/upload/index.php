@@ -15,7 +15,7 @@
 
 		// Set some localvars for use in the Form and HTML below.
 		$localvars->set('submitText', 'Upload a Permission file');
-		$localvars->set('uploadform', $reservationPermissions->uploadForm($id));
+		$localvars->set('uploadform', $reservationPermissions->uploadForm());
 
 		templates::display('header');
 	?>
@@ -25,6 +25,8 @@
 	</header>
 
 	{local var="uploadform"}
+
+	<script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/rooms.js"></script>
 
 	<?php
 	templates::display('footer');
