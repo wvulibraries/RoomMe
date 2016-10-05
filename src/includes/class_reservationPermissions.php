@@ -1,389 +1,473 @@
 <?php
 class reservationPermissions {
 
+  private $localvars;
+  private $engine;
+  private $db;
+  private $validate;
+
+  function __construct() {
+    $this->engine    = EngineAPI::singleton();
+    $this->localvars = localvars::getInstance();
+    $this->db        = db::get($this->localvars->get('dbConnectionName'));
+    $this->validate  = new validate;
+  }
+
   public function getRecords($id = null){
-      try {
-          // call engine
-          $engine    = EngineAPI::singleton();
-          $localvars = localvars::getInstance();
-          $db        = db::get($localvars->get('dbConnectionName'));
-          $sql       = "SELECT * FROM `reservePermissions`";
-          $validate  = new validate;
-
-          if (isset($id)) {
-           $id        = dbSanitize($id);
-          }
-
-          // test to see if Id is present and valid
-          if(!isnull($id) && $validate->integer($id)){
-              $sql .= sprintf('WHERE id = %s LIMIT 1', $id);
-          }
-
-          // if no valid id throw an exception
-          if(!$validate->integer($id) && !isnull($id)){
-              throw new Exception("I don't want to be tried!");
-          }
-
-          // get the results of the query
-          $sqlResult = $db->query($sql);
-          // if return no results
-          // else return the data
-          if ($sqlResult->error()) {
-              throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
-          }
-          if ($sqlResult->rowCount() < 1) {
-             return "There are no records in the database.";
-          }
-          else {
-              $data = array();
-              while($row = $sqlResult->fetch()){
-                  $data[] = $row;
-              }
-              return $data;
-          }
-      } catch (Exception $e) {
-          errorHandle::errorMsg($e->getMessage());
+    $sql = "SELECT * FROM `reservePermissions`";
+    try {
+      if(!isnull($id) && !$this->validate->integer($id)){
+        throw new Exception("Invalid ID provided.");
       }
+      if(!isnull($id)){
+        $sql .= "WHERE id = ? LIMIT 1";
+      }
+      $sqlResult = $this->db->query($sql,array($id));
+      if ($sqlResult->error()) {
+        throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+      }
+      return $sqlResult->fetchAll();
+    } catch (Exception $e) {
+      errorHandle::newError(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+      return false;
+    }
   }
 
   public function getBuildings($id = null){
-      try {
-          // call engine
-          $engine    = EngineAPI::singleton();
-          $localvars = localvars::getInstance();
-          $db        = db::get($localvars->get('dbConnectionName'));
-          $sql       = "SELECT * FROM `building`";
-          $validate  = new validate;
-
-          if (isset($id)) {
-           $id        = dbSanitize($id);
-          }
-
-          // test to see if Id is present and valid
-          if(!isnull($id) && $validate->integer($id)){
-              $sql .= sprintf('WHERE id = %s LIMIT 1', $id);
-          }
-
-          // if no valid id throw an exception
-          if(!$validate->integer($id) && !isnull($id)){
-              throw new Exception("I don't want to be tried!");
-          }
-
-          // get the results of the query
-          $sqlResult = $db->query($sql);
-          // if return no results
-          // else return the data
-          if ($sqlResult->error()) {
-              throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
-          }
-          if ($sqlResult->rowCount() < 1) {
-             return "There are no records in the database.";
-          }
-          else {
-              $data = array();
-              while($row = $sqlResult->fetch()){
-                  $data[] = $row;
-              }
-              return $data;
-          }
-      } catch (Exception $e) {
-          errorHandle::errorMsg($e->getMessage());
+    $sql       = "SELECT * FROM `building`";
+    try {
+      if(!isnull($id) && !$this->validate->integer($id)){
+        throw new Exception("Invalid ID provided.");
       }
+      if(!isnull($id)){
+        $sql .= "WHERE id = ? LIMIT 1";
+      }
+      $sqlResult = $this->db->query($sql,array($id));
+      if ($sqlResult->error()) {
+        throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+      }
+      return $sqlResult->fetchAll();
+    } catch (Exception $e) {
+      errorHandle::newError(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+      return false;
+    }
   }
 
-  public function verifyBuildingPermissions($id = null){
-      // checks to see if the id passed is in the permissions database
+  public function permissionsSet($id = null){
+      // checks to see if the building ID passed is in the reservePermissions table
       // if it finds it it returns true
       try {
-          // call engine
-          $engine    = EngineAPI::singleton();
-          $localvars = localvars::getInstance();
-          $db        = db::get($localvars->get('dbConnectionName'));
-          $sql       = "SELECT * FROM `reservePermissions`";
-          $validate  = new validate;
+        if(!isnull($id) && !$this->validate->integer($id)){
+          throw new Exception("Invalid ID provided.");
+        }
 
-          if (isset($id)) {
-           $id        = dbSanitize($id);
-          }
+        $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ?";
+        $sqlResult = $this->db->query($sql,array($id));
+        if ($sqlResult->error()) {
+          throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+        }
 
-          // test to see if Id is present and valid
-          if(!isnull($id) && $validate->integer($id)){
-              $sql .= sprintf('WHERE resourceID = %s LIMIT 1', $id);
-          }
-
-          // if no valid id throw an exception
-          if(!$validate->integer($id) && !isnull($id)){
-              throw new Exception("I don't want to be tried!");
-          }
-
-          // get the results of the query
-          $sqlResult = $db->query($sql);
-          // if return no results
-          // else return the data
-          if ($sqlResult->error()) {
-              throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
-          }
-
-          if ($sqlResult->rowCount() < 1) {
-             return FALSE;
-          }
-          else {
-             return TRUE;
-          }
+        if ($sqlResult->rowCount() < 1) {
+           return FALSE;
+        }
+        else {
+           return TRUE;
+        }
       } catch (Exception $e) {
-          errorHandle::errorMsg($e->getMessage());
+        errorHandle::newError(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        return FALSE;
       }
   }
 
-  public function checkPermissions($id = null, $email = null){
-      // checks to see if the id passed is in the permissions database
-      // if it finds it it returns true
-      try {
-          // call engine
-          $engine    = EngineAPI::singleton();
-          $localvars = localvars::getInstance();
-          $db        = db::get($localvars->get('dbConnectionName'));
-          $sql       = "SELECT * FROM `reservePermissions`";
-          $validate  = new validate;
+  public function checkBuilding($id = null){
+    try {
+        // test to see if Id is present and valid
+        if(!isnull($id) && !$this->validate->integer($id)){
+            throw new Exception("Invalid ID provided.");
+        }
 
-          if (isset($id)) {
-           $id        = dbSanitize($id);
-          }
+        $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ? AND resourceType = 0 LIMIT 1";
 
-          if (isset($email)) {
-           $email     = dbSanitize($email);
-          }
+        // get the results of the query
+        $sqlResult = $this->db->query($sql, array($id));
 
-          // test to see if Id and Email is present and valid
-          if(!isnull($id) && $validate->integer($id) && !isnull($email) && $validate->emailAddr($email)){
-              $sql .= sprintf(' WHERE resourceID="%s" AND email="%s" LIMIT 1', $id, $email);
-          }
+        if ($sqlResult->error()){
+            throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+        }
 
-          // if no valid id throw an exception
-          if(!$validate->integer($id) && !isnull($id)){
-              throw new Exception("Error No Valid Resource ID");
-          }
+        //check and see if permissions exist on the resource
+        if ($sqlResult->rowCount() < 1) {
+           return FALSE;
+        }
+        else {
+           return TRUE;
+        }
 
-          // if no valid email throw an exception
-          if(!$validate->emailAddr($email) && !isnull($email)){
-              throw new Exception("Error No Valid Email Address");
-          }
-
-          // get the results of the query
-          $sqlResult = $db->query($sql);
-
-          if ($sqlResult->error()) {
-              throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
-          }
-
-          //check and see if permissions exist on the resource
-          if ($sqlResult->rowCount() < 1) {
-             return FALSE;
-          }
-          else {
-             return TRUE;
-          }
-      } catch (Exception $e) {
-          errorHandle::errorMsg($e->getMessage());
-      }
+    } catch (Exception $e){
+        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        return false;
+    }
   }
 
-  public function setupForm($id = null){
-       try {
-          // call engine
-          $engine    = EngineAPI::singleton();
-          $localvars = localvars::getInstance();
-          $validate  = new validate;
-          if (isset($id)) {
-           $id        = dbSanitize($id);
-          }
+  public function checkRoom($id = null){
+    try {
+        // test to see if Id is present and valid
+        if(!isnull($id) && !$this->validate->integer($id)){
+            throw new Exception("Invalid ID provided.");
+        }
 
-          // create customer form
-          $form = formBuilder::createForm('createPermissions');
-          $form->linkToDatabase( array(
-              'table' => 'reservePermissions'
-          ));
+        $sql = "SELECT * FROM `reservePermissions` WHERE roomID = ? AND resourceType = 3";
 
-          // form titles
-          $form->insertTitle = "Add Permissions";
-          $form->editTitle   = "Edit Permissions";
-          $form->updateTitle = "Update Permissions";
+        // get the results of the query
+        $sqlResult = $this->db->query($sql, array($id));
 
-          // if no valid id throw an exception
-          if(!$validate->integer($id) && !isnull($id)){
-              throw new Exception(__METHOD__.'() - Not a valid integer, please check the integer and try again.');
-          }
+        if ($sqlResult->error()){
+            throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+        }
 
-          // form information
-          $form->addField(array(
-              'name'    => 'ID',
-              'type'    => 'hidden',
-              'value'   => $id,
-              'primary' => TRUE,
-              'fieldClass' => 'id',
-              'showIn'     => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
-          ));
-          $form->addField(array(
-              'name'     => 'resourceID',
-              'label'    => 'Resource ID:',
-              'type'     => 'select',
-              'blankOption' => 'Select a Building',
-              'linkedTo' => array(
-                    'foreignTable' => 'building',
-                    'foreignField' => 'ID',
-                    'foreignLabel' => 'name',
-                  ),
-              'required' => TRUE
-          ));
-          $form->addField(array(
-              'name'       => 'resourceType',
-              'label'      => 'Resource Type:',
-              'type'       => 'hidden',
-              'value'      => "Building",
-              'options'    => array("Building", "Policy", "Template", "Room"),
-              'required'   => TRUE,
-              'duplicates' => TRUE
-          ));
-          $form->addField(array(
-              'name'     => 'email',
-              'label'    => 'Email:',
-              'required' => TRUE
-          ));
+        //check and see if permissions exist on the resource
+        if ($sqlResult->rowCount() < 1) {
+           return FALSE;
+        }
+        else {
+           return TRUE;
+        }
 
-          // buttons and submissions
-          $form->addField(array(
-              'showIn'     => array(formBuilder::TYPE_UPDATE),
-              'name'       => 'update',
-              'type'       => 'submit',
-              'fieldClass' => 'submit',
-              'value'      => 'Update Permissions'
-          ));
-          $form->addField(array(
-              'showIn'     => array(formBuilder::TYPE_UPDATE),
-              'name'       => 'delete',
-              'type'       => 'delete',
-              'fieldClass' => 'delete hidden',
-              'value'      => 'Delete'
-          ));
-          $form->addField(array(
-              'showIn'     => array(formBuilder::TYPE_INSERT),
-              'name'       => 'insert',
-              'type'       => 'submit',
-              'fieldClass' => 'submit something',
-              'value'      => 'Save Permissions'
-          ));
+    } catch (Exception $e){
+        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        return false;
+    }
+  }
 
-          return '{form name="createPermissions" display="form"}';
-      } catch (Exception $e) {
-          errorHandle::errorMsg($e->getMessage());
+  public function checkBuildingPermissions($id = null, $email = null){
+    try {
+        // test to see if Id is present and valid
+        if(!isnull($id) && !$this->validate->integer($id)){
+            throw new Exception("Invalid ID provided.");
+        }
+
+        // test to see if Id is present and valid
+        if(!isnull($email) && !$this->validate->emailAddr($email)){
+            throw new Exception("Invalid Email provided.");
+        }
+
+        $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ? AND email = ? LIMIT 1";
+
+        // get the results of the query
+        $sqlResult = $this->db->query($sql, array($id, $email));
+
+        if ($sqlResult->error()){
+            throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+        }
+
+        //check and see if permissions exist on the resource
+        if ($sqlResult->rowCount() < 1) {
+           return FALSE;
+        }
+        else {
+           return TRUE;
+        }
+
+    } catch (Exception $e){
+        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        return false;
+    }
+  }
+
+  public function checkRoomPermissions($id = null, $email = null){
+    try {
+        // test to see if Id is present and valid
+        if(!isnull($id) && !$this->validate->integer($id)){
+            throw new Exception("Invalid ID provided.");
+        }
+
+        // test to see if Id is present and valid
+        if(!isnull($email) && !$this->validate->emailAddr($email)){
+            throw new Exception("Invalid Email provided.");
+        }
+
+        $sql = "SELECT * FROM `reservePermissions` WHERE roomID = ? AND email = ? LIMIT 1";
+
+        // get the results of the query
+        $sqlResult = $this->db->query($sql, array($id, $email));
+
+        if ($sqlResult->error()){
+            throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+        }
+
+        //check and see if permissions exist on the resource
+        if ($sqlResult->rowCount() < 1) {
+           return FALSE;
+        }
+        else {
+           return TRUE;
+        }
+
+    } catch (Exception $e){
+        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        return false;
+    }
+  }
+
+  public function setupForm($id = null, $buildingID = null){
+    try {
+        // create customer form
+        $form = formBuilder::createForm('createPermissions');
+        $form->linkToDatabase( array(
+            'table' => 'reservePermissions'
+        ));
+
+        // form titles
+        $form->insertTitle = "Add Permissions";
+        $form->editTitle   = "Edit Permissions";
+        $form->updateTitle = "Update Permissions";
+
+        // if no valid id throw an exception
+        if(!$this->validate->integer($id) && !isnull($id)){
+            throw new Exception(__METHOD__.'() - Not a valid integer, please check the integer and try again.');
+        }
+
+        // form information
+        $form->addField(array(
+            'name'    => 'ID',
+            'type'    => 'hidden',
+            'value'   => $id,
+            'primary' => TRUE,
+            'fieldClass' => 'id',
+            'showIn'     => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
+        ));
+        $form->addField(array(
+            'name'     => 'resourceID',
+            'label'    => 'Building:',
+            'type'     => 'select',
+            'value'    => $buildingID,
+            'fieldClass' => 'resourceID',
+            'blankOption' => 'Select a Building',
+            'linkedTo' => array(
+                  'foreignTable' => 'building',
+                  'foreignField' => 'ID',
+                  'foreignLabel' => 'name',
+                ),
+            'required' => TRUE
+        ));
+
+        $form->addField(array(
+            'name'       => 'resourceType',
+            'label'      => 'Type:',
+            'type'       => 'select',
+            'fieldClass' => 'resourceType',
+            'value'      => "Building",
+            'options'    => array("Building", "Policy", "Template", "Room"),
+            'required'   => TRUE,
+            'duplicates' => TRUE
+        ));
+
+        $form->addField(array(
+            'name'     => 'roomID',
+            'label'    => 'Room:',
+            'type'     => 'select',
+            'value'    => $id,
+            'fieldClass' => 'rooms',
+            'blankOption' => 'Select a Room',
+            'linkedTo' => array(
+                  'foreignSQL' => "SELECT `ID`, CONCAT(`name`, ' - ', `number`) AS `name` FROM `rooms` ORDER BY `number`",
+                  'foreignTable' => 'rooms',
+                  'foreignField' => 'ID',
+                  'foreignLabel' => 'name',
+                ),
+            'required' => FALSE
+        ));
+
+        $form->addField(array(
+            'name'     => 'email',
+            'label'    => 'Email:',
+            'required' => TRUE
+        ));
+
+        // buttons and submissions
+        $form->addField(array(
+            'showIn'     => array(formBuilder::TYPE_UPDATE),
+            'name'       => 'update',
+            'type'       => 'submit',
+            'fieldClass' => 'submit',
+            'value'      => 'Update Permissions'
+        ));
+        $form->addField(array(
+            'showIn'     => array(formBuilder::TYPE_UPDATE),
+            'name'       => 'delete',
+            'type'       => 'delete',
+            'fieldClass' => 'delete hidden',
+            'value'      => 'Delete'
+        ));
+        $form->addField(array(
+            'showIn'     => array(formBuilder::TYPE_INSERT),
+            'name'       => 'insert',
+            'type'       => 'submit',
+            'fieldClass' => 'submit something',
+            'value'      => 'Save Permissions'
+        ));
+
+        return '{form name="createPermissions" display="form"}';
+    } catch (Exception $e) {
+        errorHandle::errorMsg($e->getMessage());
+        return false;
+    }
+  }
+
+  public function getRooms($building = null){
+    //function requires the building ID and returns a list of all rooms for that building
+    try {
+        // test to see if Id is present and valid
+        if(!isnull($building) && $this->validate->integer($building)){
+            $sql = "SELECT `ID`, CONCAT(`name`, ' - ', `number`) AS `name`, `building` FROM `rooms` WHERE `building` = ? ORDER BY `number`";
+            // get the results of the query
+            $sqlResult = $this->db->query($sql, array($building));
+        }
+        else {
+            $sql = "SELECT `ID`, CONCAT(`name`, ' - ' , `number`) AS `name`, `building` FROM `rooms` ORDER BY `number`";
+            // get the results of the query
+            $sqlResult = $this->db->query($sql);
+        }
+
+        if ($sqlResult->error()) {
+            throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+        }
+
+        return $sqlResult->fetchAll();
+
+    } catch (Exception $e) {
+        errorHandle::errorMsg($e->getMessage());
+    }
+  }
+
+  public function getRoom($id = null){
+    $sql       = "SELECT * FROM `rooms`";
+    try {
+      if(!isnull($id) && !$this->validate->integer($id)){
+        throw new Exception("Invalid ID provided.");
       }
+      if(!isnull($id)){
+        $sql .= "WHERE id = ? LIMIT 1";
+      }
+      $sqlResult = $this->db->query($sql,array($id));
+      if ($sqlResult->error()) {
+        throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+      }
+      return $sqlResult->fetchAll();
+    } catch (Exception $e) {
+      errorHandle::newError(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+      return false;
+    }
+
   }
 
   public function deleteRecord($id = null){
-      try {
-          // call engine
-          $engine    = EngineAPI::singleton();
-          $localvars = localvars::getInstance();
-          $db        = db::get($localvars->get('dbConnectionName'));
-          $validate  = new validate;
+    try {
+        // test to see if Id is present and valid
+        if(!isnull($id) && !$this->validate->integer($id)){
+            throw new Exception("Invalid ID provided.");
+        }
 
-          if (isset($id)) {
-           $id        = dbSanitize($id);
-          }
+        $sql = "DELETE FROM `reservePermissions` WHERE id = ? LIMIT 1";
 
-          // test to see if Id is present and valid
-          if(isnull($id) || !$validate->integer($id)){
-              throw new Exception(__METHOD__.'() -Delete failed, improper id or no id was sent');
-          }
+        // get the results of the query
+        $sqlResult = $this->db->query($sql, array($id));
 
-          // SQL Results
-          $sql = sprintf("DELETE FROM `reservePermissions` WHERE id=%s LIMIT 1", $id);
-          $sqlResult = $db->query($sql);
-          if(!$sqlResult) {
-              throw new Exception(__METHOD__.'Failed to delete permissions.');
-          }
-          else {
-              return "Successfully deleted the permissions";
-          }
-      } catch (Exception $e) {
-          errorHandle::errorMsg($e->getMessage());
-          return $e->getMessage();
-      }
+        if ($sqlResult->error()) {
+            throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+        }
+
+        return $sqlResult->fetchAll();
+
+    } catch (Exception $e) {
+        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        return false;
+    }
   }
 
-  public function insertRecord($id, $type, $email){
-      try {
-          // call engine
-          $engine    = EngineAPI::singleton();
-          $localvars = localvars::getInstance();
-          $db        = db::get($localvars->get('dbConnectionName'));
-          $validate  = new validate;
+  public function insertRecord($id, $type, $room, $email){
+    try {
+        // test to see if Id is present and valid
+        if(!isnull($id) && !$this->validate->integer($id)){
+            throw new Exception("Invalid ID provided.");
+        }
 
-          if (isset($id)) {
-           $id        = dbSanitize($id);
-          }
+        if(!isnull($type) && !$this->validate->integer($type)){
+            throw new Exception("Invalid Type provided.");
+        }
 
-          if (isset($type)) {
-           $type      = dbSanitize($type);
-          }
+        if(!isnull($room) && !$this->validate->integer($room)){
+            throw new Exception("Invalid Room ID provided.");
+        }
 
-          if (isset($email)) {
-           $email     = dbSanitize($email);
-          }
+        if(!isnull($email) && !$this->validate->emailAddr($email)){
+            throw new Exception("Invalid ID provided.");
+        }
 
-          // test to see if Id is present and valid
-          if(isnull($id) || !$validate->integer($id)){
-              throw new Exception(__METHOD__.'() -insert failed, improper resource id or no id was sent');
-          }
+        $sql = "INSERT INTO `reservePermissions` (resourceID, resourceType, roomID, email) VALUES (?, ?, ?, ?)";
 
-          // test to see if type is present and valid
-          if(isnull($type) || !$validate->integer($type)){
-              throw new Exception(__METHOD__.'() -insert failed, improper resource type or no type was sent');
-          }
+        // get the results of the query
+        $sqlResult = $this->db->query($sql, array($id, $type, $room, $email));
 
-          // test to see if email is present and valid
-          if(isnull($email) || !$validate->emailAddr($email)){
-              throw new Exception(__METHOD__.'() -insert failed, improper email address or no email was sent');
-          }
+        if ($sqlResult->error()) {
+            throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+        }
 
-          // SQL Results
-          $sql = sprintf("INSERT INTO `reservePermissions` (resourceID, resourceType, email) VALUES (?, ?, ?)");
-          $sqlResult = $db->query($sql, array($id, $type, $email));
+        return true;
 
-          if(!$sqlResult) {
-              throw new Exception(__METHOD__.'Failed to delete permissions.');
-          }
-          else {
-              return "Successfully deleted the permissions";
-          }
-
-      } catch (Exception $e) {
-          errorHandle::errorMsg($e->getMessage());
-          return $e->getMessage();
-      }
+    } catch (Exception $e) {
+        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        return false;
+    }
   }
 
   public function renderDataTable(){
     try {
-        $engine     = EngineAPI::singleton();
-        $localvars  = localvars::getInstance();
-        $validate   = new validate;
         $dataRecord = self::getRecords();
         $records    = "";
 
         foreach($dataRecord as $data){
-            //get building record
-            $temp = self::getBuildings($data['resourceID']);
+            switch ($data['resourceType']) {
+               case 0:
+                   //get building record
+                   $building = self::getBuildings($data['resourceID']);
+                   $name = $building[0]['name'];
+                   $type = "Building";
+                   break;
+               case 1:
+                   //get Policy record
+                   //$temp = self::getBuildings($data['resourceID']);
+                   $type = "Policy";
+                   break;
+               case 2:
+                   //get Template record
+                   //$temp = self::getBuildings($data['resourceID']);
+                   $type = "Template";
+                   break;
+               case 3:
+                  //get Room record
+                   $room = self::getRoom($data['roomID']);
+                   $building = self::getBuildings($data['resourceID']);
+                   $name = $building[0]['name'] . ' - ' . $room[0]['name'] . ' - ' . $room[0]['number'];
+                   $type = "Room";
+                   break;
+               default:
+                   echo "";
+            }
 
             $records .= sprintf("<tr>
                                     <td>%s</td>
                                     <td>%s</td>
-                                    <td><a href='../create/?id=%s'>Edit</a></td>
+                                    <td>%s</td>
+                                    <td><a href='../create/?id=%s&building=%s'>Edit</a></td>
                                     <td><input type='checkbox' name='delete[]' value='%s' /></td>
                                 </tr>",
-                    htmlSanitize($temp[0]['name']),
+
                     htmlSanitize($data['email']),
+                    htmlSanitize($type),
+                    htmlSanitize($name),
                     htmlSanitize($data['ID']),
+                    htmlSanitize($data['resourceID']),
                     htmlSanitize($data['ID'])
             );
         }
@@ -395,8 +479,9 @@ class reservationPermissions {
                                     <table class='table table-striped'>
                                         <thead>
                                             <tr class='info'>
-                                                <th> Resource ID </th>
                                                 <th> Email </th>
+                                                <th> Resource Type </th>
+                                                <th> Resource ID </th>
                                                 <th> Edit </th>
                                                 <th> Delete </th>
                                             </tr>
@@ -411,17 +496,14 @@ class reservationPermissions {
         return $output;
     } catch (Exception $e) {
         errorHandle::errorMsg($e->getMessage());
-        return $e->getMessage();
+        return false;
     }
   }
 
   public function uploadForm(){
     try {
-        $engine     = EngineAPI::singleton();
-        $localvars  = localvars::getInstance();
-        $validate   = new validate;
-
         $dataRecord = self::getBuildings();
+
         $records    = "";
         $records .= sprintf(" <option value='NULL'>Select a Building</option>");
         foreach($dataRecord as $data){
@@ -435,15 +517,19 @@ class reservationPermissions {
                                   <form action={phpself query='true'} method='post' enctype='multipart/form-data'>
                                     {csrf}
                                     <div class='uploadForm'>
-                                      <br>Resource ID: <select name='resourceID' required>%s</select>
-                                      <div hidden>
-                                        <br>Resource Type:
-                                          <select name='resourceType' required hidden>
-                                            <option value=0>Building</option>
-                                            <option value=1>Policy</option>
-                                            <option value=2>Template</option>
-                                            <option value=3>Room</option>
-                                          </select>
+                                      <label>Building:</label> <select name='resourceID' required class='resourceID'>%s</select>
+                                      <div>
+                                        <label>Type:</label>
+                                        <select name='resourceType' required class='resourceType'>
+                                          <option value=0>Building</option>
+                                          <!-- <option value=1>Policy</option> -->
+                                          <!-- <option value=2>Template</option> -->
+                                          <option value=3>Room</option>
+                                        </select>
+                                        <br>Room:
+                                        <select name='roomID' class='rooms'>
+                                         <option value='NULL'>Select a Room</option>
+                                        </select>
                                      </div>
                                     <br><br>Select CSV to upload:<br><br>
                                     <input type='file' name='uploadedfile' id='fileToUpload'><br><br>
@@ -456,7 +542,7 @@ class reservationPermissions {
         return $output;
     } catch (Exception $e) {
         errorHandle::errorMsg($e->getMessage());
-        return $e->getMessage();
+        return false;
     }
   }
 
@@ -476,18 +562,28 @@ class reservationPermissions {
         $resourceID   = $_POST['MYSQL']['resourceID'];
         $resourceType = $_POST['MYSQL']['resourceType'];
 
+        if (isset($_POST['MYSQL']['roomID'])){
+          $roomID     = $_POST['MYSQL']['roomID'];
+        }
+        else {
+          $roomID     = NULL;
+        }
+
         // open file
         $file = fopen($_FILES['uploadedfile']['tmp_name'],'r');
 
         // use class with csv data
-        while(! feof($file)) {
+        while(!feof($file)){
          $temp = fgetcsv($file);
-         self::insertRecord($resourceID, $resourceType, $temp[0]);
+         if (!isnull($temp[0])){
+           self::insertRecord($resourceID, $resourceType, $roomID, $temp[0]);
+         }
         }
         fclose($file);
     }
     catch(Exception $e) {
       errorHandle::errorMsg($e->getMessage());
+      return false;
     }
   }
 
@@ -499,6 +595,7 @@ class reservationPermissions {
     }
     catch (Exception $e){
     	errorHandle::errorMsg($e->getMessage());
+      return false;
     }
   }
 
