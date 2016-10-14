@@ -1,7 +1,5 @@
-// $(window).load(
-//   function(){
-
-$(function(){
+ $(window).load(
+   function(){
     var libraryID;
     $('body').on('change', '.library', function(){
       libraryID = $('.library').val();
@@ -12,7 +10,7 @@ $(function(){
           /* Remove all options from the select list */
           $('.capacity').empty();
 
-          /* Remove all options from the select list */
+          /* Build array of valid (unique) capacity values to be added to select */
           var optionsArray = [];
           for (var i = 0; i < data.length; i++) {
             if ((data[i].capacity != null) && (data[i].capacity != '')) {
@@ -20,7 +18,6 @@ $(function(){
             }
           }
           optionsArray.sort(function(a, b){return a-b});
-          //console.log(optionsArray);
 
           /* Create List of Room Capacity's for Current Building */
           var options;
@@ -35,9 +32,7 @@ $(function(){
            console.log('failure');
         },
        });
-    }
-    );
+    });
 
     $("select.library").change();
-  }
-);
+  });
