@@ -5,7 +5,7 @@ $(function(){
   $('body').on('change', '.resourceID', function(){
     resourceID = $('.resourceID').val();
     $.ajax({
-      url: roomReservationHome+"/includes/ajax/getBuildingRooms.php?buildingID="+resourceID,
+      url: roomReservationHome+"/includes/ajax/getRooms.php?buildingID="+resourceID,
       dataType: "json",
       success : function(data) {
         /* Remove all options from the select list */
