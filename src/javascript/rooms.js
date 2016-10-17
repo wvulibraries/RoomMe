@@ -1,11 +1,12 @@
 $(function(){
   var resourceID;
   var resourceType;
+
   $('body').on('change', '.resourceID', function(){
     resourceID = $('.resourceID').val();
     $.ajax({
-      type: "GET",
-      url: '../getRooms.php?building='+resourceID,
+      url: roomReservationHome+"/includes/ajax/getBuildingRooms.php?buildingID="+resourceID,
+      dataType: "json",
       success : function(data) {
         /* Remove all options from the select list */
         $('.rooms').empty();
