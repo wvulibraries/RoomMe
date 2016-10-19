@@ -41,6 +41,8 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 	$ehour = $_POST['MYSQL']['end_hour'];
 	$emin  = $_POST['MYSQL']['end_minute'];
 
+	$capacity = $_POST['MYSQL']['capacity'];
+
 	// check to see if the provided date is valid
 	$validDate = checkdate($month,$day,$year);
 	if ($validDate === FALSE) {
@@ -56,26 +58,6 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 
 		$eUnix = $sUnix + $ehour + $emin;
 
-		// if ((int)$shour >= 18 && (int)$ehour < (int)$shour) {
-		// 	// assume the end hour is the next morning/day
-		//
-		// 	// add 24 hours of seconds to the start time
-		// 	$nextDay = $sunix + 86400;
-		//
-		// 	// grab the new month, day, year
-		// 	$emonth = date("n",$nextDay);
-		// 	$eday   = date("j",$nextDay);
-		// 	$eyear  = date("Y",$nextDay);
-		//
-		// 	$eUnix = mktime($ehour,$emin,0,$emonth,$eday,$eyear);
-		//
-		// }
-		// else {
-		// 	// otherwise just use what we were given
-		// 	$eUnix = mktime($ehour,$emin,0,$month,$day,$year);
-		// }
-
-
 		// make sure the end time is after the start time
 		if ($eUnix <= $sUnix) {
 			errorHandle::errorMsg($messages->get("endBeforeStart"));
@@ -89,10 +71,6 @@ if (isset($_POST['MYSQL']['lookupSubmit'])) {
 		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library']));
 		$building  = $sqlResult->fetch();
 
-
-		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building=? AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE ( (startTime<? AND endTime<=?) OR (startTime>=? AND endTime>?) AND rooms.building=?)) ORDER BY rooms.%s",
-		#$sql       = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building='%s' AND rooms.ID NOT IN (SELECT * FROM `reservations` WHERE ( ((startTime<='%s' AND endTime>'%s') OR (startTime<'%s' AND endTime>='%s')) OR (startTime>='%s' AND endTime<='%s') ) AND roomID='%s') ORDER BY rooms.%s",
-
 		$sql = sprintf("SELECT rooms.*,
        building.roomlistdisplay AS roomListDisplay
 FROM   rooms
@@ -104,6 +82,7 @@ FROM   rooms
               ON policies.id = roomTemplates.policy
 WHERE  policies.publicscheduling = '1'
        AND rooms.building = ?
+			 AND rooms.capacity >= ?
        AND rooms.id NOT IN (SELECT rooms.id
                         FROM   rooms
                                LEFT JOIN reservations
@@ -125,15 +104,7 @@ ORDER  BY rooms.%s",
 
 			$building['roomSortOrder']
 			);
-		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library'],$sUnix,$eUnix,$sUnix,$eUnix,$eUnix,$sUnix,$sUnix,$eUnix,$sUnix,$eUnix,$_POST['MYSQL']['library']));
-
-		// $sql2      = sprintf("SELECT rooms.*, building.roomListDisplay as roomListDisplay FROM rooms LEFT JOIN building ON building.ID=rooms.building LEFT JOIN roomTemplates ON roomTemplates.ID=rooms.roomTemplate LEFT JOIN policies ON policies.ID=roomTemplates.policy WHERE policies.publicScheduling='1' AND rooms.building=? AND rooms.ID NOT IN (SELECT rooms.ID FROM rooms LEFT JOIN reservations ON reservations.roomID=rooms.ID WHERE ( (startTime<'%s' AND endTime<='%s') OR (startTime>='%s' AND endTime>'%s') AND rooms.building='%s')) ORDER BY rooms.%s",
-		// 	$_POST['MYSQL']['library'],$sUnix,$eUnix,$sUnix,$eUnix,$_POST['MYSQL']['library'],$building['roomSortOrder']
-		// 	);
-
-		// print "<pre>";
-		// var_dump($sql);
-		// print "</pre>";
+		$sqlResult = $db->query($sql,array($_POST['MYSQL']['library'],$_POST['MYSQL']['capacity'],$sUnix,$eUnix,$sUnix,$eUnix,$eUnix,$sUnix,$sUnix,$eUnix,$sUnix,$eUnix,$_POST['MYSQL']['library']));
 
 		if ($sqlResult->error()) {
 			errorHandle::newError($sqlResult->errorMsg(), errorHandle::DEBUG);
@@ -159,13 +130,12 @@ ORDER  BY rooms.%s",
 						htmlSanitize($displayName)
 						);
 				}
-				$results .= "</ul>";
+				$results .= "</ul><br></br>";
 			}
 		}
 
 		$localvars->set("results",$results);
 	}
-
 }
 
 $localvars->set("prettyPrint",errorHandle::prettyPrint());
@@ -174,7 +144,7 @@ templates::display('header');
 ?>
 
 <section>
-	
+
 	{local var="results"}
 
 </section>
@@ -200,7 +170,7 @@ templates::display('header');
 	<strong>Select Library:</strong>
 	<div class="roomReservationRows">
 		<span class="reserveRoomInput"><label for="library">Library:</label>
-		<select name="library" id="library">
+		<select name="library" id="library" class="library">
 			{local var="librarySelectOptions"}
 		</select></span>
 	</div>
@@ -290,15 +260,18 @@ templates::display('header');
 			?>
 		</select></span>
 	</div>
+
+	<strong>Enter The Maximum Capacity:</strong>
+	<div class="roomReservationRows">
+		<span class="reserveRoomInput"><label for="capacity">Capacity:</label>
+			<select name="capacity" id="capacity" class="capacity">
+		   <option value="*">Any Capacity</option>
+		 </select>
+	</div>
+
 	<br>
 	<input type="submit" name="lookupSubmit" class="button" />
 </form>
-
-<?php if (!is_empty($results)) { ?>
-
-
-
-<?php } ?>
 
 <div id="calendarModal">
 </div>
@@ -309,7 +282,7 @@ templates::display('header');
 	<!-- Rooms Navigation -->
 	<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
 
-
+<script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/roomCapacity.js"></script>
 
 <?php
 templates::display('footer');
