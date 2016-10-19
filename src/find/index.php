@@ -279,11 +279,11 @@ templates::display('header');
 	<div class="clear:both;"></div>
 	<br>
 
-	<!-- Rooms Navigation -->
-	<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
-
-<script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/roomCapacity.js"></script>
+<!-- Rooms Navigation -->
+<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
 
 <?php
 templates::display('footer');
 ?>
+
+<script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/roomCapacity.js"></script>
