@@ -43,7 +43,7 @@ $(function() {
 			if($('#start_year_modal').length) {
 				$doc.on('change', '#start_year_modal',    handler_activate_submit_button);
 			}
-	})
+	});
 
 
 // ------------
@@ -127,38 +127,43 @@ function handler_pager() {
 
 function setPagerAttributes(startCols,endCols) {
 
-	// prev
-	$('#pagerPrev').attr('data-startCols',(startCols-numberOfColumns < 0)?0:startCols-numberOfColumns);
-	$('#pagerPrev').attr('data-endCols',(endCols-numberOfColumns <=0)?numberOfColumns:endCols-numberOfColumns);
-
-	// next
-	$('#pagerNext').attr('data-startCols',(endCols >= calendarData.rooms.length)?calendarData.rooms.length-numberOfColumns:endCols);
-	$('#pagerNext').attr('data-endCols',(endCols+numberOfColumns > calendarData.rooms.length)?calendarData.rooms.length:endCols+numberOfColumns);
-
-	// last
-	$('#pagerLast').attr('data-startCols',(calendarData.rooms.length-numberOfColumns));
-	$('#pagerLast').attr('data-endCols',calendarData.rooms.length);
-
-
-
-	if (startCols <= 0) {
-		$('#pagerPrev').addClass("pager-disabled");
-		$('#pagerFirst').addClass("pager-disabled");
-	}
-	else {
-		$('#pagerPrev').removeClass("pager-disabled");
-		$('#pagerFirst').removeClass("pager-disabled");
+	if($('#pagerPrev').length){
+		// prev
+		$('#pagerPrev').attr('data-startCols',(startCols-numberOfColumns < 0)?0:startCols-numberOfColumns);
+		$('#pagerPrev').attr('data-endCols',(endCols-numberOfColumns <=0)?numberOfColumns:endCols-numberOfColumns);
 	}
 
-	if (endCols >= calendarData.rooms.length) {
-		$('#pagerNext').addClass("pager-disabled");
-		$('#pagerLast').addClass("pager-disabled");
-	}
-	else {
-		$('#pagerNext').removeClass("pager-disabled");
-		$('#pagerLast').removeClass("pager-disabled");
+	if($('#pagerNext').length){
+		// next
+		$('#pagerNext').attr('data-startCols',(endCols >= calendarData.rooms.length)?calendarData.rooms.length-numberOfColumns:endCols);
+		$('#pagerNext').attr('data-endCols',(endCols+numberOfColumns > calendarData.rooms.length)?calendarData.rooms.length:endCols+numberOfColumns);
 	}
 
+	if($('#pagerLast').length){
+		// last
+		$('#pagerLast').attr('data-startCols',(calendarData.rooms.length-numberOfColumns));
+		$('#pagerLast').attr('data-endCols',calendarData.rooms.length);
+	}
+
+	if($('#pagerPrev').length || $('#pagerFirst').length){
+		if (startCols <= 0) {
+			$('#pagerPrev').addClass("pager-disabled");
+			$('#pagerFirst').addClass("pager-disabled");
+		}
+		else {
+			$('#pagerPrev').removeClass("pager-disabled");
+			$('#pagerFirst').removeClass("pager-disabled");
+		}
+
+		if (endCols >= calendarData.rooms.length) {
+			$('#pagerNext').addClass("pager-disabled");
+			$('#pagerLast').addClass("pager-disabled");
+		}
+		else {
+			$('#pagerNext').removeClass("pager-disabled");
+			$('#pagerLast').removeClass("pager-disabled");
+		}
+	}
 }
 
 function getMobileCalendarData() {

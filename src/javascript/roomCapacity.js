@@ -1,11 +1,14 @@
- $(window).load(
-   function(){
+$(function(){
     var libraryID;
+
     $('body').on('change', '.library', function(){
       libraryID = $('.library').val();
       $.ajax({
+        url: roomReservationHome+"/includes/ajax/getBuildingRooms.php",
         type: "GET",
-        url: 'getcapacity.php?building='+libraryID,
+        dataType: "json",
+        async: false,
+        data: { buildingID: libraryID },
         success : function(data) {
           /* Remove all options from the select list */
           $('.capacity').empty();
@@ -35,4 +38,4 @@
     });
 
     $("select.library").change();
-  });
+});

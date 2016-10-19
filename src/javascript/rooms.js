@@ -5,25 +5,29 @@ $(function(){
   $('body').on('change', '.resourceID', function(){
     resourceID = $('.resourceID').val();
     $.ajax({
-      url: roomReservationHome+"/includes/ajax/getRooms.php?buildingID="+resourceID,
-      dataType: "json",
-      success : function(data) {
-        /* Remove all options from the select list */
-        $('.rooms').empty();
+          url: roomReservationHome+"/includes/ajax/getRooms.php",
+          type: "GET",
+          dataType: "json",
+          data: { building: resourceID },
 
-        var options;
-        options += '<option value="' + 'NULL' + '">' + 'Select a Room' + '</option>';
-        for (var i = 0; i < data.length; i++) {
-          options += '<option value="' + data[i].ID + '">' + data[i].name + '</option>';
-        }
+          success : function(data) {
+            /* Remove all options from the select list */
+            $('.rooms').empty();
 
-        $('.rooms').html(options);
-      },
-      error: function() {
-         console.log('failure');
-      },
-     });
+            var options;
+            options += '<option value="' + 'NULL' + '">' + 'Select a Room' + '</option>';
+            for (var i = 0; i < data.length; i++) {
+              options += '<option value="' + data[i].ID + '">' + data[i].name + '</option>';
+            }
+
+            $('.rooms').html(options);
+          },
+          error: function() {
+             console.log('failure');
+          },
+      });
   });
+
 
   $('body').on('change', '.resourceType', function(){
     resourceType = $('.resourceType').val();
