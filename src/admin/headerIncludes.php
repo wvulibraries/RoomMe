@@ -15,8 +15,7 @@
 <script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/roomReservations.js"></script>
 <script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/doubleMultiSelect.js"></script>
 <script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/dayCheck.js"></script>
-
-
+<link rel="stylesheet" type="text/css" href="{local var="roomResBaseDir"}/css/permissions.css">
 <style>
 
   .listTable {overflow:auto;}
