@@ -15,8 +15,6 @@
 		$reservationPermissions->multiDelete($_POST['MYSQL']['delete']);
 	}
 
-	$localvars->set('table', $reservationPermissions->renderDataTable());
-
 	templates::display('header');
 ?>
 
@@ -24,7 +22,9 @@
 	<h1>Reservation Permissions</h1>
 </header>
 
-{local var="table"}
+<section>
+	<?php include ("../../../../includes/formDefinitions/form_dataTable.php"); ?>
+</section>
 
 <?php
 templates::display('footer');
