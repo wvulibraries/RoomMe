@@ -3,6 +3,7 @@ $(function(){
   var resourceType;
 
   $('body').on('change', '.resourceID', function(){
+    $("select.resourceType").change();
     resourceID = $('.resourceID').val();
     $.ajax({
           url: roomReservationHome+"/includes/ajax/getRooms.php",
