@@ -86,7 +86,7 @@ catch (Exception $e) {
 }
 // End Via dropdown creation
 
-// If this is a new reservation, use the current time. 
+// If this is a new reservation, use the current time.
 // If this is an update, use the time from the reservation
 $currentMonth = ($series->isNew())?date("n"):date("n",$series->reservation['startTime']);
 $currentDay   = ($series->isNew())?date("j"):date("j",$series->reservation['startTime']);
@@ -129,14 +129,19 @@ else {
 
 $date = new date;
 
-// If there was a submission error, duration is what was submitted. 
-// If we are loading, it needs calculated. 
+// If there was a submission error, duration is what was submitted.
+// If we are loading, it needs calculated.
 $duration = $nextHour - $currentHour;
 
 // @TODO display on month dropdown should be configurable via interface
-$localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month")));
-$localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day")));
-$localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year")));
+$localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month", "class" => "start_date")));
+$localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day", "class" => "start_date")));
+$localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year", "class" => "start_date")));
+
+$localvars->set("seriesmonthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"seriesEndDate_month", "id"=>"seriesEndDate_month", "class" => "end_date_select")));
+$localvars->set("seriesdaySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"seriesEndDate_day", "id"=>"seriesEndDate_day", "class" => "end_date_select")));
+$localvars->set("seriesyearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"seriesEndDate_year", "id"=>"seriesEndDate_year", "class" => "end_date_select")));
+
 $localvars->set("shourSelect", $date->dropdownHourSelect(($displayHour == 12)?TRUE:FALSE,$currentHour,array("name"=>"start_hour", "id"=>"start_hour")));
 $localvars->set("sminSelect",  $date->dropdownMinuteSelect("15",$startMinute,array("name"=>"start_minute", "id"=>"start_minute"))); // @TODO need to pull increment from room config
 $localvars->set("ehourSelect", dropdownDurationSelect($duration,array("name"=>"end_hour", "id"=>"end_hour")));
@@ -308,46 +313,16 @@ templates::display('header');
 	<table>
 		<tr>
 			<td>
-				<label for="seriesEndDate_month">Month:</label><br />
-				<select name="seriesEndDate_month" id="seriesEndDate_month" >
-					<?php
-
-						for($I=1;$I<=12;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $seriesEndMonth)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
+				<label for="seriesEndDate_month">Month:</label>
+        {local var="seriesmonthSelect"}
 			</td>
 				<td>
-				<label for="seriesEndDate_day">Day:</label><br />
-				<select name="seriesEndDate_day" id="seriesEndDate_day" >
-					<?php
-
-						for($I=1;$I<=31;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								($I < 10)?"0".$I:$I,
-								($I == $seriesEndDay)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
+				<label for="seriesEndDate_day">Day:</label>
+				{local var="seriesdaySelect"}
 			</td>
 			<td>
-				<label for="seriesEndDate_year">Year:</label><br />
-				<select name="seriesEndDate_year" id="seriesEndDate_year" >
-					<?php
-
-						for($I=$currentYear;$I<=$currentYear+10;$I++) {
-							printf('<option value="%s" %s>%s</option>',
-								$I,
-								($I == $seriesEndYear)?"selected":"",
-								$I);
-						}
-					?>
-				</select>
+				<label for="seriesEndDate_year">Year:</label>
+        {local var="seriesyearSelect"}
 			</td>
 		</tr>
 	</table>
@@ -384,18 +359,17 @@ templates::display('header');
 		<textarea name="comments" id="comments">{local var="comments"}</textarea>
 	</fieldset>
 	<br /><br />
-	<?php 
+	<?php
 	//@TODO this needs cleaned up
 	if ($series->isNew()) { ?>
 	<input type="submit" name="createSubmit" value="Reserve this Room"/> &nbsp;&nbsp;
-	<?php } 
+	<?php }
 	else { ?>
 	<input type="submit" name="deleteSubmit" value="Delete" id="deleteReservation"/>
 
 	<?php }	?>
 
 </form>
-
 
 <?php
 templates::display('footer');

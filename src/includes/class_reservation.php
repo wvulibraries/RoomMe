@@ -67,7 +67,28 @@ class reservation {
 	public function create($seriesID=NULL) {
 
 		$buildingID = $this->building['ID'];
-		$roomID     = $this->room['ID'];
+		$roomID = $this->room['ID'];
+
+		$reservationPermissions = new reservationPermissions;
+
+		//check if there are any permissions currently in place on current buildingID
+		if ($reservationPermissions->permissionsSet($buildingID) === TRUE) {
+			//check and see if permissions set are for the building
+      if ($reservationPermissions->checkBuilding($buildingID) === TRUE) {
+				if ((isset($_POST['MYSQL']['notificationEmail']) && ($reservationPermissions->checkBuildingPermissions($buildingID, $_POST['MYSQL']['notificationEmail']))) === FALSE) {
+							errorHandle::errorMsg(" Error email address not on Permissions list for this Room ");
+							return FALSE;
+				}
+			}
+			else {
+				if ($reservationPermissions->checkRoom($roomID) === TRUE) {
+					if ((isset($_POST['MYSQL']['notificationEmail']) && ($reservationPermissions->checkRoomPermissions($roomID, $_POST['MYSQL']['notificationEmail']))) === FALSE) {
+							errorHandle::errorMsg(" Error email address not on Permissions list for this Room");
+							return FALSE;
+					}
+				}
+			}
+		}
 
 		if ($this->validateRoomPostVariables() === FALSE) {
 			errorHandle::errorMsg(getResultMessage("dataValidationError"));

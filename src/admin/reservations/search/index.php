@@ -16,12 +16,12 @@ if (isset($_POST['MYSQL']['search'])) {
 		$user = new userInfo;
 		if (!$user->get($_POST['MYSQL']['username'])) {
 			throw new Exception("Unable to retrieve user");
-		}	
+		}
 		if (!$user->getReservations()) {
 			throw new Exception("Unable to retrieve users reservations");
 		}
 
-		//@TODO this needs to be refactored into a listClass to handle this and the 
+		//@TODO this needs to be refactored into a listClass to handle this and the
 		// reservationsList.php page
 		$table           = new tableObject("array");
 		$table->sortable = TRUE;
@@ -64,9 +64,9 @@ if (isset($_POST['MYSQL']['search'])) {
 			$roomDisplayName = str_replace("{number}", $reservation->room['number'], $roomDisplayName);
 
 			$temp = array();
-			$temp['username']  = $displayName; 
+			$temp['username']  = $displayName;
 			$temp['building']  = $reservation->building['name'];
-			$temp['room']      = $roomDisplayName; 
+			$temp['room']      = $roomDisplayName;
 			$temp['startTime'] = date($timeFormat,$reservation->reservation['startTime']);
 			$temp['endTime']   = date($timeFormat,$reservation->reservation['endTime']);
 			if ($hoursOnTable == "1") {
@@ -87,12 +87,23 @@ if (isset($_POST['MYSQL']['search'])) {
 
 	}
 	catch (Exception $e) {
-		errorHandle::errorMsg($e->getMessage());		
+		errorHandle::errorMsg($e->getMessage());
 	}
 
 	$localvars->set("username",$_POST['HTML']['username']);
 
 }
+
+$date = new date;
+
+// @TODO display on month dropdown should be configurable via interface
+$localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month", "class" => "start_date")));
+$localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day", "class" => "start_date")));
+$localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year", "class" => "start_date")));
+
+$localvars->set("endmonthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"end_month", "id"=>"end_month", "class" => "end_date")));
+$localvars->set("enddaySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"end_day", "id"=>"end_day", "class" => "end_date")));
+$localvars->set("endyearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"end_year", "id"=>"end_year", "class" => "end_date")));
 
 templates::display('header');
 ?>
@@ -123,89 +134,29 @@ templates::display('header');
 		<tr>
 			<td>
 				<label for="start_month">Month:</label><br />
-				<select name="start_month" id="start_month" >
-					<?php
-
-					for($I=1;$I<=12;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							($I < 10)?"0".$I:$I,
-							($I == $currentMonth)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="monthSelect"}
 			</td>
 			<td>
 				<label for="start_day">Day:</label><br />
-				<select name="start_day" id="start_day" >
-					<?php
-
-					for($I=1;$I<=31;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							($I < 10)?"0".$I:$I,
-							($I == $currentDay)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="daySelect"}
 			</td>
 			<td>
 				<label for="start_year">Year:</label><br />
-				<select name="start_year" id="start_year" >
-					<?php
-
-					for($I=$currentYear-1;$I<=$currentYear+10;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							$I,
-							($I==$currentYear)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="yearSelect"}
 			</td>
 		</tr>
 				<tr>
 			<td>
 				<label for="start_month">Month:</label><br />
-				<select name="end_month" id="end_month" >
-					<?php
-
-					for($I=1;$I<=12;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							($I < 10)?"0".$I:$I,
-							($I == $currentMonth)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="endmonthSelect"}
 			</td>
 			<td>
 				<label for="start_day">Day:</label><br />
-				<select name="end_day" id="end_day" >
-					<?php
-
-					for($I=1;$I<=31;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							($I < 10)?"0".$I:$I,
-							($I == $currentDay)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="enddaySelect"}
 			</td>
 			<td>
 				<label for="start_year">Year:</label><br />
-				<select name="end_year" id="end_year" >
-					<?php
-
-					for($I=$currentYear-1;$I<=$currentYear+10;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							$I,
-							($I==$currentYear)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="endyearSelect"}
 			</td>
 		</tr>
 	</table>

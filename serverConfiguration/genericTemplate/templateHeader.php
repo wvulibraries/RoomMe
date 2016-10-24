@@ -23,7 +23,9 @@
         <link href="{local var="roomResBaseDir"}/css/rooms.css" type="text/css" rel="stylesheet">
 
         <!-- JavaScripts -->
-        <script type="text/javascript" src="https://lib.wvu.edu/javascript/2014/jquery-2.1.1.min.js"></script>
+        <!-- <script type="text/javascript" src="https://lib.wvu.edu/javascript/2014/jquery-2.1.1.min.js"></script> -->
+        <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script> -->
+        <script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/jquery.min.js"></script>
 
         <?php recurseInsert("headerIncludes.php","php") ?>
     </head>

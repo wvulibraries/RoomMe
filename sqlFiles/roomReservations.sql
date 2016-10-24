@@ -41,6 +41,7 @@ CREATE TABLE `building` (
   `policyURL` varchar(200) DEFAULT NULL,
   `hoursURL` varchar(200) DEFAULT NULL,
   `externalURL` varchar(150) DEFAULT NULL,
+  `restricted` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;

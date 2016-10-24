@@ -1,6 +1,6 @@
 <?php
 // @TODO This file is a mess. It is in need of a refactoring/cleanup
-// 
+//
 require_once("../../engineHeader.php");
 
 $errorMsg = "";
@@ -28,8 +28,8 @@ if (isset($_POST['MYSQL']['createNewFromOld'])) {
 
 try {
 
-	// Is this an Update? 
-	// Currently checking for this in both get and post. 
+	// Is this an Update?
+	// Currently checking for this in both get and post.
 	if (isset($_GET['MYSQL']['id']) || (isset($_POST['MYSQL']['reservationID']) && !is_empty($_POST['MYSQL']['reservationID'])) ) {
 
 		$reservationID = (isset($_POST['MYSQL']['reservationID']) && !is_empty($_POST['MYSQL']['reservationID']))?$_POST['MYSQL']['reservationID']:$_GET['MYSQL']['id'];
@@ -58,7 +58,7 @@ try {
 			throw new Exception("Error deleting reservation.");
 		}
 
-		// @TODO this should not be hard coded. 
+		// @TODO this should not be hard coded.
 		header('Location: ../list/');
 
 	}
@@ -102,7 +102,7 @@ catch (Exception $e) {
 $displayHour = getConfig('24hour');
 $displayHour = ($displayHour != 1)?12:24;
 
-// If this is a new reservation, use the current time. 
+// If this is a new reservation, use the current time.
 // If this is an update, use the time from the reservation
 $currentMonth = ($reservation->isNew())?date("n"):date("n",$reservation->reservation['startTime']);
 $currentDay   = ($reservation->isNew())?date("j"):date("j",$reservation->reservation['startTime']);
@@ -113,7 +113,7 @@ $nextHour     = ($reservation->isNew())?(date("G")+1):date("G",$reservation->res
 $startMinute = ($reservation->isNew())?"0":date("i",$reservation->reservation['startTime']);
 $endMinute   = ($reservation->isNew())?"0":date("i",$reservation->reservation['endTime']);
 
-// Set some localvars for use in the HTML below. 
+// Set some localvars for use in the HTML below.
 $localvars->set("username",($reservation->isNew())?"":$reservation->reservation['username']);
 $localvars->set("email",($reservation->isNew())?"":$reservation->reservation['email']);
 $localvars->set("groupname",($reservation->isNew())?"":$reservation->reservation['groupname']);
@@ -175,14 +175,14 @@ if ($submitError) {
 
 $date = new date;
 
-// If there was a submission error, duration is what was submitted. 
-// If we are loading, it needs calculated. 
+// If there was a submission error, duration is what was submitted.
+// If we are loading, it needs calculated.
 $duration = ($submitError)?$nextHour:$nextHour - $currentHour;
 
 // @TODO display on month dropdown should be configurable via interface
-$localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month")));
-$localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day")));
-$localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year")));
+$localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month", "class" => "start_date")));
+$localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day", "class" => "start_date")));
+$localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year", "class" => "start_date")));
 $localvars->set("shourSelect", $date->dropdownHourSelect(($displayHour == 12)?TRUE:FALSE,$currentHour,array("name"=>"start_hour", "id"=>"start_hour")));
 $localvars->set("sminSelect",  $date->dropdownMinuteSelect("15",$startMinute,array("name"=>"start_minute", "id"=>"start_minute"))); // @TODO need to pull increment from room config
 $localvars->set("ehourSelect", dropdownDurationSelect($duration,array("name"=>"end_hour", "id"=>"end_hour")));
@@ -203,6 +203,7 @@ templates::display('header');
 	</header>
 	<?php print errorHandle::prettyPrint(); ?>
 </section>
+
 <?php } ?>
 
 	<form action="{phpself query="true"}" method="post">
@@ -259,7 +260,7 @@ templates::display('header');
 						<strong>Start Time</strong>
 					</td>
 				</tr>
-				<tr>	
+				<tr>
 					<td>
 						<label for="start_hour">Hour:</label><br />
 						{local var="shourSelect"}
@@ -318,9 +319,6 @@ templates::display('header');
 		<?php }	?>
 
 	</form>
-
-
-
 
 	<?php
 	templates::display('footer');

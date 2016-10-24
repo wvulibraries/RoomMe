@@ -137,6 +137,9 @@ templates::display('header');
 <a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies
 	<i class="fa fa-exclamation-circle"></i>
 </a>
+<a class="policyLink roomTabletDesktop" href="{local var="helpPage"}">Help
+	<i class="fa fa-question-circle"></i>
+</a>
 <hr class="roomHR roomTabletDesktop" />
 
 <!-- Room Information -->
@@ -222,6 +225,15 @@ templates::display('header');
 
 	<p>You must be logged in to reserve a room. </p>
 	<a href="{local var="loginURL"}">Login</a>
+
+	<?php } if ($roomPermissions && $user_not_allowed) { ?>
+
+		<!-- The above variables are not set yet. If the user isn't allowed to
+		reserve the room, based on the room permissions, display this section of
+		HTML.
+
+		I would setup this section as a snippet and provide a way to edit it in the interface
+	-->
 
 	<?php } else { ?>
 
