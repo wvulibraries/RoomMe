@@ -2,11 +2,6 @@
 
 		require_once("../../../../engineHeader.php");
 
-		$errorMsg = "";
-		$error    = FALSE;
-		$id       = NULL;
-		$db       = db::get($localvars->get('dbConnectionName'));
-
 		// instantiate reservation class
 		$reservationPermissions = new reservationPermissions;
 

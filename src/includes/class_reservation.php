@@ -76,7 +76,7 @@ class reservation {
 			//check and see if permissions set are for the building
       if ($reservationPermissions->checkBuilding($buildingID) === TRUE) {
 				if ((isset($_POST['MYSQL']['notificationEmail']) && ($reservationPermissions->checkBuildingPermissions($buildingID, $_POST['MYSQL']['notificationEmail']))) === FALSE) {
-							errorHandle::errorMsg(" Error email address not on Permissions list for this Resource ");
+							errorHandle::errorMsg(" Error email address not on Permissions list for this Room ");
 							return FALSE;
 				}
 			}

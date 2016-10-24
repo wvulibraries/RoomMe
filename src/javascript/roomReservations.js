@@ -197,10 +197,6 @@ function buildRoomList(data) {
 
 	}
 
-	// console.log(mobileCalendarData);
-
-	// $("#mobileList").empty();
-
 	// what is the nearest 30 minutes?
 	// Current time in seconds, date.now provides milliseconds
 	var currentTime     = Date.now() / 1000 | 0;
@@ -208,35 +204,19 @@ function buildRoomList(data) {
 	var nextHalfHour    = prevHalfHour + 1800;
 	var closestHalfHour = ((currentTime - prevHalfHour) > (nextHalfHour - currentTime))?nextHalfHour:prevHalfHour;
 
-	// console.log(currentTime);
-	// console.log(prevHalfHour);
-	// console.log(nextHalfHour);
-	// console.log(closestHalfHour);
-
-
 	$.each(mobileCalendarData, function(index, building) {
-
-		// $("#mobileList").append('<li><h4>'+index+'</h4></li>');
-
 		$.each(building.rooms, function (index, room) {
 
 			// is room available at the nearest 30?
 			if (room.times[closestHalfHour].reserved) {
 				return;
 			}
-
-			// display the room
-			// $("#mobileList").append('<li><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></li>');
-
 		});
 	});
 
 }
 
 function buildCalendarTable(data,startCols,endCols) {
-
-	// data = $.parseJSON(data)
-	// console.log(data);
 
 	if (numberOfColumns <= 0) {
 		buildRoomList(data);
@@ -257,7 +237,6 @@ function buildCalendarTable(data,startCols,endCols) {
     	else {
     		$('#reservationsRoomTableBody').append('<tr id="tr_'+index+'" class="'+value.type+'"></tr>');
     	}
-    	// console.log(value);
     });
 
     var bookings = new Array();
@@ -271,12 +250,6 @@ function buildCalendarTable(data,startCols,endCols) {
     		$('#reservationsRoomTableHeaderRow').append('<th scope="col" class="calendarCol"><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></th>');
 
     		$.each(room.times, function (index, time) {
-				// console.log(time);
-				// console.log(index);
-				// console.log(parseInt(index)+900);
-				// if (typeof room.times[parseInt(index)+900] != 'undefined') {
-				// 	console.log(room.times[parseInt(index)+900].reserved);
-				// }
 
     			if (time.hourType == "hour") {
     				hasAddIndicator = false;
@@ -316,7 +289,6 @@ function buildCalendarTable(data,startCols,endCols) {
     		});
     	}
     	count++;
-    	// console.log(value);
     });
 
 }
@@ -328,10 +300,8 @@ function handler_getCalendarJSON(sync) {
 	var calType  = (typeof $("#room_modal").val() !== 'undefined')?"room":"building";
 	var objectID = (calType == "building")?$("#building_modal").val():$("#room_modal").val();
 	var url      = roomReservationHome+"/includes/ajax/getCalendarJson.php?type="+calType+"&objectID="+objectID+"&month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
-	// alert(url);
 
-
-    $('#imageLoader').css('display', 'block');
+  $('#imageLoader').css('display', 'block');
 
 	$.ajax({
 		url: url,
