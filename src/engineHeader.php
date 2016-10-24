@@ -11,10 +11,11 @@ $enginevars = enginevars::getInstance();
 $localvars->set("currentDisplayObjectTitle","Room Reservations");
 $localvars->set("policiesPage","/services/rooms/policies/");
 $localvars->set("advancedSearch","/services/rooms/find/");
+$localvars->set("helpPage","http://westvirginia.libanswers.com/a.php?qid=474356");
 
 // require_once "/home/library/public_html/includes/engineHeader.php";
 
-recurseInsert("acl.php","php"); 
+recurseInsert("acl.php","php");
 recurseInsert("includes/vars.php","php");
 recurseInsert("includes/getUserInfo.php","php");
 

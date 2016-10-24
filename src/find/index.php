@@ -156,6 +156,9 @@ templates::display('header');
 <a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies
 	<i class="fa fa-exclamation-circle"></i>
 </a>
+<a class="policyLink roomTabletDesktop" href="{local var="helpPage"}">Help
+	<i class="fa fa-question-circle"></i>
+</a>
 
 <hr class="roomHR roomTabletDesktop" />
 
