@@ -56,7 +56,9 @@ class messages {
 		$messages['tooFarInFuture']           = $this->getMessage('tooFarInFuture');
 		$messages['emailNotProvided']         = $this->getMessage('emailNotProvided');
 		$messages['roomClosed']               = $this->getMessage('roomClosed');
+		$messages['emailNotinList']           = $this->getMessage('emailNotinList');
 		
+
 		return $messages;
 		}
 
@@ -108,7 +110,7 @@ class messages {
 
 	public function buildEditTable() {
 		$output = "<table>";
-		
+
 		foreach ($this->messages as $name=>$value) {
 			$output .= sprintf('<tr><td><label for="%s">%s</label></td><td><textarea id="%s" name="%s">%s</textarea></td></tr>',
 				htmlSanitize($name),

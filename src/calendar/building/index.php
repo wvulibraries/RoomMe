@@ -26,13 +26,13 @@ $localvars->set("buildingSelectOptions",$building->selectBuildingListOptions(FAL
 $localvars->set("buildingName",getBuildingName($buildingID));
 
 $date = new date;
-$localvars->set("monthSelect",$date->dropdownMonthSelect(1,TRUE,array("id"=>"start_month_modal")));
-$localvars->set("daySelect",$date->dropdownDaySelect(TRUE,array("id"=>"start_day_modal")));
-$localvars->set("yearSelect",$date->dropdownYearSelect(0,1,TRUE,array("id"=>"start_year_modal")));
+$localvars->set("monthSelect",$date->dropdownMonthSelect(1,TRUE,array("id"=>"start_month_modal", "class" => "date_select_modal")));
+$localvars->set("daySelect",$date->dropdownDaySelect(TRUE,array("id"=>"start_day_modal", "class" => "date_select_modal")));
+$localvars->set("yearSelect",$date->dropdownYearSelect(0,1,TRUE,array("id"=>"start_year_modal", "class" => "date_select_modal")));
 
 $localvars->set("headerDate",date("l, F j"));
 
-templates::display('header'); 
+templates::display('header');
 ?>
 
 	<!-- Reservations Section -->
@@ -45,17 +45,17 @@ templates::display('header');
 	<hr class="roomHR roomTabletDesktop" />
 	<div class="styled-select roomTabletDesktop">
 		<select id="building_modal">
-			{local var="buildingSelectOptions"}             
+			{local var="buildingSelectOptions"}
 		</select>
 	</div>
 	<div class="styled-select roomTabletDesktop">
 		{local var="monthSelect"}
-	</div>                                          
+	</div>
 	<div class="styled-select roomTabletDesktop">
 		{local var="daySelect"}
 	</div>
 	<div class="styled-select roomTabletDesktop">
-		{local var="yearSelect"} 
+		{local var="yearSelect"}
 	</div>
 	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop">
 		<i class="fa fa-calendar"></i> Find A Room
@@ -76,7 +76,7 @@ templates::display('header');
 	<!-- Calendar Call -->
 	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
 		<thead>
-			<tr id="reservationsRoomTableHeaderRow">			
+			<tr id="reservationsRoomTableHeaderRow">
 			</tr>
 		</thead>
 		<tbody id="reservationsRoomTableBody">
@@ -85,7 +85,5 @@ templates::display('header');
 	</table>
 
 	<div class="clear:both;"></div>
-
-	 
 
 <?php templates::display('footer'); ?>

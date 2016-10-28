@@ -67,7 +67,28 @@ class reservation {
 	public function create($seriesID=NULL) {
 
 		$buildingID = $this->building['ID'];
-		$roomID     = $this->room['ID'];
+		$roomID = $this->room['ID'];
+
+		$reservationPermissions = new reservationPermissions;
+
+		//check if there are any permissions currently in place on current buildingID
+		if ($reservationPermissions->permissionsSet($buildingID) === TRUE) {
+			//check and see if permissions set are for the building
+      if ($reservationPermissions->checkBuilding($buildingID) === TRUE) {
+				if ((isset($_POST['MYSQL']['notificationEmail']) && ($reservationPermissions->checkBuildingPermissions($buildingID, $_POST['MYSQL']['notificationEmail']))) === FALSE) {
+						  errorHandle::errorMsg(getResultMessage("emailNotinList"));
+							return FALSE;
+				}
+			}
+			else {
+				if ($reservationPermissions->checkRoom($roomID) === TRUE) {
+					if ((isset($_POST['MYSQL']['notificationEmail']) && ($reservationPermissions->checkRoomPermissions($roomID, $_POST['MYSQL']['notificationEmail']))) === FALSE) {
+						  errorHandle::errorMsg(getResultMessage("emailNotinList"));
+							return FALSE;
+					}
+				}
+			}
+		}
 
 		if ($this->validateRoomPostVariables() === FALSE) {
 			errorHandle::errorMsg(getResultMessage("dataValidationError"));
@@ -321,28 +342,6 @@ class reservation {
 		// get patron information
 		$sql = sprintf("SELECT reservations.roomID as roomID, reservations.startTime as startTime, reservations.endTime as endTime, building.ID as buildingID, roomTemplates.policy as policyID FROM reservations LEFT JOIN rooms ON reservations.roomID=rooms.ID LEFT JOIN building ON rooms.building=building.ID LEFT JOIN roomTemplates ON rooms.roomTemplate=roomTemplates.ID WHERE username=? AND reservations.endTime>=? AND reservations.startTime<=?");
 
-		// // Debugging
-		// print "<pre>";
-		// var_dump($sql);
-		// print "</pre>";
-		// print "sunix<pre>";
-		// var_dump($sUnix);
-		// print "</pre>";
-		// print "eunix<pre>";
-		// var_dump($eUnix);
-		// print "</pre>";
-		// print "period<pre>";
-		// var_dump($currentPeriod);
-		// print "</pre>";
-		// print "sUnix -<pre>";
-		// var_dump($sUnix - ($currentPeriod/2));
-		// print "</pre>";
-		// print "eUnix +<pre>";
-		// var_dump($eUnix + ($currentPeriod/2));
-		// print "</pre>";
-		// return FALSE;
-
-
 		$sqlResult  = $this->db->query($sql,array(strtolower($username),$sUnix - ($currentPeriod/2),$eUnix + ($currentPeriod/2)));
 
 		if ($sqlResult->error()) {
@@ -464,26 +463,6 @@ class reservation {
 				$hoursInfo = file_get_contents($libraryHoursURL.$sUnix, false, $context);
 				$hoursInfo = explode("|",$hoursInfo);
 
-				// // debugging
-				// print $sUnix ." -- ".$eUnix ."<br />";
-				// print "<pre>";
-				// var_dump($hoursInfo);
-				// print "</pre>";
-
-
-				// print "<pre>";
-				// var_dump($hoursInfo[0]);
-				// print "</pre>";
-				// print "<pre>";
-				// var_dump($sUnix);
-				// print "</pre>";
-				// print "<pre>";
-				// var_dump($eUnix);
-				// print "</pre>";
-				// print "<pre>";
-				// var_dump($hoursInfo[1]);
-				// print "</pre>";
-
 				if (isset($hoursInfo[1]) && !is_empty($hoursInfo[1]) && isset($hoursInfo[0]) && !is_empty($hoursInfo[0])) {
 					if ($sUnix >= $hoursInfo[0] && $sUnix < $hoursInfo[1] && $eUnix > $hoursInfo[0] && $eUnix <= $hoursInfo[1]) {
 
@@ -521,15 +500,6 @@ class reservation {
 
 			// will requesting this length push the user over the total number of hours allowed
 			// for this policy/location
-
-			// // Debugging
-			// print "system: ".$systemMaxHours." == ".$counts['hours']['total']."<br />";
-			// print "library: ".$libraryMaxHours." == ".$counts['hours']['building'][$buildingID]."<br />";
-			// print "policy: ".$policyMaxHours." == ".$counts['hours']['policy'][$policyID]."<br />";
-
-			// print "system: ".$systemMaxBookings." == ".$counts['bookings']['total']."<br />";
-			// print "library: ".$libraryMaxBookings." == ".$counts['bookings']['building'][$buildingID]."<br />";
-			// print "policy: ".$policyMaxBookings." == ".$counts['bookings']['policy'][$policyID]."<br />";
 
 			// system check
 			if ($systemMaxHours > 0 && isset($counts['hours']['total']) && ($counts['hours']['total'] + $totalHours) > $systemMaxHours) {

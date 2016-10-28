@@ -129,7 +129,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 
 		}
 
-		if ($sqlResult->rowCount() > 0) {  
+		if ($sqlResult->rowCount() > 0) {
 			$displayOutput .= sprintf('<h1>%s</h1><h2>%s</h2><h3>%s</h3>%s',
 				$previousRow['buildingName'],
 				$previousRoomName,
@@ -149,6 +149,12 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 }
 
 $localvars->set("displayOutput",$displayOutput);
+
+$date = new date;
+
+$localvars->set("monthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"start_month", "id"=>"start_month", "class" => "start_date")));
+$localvars->set("daySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"start_day", "id"=>"start_day", "class" => "start_date")));
+$localvars->set("yearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"start_year", "id"=>"start_year", "class" => "start_date")));
 
 ?>
 
@@ -171,7 +177,7 @@ h3 {
 }
 
 p {
-	font-size:200%; 
+	font-size:200%;
 	margin: 0;
 }
 
@@ -228,44 +234,15 @@ p {
 		<tr>
 			<td>
 				<label for="start_month">Month:</label>
-				<select name="start_month" id="start_month" >
-					<?php
-
-					for($I=1;$I<=12;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							($I < 10)?"0".$I:$I,
-							($I == $currentMonth)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="monthSelect"}
 			</td>
 			<td>
 				<label for="start_day">Day:</label>
-				<select name="start_day" id="start_day" >
-					<?php
-
-					for($I=1;$I<=31;$I++) {
-						printf('<option value="%s" %s>%s</option>',
-							($I < 10)?"0".$I:$I,
-							($I == $currentDay)?"selected":"",
-							$I);
-					}
-					?>
-				</select>
+				{local var="daySelect"}
 			</td>
 			<td>
 				<label for="start_year">Year:</label>
-				<select name="start_year" id="start_year" >
-					<?php
-
-					for($I=$currentYear;$I<=$currentYear+10;$I++) {
-						printf('<option value="%s">%s</option>',
-							$I,
-							$I);
-					}
-					?>
-				</select>
+				{local var="yearSelect"}
 			</td>
 		</tr>
 		<tr>
@@ -281,10 +258,13 @@ p {
 			</td>
 		</tr>
 	</table>
-	
+
 </form>
 
 {local var="displayOutput"}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/dayCheck.js"></script>
 
 </body>
 </html>

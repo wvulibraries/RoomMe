@@ -27,8 +27,11 @@ templates::display('header');
 
 <!-- Extra Links -->
 <a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
-<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies 
+<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies
 	<i class="fa fa-exclamation-circle"></i>
+</a>
+<a class="policyLink roomTabletDesktop" href="{local var="helpPage"}">Help
+	<i class="fa fa-question-circle"></i>
 </a>
 
 <hr class="roomHR roomTabletDesktop" />
@@ -81,7 +84,7 @@ templates::display('header');
 	<!-- Rooms Navigation -->
 	<?php recurseInsert("includes/roomsByBuilding.php","php") ?>
 
-	 
+
 
 <?php
 templates::display('footer');

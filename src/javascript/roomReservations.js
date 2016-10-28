@@ -2,18 +2,48 @@ var calendarData;
 var mobileCalendarData  = undefined;
 
 $(function() {
-	$(document)
-		.on('click',  '#deleteReservation',   handler_deleteReservation)
-		.on('click',  '.cancelReservation',   handler_deleteReservation)
-		.on('click',  '#calUpdateFormSubmit', handler_getCalendarJSON)
-		.on('change', '#listBuildingSelect',  handler_listBuildingSelect)
-		.on('click',  '.pagerLink',           handler_pager)
-		.on('change', '#openEvent',           handler_openEvent)
-		.on('change', '#building_modal',      handler_activate_submit_button)
-		.on('change', '#start_month_modal',   handler_activate_submit_button)
-		.on('change', '#start_day_modal',     handler_activate_submit_button)
-		.on('change', '#start_year_modal',    handler_activate_submit_button)
-});
+			var $doc = $(document);
+
+			if($('#deleteReservation').length) {
+				$doc.on('click',  '#deleteReservation',   handler_deleteReservation);
+			}
+
+			if($('.cancelReservation').length) {
+				$doc.on('click',  '.cancelReservation',   handler_deleteReservation);
+			}
+
+			if($('#calUpdateFormSubmit').length) {
+				$doc.on('click',  '#calUpdateFormSubmit', handler_getCalendarJSON);
+			}
+
+			if($('#listBuildingSelect').length) {
+				$doc.on('change', '#listBuildingSelect', handler_listBuildingSelect);
+			}
+
+			if($('.pagerLink').length) {
+				$doc.on('click',  '.pagerLink', 				 handler_pager);
+			}
+
+			if($('#openEvent').length) {
+				$doc.on('change', '#openEvent',           handler_openEvent);
+			}
+
+			if($('#building_modal').length) {
+				$doc.on('change', '#building_modal',      handler_activate_submit_button);
+			}
+
+			if($('#start_month_modal').length) {
+				$doc.on('change', '#start_month_modal',   handler_activate_submit_button);
+			}
+
+			if($('#start_day_modal').length) {
+				$doc.on('change', '#start_day_modal',     handler_activate_submit_button);
+			}
+
+			if($('#start_year_modal').length) {
+				$doc.on('change', '#start_year_modal',    handler_activate_submit_button);
+			}
+	});
 
 
 // ------------
@@ -40,8 +70,6 @@ function handler_openEvent() {
 }
 
 function initialResize() {
-
-
 	windowSize = $(window).width();
 	sizeBreakPoint_mobile = 768;
 	sizeBreakPoint_tablet = 1024;
@@ -50,6 +78,7 @@ function initialResize() {
 
 function handle_resizing(){
 	windowSize = $(window).width();
+	console.log(windowSize);
 
 	if (windowSize < sizeBreakPoint_mobile) {
 		numberOfColumns = 0;
@@ -63,7 +92,6 @@ function handle_resizing(){
 	else {
 		// default to desktop size if something goes wrong
 		numberOfColumns = 7;
-		console.log("resize error");
 	}
 
 	buildCalendarTable(calendarData,0,numberOfColumns);
@@ -99,38 +127,43 @@ function handler_pager() {
 
 function setPagerAttributes(startCols,endCols) {
 
-	// prev
-	$('#pagerPrev').attr('data-startCols',(startCols-numberOfColumns < 0)?0:startCols-numberOfColumns);
-	$('#pagerPrev').attr('data-endCols',(endCols-numberOfColumns <=0)?numberOfColumns:endCols-numberOfColumns);
-
-	// next
-	$('#pagerNext').attr('data-startCols',(endCols >= calendarData.rooms.length)?calendarData.rooms.length-numberOfColumns:endCols);
-	$('#pagerNext').attr('data-endCols',(endCols+numberOfColumns > calendarData.rooms.length)?calendarData.rooms.length:endCols+numberOfColumns);
-
-	// last
-	$('#pagerLast').attr('data-startCols',(calendarData.rooms.length-numberOfColumns));
-	$('#pagerLast').attr('data-endCols',calendarData.rooms.length);
-
-
-
-	if (startCols <= 0) {
-		$('#pagerPrev').addClass("pager-disabled");
-		$('#pagerFirst').addClass("pager-disabled");
-	}
-	else {
-		$('#pagerPrev').removeClass("pager-disabled");
-		$('#pagerFirst').removeClass("pager-disabled");
+	if($('#pagerPrev').length){
+		// prev
+		$('#pagerPrev').attr('data-startCols',(startCols-numberOfColumns < 0)?0:startCols-numberOfColumns);
+		$('#pagerPrev').attr('data-endCols',(endCols-numberOfColumns <=0)?numberOfColumns:endCols-numberOfColumns);
 	}
 
-	if (endCols >= calendarData.rooms.length) {
-		$('#pagerNext').addClass("pager-disabled");
-		$('#pagerLast').addClass("pager-disabled");
-	}
-	else {
-		$('#pagerNext').removeClass("pager-disabled");
-		$('#pagerLast').removeClass("pager-disabled");
+	if($('#pagerNext').length){
+		// next
+		$('#pagerNext').attr('data-startCols',(endCols >= calendarData.rooms.length)?calendarData.rooms.length-numberOfColumns:endCols);
+		$('#pagerNext').attr('data-endCols',(endCols+numberOfColumns > calendarData.rooms.length)?calendarData.rooms.length:endCols+numberOfColumns);
 	}
 
+	if($('#pagerLast').length){
+		// last
+		$('#pagerLast').attr('data-startCols',(calendarData.rooms.length-numberOfColumns));
+		$('#pagerLast').attr('data-endCols',calendarData.rooms.length);
+	}
+
+	if($('#pagerPrev').length || $('#pagerFirst').length){
+		if (startCols <= 0) {
+			$('#pagerPrev').addClass("pager-disabled");
+			$('#pagerFirst').addClass("pager-disabled");
+		}
+		else {
+			$('#pagerPrev').removeClass("pager-disabled");
+			$('#pagerFirst').removeClass("pager-disabled");
+		}
+
+		if (endCols >= calendarData.rooms.length) {
+			$('#pagerNext').addClass("pager-disabled");
+			$('#pagerLast').addClass("pager-disabled");
+		}
+		else {
+			$('#pagerNext').removeClass("pager-disabled");
+			$('#pagerLast').removeClass("pager-disabled");
+		}
+	}
 }
 
 function getMobileCalendarData() {
@@ -164,10 +197,6 @@ function buildRoomList(data) {
 
 	}
 
-	// console.log(mobileCalendarData);
-
-	// $("#mobileList").empty();
-
 	// what is the nearest 30 minutes?
 	// Current time in seconds, date.now provides milliseconds
 	var currentTime     = Date.now() / 1000 | 0;
@@ -175,35 +204,19 @@ function buildRoomList(data) {
 	var nextHalfHour    = prevHalfHour + 1800;
 	var closestHalfHour = ((currentTime - prevHalfHour) > (nextHalfHour - currentTime))?nextHalfHour:prevHalfHour;
 
-	// console.log(currentTime);
-	// console.log(prevHalfHour);
-	// console.log(nextHalfHour);
-	// console.log(closestHalfHour);
-
-
 	$.each(mobileCalendarData, function(index, building) {
-
-		// $("#mobileList").append('<li><h4>'+index+'</h4></li>');
-
 		$.each(building.rooms, function (index, room) {
 
 			// is room available at the nearest 30?
 			if (room.times[closestHalfHour].reserved) {
 				return;
 			}
-
-			// display the room
-			// $("#mobileList").append('<li><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></li>');
-
 		});
 	});
 
 }
 
 function buildCalendarTable(data,startCols,endCols) {
-
-	// data = $.parseJSON(data)
-	// console.log(data);
 
 	if (numberOfColumns <= 0) {
 		buildRoomList(data);
@@ -224,7 +237,6 @@ function buildCalendarTable(data,startCols,endCols) {
     	else {
     		$('#reservationsRoomTableBody').append('<tr id="tr_'+index+'" class="'+value.type+'"></tr>');
     	}
-    	// console.log(value);
     });
 
     var bookings = new Array();
@@ -238,12 +250,6 @@ function buildCalendarTable(data,startCols,endCols) {
     		$('#reservationsRoomTableHeaderRow').append('<th scope="col" class="calendarCol"><a href="'+roomReservationHome+'/building/room/?room='+room.roomID+'">'+room.displayName+'</a></th>');
 
     		$.each(room.times, function (index, time) {
-				// console.log(time);
-				// console.log(index);
-				// console.log(parseInt(index)+900);
-				// if (typeof room.times[parseInt(index)+900] != 'undefined') {
-				// 	console.log(room.times[parseInt(index)+900].reserved);
-				// }
 
     			if (time.hourType == "hour") {
     				hasAddIndicator = false;
@@ -283,7 +289,6 @@ function buildCalendarTable(data,startCols,endCols) {
     		});
     	}
     	count++;
-    	// console.log(value);
     });
 
 }
@@ -295,10 +300,8 @@ function handler_getCalendarJSON(sync) {
 	var calType  = (typeof $("#room_modal").val() !== 'undefined')?"room":"building";
 	var objectID = (calType == "building")?$("#building_modal").val():$("#room_modal").val();
 	var url      = roomReservationHome+"/includes/ajax/getCalendarJson.php?type="+calType+"&objectID="+objectID+"&month="+$("#start_month_modal").val()+"&day="+$("#start_day_modal").val()+"&year="+$("#start_year_modal").val();
-	// alert(url);
 
-
-    $('#imageLoader').css('display', 'block');
+  $('#imageLoader').css('display', 'block');
 
 	$.ajax({
 		url: url,
