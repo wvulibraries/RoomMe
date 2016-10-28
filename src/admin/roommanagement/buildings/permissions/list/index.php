@@ -13,7 +13,7 @@
 ?>
 
 <header>
-	<h1>Reservation Permissions</h1>
+	<h1>Reservation Restrictions</h1>
 </header>
 
 <section>
