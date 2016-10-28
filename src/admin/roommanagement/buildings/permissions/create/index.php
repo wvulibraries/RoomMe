@@ -22,7 +22,7 @@
 	?>
 
 	<header>
-		<h1>{local var="action"} a Permission</h1>
+		<h1>{local var="action"} a Restriction</h1>
 	</header>
 
 	<section>

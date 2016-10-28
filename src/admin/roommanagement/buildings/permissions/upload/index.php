@@ -15,7 +15,7 @@
 	?>
 
 	<header>
-		<h1>Upload a Permissions File</h1>
+		<h1>Upload a Restrictions File</h1>
 	</header>
 
 	<!-- {local var="uploadform"} -->
