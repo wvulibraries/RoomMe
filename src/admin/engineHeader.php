@@ -8,14 +8,14 @@ errorHandle::errorReporting(errorHandle::E_ALL);
 $localvars  = localvars::getInstance();
 $enginevars = enginevars::getInstance();
 
-recurseInsert("acl.php","php"); 
+recurseInsert("acl.php","php");
 recurseInsert("includes/vars.php","php");
 recurseInsert('includes/functions.php',"php");
 
 recurseInsert('engineIncludes.php');
 
-formBuilder::process();
-formBuilder::ajaxHandler();
+// formBuilder::process();
+// formBuilder::ajaxHandler();
 
 recurseInsert("includes/engineHeader.php","php");
 templates::load("library2012.2col");
