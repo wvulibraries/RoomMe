@@ -70,7 +70,10 @@ class reservation {
 		$roomID = $this->room['ID'];
 
 		$reservationPermissions = new reservationPermissions;
-    return $reservationPermissions->permissionsCheck($buildingID, $_POST['MYSQL']['notificationEmail'], $roomID);
+
+		if (!$reservationPermissions->permissionsCheck($buildingID, $_POST['MYSQL']['notificationEmail'], $roomID)) {
+			return FALSE;
+		}
 
 		if ($this->validateRoomPostVariables() === FALSE) {
 			errorHandle::errorMsg(getResultMessage("dataValidationError"));

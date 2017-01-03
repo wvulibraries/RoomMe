@@ -57,7 +57,7 @@ class building {
 
 		if ($sqlResult->rowCount() < 1) {
 			errorHandle::errorMsg("No Buildings Found");
-			return FALSE;
+			return array();
 		}
 
 		while ($row = $sqlResult->fetch()) {
@@ -89,25 +89,23 @@ class building {
 		$buildings = $this->getall();
 
 		$output = "<ul>";
-		
-    if($buildings) {
-			foreach ($buildings as $building) {
-				if (is_empty($building['externalURL'])) {
-					$url = sprintf('%s/calendar/building/?building=%s',
-						$this->localvars->get("roomResBaseDir"),
-						$building['ID']
-						);
-				}
-				else {
-					$url = $building['externalURL'];
-				}
 
-				$output .= sprintf('<li><a href="%s">%s</a></li>',
-					$url,
-					htmlSanitize($building['name'])
+		foreach ($buildings as $building) {
+			if (is_empty($building['externalURL'])) {
+				$url = sprintf('%s/calendar/building/?building=%s',
+					$this->localvars->get("roomResBaseDir"),
+					$building['ID']
 					);
 			}
-    }
+			else {
+				$url = $building['externalURL'];
+			}
+
+			$output .= sprintf('<li><a href="%s">%s</a></li>',
+				$url,
+				htmlSanitize($building['name'])
+				);
+		}
 
 		$output .= "</ul>";
 

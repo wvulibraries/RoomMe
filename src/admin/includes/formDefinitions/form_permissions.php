@@ -50,6 +50,7 @@ $form->addField(array(
     'name'       => 'resourceType',
     'label'      => 'Type:',
     'type'       => 'select',
+    'value'      => $localvars->get("type"),
     'fieldClass' => 'resourceType',
     'options'    => array("Building", "Policy", "Template", "Room"),
     'required'   => TRUE,

@@ -9,6 +9,7 @@
 
 		$localvars->set('action', $action);
 		$localvars->set('building', $building);
+		$localvars->set('type', $type);
 		$localvars->set('id', $id);
 
 		recurseInsert("includes/formDefinitions/form_permissions.php","php");

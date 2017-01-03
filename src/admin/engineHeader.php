@@ -15,7 +15,7 @@ recurseInsert('includes/functions.php',"php");
 recurseInsert('engineIncludes.php');
 
 // formBuilder::process();
-// formBuilder::ajaxHandler();
+formBuilder::ajaxHandler();
 
 recurseInsert("includes/engineHeader.php","php");
 templates::load("library2012.2col");
