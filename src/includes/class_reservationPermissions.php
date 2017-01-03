@@ -240,7 +240,7 @@ class reservationPermissions {
               errorHandle::errorMsg(" Error email address not on Permissions list for this Room ");
               return FALSE;
             }
-      
+
           }
         else {
               if ($this->checkRoom($roomID) && (isset($email) && $this->checkRoomPermissions($roomID, $email))) {
@@ -487,8 +487,8 @@ class reservationPermissions {
    */
   public function multiDelete($items = null){
     try{
-  		foreach ($items as $id){
-  			$this->deleteRecord($id);
+  		foreach ($items as $reservationID){
+  			$this->deleteRecord($reservationID);
   		}
     }
     catch (Exception $e){
