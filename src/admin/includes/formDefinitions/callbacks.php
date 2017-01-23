@@ -17,8 +17,4 @@ function processInsert(){
 
 }
 
-function processUpdate(){
-  return $formInfo;
-}
-
 ?>

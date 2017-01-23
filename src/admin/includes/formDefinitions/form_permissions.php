@@ -12,7 +12,6 @@ recurseInsert("includes/formDefinitions/callbacks.php", "php");
 if(!is_empty($_POST) || session::has('POST')) {
     $processor = formBuilder::createProcessor();
     $processor->setCallback('beforeInsert', 'processInsert');
-    $processor->setCallback('beforeUpdate', 'processUpdate');
     $processor->processPost();
 }
 
