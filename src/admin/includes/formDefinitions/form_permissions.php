@@ -7,6 +7,14 @@ $form->linkToDatabase( array(
     'table' => 'reservePermissions'
 ));
 
+recurseInsert("includes/formDefinitions/callbacks.php", "php");
+
+if(!is_empty($_POST) || session::has('POST')) {
+    $processor = formBuilder::createProcessor();
+    $processor->setCallback('beforeInsert', 'processInsert');
+    $processor->processPost();
+}
+
 // form titles
 $form->insertTitle = "Add Permissions";
 $form->editTitle   = "Edit Permissions";
@@ -41,6 +49,7 @@ $form->addField(array(
     'name'       => 'resourceType',
     'label'      => 'Type:',
     'type'       => 'select',
+    'value'      => $localvars->get("type"),
     'fieldClass' => 'resourceType',
     'options'    => array("Building", "Policy", "Template", "Room"),
     'required'   => TRUE,

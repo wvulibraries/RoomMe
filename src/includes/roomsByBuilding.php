@@ -8,10 +8,9 @@ $localvars   = localvars::getInstance();
 
 <h4 style="float:left;">Rooms by Building:</h4>
 <hr class="roomHR"></hr>
-<?php 
-
-foreach ($buildings as $building) { 
-$buildingURL = (is_empty($building['externalURL']))?sprintf("%s/building/?building=%s",$localvars->get("roomReservationHome"),$building['ID']):$building['externalURL'];
+<?php
+     foreach ($buildings as $building) {
+      $buildingURL = (is_empty($building['externalURL']))?sprintf("%s/building/?building=%s",$localvars->get("roomReservationHome"),$building['ID']):$building['externalURL'];
 
 ?>
 

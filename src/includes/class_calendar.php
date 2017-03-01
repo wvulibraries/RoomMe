@@ -7,7 +7,7 @@ class calendar {
 	private $localvars;
 
 	// If modal is true, we set everything up for the event handlers. If modal
-	// is false, we set everything up for submission back to itself. 
+	// is false, we set everything up for submission back to itself.
 	private $modal = TRUE;
 
 	// Room trumps building, if both are set as the calendar type, because it is
@@ -41,7 +41,7 @@ class calendar {
 	public function setBuilding($id) {
 
 		$buildingObject = new building;
-			
+
 		if (($this->building = $buildingObject->get($id)) === FALSE) {
 			return FALSE;
 		}
@@ -58,7 +58,7 @@ class calendar {
 
 	public function setRoom($id) {
 		$roomObject = new room;
-			
+
 		if (($this->room = $roomObject->get($id)) === FALSE) {
 			return FALSE;
 		}
@@ -77,7 +77,7 @@ class calendar {
 
 		// The display date is the day of the calendar that we are displaying
 		// If the date is provided via a query string, we use that date. Otherwise
-		// we use the current date. 
+		// we use the current date.
 		$this->dates['display']['month'] = (isset($_GET['MYSQL']['month']))?$_GET['MYSQL']['month']:date("n");
 		$this->dates['display']['day']   = (isset($_GET['MYSQL']['day']))?$_GET['MYSQL']['day']:date("d");
 		$this->dates['display']['year']  = (isset($_GET['MYSQL']['year']))?$_GET['MYSQL']['year']:date("Y");
@@ -222,14 +222,12 @@ class calendar {
 		$buildings      = $buildingObject->getall();
 
 		$mobileCalendarArray = array();
-
-		foreach ($buildings as $building) {
-
-			$rooms                                  = $buildingObject->getRooms($building['ID']);			
-			$mobileCalendarArray[$building['name']] = $this->buildCalendar($rooms,$date);
-
-		}
-
+    if($buildings) {
+			foreach ($buildings as $building) {
+				$rooms                                  = $buildingObject->getRooms($building['ID']);
+				$mobileCalendarArray[$building['name']] = $this->buildCalendar($rooms,$date);
+			}
+    }
 		return $mobileCalendarArray;
 
 	}
@@ -305,7 +303,7 @@ class calendar {
 
 			$roomInfo         = getRoomInfo($room['ID']);
 			$bookings         = getRoomBookingsForDate($room['ID'],$date['month'],$date['day'],$date['year']);
-			
+
 			$roomArray                = array();
 			$roomArray['displayName'] = $roomInfo['displayName'];
 			$roomArray['roomID']      = $roomInfo['ID'];
@@ -317,7 +315,7 @@ class calendar {
 				$roomArray['times'][$time]['username']    = ($roomClosed)?"Closed":"";
 				$roomArray['times'][$time]['displayTime'] = "";
 				$roomArray['times'][$time]['duration']    = "";
-				$roomArray['times'][$time]['reserved']    = ($roomClosed)?TRUE:FALSE; 
+				$roomArray['times'][$time]['reserved']    = ($roomClosed)?TRUE:FALSE;
 				$roomArray['times'][$time]['booking']     = "";
 				$roomArray['times'][$time]['hourType']    = $timeInfo['type'];
 

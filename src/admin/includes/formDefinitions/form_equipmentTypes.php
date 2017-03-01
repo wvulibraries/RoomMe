@@ -5,6 +5,12 @@ $form->linkToDatabase(array(
     'table' => "roomTemplates"
 ));
 
+if(!is_empty($_POST) || session::has('POST')) {
+    $processor = formBuilder::createProcessor();
+    $processor->processPost();
+}
+
+// form titles
 $form->insertTitle = "New Room Template";
 $form->editTitle   = "Edit Room Templates";
 
