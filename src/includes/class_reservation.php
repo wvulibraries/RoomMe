@@ -71,23 +71,8 @@ class reservation {
 
 		$reservationPermissions = new reservationPermissions;
 
-		//check if there are any permissions currently in place on current buildingID
-		if ($reservationPermissions->permissionsSet($buildingID) === TRUE) {
-			//check and see if permissions set are for the building
-      if ($reservationPermissions->checkBuilding($buildingID) === TRUE) {
-				if ((isset($_POST['MYSQL']['notificationEmail']) && ($reservationPermissions->checkBuildingPermissions($buildingID, $_POST['MYSQL']['notificationEmail']))) === FALSE) {
-						  errorHandle::errorMsg(getResultMessage("emailNotinList"));
-							return FALSE;
-				}
-			}
-			else {
-				if ($reservationPermissions->checkRoom($roomID) === TRUE) {
-					if ((isset($_POST['MYSQL']['notificationEmail']) && ($reservationPermissions->checkRoomPermissions($roomID, $_POST['MYSQL']['notificationEmail']))) === FALSE) {
-						  errorHandle::errorMsg(getResultMessage("emailNotinList"));
-							return FALSE;
-					}
-				}
-			}
+		if (!$reservationPermissions->permissionsCheck($buildingID, $_POST['MYSQL']['notificationEmail'], $roomID)) {
+			return FALSE;
 		}
 
 		if ($this->validateRoomPostVariables() === FALSE) {
@@ -464,6 +449,8 @@ class reservation {
 				$hoursInfo = explode("|",$hoursInfo);
 
 				if (isset($hoursInfo[1]) && !is_empty($hoursInfo[1]) && isset($hoursInfo[0]) && !is_empty($hoursInfo[0])) {
+
+
 					if ($sUnix >= $hoursInfo[0] && $sUnix < $hoursInfo[1] && $eUnix > $hoursInfo[0] && $eUnix <= $hoursInfo[1]) {
 
 					}
@@ -503,8 +490,6 @@ class reservation {
 
 			// system check
 			if ($systemMaxHours > 0 && isset($counts['hours']['total']) && ($counts['hours']['total'] + $totalHours) > $systemMaxHours) {
-				// print "here<br />";
-				// print $counts['hours']['total']."<br />";
 				errorHandle::errorMsg(getResultMessage("userOverSystemHours"));
 				return FALSE;
 			}

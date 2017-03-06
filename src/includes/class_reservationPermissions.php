@@ -53,16 +53,22 @@ class reservationPermissions {
     }
   }
 
-  public function permissionsSet($id = null){
-      // checks to see if the building ID passed is in the reservePermissions table
-      // if it finds it it returns true
+  /**
+   * Function permissionsSet
+   * Name : Tracy McCormick
+   * Function requires Building ID to be passed
+   * Description
+   * Checks to see if the building ID that was passed is in the
+   * reservePermissions table if it finds it function returns true
+   */
+  public function permissionsSet($buildingID = null){
       try {
-        if(!isnull($id) && !$this->validate->integer($id)){
-          throw new Exception("Invalid ID provided.");
+        if(!isnull($buildingID) && !$this->validate->integer($buildingID)){
+          throw new Exception("Invalid Building ID provided.");
         }
 
         $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ?";
-        $sqlResult = $this->db->query($sql,array($id));
+        $sqlResult = $this->db->query($sql,array($buildingID));
         if ($sqlResult->error()) {
           throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
         }
@@ -70,26 +76,33 @@ class reservationPermissions {
         if ($sqlResult->rowCount() < 1) {
            return FALSE;
         }
-        else {
-           return TRUE;
-        }
+
+        return true;
+
       } catch (Exception $e) {
         errorHandle::newError(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
         return FALSE;
       }
   }
 
-  public function checkBuilding($id = null){
+  /**
+   * Function checkBuilding
+   * Name : Tracy McCormick
+   * Description
+   * Check and sees if the building ID is listed in the reservePermission table
+   * returns true if found false otherwise
+   */
+  public function checkBuilding($buildingID = null){
     try {
         // test to see if Id is present and valid
-        if(!isnull($id) && !$this->validate->integer($id)){
-            throw new Exception("Invalid ID provided.");
+        if(!isnull($buildingID) && !$this->validate->integer($buildingID)){
+            throw new Exception("Invalid Building ID provided.");
         }
 
         $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ? AND resourceType = 0 LIMIT 1";
 
         // get the results of the query
-        $sqlResult = $this->db->query($sql, array($id));
+        $sqlResult = $this->db->query($sql, array($buildingID));
 
         if ($sqlResult->error()){
             throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
@@ -97,11 +110,10 @@ class reservationPermissions {
 
         //check and see if permissions exist on the resource
         if ($sqlResult->rowCount() < 1) {
-           return FALSE;
+          return false;
         }
-        else {
-           return TRUE;
-        }
+
+        return TRUE;
 
     } catch (Exception $e){
         errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
@@ -109,17 +121,22 @@ class reservationPermissions {
     }
   }
 
-  public function checkRoom($id = null){
+  /**
+   * Function checkRoom
+   * Name : Tracy McCormick
+   * Description
+   * Check and sees if the room ID is listed in the reservePermission table
+   * returns true if found false otherwise
+   */
+  public function checkRoom($roomID = null){
     try {
         // test to see if Id is present and valid
-        if(!isnull($id) && !$this->validate->integer($id)){
+        if(!isnull($roomID) && !$this->validate->integer($roomID)){
             throw new Exception("Invalid ID provided.");
         }
 
         $sql = "SELECT * FROM `reservePermissions` WHERE roomID = ? AND resourceType = 3";
-
-        // get the results of the query
-        $sqlResult = $this->db->query($sql, array($id));
+        $sqlResult = $this->db->query($sql, array($roomID));
 
         if ($sqlResult->error()){
             throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
@@ -127,11 +144,10 @@ class reservationPermissions {
 
         //check and see if permissions exist on the resource
         if ($sqlResult->rowCount() < 1) {
-           return FALSE;
-        }
-        else {
            return TRUE;
         }
+
+        return FALSE;
 
     } catch (Exception $e){
         errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
@@ -139,10 +155,10 @@ class reservationPermissions {
     }
   }
 
-  public function checkBuildingPermissions($id = null, $email = null){
+  public function checkBuildingPermissions($buildingID = null, $email = null){
     try {
         // test to see if Id is present and valid
-        if(!isnull($id) && !$this->validate->integer($id)){
+        if(!isnull($buildingID) && !$this->validate->integer($buildingID)){
             throw new Exception("Invalid ID provided.");
         }
 
@@ -154,7 +170,7 @@ class reservationPermissions {
         $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ? AND email = ? LIMIT 1";
 
         // get the results of the query
-        $sqlResult = $this->db->query($sql, array($id, $email));
+        $sqlResult = $this->db->query($sql, array($buildingID, $email));
 
         if ($sqlResult->error()){
             throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
@@ -162,11 +178,10 @@ class reservationPermissions {
 
         //check and see if permissions exist on the resource
         if ($sqlResult->rowCount() < 1) {
-           return FALSE;
-        }
-        else {
            return TRUE;
         }
+
+        return FALSE;
 
     } catch (Exception $e){
         errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
@@ -174,10 +189,10 @@ class reservationPermissions {
     }
   }
 
-  public function checkRoomPermissions($id = null, $email = null){
+  public function checkRoomPermissions($roomID = null, $email = null){
     try {
         // test to see if Id is present and valid
-        if(!isnull($id) && !$this->validate->integer($id)){
+        if(!isnull($roomID) && !$this->validate->integer($roomID)){
             throw new Exception("Invalid ID provided.");
         }
 
@@ -189,7 +204,7 @@ class reservationPermissions {
         $sql = "SELECT * FROM `reservePermissions` WHERE roomID = ? AND email = ? LIMIT 1";
 
         // get the results of the query
-        $sqlResult = $this->db->query($sql, array($id, $email));
+        $sqlResult = $this->db->query($sql, array($roomID, $email));
 
         if ($sqlResult->error()){
             throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
@@ -197,16 +212,46 @@ class reservationPermissions {
 
         //check and see if permissions exist on the resource
         if ($sqlResult->rowCount() < 1) {
-           return FALSE;
-        }
-        else {
            return TRUE;
         }
+
+        return FALSE;
 
     } catch (Exception $e){
         errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
         return false;
     }
+  }
+
+  /**
+   * Function permissionsCheck
+   * Name : Tracy McCormick
+   * Date : 12/20/2016
+   * Description
+   * Function requires Building ID, Email Address and Room ID
+   * It will verify that the email address is allowed to reserve the room.
+   * Returns false if they are not allowed true is allowed.
+   */
+  public function permissionsCheck($buildingID, $email, $roomID){
+    try {
+        //check if there are any permissions currently in place on current buildingID
+        if ($this->permissionsSet($buildingID)) {
+          if(isset($email) && $this->checkBuildingPermissions($buildingID, $email)) {
+              errorHandle::errorMsg(" Error email address not on Permissions list for this Room ");
+              return FALSE;
+          }
+          elseif ($this->checkRoom($roomID) && (isset($email) && $this->checkRoomPermissions($roomID, $email))) {
+              errorHandle::errorMsg(" Error email address not on Permissions list for this Room");
+              return FALSE;
+          }
+        }
+
+        return TRUE;
+
+     } catch (Exception $e) {
+         errorHandle::errorMsg($e->getMessage());
+         return FALSE;
+     }
   }
 
   public function getRooms($building = null){
@@ -280,31 +325,44 @@ class reservationPermissions {
     }
   }
 
-  private function duplicatePermissionsCheck($id, $type, $room, $email) {
+  /**
+   * Function duplicatePermissionsCheck
+   * Name : Tracy McCormick
+   * Description
+   * Function performs a delete on all records passed from the form
+   */
+  public static function duplicatePermissionsCheck($id, $type, $room, $email) {
+    $engine    = EngineAPI::singleton();
+    $localvars = localvars::getInstance();
+    $db        = db::get($localvars->get('dbConnectionName'));
 
     // checks to make sure record doesn't already exist
-    $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ? AND resourceType = ? AND roomID = ? AND email = ?";
+    $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ? AND resourceType = ? AND email = ?";
 
-    // get the results of the query
-    $sqlResult = $this->db->query($sql, array($id, $type, $room, $email));
+    if(!isnull($room)){
+      $sql .= " AND roomID = ?";
+      // get the results of the query
+      $sqlResult = $db->query($sql, array($id, $type, $email, $room));
+    } else {
+      $sqlResult = $db->query($sql, array($id, $type, $email));
+    }
 
     if ($sqlResult->error()) {
       errorHandle::newError(__FUNCTION__."() - ".$sqlResult->errorMsg(), errorHandle::DEBUG);
-      return(NULL);
+      return TRUE;
     }
     else {
       if ($sqlResult->rowCount() > 0) {
         return TRUE;
       }
     }
-
     return FALSE;
-
   }
 
   public function insertRecord($id, $type, $room, $email){
+
     try {
-        // test to see if Id is present and valid
+        //test to see if Id is present and valid
         if(!isnull($id) && !$this->validate->integer($id)){
             throw new Exception("Invalid ID provided.");
         }
@@ -344,7 +402,7 @@ class reservationPermissions {
     switch ($data['resourceType']) {
        case 0:
            //get building record
-           $building = self::getBuildings($data['resourceID']);
+           $building = $this->getBuildings($data['resourceID']);
            $name = $building[0]['name'];
            $type = "Building";
            break;
@@ -356,8 +414,8 @@ class reservationPermissions {
            break;
        case 3:
           //get Room record
-           $room = self::getRoom($data['roomID']);
-           $building = self::getBuildings($data['resourceID']);
+           $room = $this->getRoom($data['roomID']);
+           $building = $this->getBuildings($data['resourceID']);
            $name = $building[0]['name'] . ' - ' . $room[0]['name'] . ' - ' . $room[0]['number'];
            $type = "Room";
            break;
@@ -398,11 +456,16 @@ class reservationPermissions {
         // open file
         $file = fopen($_FILES['uploadedfile']['tmp_name'],'r');
 
+        // error checking.
+        if($file === false) {
+           throw new Exception("Error opening " . $_FILES['uploadedfile']['tmp_name']);
+        }
+
         // use class with csv data
         while(!feof($file)){
          $temp = fgetcsv($file);
          if (!isnull($temp[0])){
-           self::insertRecord($resourceID, $resourceType, $roomID, $temp[0]);
+           $this->insertRecord($resourceID, $resourceType, $roomID, $temp[0]);
          }
         }
         fclose($file);
@@ -413,10 +476,16 @@ class reservationPermissions {
     }
   }
 
+  /**
+   * Function multiDelete
+   * Name : Tracy McCormick
+   * Description
+   * Function performs a delete on all records passed from the form
+   */
   public function multiDelete($items = null){
     try{
   		foreach ($items as $reservationID){
-  			self::deleteRecord($reservationID);
+  			$this->deleteRecord($reservationID);
   		}
     }
     catch (Exception $e){
