@@ -629,7 +629,7 @@ class reservation {
 		}
 
 		// send an email to the open event email address
-		if (!$this->series && $_POST['MYSQL']['openEvent'] && !is_empty(getConfig('openEventEmail'))) {
+		if (!$this->series && isset($_POST['MYSQL']['openEvent']) && !is_empty(getConfig('openEventEmail'))) {
 
 			$buildingName = getBuildingName($roomName['building']);
 
