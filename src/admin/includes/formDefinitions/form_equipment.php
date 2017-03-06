@@ -5,6 +5,12 @@ $form->linkToDatabase(array(
     'table' => "equipement"
 ));
 
+if(!is_empty($_POST) || session::has('POST')) {
+    $processor = formBuilder::createProcessor();
+    $processor->processPost();
+}
+
+// form titles
 $form->insertTitle = "New Equipment";
 $form->editTitle   = "Edit Equipment";
 $form->submitFieldCSSEdit = "display: none;";
@@ -62,7 +68,7 @@ $form->addField(
         'blankOption'     => "-- Select Type --",
         'linkedTo'         => array(
         	'foreignTable' => 'equipementTypes',
-        	'foreignKey'   => 'ID',       
+        	'foreignKey'   => 'ID',
         	'foreignLabel' => 'name'
             )
     )

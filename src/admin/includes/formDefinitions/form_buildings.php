@@ -5,6 +5,12 @@ $form->linkToDatabase(array(
     'table' => "building"
 ));
 
+if(!is_empty($_POST) || session::has('POST')) {
+    $processor = formBuilder::createProcessor();
+    $processor->processPost();
+}
+
+// form titles
 $form->insertTitle = "New Building";
 $form->editTitle   = "Edit Buildings";
 $form->submitFieldCSSEdit = "display: none;";
