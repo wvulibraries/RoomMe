@@ -5,6 +5,12 @@ $form->linkToDatabase(array(
     'table' => "policies"
 ));
 
+if(!is_empty($_POST) || session::has('POST')) {
+    $processor = formBuilder::createProcessor();
+    $processor->processPost();
+}
+
+// form titles
 $form->insertTitle        = "New Policy Type";
 $form->editTitle          = "Edit Policy Types";
 $form->submitFieldCSSEdit = "display: none;";

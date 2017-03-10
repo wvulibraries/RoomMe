@@ -57,7 +57,7 @@ class building {
 
 		if ($sqlResult->rowCount() < 1) {
 			errorHandle::errorMsg("No Buildings Found");
-			return FALSE;
+			return array();
 		}
 
 		while ($row = $sqlResult->fetch()) {
@@ -89,8 +89,8 @@ class building {
 		$buildings = $this->getall();
 
 		$output = "<ul>";
-		foreach ($buildings as $building) {
 
+		foreach ($buildings as $building) {
 			if (is_empty($building['externalURL'])) {
 				$url = sprintf('%s/calendar/building/?building=%s',
 					$this->localvars->get("roomResBaseDir"),
@@ -106,6 +106,7 @@ class building {
 				htmlSanitize($building['name'])
 				);
 		}
+
 		$output .= "</ul>";
 
 		return $output;

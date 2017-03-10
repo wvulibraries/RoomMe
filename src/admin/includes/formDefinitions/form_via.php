@@ -5,6 +5,12 @@ $form->linkToDatabase(array(
     'table'       => 'via'
 ));
 
+if(!is_empty($_POST) || session::has('POST')) {
+    $processor = formBuilder::createProcessor();
+    $processor->processPost();
+}
+
+// form titles
 $form->insertTitle = "New Via";
 $form->editTitle   = "Edit Vias";
 
