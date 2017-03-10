@@ -628,7 +628,7 @@ class reservation {
 
 		}
 
-		if isset($_POST['MYSQL']['openEvent']) {
+		if (isset($_POST['MYSQL']['openEvent'])) {
 			// send an email to the open event email address
 			if (!$this->series && $_POST['MYSQL']['openEvent'] && !is_empty(getConfig('openEventEmail'))) {
 
