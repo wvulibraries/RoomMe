@@ -628,36 +628,37 @@ class reservation {
 
 		}
 
-		// send an email to the open event email address
-		if (!$this->series && isset($_POST['MYSQL']['openEvent']) && !is_empty(getConfig('openEventEmail'))) {
+		if (isset($_POST['MYSQL']['openEvent'])) {
+			// send an email to the open event email address
+			if (!$this->series && $_POST['MYSQL']['openEvent'] && !is_empty(getConfig('openEventEmail'))) {
 
-			$buildingName = getBuildingName($roomName['building']);
+				$buildingName = getBuildingName($roomName['building']);
 
-			$subject  = "Room Reservation Created as Open Event: ".$month."/".$day."/".$year;
+				$subject  = "Room Reservation Created as Open Event: ".$month."/".$day."/".$year;
 
-			$emailMsg  = "The following reservation has been successfully created, and marked as an Open, Public, Event: \n";
+				$emailMsg  = "The following reservation has been successfully created, and marked as an Open, Public, Event: \n";
 
-			$emailMsg .= "Created By:".$_POST['HTML']['notificationEmail']."\n\n";
+				$emailMsg .= "Created By:".$_POST['HTML']['notificationEmail']."\n\n";
 
-			$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
-			$emailMsg .= sprintf("Time: %s - %s\n",
-				date("g:i a",$sUnix),
-				date("g:i a",$eUnix)
-				);
-			$emailMsg .= "Building: ".$buildingName."\n";
-			$emailMsg .= "Room: ".$roomName['displayName']."\n\n";
-			$emailMsg .= "Open Event Description: \n".$_POST['HTML']['openEventDescription']."\n\n";
+				$emailMsg .= "Date: ".$month."/".$day."/".$year."\n";
+				$emailMsg .= sprintf("Time: %s - %s\n",
+					date("g:i a",$sUnix),
+					date("g:i a",$eUnix)
+					);
+				$emailMsg .= "Building: ".$buildingName."\n";
+				$emailMsg .= "Room: ".$roomName['displayName']."\n\n";
+				$emailMsg .= "Open Event Description: \n".$_POST['HTML']['openEventDescription']."\n\n";
 
-			$mail = new mailSender();
-			$mail->addRecipient(getConfig('openEventEmail'));
-			$mail->addSender("libsys@mail.wvu.edu", "WVU Libraries");
-			$mail->addSubject($subject);
-			$mail->addBody($emailMsg);
+				$mail = new mailSender();
+				$mail->addRecipient(getConfig('openEventEmail'));
+				$mail->addSender("libsys@mail.wvu.edu", "WVU Libraries");
+				$mail->addSubject($subject);
+				$mail->addBody($emailMsg);
 
-			$sendResult = $mail->sendEmail();
+				$sendResult = $mail->sendEmail();
 
+			}
 		}
-
 		// refresh / get the reservation information
 		// We populate this last, otherwise isNew() will not return correctly
 		$this->get(($this->isNew())?$sqlResult->insertId():$this->reservation['ID']);
