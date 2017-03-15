@@ -234,15 +234,6 @@ class reservationPermissions {
   public function permissionsCheck($buildingID, $email, $roomID){
     try {
         //check if there are any permissions currently in place on current buildingID
-
-        var_dump("permission is set --> " . $this->permissionsSet($buildingID));
-        print "<br/>";
-        var_dump("checks that room exists --> " . $this->checkRoom($roomID));
-        print "<br/>";
-        var_dump("user has permission for that building --> " . $this->checkBuildingPermissions($buildingID, $email));
-        print "<br/>";
-        var_dump("user has permission for that room --> " . $this->checkRoomPermissions($roomID, $email));
-
         if(!isset($email)){
           throw new Exception('Please enter an email address for valid reservation.');
         }
@@ -255,15 +246,10 @@ class reservationPermissions {
               throw new Exception("Error email address not on Permissions list for this Room");
           }
         }
-
-        print "everything works correctly";
-        die();
         return TRUE;
 
      } catch (Exception $e) {
          errorHandle::errorMsg($e->getMessage());
-         print $e->getMessage();
-         die();
          return FALSE;
      }
   }
