@@ -144,14 +144,14 @@ class reservationPermissions {
 
         //check and see if permissions exist on the resource
         if ($sqlResult->rowCount() < 1) {
-           return TRUE;
+           return FALSE;
         }
 
-        return FALSE;
+        return TRUE;
 
     } catch (Exception $e){
         errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
-        return false;
+        return FALSE;
     }
   }
 
@@ -176,16 +176,15 @@ class reservationPermissions {
             throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
         }
 
-        //check and see if permissions exist on the resource
         if ($sqlResult->rowCount() < 1) {
-           return TRUE;
+           return FALSE;
         }
 
-        return FALSE;
+        return TRUE;
 
     } catch (Exception $e){
         errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
-        return false;
+        return FALSE;
     }
   }
 
@@ -212,14 +211,14 @@ class reservationPermissions {
 
         //check and see if permissions exist on the resource
         if ($sqlResult->rowCount() < 1) {
-           return TRUE;
+           return FALSE;
         }
 
-        return FALSE;
+        return TRUE;
 
     } catch (Exception $e){
         errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
-        return false;
+        return FALSE;
     }
   }
 
@@ -235,17 +234,18 @@ class reservationPermissions {
   public function permissionsCheck($buildingID, $email, $roomID){
     try {
         //check if there are any permissions currently in place on current buildingID
-        if ($this->permissionsSet($buildingID)) {
-          if(isset($email) && $this->checkBuildingPermissions($buildingID, $email)) {
-              errorHandle::errorMsg(" Error email address not on Permissions list for this Room ");
-              return FALSE;
-          }
-          elseif ($this->checkRoom($roomID) && (isset($email) && $this->checkRoomPermissions($roomID, $email))) {
-              errorHandle::errorMsg(" Error email address not on Permissions list for this Room");
-              return FALSE;
-          }
+        if(!isset($email)){
+          throw new Exception('Please enter an email address for valid reservation.');
         }
 
+        if($this->permissionsSet($buildingID)){
+          if(!$this->checkBuildingPermissions($buildingID, $email)) {
+              throw new Exception("Error email address not on Permissions list for this Building");
+          }
+          elseif ($this->checkRoom($roomID) && !$this->checkRoomPermissions($roomID, $email)) {
+              throw new Exception("Error email address not on Permissions list for this Room");
+          }
+        }
         return TRUE;
 
      } catch (Exception $e) {
@@ -484,12 +484,12 @@ class reservationPermissions {
    */
   public function multiDelete($items = null){
     try{
-  		foreach ($items as $reservationID){
-  			$this->deleteRecord($reservationID);
-  		}
+      foreach ($items as $reservationID){
+        $this->deleteRecord($reservationID);
+      }
     }
     catch (Exception $e){
-    	errorHandle::errorMsg($e->getMessage());
+      errorHandle::errorMsg($e->getMessage());
       return false;
     }
   }
