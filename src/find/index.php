@@ -273,7 +273,7 @@ templates::display('header');
 	</div>
 
 	<br>
-	<spannput type="submit" name="lookupSubmit" class="button" />
+	<input type="submit" name="lookupSubmit" class="button" />
 </form>
 
 <div id="calendarModal">

@@ -14,7 +14,7 @@ $localvars   = localvars::getInstance();
 
 ?>
 
-<nobr><a class="policyLink1" href="<?php print $buildingURL; ?>"><i class="fa fa-building"></i><?php print $building['name'] ?></a></nobr>
+<nobr><a class="policyLink1" href="<?php print $buildingURL; ?>"><span class="fa fa-building"></span><?php print $building['name'] ?></a></nobr>
 
 <?php } ?>
 
