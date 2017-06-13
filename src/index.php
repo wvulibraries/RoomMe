@@ -35,12 +35,12 @@ templates::display('header');
 	<h3 class="roomH3 roomTabletDesktop">Reservations for <span class="currentDay" id="headerDate">{local var="headerDate}</span></h3>
 
 	<!-- Extra Links -->
-	<a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <i class="fa fa-cog"></i></a>
+	<a class="policyLink roomTabletDesktop" href="{local var="advancedSearch"}">Advanced Search <span class="fa fa-cog"></span></a>
 	<a class="policyLink3 roomTabletDesktop" href="{local var="policiesPage"}">Reservation Policies
-		<i class="fa fa-exclamation-circle"></i>
+		<span class="fa fa-exclamation-circle"></span>
 	</a>
 	<a class="policyLink roomTabletDesktop" href="{local var="helpPage"}">Help
-		<i class="fa fa-question-circle"></i>
+		<span class="fa fa-question-circle"></span>
 	</a>
 
 	<hr class="roomHR roomTabletDesktop" />
@@ -59,7 +59,7 @@ templates::display('header');
 		{local var="yearSelect"}
 	</div>
 	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop button_inactive">
-		<i class="fa fa-calendar"></i> Find A Room
+		<span class="fa fa-calendar"></span> Find A Room
 	</a>
 	<div style="clear:both;"></div>
 	<h3 class="roomH3 roomMobile" style="margin-top: 40px;">Future Dates</h3>
@@ -67,21 +67,22 @@ templates::display('header');
 
 	{local var="future_date_list"}
 
-	<a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
+	<a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><span class="fa fa-cog"></span> Advanced Search</a>
 
 	<!-- Table Pager -->
 	<div class="tablePager roomTabletDesktop">
-		<a class="pagerButtons"><i id="pagerFirst" data-startCols="0" data-endCols="7" class="fa fa-step-backward pagerLink"></i></a>
-		<a class="pagerButtons"><i id="pagerPrev"  data-startCols="" data-endCols="" class="fa fa-backward pagerLink"></i></a>
-		<a class="pagerButtons"><i id="pagerNext"  data-startCols="7" data-endCols="14"class="fa fa-forward pagerLink"></i></a>
-		<a class="pagerButtons"><i id="pagerLast"  data-startCols="" data-endCols="" class="fa fa-step-forward pagerLink" ></i></a>
+		<a class="pagerButtons"><span id="pagerFirst" data-startCols="0" data-endCols="7" class="fa fa-step-backward pagerLink"></span></a>
+		<a class="pagerButtons"><span id="pagerPrev"  data-startCols="" data-endCols="" class="fa fa-backward pagerLink"></span></a>
+		<a class="pagerButtons"><span id="pagerNext"  data-startCols="7" data-endCols="14"class="fa fa-forward pagerLink"></span></a>
+		<a class="pagerButtons"><span id="pagerLast"  data-startCols="" data-endCols="" class="fa fa-step-forward pagerLink" ></span></a>
 	</div>
 
 	<!-- Calendar Call -->
 	<div style="clear: both;"></div>
-	<img id="imageLoader" src="{local var="roomResBaseDir"}/images/loading.gif" />
+	<img id="imageLoader" src="{local var="roomResBaseDir"}/images/loading.gif" alt="decorative loading gif" role="spinner"/>
 	<div style="clear: both;"></div>
 	<table id="reservationsRoomTable" cellspacing="0" cellpadding="0">
+		<caption class="hidden-text"> Table used for Reserving Rooms by Time </caption> 
 		<thead>
 			<tr id="reservationsRoomTableHeaderRow">
 			</tr>

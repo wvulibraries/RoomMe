@@ -9,9 +9,11 @@
                               <td>%s</td>
                               <td>%s</td>
                               <td>%s</td>
+                              <td>%s</td>
                               <td><a href='../create/?id=%s&building=%s'>Edit</a></td>
-                              <td><input type='checkbox' name='delete[]' value='%s' /></td>
-                          </tr>",
+                              <td><input type='checkbox' class='delete_restrictions' name='delete[]' value='%s' /></td>
+                            </tr>",
+              htmlSanitize($data['username']),
               htmlSanitize($data['email']),
               htmlSanitize($types['type']),
               htmlSanitize($types['name']),
@@ -27,11 +29,11 @@
 
 <form action='{phpself query='true'}' method='post' onsubmit=\"return confirm('Confirm Deletes');\">
    {csrf}
-   <input type='submit' name='multiDelete' value='Delete Selected Reserve Permissions' />
-    <div class='dataTable table-responsive'>
+   <div class='dataTable table-responsive'>
       <table class='table table-striped'>
           <thead>
               <tr class='info'>
+                  <th> Username </th>
                   <th> Email </th>
                   <th> Resource Type </th>
                   <th> Resource ID </th>
@@ -44,4 +46,18 @@
           </tbody>
       </table>
   </div>
+
+  <a href="javascript:void(0)" id="check_all" class="button btn"> Select All  </a>
+  <a href="javascript:void(0)" id="uncheck_all" class="button btn"> Clear All </a>
+  <input type='submit'  name='multiDelete' class="button btn" value='Delete Selected Reserve Permissions' />
 </form>
+
+<script>
+  $('#check_all').click(function(){
+    $('.delete_restrictions').prop('checked', true);
+  });
+
+  $('#uncheck_all').click(function(){
+    $('.delete_restrictions').prop('checked', false);
+  });
+</script>

@@ -58,19 +58,19 @@ templates::display('header');
 		{local var="yearSelect"}
 	</div>
 	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop">
-		<i class="fa fa-calendar"></i> Find A Room
+		<span class="fa fa-calendar"></span> Find A Room
 	</a>
 	<div style="clear:both;"></div>
 	<h3 class="roomH3 roomMobile" style="margin-top: 40px;">Future Dates</h3>
 	<hr class="roomHR roomMobile" />
-	<a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><i class="fa fa-cog"></i> Advanced Search</a>
+	<a href="{local var="advancedSearch"}" id="asbutton" class="bSubmit roomMobile"><span class="fa fa-cog"></span> Advanced Search</a>
 
 	<!-- Table Pager -->
 	<div class="tablePager roomTabletDesktop">
-		<a class="pagerButtons"><i id="pagerFirst" data-startCols="0" data-endCols="7" class="fa fa-step-backward pagerLink"></i></a>
-		<a class="pagerButtons"><i id="pagerPrev"  data-startCols="" data-endCols="" class="fa fa-backward pagerLink"></i></a>
-		<a class="pagerButtons"><i id="pagerNext"  data-startCols="7" data-endCols="14"class="fa fa-forward pagerLink"></i></a>
-		<a class="pagerButtons"><i id="pagerLast"  data-startCols="" data-endCols="" class="fa fa-step-forward pagerLink" ></i></a>
+		<a class="pagerButtons"><span id="pagerFirst" data-startCols="0" data-endCols="7" class="fa fa-step-backward pagerLink"></span></a>
+		<a class="pagerButtons"><span id="pagerPrev"  data-startCols="" data-endCols="" class="fa fa-backward pagerLink"></span></a>
+		<a class="pagerButtons"><span id="pagerNext"  data-startCols="7" data-endCols="14"class="fa fa-forward pagerLink"></span></a>
+		<a class="pagerButtons"><span id="pagerLast"  data-startCols="" data-endCols="" class="fa fa-step-forward pagerLink" ></span></a>
 	</div>
 
 	<!-- Calendar Call -->

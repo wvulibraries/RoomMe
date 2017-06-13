@@ -81,6 +81,15 @@ $form->addField(array(
     'duplicates'      => TRUE
 ));
 
+$form->addField(array(
+    'name'            => "username",
+    'label'           => "Username",
+    'showIn'          => array(formBuilder::TYPE_INSERT, formBuilder::TYPE_UPDATE),
+    'required'        => FALSE,
+    'type'            => 'text',
+    'duplicates'      => TRUE
+));
+
 // buttons and submissions
 $form->addField(array(
     'showIn'     => array(formBuilder::TYPE_UPDATE),

@@ -155,7 +155,7 @@ class reservationPermissions {
     }
   }
 
-  public function checkBuildingPermissions($buildingID = null, $email = null){
+  public function checkBuildingPermissions($buildingID = null, $email = null, $username = null){
     try {
         // test to see if Id is present and valid
         if(!isnull($buildingID) && !$this->validate->integer($buildingID)){
@@ -167,10 +167,10 @@ class reservationPermissions {
             throw new Exception("Invalid Email provided.");
         }
 
-        $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ? AND email = ? LIMIT 1";
+        $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ? AND (email = ? OR username = ?) LIMIT 1";
 
         // get the results of the query
-        $sqlResult = $this->db->query($sql, array($buildingID, $email));
+        $sqlResult = $this->db->query($sql, array($buildingID, $email, $username));
 
         if ($sqlResult->error()){
             throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
@@ -183,12 +183,12 @@ class reservationPermissions {
         return TRUE;
 
     } catch (Exception $e){
-        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
         return FALSE;
     }
   }
 
-  public function checkRoomPermissions($roomID = null, $email = null){
+  public function checkRoomPermissions($roomID = null, $email = null, $username = null){
     try {
         // test to see if Id is present and valid
         if(!isnull($roomID) && !$this->validate->integer($roomID)){
@@ -200,10 +200,11 @@ class reservationPermissions {
             throw new Exception("Invalid Email provided.");
         }
 
-        $sql = "SELECT * FROM `reservePermissions` WHERE roomID = ? AND email = ? LIMIT 1";
+
+        $sql = "SELECT * FROM `reservePermissions` WHERE roomID = ? AND (email = ? OR username = ?) LIMIT 1";
 
         // get the results of the query
-        $sqlResult = $this->db->query($sql, array($roomID, $email));
+        $sqlResult = $this->db->query($sql, array($buildingID, $email, $username));
 
         if ($sqlResult->error()){
             throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
@@ -217,7 +218,7 @@ class reservationPermissions {
         return TRUE;
 
     } catch (Exception $e){
-        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
         return FALSE;
     }
   }
@@ -231,18 +232,19 @@ class reservationPermissions {
    * It will verify that the email address is allowed to reserve the room.
    * Returns false if they are not allowed true is allowed.
    */
-  public function permissionsCheck($buildingID, $email, $roomID){
+  public function permissionsCheck($buildingID, $email, $username, $roomID){
     try {
         //check if there are any permissions currently in place on current buildingID
         if(!isset($email)){
           throw new Exception('Please enter an email address for valid reservation.');
         }
 
+
         if($this->permissionsSet($buildingID)){
-          if(!$this->checkBuildingPermissions($buildingID, $email)) {
+          if(!$this->checkBuildingPermissions($buildingID, $email, $username)) {
               throw new Exception("Error email address not on Permissions list for this Building");
           }
-          elseif ($this->checkRoom($roomID) && !$this->checkRoomPermissions($roomID, $email)) {
+          elseif ($this->checkRoom($roomID) && !$this->checkRoomPermissions($roomID, $email, $username)) {
               throw new Exception("Error email address not on Permissions list for this Room");
           }
         }
@@ -359,7 +361,7 @@ class reservationPermissions {
     return FALSE;
   }
 
-  public function insertRecord($id, $type, $room, $email){
+  public function insertRecord($id, $type, $room, $email, $username){
 
     try {
         //test to see if Id is present and valid
@@ -376,14 +378,15 @@ class reservationPermissions {
         }
 
         if(!isnull($email) && !$this->validate->emailAddr($email)){
-            throw new Exception("Invalid ID provided.");
+            throw new Exception("Invalid Email provided.");
         }
 
+
         if (self::duplicatePermissionsCheck($id, $type, $room, $email) === FALSE) {
-          $sql = "INSERT INTO `reservePermissions` (resourceID, resourceType, roomID, email) VALUES (?, ?, ?, ?)";
+          $sql = "INSERT INTO `reservePermissions` (resourceID, resourceType, roomID, email, username) VALUES (?, ?, ?, ?, ?)";
 
           // get the results of the query
-          $sqlResult = $this->db->query($sql, array($id, $type, $room, $email));
+          $sqlResult = $this->db->query($sql, array($id, $type, $room, $email, $username));
 
           if ($sqlResult->error()) {
               throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
@@ -461,14 +464,17 @@ class reservationPermissions {
            throw new Exception("Error opening " . $_FILES['uploadedfile']['tmp_name']);
         }
 
-        // use class with csv data
-        while(!feof($file)){
-         $temp = fgetcsv($file);
-         if (!isnull($temp[0])){
-           $this->insertRecord($resourceID, $resourceType, $roomID, $temp[0]);
-         }
+        // Remove the first line it is the header
+        fgetcsv($file, 10000, ",");
+        // Loop through the rest of the CSV Lines as an array
+        while (($studentData = fgetcsv($file, 10000, ",")) !== FALSE) {
+          $email = $studentData[2];
+          $username = $studentData[4];
+
+          if (!isnull($email) && !isnull($username)){
+            $this->insertRecord($resourceID, $resourceType, $roomID, $email, $username);
+          }
         }
-        fclose($file);
     }
     catch(Exception $e) {
       errorHandle::errorMsg($e->getMessage());
