@@ -45,17 +45,21 @@ templates::display('header');
 
 	<hr class="roomHR roomTabletDesktop" />
 	<div class="styled-select roomTabletDesktop">
+		<label for="building_modal" class="hidden-text"> Select A Building </label>
 		<select id="building_modal">
 			{local var="buildingSelectOptions"}
 		</select>
 	</div>
 	<div class="styled-select roomTabletDesktop">
+		<label for="start_month_modal" class="hidden-text"> Select A Month </label>
 		{local var="monthSelect"}
 	</div>
 	<div class="styled-select roomTabletDesktop">
+		<label for="start_day_modal"> Select A Day of the Month </label>
 		{local var="daySelect"}
 	</div>
 	<div class="styled-select roomTabletDesktop">
+		<label for="start_year_modal"> Select A Year</label>
 		{local var="yearSelect"}
 	</div>
 	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop button_inactive">
