@@ -55,11 +55,11 @@ templates::display('header');
 		{local var="monthSelect"}
 	</div>
 	<div class="styled-select roomTabletDesktop">
-		<label for="start_day_modal"> Select A Day of the Month </label>
+		<label for="start_day_modal" class="hidden-text"> Select A Day of the Month </label>
 		{local var="daySelect"}
 	</div>
 	<div class="styled-select roomTabletDesktop">
-		<label for="start_year_modal"> Select A Year</label>
+		<label for="start_year_modal" class="hidden-text"> Select A Year</label>
 		{local var="yearSelect"}
 	</div>
 	<a id="calUpdateFormSubmit" class="bSubmit roomTabletDesktop button_inactive">
