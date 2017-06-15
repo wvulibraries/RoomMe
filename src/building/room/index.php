@@ -304,12 +304,15 @@ templates::display('header');
     <input type="hidden" id="room_modal" value="{local var="roomID"}" />
 
     <div class="styled-select">
+      <label for="start_month_modal" class="hidden-text"></label>
       {local var="monthSelect_modal"}
     </div>
     <div class="styled-select">
+      <label for="start_day_modal" class="hidden-text"></label>
       {local var="daySelect_modal"}
     </div>
     <div class="styled-select">
+      <label for="start_year_modal" class="hidden-text"></label>
       {local var="yearSelect_modal"}
     </div>
     <a id="calUpdateFormSubmit" class="bSubmit">
