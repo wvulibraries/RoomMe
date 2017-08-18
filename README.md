@@ -78,3 +78,7 @@ Access Controls in Room Reservations are controlled via EngineAPI's Access Contr
 		* Create/Edit snippets
 
 All of the above functions can have individual ACLs added to their respective directories to further refine access controls, either using security groups or individual user accounts.
+
+### Uploading Room Restrictions
+
+When uploading a CSV file for creating room or building restrictions, the file must have email addresses in the third column and usernames in the 5th column.
