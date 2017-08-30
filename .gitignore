@@ -4,3 +4,6 @@
 sessionLogin.php
 RoomReservationWishlist2014.docx
 /sqlFiles/roomReservations.sql
+sqlFiles/roomResNew.sql
+sqlFiles/.DS_Store
+.DS_Store
