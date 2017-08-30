@@ -121,7 +121,7 @@ $localvars->set("yearSelect_modal",  $date->dropdownYearSelect(0,10,$currentYear
 templates::display('header');
 ?>
 
-  {local var="prettyPrint"}
+{local var="prettyPrint"}
 
 <h3 class="roomH3" style="display: inline-block;">
 <?php if ($room['publicViewing'] == '1') { ?>
@@ -221,12 +221,16 @@ templates::display('header');
 
   <?php }
     $reservationPermissions = new reservationPermissions;
-    $check = $reservationPermissions->permissionsCheck($room['building'], $userinfo->user['email'],
-    $userinfo->user['username'], $roomID);
+    $check = $reservationPermissions->permissionsCheck($room['building'], $userinfo->user['email'], session::get("username"), $roomID);
     if (!$check) {
   ?>
 
-  <p> You are unable to reserve this room due to restrictions that have been set. </p>
+  <p> Hi <?php print(session::get("username")); ?>, you are unable to reserve this room due to restrictions that have been set for <?php print($buildingName);?>.
+      Your username or email may not be correct, please verify with the librarian who manages permissions that you are allowed to reserve the room with as 
+      <br/><br/> <strong> Username: </strong> <?php print(session::get("username")); ?> 
+      <br/> <strong> Email: </strong> <?php print($userinfo->user['email']); ?> 
+      <br/><br/> 
+  </p>
 
   <?php } else { ?>
 
