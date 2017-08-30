@@ -28,7 +28,8 @@ class reservationPermissions {
       }
       return $sqlResult->fetchAll();
     } catch (Exception $e) {
-      errorHandle::newError(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+      errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+      errorHandle::errorMsg($e->getMessage());
       return false;
     }
   }
@@ -48,7 +49,8 @@ class reservationPermissions {
       }
       return $sqlResult->fetchAll();
     } catch (Exception $e) {
-      errorHandle::newError(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+      errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+      errorHandle::errorMsg($e->getMessage());
       return false;
     }
   }
@@ -69,18 +71,20 @@ class reservationPermissions {
 
         $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ?";
         $sqlResult = $this->db->query($sql,array($buildingID));
+
         if ($sqlResult->error()) {
           throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
         }
 
         if ($sqlResult->rowCount() < 1) {
-           return FALSE;
+          return  false; 
+        } else { 
+          return true; 
         }
 
-        return true;
-
       } catch (Exception $e) {
-        errorHandle::newError(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+        errorHandle::errorMsg($e->getMessage());
         return FALSE;
       }
   }
@@ -95,7 +99,7 @@ class reservationPermissions {
   public function checkBuilding($buildingID = null){
     try {
         // test to see if Id is present and valid
-        if(!isnull($buildingID) && !$this->validate->integer($buildingID)){
+        if(isnull($buildingID) && !$this->validate->integer($buildingID)){
             throw new Exception("Invalid Building ID provided.");
         }
 
@@ -116,7 +120,8 @@ class reservationPermissions {
         return TRUE;
 
     } catch (Exception $e){
-        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+        errorHandle::errorMsg($e->getMessage());
         return false;
     }
   }
@@ -130,8 +135,7 @@ class reservationPermissions {
    */
   public function checkRoom($roomID = null){
     try {
-        // test to see if Id is present and valid
-        if(!isnull($roomID) && !$this->validate->integer($roomID)){
+        if(isnull($roomID) && !$this->validate->integer($roomID)){
             throw new Exception("Invalid ID provided.");
         }
 
@@ -144,44 +148,36 @@ class reservationPermissions {
 
         //check and see if permissions exist on the resource
         if ($sqlResult->rowCount() < 1) {
-           return FALSE;
+           return false;
+        } else { 
+          return true; 
         }
-
-        return TRUE;
-
     } catch (Exception $e){
-        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+        errorHandle::errorMsg($e->getMessage());
         return FALSE;
     }
   }
 
   public function checkBuildingPermissions($buildingID = null, $email = null, $username = null){
     try {
-        // test to see if Id is present and valid
-        if(!isnull($buildingID) && !$this->validate->integer($buildingID)){
-            throw new Exception("Invalid ID provided.");
+         // test to see if Id is present and valid
+        if(isnull($buildingID) && !$this->validate->integer($buildingID)){
+          throw new Exception("Invalid ID provided.");
         }
-
-        // test to see if Id is present and valid
-        if(!isnull($email) && !$this->validate->emailAddr($email)){
-            throw new Exception("Invalid Email provided.");
-        }
-
-        $sql = "SELECT * FROM `reservePermissions` WHERE resourceID = ? AND (email = ? OR username = ?) LIMIT 1";
-
-        // get the results of the query
+        
+        $sql = "SELECT * FROM `reservePermissions` WHERE resourceID=? AND (email=? OR username=?) LIMIT 1";
         $sqlResult = $this->db->query($sql, array($buildingID, $email, $username));
-
+        
         if ($sqlResult->error()){
             throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
         }
 
         if ($sqlResult->rowCount() < 1) {
-           return FALSE;
+           return false; 
+        } else { 
+          return true; 
         }
-
-        return TRUE;
-
     } catch (Exception $e){
         errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
         return FALSE;
@@ -190,35 +186,25 @@ class reservationPermissions {
 
   public function checkRoomPermissions($roomID = null, $email = null, $username = null){
     try {
-        // test to see if Id is present and valid
-        if(!isnull($roomID) && !$this->validate->integer($roomID)){
-            throw new Exception("Invalid ID provided.");
-        }
+      if(isnull($roomID) && !$this->validate->integer($roomID)){
+        throw new Exception("Invalid ID provided.");
+      }
 
-        // test to see if Id is present and valid
-        if(!isnull($email) && !$this->validate->emailAddr($email)){
-            throw new Exception("Invalid Email provided.");
-        }
+      $sql = "SELECT * FROM `reservePermissions` WHERE roomID=? AND (email=? OR username=?) LIMIT 1";
+      $sqlResult = $this->db->query($sql, array($buildingID, $email, $username));
 
+      if($sqlResult->error()){
+          throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
+      }
 
-        $sql = "SELECT * FROM `reservePermissions` WHERE roomID = ? AND (email = ? OR username = ?) LIMIT 1";
-
-        // get the results of the query
-        $sqlResult = $this->db->query($sql, array($buildingID, $email, $username));
-
-        if ($sqlResult->error()){
-            throw new Exception("ERROR SQL" . $sqlResult->errorMsg());
-        }
-
-        //check and see if permissions exist on the resource
-        if ($sqlResult->rowCount() < 1) {
-           return FALSE;
-        }
-
-        return TRUE;
-
+      if($sqlResult->rowCount() < 1){
+        return false; 
+      } else { 
+        return true; 
+      }
     } catch (Exception $e){
-        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+        errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+        errorHandle::errorMsg($e->getMessage());
         return FALSE;
     }
   }
@@ -234,25 +220,26 @@ class reservationPermissions {
    */
   public function permissionsCheck($buildingID, $email, $username, $roomID){
     try {
-        //check if there are any permissions currently in place on current buildingID
-        if(!isset($email)){
-          throw new Exception('Please enter an email address for valid reservation.');
+        // test to see if Id is present and valid
+        if(isnull($email) && !$this->validate->emailAddr($email)){
+            throw new Exception("Invalid Email provided.");
         }
-
-
-        if($this->permissionsSet($buildingID)){
-          if(!$this->checkBuildingPermissions($buildingID, $email, $username)) {
-              throw new Exception("Error email address not on Permissions list for this Building");
-          }
-          elseif ($this->checkRoom($roomID) && !$this->checkRoomPermissions($roomID, $email, $username)) {
-              throw new Exception("Error email address not on Permissions list for this Room");
-          }
+        // username present 
+        if(isnull($username)){
+          throw new Exception('User must have a valid username');
         }
-        return TRUE;
-
+        // if room has permissions and the user doesn't return false by throwing an exception
+        if($this->permissionsSet($buildingID) && !$this->checkBuildingPermissions($buildingID, $email, $username)){
+          throw new Exception("User ${username}, ${email} did not have permission to access the building.");
+        } elseif ($this->checkRoom($roomID) && !$this->checkRoomPermissions($roomID, $email, $username)) {
+          throw new Exception("User ${username}, ${email} did not have permission to access the room.");
+        }
+        return TRUE; 
      } catch (Exception $e) {
-         errorHandle::errorMsg($e->getMessage());
-         return FALSE;
+        // Uncomment When Debugging
+        errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+        errorHandle::errorMsg($e->getMessage());
+        return FALSE;
      }
   }
 
@@ -278,7 +265,9 @@ class reservationPermissions {
         return $sqlResult->fetchAll();
 
     } catch (Exception $e) {
+        errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
         errorHandle::errorMsg($e->getMessage());
+        return false;
     }
   }
 
@@ -297,7 +286,8 @@ class reservationPermissions {
       }
       return $sqlResult->fetchAll();
     } catch (Exception $e) {
-      errorHandle::newError(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+      errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+      errorHandle::errorMsg($e->getMessage());
       return false;
     }
 
@@ -322,7 +312,8 @@ class reservationPermissions {
         return $sqlResult->fetchAll();
 
     } catch (Exception $e) {
-        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+        errorHandle::errorMsg($e->getMessage());
         return false;
     }
   }
@@ -396,7 +387,8 @@ class reservationPermissions {
         return true;
 
     } catch (Exception $e) {
-        errorHandle::errorMsg(__METHOD__."() - ".$e->getMessage, errorHandle::DEBUG);
+        errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
+        errorHandle::errorMsg($e->getMessage());
         return false;
     }
   }
@@ -477,6 +469,7 @@ class reservationPermissions {
         }
     }
     catch(Exception $e) {
+      errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
       errorHandle::errorMsg($e->getMessage());
       return false;
     }
@@ -495,6 +488,7 @@ class reservationPermissions {
       }
     }
     catch (Exception $e){
+      errorHandle::newError(__METHOD__."() - ".$e->getMessage(), errorHandle::DEBUG);
       errorHandle::errorMsg($e->getMessage());
       return false;
     }
