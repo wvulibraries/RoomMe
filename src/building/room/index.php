@@ -226,7 +226,9 @@ templates::display('header');
   ?>
 
   <p> Hi <?php print(session::get("username")); ?>, you are unable to reserve this room due to restrictions that have been set for <?php print($buildingName);?>.
-      Your username or email may not be correct, please verify with the librarian who manages permissions that you are allowed to reserve the room with as 
+      Your username or email may not be correct, please verify with the librarian who manages permissions that you are allowed to reserve this room.  
+      <hr/> 
+      <strong> Your Details </strong>
       <br/><br/> <strong> Username: </strong> <?php print(session::get("username")); ?> 
       <br/> <strong> Email: </strong> <?php print($userinfo->user['email']); ?> 
       <br/><br/> 
