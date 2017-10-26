@@ -550,8 +550,9 @@ class reservation {
         );
     }
     else {
-      $sql        = sprintf("UPDATE `reservations` SET startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=?, email=?, openEvent=?, openEventDescription=? WHERE ID=?");
+      $sql        = sprintf("UPDATE `reservations` SET roomID=?, startTime=?, endTime=?, modifiedOn=?, modifiedBy=?, username=?, initials=?, groupname=?, comments=?, createdVia=?, email=?, openEvent=?, openEventDescription=? WHERE ID=?");
       $sqlOptions = array(
+        $roomID,
         $sUnix,
         $eUnix,
         time(),
@@ -680,15 +681,11 @@ class reservation {
   }
 
   public function setRoom($ID) {
-
     $room = new room;
-
     if (($this->room = $room->get($ID)) === FALSE) {
       return FALSE;
     }
-
     return TRUE;
-
   }
 
   public function isNew() {
@@ -738,11 +735,9 @@ class reservation {
   // Returns true if we are trying to update a reservation and the result conflict is ONLY itself
   // Returns false otherwise.
   private function updatingSelf($sqlResult) {
-
     if ($this->isNew()) {
       return FALSE;
     }
-
     if ($sqlResult->rowCount() != 1) {
       return FALSE;
     }

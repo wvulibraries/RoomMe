@@ -20,64 +20,44 @@ $reservation = new Reservation;
 // Check to see if we want to create a new reservation with the patron information
 // we want to make sure the patron information remains, but all the reservation information is removed ... as if it is a new reservation.
 if (isset($_POST['MYSQL']['createNewFromOld'])) {
-
   unset($_GET['MYSQL']['id']);
   unset($_POST['MYSQL']['reservationID']);
-
 }
 
 try {
-
   // Is this an Update?
   // Currently checking for this in both get and post.
-  if (isset($_GET['MYSQL']['id']) || (isset($_POST['MYSQL']['reservationID']) && !is_empty($_POST['MYSQL']['reservationID'])) ) {
-
+  if(isset($_GET['MYSQL']['id']) || (isset($_POST['MYSQL']['reservationID']) && !is_empty($_POST['MYSQL']['reservationID']))){
     $reservationID = (isset($_POST['MYSQL']['reservationID']) && !is_empty($_POST['MYSQL']['reservationID']))?$_POST['MYSQL']['reservationID']:$_GET['MYSQL']['id'];
-
     if ($reservation->get($reservationID) === FALSE) {
       throw new Exception("Error retrieving reservation.");
     }
-
   }
-
-
   if (isset($_POST['MYSQL']['createSubmit'])) {
-
     if(isset($_POST['MYSQL']['library'])){
       $reservation->setBuilding($_POST['MYSQL']['library']);
     }
-
     if(isset($_POST['MYSQL']['room'])){
       $reservation->setRoom($_POST['MYSQL']['room']);
     }
-
     if (!$reservation->create()) {
       throw new Exception("Error Creating Reservation.");
     }
-
-  }
-  else if (isset($_POST['MYSQL']['deleteSubmit'])) {
-
+  } else if (isset($_POST['MYSQL']['deleteSubmit'])) {
     if (!$reservation->delete()) {
       throw new Exception("Error deleting reservation.");
     }
-
     // @TODO this should not be hard coded.
     header('Location: ../list/');
-
   }
-
 }
 catch(Exception $e) {
   errorHandle::errorMsg($e->getMessage());
-
-  // Setup to repopulate form on error
   $submitError = TRUE;
 }
 
 // Create the Via Dropdown
 try {
-  // @TODO : This needs to be taken out of here
   $sql       = sprintf("SELECT * FROM `via` ORDER BY `name`");
   $sqlResult = $db->query($sql);
 
@@ -90,9 +70,9 @@ try {
     while($row = $sqlResult->fetch()) {
       $viaOptions .= sprintf('<option value="%s" %s>%s</option>',
         htmlSanitize($row['ID']),
-        (!$reservation->isNew() && $row['ID'] == $reservation->reservation['createdVia'])?"selected":"",
+        (!$reservation->isNew() && $row['ID'] == $reservation->reservation['createdVia']) ? "selected" : "",
         htmlSanitize($row['name'])
-        );
+      );
     }
     $localvars->set("viaOptions",$viaOptions);
   }
@@ -113,9 +93,8 @@ $currentDay   = ($reservation->isNew())?date("j"):date("j",$reservation->reserva
 $currentYear  = ($reservation->isNew())?date("Y"):date("Y",$reservation->reservation['startTime']);
 $currentHour  = ($reservation->isNew())?date("G"):date("G",$reservation->reservation['startTime']);
 $nextHour     = ($reservation->isNew())?(date("G")+1):date("G",$reservation->reservation['endTime']);
-
-$startMinute = ($reservation->isNew())?"0":date("i",$reservation->reservation['startTime']);
-$endMinute   = ($reservation->isNew())?"0":date("i",$reservation->reservation['endTime']);
+$startMinute  = ($reservation->isNew())?"0":date("i",$reservation->reservation['startTime']);
+$endMinute    = ($reservation->isNew())?"0":date("i",$reservation->reservation['endTime']);
 
 // Set some localvars for use in the HTML below.
 $localvars->set("username",($reservation->isNew())?"":$reservation->reservation['username']);
