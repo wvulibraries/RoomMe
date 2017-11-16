@@ -109,7 +109,7 @@ $localvars->set("yearSelect",  $date->dropdownYearSelect(-2,10,$currentYear,arra
 
 $localvars->set("endmonthSelect", $date->dropdownMonthSelect(1,$currentMonth,array("name"=>"end_month", "id"=>"end_month", "class" => "end_date")));
 $localvars->set("enddaySelect",   $date->dropdownDaySelect($currentDay,array("name"=>"end_day", "id"=>"end_day", "class" => "end_date")));
-$localvars->set("endyearSelect",  $date->dropdownYearSelect(0,10,$currentYear,array("name"=>"end_year", "id"=>"end_year", "class" => "end_date")));
+$localvars->set("endyearSelect",  $date->dropdownYearSelect(-2,10,$currentYear,array("name"=>"end_year", "id"=>"end_year", "class" => "end_date")));
 
 templates::display('header');
 ?>
