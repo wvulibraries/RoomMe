@@ -70,6 +70,8 @@ class reservation {
     $roomID = $this->room['ID'];
 
     $reservationPermissions = new reservationPermissions;
+    $notificationEmail = rtrim($_POST['MYSQL']['notificationEmail']);
+    $username = rtrim($_POST['MYSQL']['username']);    
 
     if (!$reservationPermissions->permissionsCheck($buildingID, $_POST['MYSQL']['notificationEmail'], $_POST['MYSQL']['username'], $roomID)) {
       return FALSE;
