@@ -1,7 +1,7 @@
 <?php
 
 class series {
-	
+
 	public $startTime;
 	public $endTime;
 	public $startDay;
@@ -191,13 +191,13 @@ class series {
 
 
 					$this->startDay  = $originalStartDay;
-					$thie->startTime = $originalStartTime;
+					$this->startTime = $originalStartTime;
 					$this->endTime   = $originalEndTime;
-					
+
 				}
 			}
 		}
-		
+
 		// Every Month (Month Day)
 		else if ($frequency == "2") {
 
@@ -310,7 +310,7 @@ class series {
 				return FALSE;
 			}
 
-			
+
 
 		}
 		else {
@@ -345,7 +345,7 @@ class series {
 
 				// submit the reservation
 				$reservation = new reservation;
-				
+
 				$reservation->series = TRUE;
 
 				$reservation->setBuilding($this->building['ID']);
