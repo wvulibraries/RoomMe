@@ -7,3 +7,4 @@ var numberOfColumns     = 7;
 <script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/roomReservationsPublic.js"></script>
 <script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/loading.js"></script>
 <script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/dayCheck.js"></script>
+<script type="text/javascript" src="{local var="roomResBaseDir"}/javascript/preventDoubleSubmission.js"></script>

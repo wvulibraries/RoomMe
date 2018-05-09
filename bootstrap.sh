@@ -12,12 +12,15 @@ DOCUMENTROOT="public_html"
 SITEROOT=$DOCUMENTROOT/services/rooms
 SQLFILES="/vagrant/sqlFiles/migrations/*.sql"
 
-yum -y install httpd httpd-devel httpd-manual httpd-tools
-yum -y install mysql-connector-java mysql-connector-odbc mysql-devel mysql-lib mysql-server
-yum -y install mod_auth_kerb mod_auth_mysql mod_authz_ldap mod_evasive mod_perl mod_security mod_ssl mod_wsgi 
-yum -y install php php-bcmath php-cli php-common php-gd php-ldap php-mbstring php-mcrypt php-mysql php-odbc php-pdo php-pear php-pear-Benchmark php-pecl-apc php-pecl-imagick php-pecl-memcache php-soap php-xml php-xmlrpc 
-yum -y install emacs emacs-common emacs-nox
-yum -y install git
+yum -y install \
+  httpd httpd-devel httpd-manual httpd-tools \
+  mysql-connector-java mysql-connector-odbc mysql-devel mysql-lib mysql-server \
+  mod_auth_kerb mod_auth_mysql mod_authz_ldap mod_evasive mod_perl mod_security mod_ssl mod_wsgi \
+  php php-bcmath php-cli php-common php-gd php-ldap php-mbstring php-mcrypt php-mysql php-odbc php-pdo \
+  php-pear php-pear-Benchmark php-pecl-apc php-pecl-imagick php-pecl-memcache php-soap php-xml php-xmlrpc \
+  emacs emacs-common emacs-nox git
+
+yum -y update
 
 mv /etc/httpd/conf.d/mod_security.conf /etc/httpd/conf.d/mod_security.conf.bak
 /etc/init.d/httpd start
@@ -79,7 +82,6 @@ touch /vagrant/serverConfiguration/serverlogs/error_log
 mkdir -p $SERVERURL/phpincludes/databaseConnectors/
 ln -s /vagrant/serverConfiguration/database.lib.wvu.edu.remote.php $SERVERURL/phpincludes/databaseConnectors/database.lib.wvu.edu.remote.php
 
-
 # Template
 mkdir -p $GITDIR/engineAPITemplates/library2012.2col/templateIncludes
 ln -s /vagrant/serverConfiguration/templateHeader.php $GITDIR/engineAPITemplates/library2012.2col/templateIncludes/templateHeader.php
@@ -90,7 +92,6 @@ mkdir -p $GITDIR/engineAPITemplates/library2012.3col/templateIncludes
 ln -s /vagrant/serverConfiguration/templateHeader.php $GITDIR/engineAPITemplates/library2012.3col/templateIncludes/templateHeader.php
 ln -s /vagrant/serverConfiguration/templateFooter.php $GITDIR/engineAPITemplates/library2012.3col/templateIncludes/templateFooter.php
 ln -s $GITDIR/engineAPITemplates/library2012.1col/templateIncludes/3colHeaderIncludes.php $GITDIR/engineAPITemplates/library2012.3col/templateIncludes/3colHeaderIncludes.php
-
 
 #favicon
 touch /home/www.libraries.wvu.edu/public_html/favicon.ico
@@ -111,16 +112,19 @@ mysql -u root EngineAPI < /tmp/git/engineAPI/sql/EngineAPI.sql
 
 mysql -u root < /vagrant/sqlFiles/setup.sql
 mysql -u root roomReservations < /vagrant/sqlFiles/baseSnapshot.sql
-# mysql -u root roomReservations < /vagrant/sqlFiles/roomReservations.sql
+
+# import backup if exists
+if [ -e /vagrant/sqlFiles/roomReservations.sql ]
+then
+    mysql -u root roomReservations < /vagrant/sqlFiles/roomReservations.sql
+else
+    for f in $SQLFILES
+    do
+      echo "Processing $f ..."
+      mysql -u root roomReservations < $f
+    done
+fi
 
 # mock authentication database setup
 mysql -u root < /vagrant/sqlFiles/authenticationStructureOnly.sql
 mysql -u root authentication < /vagrant/sqlFiles/authenticationSetup.sql
-
-for f in $SQLFILES
-do
-  echo "Processing $f ..."
-  mysql -u root roomReservations < $f
-done
-
-#mysql -u root roomReservations < roomReservations.sql
