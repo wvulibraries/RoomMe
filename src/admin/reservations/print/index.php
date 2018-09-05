@@ -42,7 +42,6 @@ while ($row = $sqlResult->fetch()) {
 $localvars->set("librarySelectOptions",$options);
 }
 
-
 $displayOutput = "";
 if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library'])) {
 
@@ -71,6 +70,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 		$headers[] = "Start Time";
 		$headers[] = "End Time";
 		$headers[] = "Hours";
+    $headers[] = "Comments";
 
 		$hourSetting = getConfig('24hour');
 		if ($hourSetting == "1") {
@@ -121,6 +121,7 @@ if ($error === FALSE && isset($_POST['MYSQL']) && isset($_POST['MYSQL']['library
 			$temp['startTime'] = date($timeFormat,$row['startTime']);
 			$temp['endTime']   = date($timeFormat,$row['endTime']);
 			$temp['hoursOnReservationTable'] = ($row['endTime'] - $row['startTime'])/60/60;
+      $temp['comments'] = $row['comments'];
 
 			$reservations[]   = $temp;
 
